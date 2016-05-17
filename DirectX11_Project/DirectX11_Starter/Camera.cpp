@@ -65,27 +65,27 @@ void Camera::cameraInput(float deltaTime)
 	float speed = 0.03f;
 	if (GetAsyncKeyState('W') & 0x8000)
 	{
-		moveForward(speed);
+		//moveForward(speed);
 	}
 	if (GetAsyncKeyState('A') & 0x8000)
 	{
-		strafe(-speed); 
+		//strafe(-speed); 
 	}
 	if (GetAsyncKeyState('S') & 0x8000)
 	{
-		moveForward(-speed); 
+		//moveForward(-speed); 
 	}
 	if (GetAsyncKeyState('D') & 0x8000)
 	{
-		strafe(speed); 
+		//strafe(speed); 
 	}
 	if (GetAsyncKeyState('X') & 0x8000)
 	{
-		moveVertically(-speed);
+		//moveVertically(-speed);
 	}
 	if (GetAsyncKeyState(VK_SPACE) & 0x8000)
 	{
-		moveVertically(speed);
+		//moveVertically(speed);
 	}
 
 
@@ -94,8 +94,10 @@ void Camera::cameraInput(float deltaTime)
 void Camera::follow(XMFLOAT3 target)
 {
 	//XMVECTOR
-
-	//direction = target; 
+	float dist = 10.0f; 
+	position.x = target.x; 
+	position.y = target.y + 3; 
+	position.z = target.z - dist - 3; 
 }
 
 void Camera::rotate(float amt)

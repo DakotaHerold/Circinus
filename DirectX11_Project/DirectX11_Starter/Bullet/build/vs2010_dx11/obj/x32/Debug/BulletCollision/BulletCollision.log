@@ -1,4 +1,4 @@
-﻿Build started 5/16/2016 11:00:55 PM.
+﻿Build started 5/17/2016 3:19:50 AM.
      1>Project "C:\Users\Dakota\Desktop\DirectX11_Project\DirectX11_Project\DirectX11_Starter\Bullet\build\vs2010_dx11\BulletCollision.vcxproj" on node 2 (Build target(s)).
      1>Lib:
          BulletCollision.vcxproj -> C:\Users\Dakota\Desktop\DirectX11_Project\DirectX11_Project\DirectX11_Starter\Bullet\build\vs2010_dx11\..\..\lib\BulletCollision_vs2010_debug.lib
@@ -6,4 +6,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.40
+Time Elapsed 00:00:00.45

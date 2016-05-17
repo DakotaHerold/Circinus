@@ -48,23 +48,23 @@ void Entity::CopyTransformFromBullet()
 	setPosition(position.x, position.y, position.z);
 
 	//Copy the rotation
-	btQuaternion btRot = btTrans.getRotation();
-	float x = btRot.getX(); 
-	float y = btRot.getY(); 
-	float z = btRot.getZ(); 
-	float w = btRot.getW(); 
-	XMFLOAT4 xmRot = XMFLOAT4(x,y,z,w); 
-	
-	XMFLOAT4X4 newMat;
-	//XMMATRIX tempMat = XMLoadFloat4x4(&newMat); 
-	XMVECTOR vec = XMLoadFloat4(&xmRot); 
-	XMMATRIX mat = XMMatrixTranslationFromVector(vec); 
-	
+	//btQuaternion btRot = btTrans.getRotation();
+	//float x = btRot.getX(); 
+	//float y = btRot.getY(); 
+	//float z = btRot.getZ(); 
+	//float w = btRot.getW(); 
+	//XMFLOAT4 xmRot = XMFLOAT4(x,y,z,w); 
+	//
+	//XMFLOAT4X4 newMat;
+	////XMMATRIX tempMat = XMLoadFloat4x4(&newMat); 
+	//XMVECTOR vec = XMLoadFloat4(&xmRot); 
+	//XMMATRIX mat = XMMatrixTranslationFromVector(vec); 
+	//
 
-	XMStoreFloat4x4(&newMat, mat);
+	//XMStoreFloat4x4(&newMat, mat);
 
 
-	setRotation( newMat );
+	//setRotation( newMat );
 }
 
 // Copies our transform to Bullet's transform
@@ -80,10 +80,10 @@ void Entity::CopyTransformToBullet()
 	// Copy the position
 	btTrans.setOrigin(XMtoBT(currentPos));
 
-	// Copy the rotation
-	XMFLOAT4 xmRot = XMFLOAT4(rotation._11, rotation._22, rotation._33, rotation._44);
-	btQuaternion btRot(xmRot.x, xmRot.y, xmRot.z, xmRot.w);
-	btTrans.setRotation(btRot);
+	//// Copy the rotation
+	//XMFLOAT4 xmRot = XMFLOAT4(rotation._11, rotation._22, rotation._33, rotation._44);
+	//btQuaternion btRot(xmRot.x, xmRot.y, xmRot.z, xmRot.w);
+	//btTrans.setRotation(btRot);
 
 	// Now set the transform
 	motionState->setWorldTransform(btTrans);

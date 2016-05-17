@@ -99,7 +99,7 @@ MyDemoGame::MyDemoGame(HINSTANCE hInstance)
 	meshTwo = nullptr;
 	meshThree = nullptr;
 
-	enableDebugDraw = false; 
+	enableDebugDraw = true; 
 
 	e1 = nullptr;
 	e2 = nullptr;
@@ -174,10 +174,16 @@ MyDemoGame::~MyDemoGame()
 	delete MyDemoGame::dynamicsWorld;
 	
 	//Delete HUD
-	delete UI; 
+	for (unsigned int i = 0; i < UI.size(); i++)
+	{
+		delete UI[i];
+	}
+	 
 
 	//Delete Material
 	delete material;
+	delete carMaterial; 
+	delete ballMaterial; 
 
 	//Delete Camera
 	delete cam;
@@ -245,10 +251,10 @@ bool MyDemoGame::Init()
 	pixelShader->SetData("camPos", &cam->getPosition(), sizeof(XMFLOAT3));
 
 	// Specular Lights 
-	specularLight.SpecularColor = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	specularLight.SpecularColor = XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f);
 	specularLight.Direction = XMFLOAT3(1.0f, -1.0f, -5.0f);
 	specularLight.SpecularStrength = 1.0f;
-	specularLight.LightIntensity = 1.0f;
+	specularLight.LightIntensity = 0.75f;
 	pixelShader->SetData(
 		"specularLight",	//name in shader variable
 		&specularLight,	// address in memory
@@ -275,9 +281,8 @@ void MyDemoGame::UpdatePhysics(float deltaTime)
 
 	// Check Ball 
 	btTransform trans;
-	entities[1]->motionState->getWorldTransform(trans);
-
-	//cout << "Sphere height: " << trans.getOrigin().getY() << endl; 
+	//entities[1]->motionState->getWorldTransform(trans);
+ 
 	
 	//Move vehicle 
 	vehicle->applyEngineForce(engForce, 0);
@@ -407,7 +412,7 @@ void MyDemoGame::CreateGeometry()
 	btCollisionShape* shape2 = new btSphereShape(1); */
 	//btStaticPlaneShape* shape1 = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
 	btBoxShape* shape1 = new btBoxShape(btVector3(50, 0.01f, 50));
-	btSphereShape* shape2 = new btSphereShape(1);
+	btSphereShape* shape2 = new btSphereShape(1.0f);
 
 
 	/*btTransform t; 
@@ -431,7 +436,7 @@ void MyDemoGame::CreateGeometry()
 	btVector3 fallInertia(0.0f, 0.0f, 0.0f);
 	shape2->calculateLocalInertia(mass, fallInertia);
 	btRigidBody::btRigidBodyConstructionInfo fallRigidBodyCI(mass, fallMotionState, shape2, fallInertia);
-	fallRigidBodyCI.m_restitution = .2f;
+	fallRigidBodyCI.m_restitution = 0.5f;
 	btRigidBody* fallRigidBody = new btRigidBody(fallRigidBodyCI);
 	 
 	dynamicsWorld->addRigidBody(fallRigidBody); 
@@ -565,7 +570,9 @@ void MyDemoGame::CreateGeometry()
 	// END VEHICLE -------------------------------------------------------------------------------------------------------------
 
 	//Create Material 
-	material = new Material(vertexShader, pixelShader, device, deviceContext, L"Textures/rust.jpg");
+	material = new Material(vertexShader, pixelShader, device, deviceContext, L"Textures/grey.png");
+	carMaterial = new Material(vertexShader, pixelShader, device, deviceContext, L"Textures/red.png");
+	ballMaterial = new Material(vertexShader, pixelShader, device, deviceContext, L"Textures/blue.png");
 
 
 	
@@ -579,32 +586,27 @@ void MyDemoGame::CreateGeometry()
 	//carMaterial = new Material(vertexShader, pixelShader, device, deviceContext, )
 	//Create entities 
 	e1 = new Entity(meshThree, material, shape1, groundMotionState, groundRigidBody);
-	e2 = new Entity(meshTwo, material, shape2, fallMotionState, fallRigidBody);
-	e3 = new Entity(meshOne, material, chassisShape, chassisMotionState, chassisRB);
-	//e3 = new Entity(meshTwo, material, chassisShape, chassisMotionState, chassisRB);
+	e2 = new Entity(meshTwo, ballMaterial, shape2, fallMotionState, fallRigidBody);
+	e3 = new Entity(meshOne, carMaterial, chassisShape, chassisMotionState, chassisRB);
 
-	/*e4 = new Entity(meshFour, material, shape2, groundMotionState, fallRigidBody);
-	e5 = new Entity(meshFour, material, shape2, groundMotionState, fallRigidBody);
-	e6 = new Entity(meshFour, material, shape2, groundMotionState, fallRigidBody);
-	e7 = new Entity(meshFour, material, shape2, groundMotionState, fallRigidBody);
+	/*e4 = new Entity(meshTwo, material, shape2, groundMotionState, fallRigidBody);
+	e5 = new Entity(meshTwo, material, shape2, groundMotionState, fallRigidBody);
+	e6 = new Entity(meshTwo, material, shape2, groundMotionState, fallRigidBody);
+	e7 = new Entity(meshTwo, material, shape2, groundMotionState, fallRigidBody);*/
 
-	
-	dynamicsWorld->removeCollisionObject(e4->collider); 
-	dynamicsWorld->removeCollisionObject(e5->collider);
-	dynamicsWorld->removeCollisionObject(e6->collider);
-	dynamicsWorld->removeCollisionObject(e7->collider);*/
 
 
 
 	//e2->move(XMFLOAT4(0, 5, 0, 0)); 
 	//e2->move(XMFLOAT4(0, 10, 0, 0)); 
 	//e1->move(XMFLOAT4(0, -7.5f, 2.0f ,0 ));
-	//e1->scale(XMFLOAT4(7.0f, 0.52f, 7.0f, 1.0f));
+	e1->scale(XMFLOAT4(4.0f, 1.0f, 4.0f, 1.0f)); // ground
 	//e2->move(XMFLOAT4(0, 10.0f, 13.5f, 0));
+	//e2->scale(XMFLOAT4(2.0f, 2.0f, 2.0f, 1.0f)); 
 	//organize entities in vector
 	entities.push_back(e1);
 	entities.push_back(e2); //Ball
-	entities.push_back(e3);
+	entities.push_back(e3); // car
 	/*entities.push_back(e4);
 	entities.push_back(e5);
 	entities.push_back(e6);
@@ -614,7 +616,14 @@ void MyDemoGame::CreateGeometry()
 	//dynamicsWorld->addRigidBody(entities[1]->collider);
 
 	//Create UI 
+	//Selector = new HUD(device, deviceContext, L"Sprites/Sprite1.dds", 0.0f, 0.0f);
+	Text = new HUD(device, deviceContext, L"SpriteFonts/Destroy_32.spritefont", L"Score: ", windowWidth / 2 - 400.0f, windowHeight / 2 - 325.0f);
+	Time = new HUD(device, deviceContext, L"SpriteFonts/Destroy_32.spritefont", L"0", windowWidth / 2 - 200.0f, windowHeight / 2 - 325.0f);
 
+	//UI.push_back(Selector);
+	UI.push_back(Text);
+	UI.push_back(Time); 
+	score = 0; 
 }
 
 
@@ -699,7 +708,7 @@ void MyDemoGame::UpdateScene(float deltaTime, float totalTime)
 		steeringForce -= steeringIncrement;
 		if (steeringForce < -steeringClamp)
 			steeringForce = -steeringClamp;
-		
+		//cam->turn(-steeringForce * 10, 0.0f); 
 
 	}
 	if (GetAsyncKeyState(VK_RIGHT))
@@ -707,6 +716,8 @@ void MyDemoGame::UpdateScene(float deltaTime, float totalTime)
 		steeringForce += steeringIncrement;
 		if (steeringForce > steeringClamp)
 			steeringForce = steeringClamp;
+		//cam->turn(steeringForce * 10, 0.0f);
+
 		
 	}
 	if (GetAsyncKeyState('G'))
@@ -726,7 +737,31 @@ void MyDemoGame::UpdateScene(float deltaTime, float totalTime)
 		
 	}
 
+
+
 	btVector3 chaPos = vehicle->getChassisWorldTransform().getOrigin();
+
+	if (chaPos.getY() < -30.0f)
+	{
+		score -= 1; 
+		btTransform transform = e3->collider->getCenterOfMassTransform();
+		transform.setOrigin(btVector3(0.0f, 0.0f, 0.0f));
+		e3->collider->setCenterOfMassTransform(transform);
+	}
+
+	btVector3 ballPos = e2->collider->getWorldTransform().getOrigin(); 
+
+	if (ballPos.getY() < -30.0f)
+	{
+		score += 1; 
+		btTransform transform = e2->collider->getCenterOfMassTransform();
+		transform.setOrigin(btVector3(0.0f, 20.0f, 0.0f));
+		e2->collider->setLinearVelocity(btVector3(0.0f, 0.0f, 0.0f)); 
+		e2->collider->setCenterOfMassTransform(transform);
+	}
+
+	/*btVector3 pos = e2->collider->getCenterOfMassTransform().getOrigin(); 
+	e2->setPosition(pos.getX(), pos.getY(), pos.getZ()); */
 	
 	//e3->setPosition(chaPos.getX(), chaPos.getY(), chaPos.getZ());
 
@@ -811,11 +846,38 @@ void MyDemoGame::UpdateScene(float deltaTime, float totalTime)
 		entities[i]->updateScene();
 	}
 
+	//Update UI 
+
+	if (score == 0)
+	{
+		UI[1]->changeText(L"0");
+	}
+	else if (score == 1)
+	{
+		UI[1]->changeText(L"1");
+	}
+	else if (score == 2)
+	{
+		UI[1]->changeText(L"2");
+	}
+	else if (score >= 3)
+	{
+		UI[1]->changeText(L"You Won!");
+	}
 	
+	
+	
+	
+	 
+	for (unsigned int i = 0; i < UI.size(); i++)
+	{
+		UI[i]->Update();
+	}
 
 
 	//update Camera and it's input
 	cam->cameraInput(deltaTime);
+	cam->follow(XMFLOAT3(chaPos.getX(), chaPos.getY(), chaPos.getZ())); 
 	cam->update(deltaTime);
 	drawDebug->Update(); 
 }
@@ -859,13 +921,26 @@ void MyDemoGame::DrawScene(float deltaTime, float totalTime)
 		//  - The "SimpleShader" class handles all of that for you.
 		entities[i]->prepareMaterial(cam->getViewMatrix(), cam->getProjectionMatrix());
 		//draw here 
-		entities[i]->drawScene(deviceContext);
+		if (i != 2 && enableDebugDraw)
+		{
+			entities[i]->drawScene(deviceContext);
+		}
+		else if (enableDebugDraw == false)
+		{
+			entities[i]->drawScene(deviceContext);
+		}
 	}
 	//Testing debug lines 
 	//Debug lines 
 	if (enableDebugDraw)
 	{
 		dynamicsWorld->debugDrawWorld();
+	}
+
+	//Draw UI
+	for (unsigned int i = 0; i < UI.size(); i++)
+	{
+		UI[i]->Render();
 	}
 	
 	//drawDebug->drawLine(btVector3(0.0f, 0.0f, 0.0f), btVector3(0.0f, 1.0f, 1.0f), btVector3(1.0f, 0.0f, 0.0f)); 
@@ -960,6 +1035,6 @@ void MyDemoGame::OnMouseMove(WPARAM btnState, int x, int y)
 	prevMousePos.y = y;
 
 
-	cam->turn(camX, camY);
+	//cam->turn(camX, camY);
 }
 #pragma endregion

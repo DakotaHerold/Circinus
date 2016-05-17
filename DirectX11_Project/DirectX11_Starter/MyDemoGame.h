@@ -13,7 +13,7 @@
 #include "btBulletCollisionCommon.h"
 #include "btBulletDynamicsCommon.h"
 #include "BulletCollision\Gimpact\btGImpactCollisionAlgorithm.h"
-
+#include <sstream>
 
 
 // Include run-time memory checking in debug builds, so 
@@ -22,6 +22,12 @@
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 #endif
+
+
+//Game State Machine
+static enum class GAME_STATES { MAIN_MENU, PLAYING, OPTIONS, EXIT };
+//Game State
+static GAME_STATES gameState;
 
 // --------------------------------------------------------
 // Game class which extends the base DirectXGameCore class
@@ -104,8 +110,12 @@ private:
 	GamePadXbox* pad; 
 
 	//HUD
-	HUD* UI; 
+	//HUD* Selector;
+	HUD* Text;
+	HUD* Time; 
+	vector<HUD*> UI;
 
+	int score; 
 	//Debug Lines
 	//ID3D11Buffer* DrawDebugVB;
 	SimpleVertexShader* DrawDebugVertexShader;
@@ -115,6 +125,7 @@ private:
 	//Material 
 	Material* material;
 	Material* carMaterial;
+	Material* ballMaterial; 
 
 	// car
 	btRaycastVehicle* vehicle;
