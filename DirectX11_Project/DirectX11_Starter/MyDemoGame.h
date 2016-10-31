@@ -10,11 +10,11 @@
 #include "Lights.h"
 #include "GamePadXbox.h"
 #include "HUD.h"
+#include "DrawDebug.h"
 #include "btBulletCollisionCommon.h"
 #include "btBulletDynamicsCommon.h"
 #include "BulletCollision\Gimpact\btGImpactCollisionAlgorithm.h"
-#include "Skybox.h"
-
+#include <sstream>
 
 
 // Include run-time memory checking in debug builds, so 
@@ -23,6 +23,12 @@
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 #endif
+
+
+//Game State Machine
+static enum class GAME_STATES { MAIN_MENU, PLAYING, OPTIONS, EXIT };
+//Game State
+static GAME_STATES gameState;
 
 // --------------------------------------------------------
 // Game class which extends the base DirectXGameCore class
@@ -64,7 +70,18 @@ public:
 
 	void UpdatePhysics(float deltaTime); 
 
-	
+	float engForce = 0.0f;
+	float brakeForce = 0.0f;
+	float maxEngineForce = 2000.0f; 
+	float maxBrakeForce = 200.0f; 
+	float steeringForce = 0.0f; 
+	float steeringIncrement = 0.04f;
+	float steeringClamp = 0.3f;
+	vector<btVector3> connectionPoints; 
+
+	bool enableDebugDraw; 
+
+
 
 
 private:
@@ -79,12 +96,17 @@ private:
 	Mesh* meshOne;
 	Mesh* meshTwo;
 	Mesh* meshThree;
+	Mesh* meshFour;
 
 	////Entities - represent game objects
 
 	Entity* e1;
 	Entity* e2;
 	Entity* e3;
+	Entity* e4;
+	Entity* e5;
+	Entity* e6;
+	Entity* e7;
 	vector<Entity*> entities;
 
 	//skybox
@@ -99,13 +121,25 @@ private:
 	GamePadXbox* pad; 
 
 	//HUD
-	HUD* Selector;
-	HUD* Text; 
-	vector<HUD*> UI; 
-	
+	//HUD* Selector;
+	HUD* Text;
+	HUD* Time; 
+	vector<HUD*> UI;
+
+	int score; 
+	//Debug Lines
+	//ID3D11Buffer* DrawDebugVB;
+	SimpleVertexShader* DrawDebugVertexShader;
+	SimplePixelShader* DrawDebugPixelShader;
+	DrawDebug* drawDebug; 
 
 	//Material 
 	Material* material;
+	Material* carMaterial;
+	Material* ballMaterial; 
+
+	// car
+	btRaycastVehicle* vehicle;
 
 	//Lights
 	DirectionalLight directionalLight;

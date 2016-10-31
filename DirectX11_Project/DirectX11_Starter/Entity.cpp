@@ -47,15 +47,24 @@ void Entity::CopyTransformFromBullet()
 	XMFLOAT3 position = BTtoXM(btTrans.getOrigin());
 	setPosition(position.x, position.y, position.z);
 
-	// Copy the rotation
+	//Copy the rotation
 	//btQuaternion btRot = btTrans.getRotation();
-	//XMFLOAT4 xmRot(
-	//    btRot.getX(),
-	//    btRot.getY(),
-	//    btRot.getZ(),
-	//    btRot.getW()
-	//);
-	//myTrans.SetRotation( xmRot );
+	//float x = btRot.getX(); 
+	//float y = btRot.getY(); 
+	//float z = btRot.getZ(); 
+	//float w = btRot.getW(); 
+	//XMFLOAT4 xmRot = XMFLOAT4(x,y,z,w); 
+	//
+	//XMFLOAT4X4 newMat;
+	////XMMATRIX tempMat = XMLoadFloat4x4(&newMat); 
+	//XMVECTOR vec = XMLoadFloat4(&xmRot); 
+	//XMMATRIX mat = XMMatrixTranslationFromVector(vec); 
+	//
+
+	//XMStoreFloat4x4(&newMat, mat);
+
+
+	//setRotation( newMat );
 }
 
 // Copies our transform to Bullet's transform
@@ -72,7 +81,7 @@ void Entity::CopyTransformToBullet()
 	btTrans.setOrigin(XMtoBT(currentPos));
 
 	//// Copy the rotation
-	//XMFLOAT4 xmRot = myTrans.GetRotation();
+	//XMFLOAT4 xmRot = XMFLOAT4(rotation._11, rotation._22, rotation._33, rotation._44);
 	//btQuaternion btRot(xmRot.x, xmRot.y, xmRot.z, xmRot.w);
 	//btTrans.setRotation(btRot);
 
@@ -166,6 +175,18 @@ void Entity::setPosition(float x, float y, float z)
 		0.0f, 1.0f, 0.0f, 0,
 		0.0f, 0.0f, 1.0f, 0,
 		x, y, z, 1.0f);
+}
+
+void Entity::setRotation(XMFLOAT4X4 newRot)
+{
+	rotation = newRot; 
+	/*XMMATRIX matOne = XMLoadFloat4x4(&rotation); 
+	XMMATRIX matTwo = XMLoadFloat4x4(&newRot); 
+	XMVECTOR vec = XMQuaternionRotationMatrix(matTwo); 
+	matOne = XMMatrixIdentity(); 
+	matOne *= XMMatrixRotationRollPitchYawFromVector(vec); 
+	XMStoreFloat4x4(&rotation, matOne); */
+	//rotation = newRot;
 }
 
 
@@ -284,6 +305,8 @@ void Entity::move(XMFLOAT4 force)
 
 
 	CopyTransformToBullet(); 
+	//CopyTransformFromBullet();
+
 	// add back to physics 
 	/*btTransform trans = collider->getWorldTransform();
 	XMFLOAT4X4 currentPos = getPosition(); 
@@ -328,7 +351,6 @@ void Entity::rotate(XMFLOAT4 axis, float angle)
 	rotation._21, rotation._22 + nrotation.y, rotation._23, rotation._24,
 	rotation._31, rotation._32, rotation._33 + nrotation.z, rotation._34,
 	rotation._41, rotation._42, rotation._43, rotation._44 + nrotation.w);*/
-
 	XMMATRIX matrix = XMLoadFloat4x4(&rotation);
 	XMVECTOR rotAxis = XMLoadFloat4(&axis);
 

@@ -1,5 +1,5 @@
-﻿Build started 4/4/2016 4:48:03 AM.
-     1>Project "H:\Year 3\Spring Semester\Game Graphics Programming\Bullet Test\DirectX11_Project\DirectX11_Starter\Bullet\build\vs2010_dx11\App_CollisionInterfaceDemo.vcxproj" on node 2 (Build target(s)).
+﻿Build started 4/29/2016 3:28:01 PM.
+     1>Project "D:\DirectX11_Project\DirectX11_Project\DirectX11_Starter\Bullet\build\vs2010_dx11\App_CollisionInterfaceDemo.vcxproj" on node 3 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I..\..\src /I..\..\Demos\OpenGL /I..\..\Glut /Zi /nologo /W3 /WX- /Od /Oy- /D _CRT_SECURE_NO_WARNINGS /D _CRT_SECURE_NO_DEPRECATE /D _HAS_EXCEPTIONS=0 /D GLEW_STATIC /D _MBCS /Gm- /RTC1 /MTd /GS /Gy /fp:fast /Zc:wchar_t /Zc:forScope /Zc:inline /GR- /Fo"obj\x32\Debug\App_CollisionInterfaceDemo\\" /Fd"..\..\App_CollisionInterfaceDemo_vs2010_debug.pdb" /Gd /TP /analyze- /errorReport:prompt /MP ..\..\Demos\CollisionInterfaceDemo\CollisionInterfaceDemo.cpp ..\..\Demos\CollisionInterfaceDemo\main.cpp ..\..\Demos\CollisionInterfaceDemo\Win32CollisionInterfaceDemo.cpp
          CollisionInterfaceDemo.cpp
@@ -16,6 +16,11 @@
          obj\x32\Debug\App_CollisionInterfaceDemo\CollisionInterfaceDemo.obj
          obj\x32\Debug\App_CollisionInterfaceDemo\main.obj
          obj\x32\Debug\App_CollisionInterfaceDemo\Win32CollisionInterfaceDemo.obj
+     1>OpenGLSupport_vs2010_debug.lib(GL_Simplex1to4.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MTd_StaticDebug' in CollisionInterfaceDemo.obj
+     1>OpenGLSupport_vs2010_debug.lib(GlutStuff.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MTd_StaticDebug' in CollisionInterfaceDemo.obj
+     1>OpenGLSupport_vs2010_debug.lib(DemoApplication.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MTd_StaticDebug' in CollisionInterfaceDemo.obj
+     1>OpenGLSupport_vs2010_debug.lib(GlutDemoApplication.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MTd_StaticDebug' in CollisionInterfaceDemo.obj
+     1>OpenGLSupport_vs2010_debug.lib(GL_ShapeDrawer.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MTd_StaticDebug' in CollisionInterfaceDemo.obj
      1>BulletDynamics_vs2010_debug.lib(btRigidBody.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MTd_StaticDebug' in CollisionInterfaceDemo.obj
      1>BulletDynamics_vs2010_debug.lib(btPoint2PointConstraint.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MTd_StaticDebug' in CollisionInterfaceDemo.obj
      1>BulletDynamics_vs2010_debug.lib(btGeneric6DofConstraint.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MTd_StaticDebug' in CollisionInterfaceDemo.obj
@@ -60,114 +65,131 @@
      1>LinearMath_vs2010_debug.lib(btGeometryUtil.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MTd_StaticDebug' in CollisionInterfaceDemo.obj
      1>LinearMath_vs2010_debug.lib(btConvexHull.obj) : error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MDd_DynamicDebug' doesn't match value 'MTd_StaticDebug' in CollisionInterfaceDemo.obj
      1>LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
+     1>LinearMath_vs2010_debug.lib(btQuickprof.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>LinearMath_vs2010_debug.lib(btConvexHullComputer.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>LinearMath_vs2010_debug.lib(btGeometryUtil.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>LinearMath_vs2010_debug.lib(btConvexHull.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
+     1>BulletCollision_vs2010_debug.lib(btHashedSimplePairCache.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>BulletCollision_vs2010_debug.lib(btBoxBoxDetector.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>BulletCollision_vs2010_debug.lib(SphereTriangleDetector.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>BulletCollision_vs2010_debug.lib(btDbvt.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
-     1>LinearMath_vs2010_debug.lib(btQuickprof.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
-     1>BulletCollision_vs2010_debug.lib(btQuantizedBvh.obj) : warning LNK4217: locally defined symbol ___acrt_iob_func imported in function "public: virtual void * __thiscall btQuantizedBvh::`scalar deleting destructor'(unsigned int)" (??_GbtQuantizedBvh@@UAEPAXI@Z)
-     1>BulletCollision_vs2010_debug.lib(btOptimizedBvh.obj) : warning LNK4217: locally defined symbol ___acrt_iob_func imported in function "public: void __thiscall btOptimizedBvh::build(class btStridingMeshInterface *,bool,class btVector3 const &,class btVector3 const &)" (?build@btOptimizedBvh@@QAEXPAVbtStridingMeshInterface@@_NABVbtVector3@@2@Z)
-     1>BulletCollision_vs2010_debug.lib(btPolyhedralContactClipping.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
-     1>BulletCollision_vs2010_debug.lib(btHashedSimplePairCache.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
-     1>BulletCollision_vs2010_debug.lib(btConvexPolyhedron.obj) : warning LNK4217: locally defined symbol ___acrt_iob_func imported in function "public: void __thiscall btAlignedObjectArray<class btVector3>::clear(void)" (?clear@?$btAlignedObjectArray@VbtVector3@@@@QAEXXZ)
-     1>BulletCollision_vs2010_debug.lib(btUnionFind.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
-     1>BulletCollision_vs2010_debug.lib(btGjkEpa2.obj) : warning LNK4217: locally defined symbol ___acrt_iob_func imported in function "public: enum gjkepa2_impl::GJK::eStatus::_ __thiscall gjkepa2_impl::GJK::Evaluate(struct gjkepa2_impl::MinkowskiDiff const &,class btVector3 const &)" (?Evaluate@GJK@gjkepa2_impl@@QAE?AW4_@eStatus@12@ABUMinkowskiDiff@2@ABVbtVector3@@@Z)
      1>BulletCollision_vs2010_debug.lib(btTriangleMeshShape.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
+     1>BulletCollision_vs2010_debug.lib(btQuantizedBvh.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
+     1>BulletCollision_vs2010_debug.lib(btOptimizedBvh.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
+     1>BulletCollision_vs2010_debug.lib(btPolyhedralContactClipping.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
+     1>BulletCollision_vs2010_debug.lib(btDbvtBroadphase.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
+     1>BulletCollision_vs2010_debug.lib(btConvexPolyhedron.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
+     1>BulletCollision_vs2010_debug.lib(btUnionFind.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
+     1>BulletCollision_vs2010_debug.lib(btGjkEpa2.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
+     1>BulletCollision_vs2010_debug.lib(btBoxBoxCollisionAlgorithm.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>BulletCollision_vs2010_debug.lib(btSphereSphereCollisionAlgorithm.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>BulletCollision_vs2010_debug.lib(btSphereTriangleCollisionAlgorithm.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
-     1>BulletCollision_vs2010_debug.lib(btOverlappingPairCache.obj) : warning LNK4217: locally defined symbol ___acrt_iob_func imported in function "public: void __thiscall btAlignedObjectArray<struct btBroadphasePair>::swap(int,int)" (?swap@?$btAlignedObjectArray@UbtBroadphasePair@@@@QAEXHH@Z)
-     1>BulletCollision_vs2010_debug.lib(btDbvtBroadphase.obj) : warning LNK4217: locally defined symbol ___acrt_iob_func imported in function "public: void __thiscall btAlignedObjectArray<struct btBroadphasePair>::swap(int,int)" (?swap@?$btAlignedObjectArray@UbtBroadphasePair@@@@QAEXHH@Z)
+     1>BulletCollision_vs2010_debug.lib(btOverlappingPairCache.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
+     1>BulletCollision_vs2010_debug.lib(btConvexConcaveCollisionAlgorithm.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>BulletCollision_vs2010_debug.lib(btCompoundCollisionAlgorithm.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>BulletCollision_vs2010_debug.lib(btCompoundCompoundCollisionAlgorithm.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>BulletCollision_vs2010_debug.lib(btConvexPlaneCollisionAlgorithm.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
-     1>BulletCollision_vs2010_debug.lib(btBoxBoxCollisionAlgorithm.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
+     1>BulletCollision_vs2010_debug.lib(btRaycastCallback.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>BulletCollision_vs2010_debug.lib(btSubSimplexConvexCast.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
-     1>BulletCollision_vs2010_debug.lib(btContinuousConvexCollision.obj) : warning LNK4217: locally defined symbol ___acrt_iob_func imported in function "public: static void __cdecl btTransformUtil::integrateTransform(class btTransform const &,class btVector3 const &,class btVector3 const &,float,class btTransform &)" (?integrateTransform@btTransformUtil@@SAXABVbtTransform@@ABVbtVector3@@1MAAV2@@Z)
+     1>BulletCollision_vs2010_debug.lib(btContinuousConvexCollision.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>BulletCollision_vs2010_debug.lib(btConvexConvexAlgorithm.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
-     1>BulletCollision_vs2010_debug.lib(btConvexConcaveCollisionAlgorithm.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
+     1>BulletCollision_vs2010_debug.lib(btPersistentManifold.obj) : warning LNK4217: locally defined symbol ___acrt_iob_func imported in function _printf
      1>BulletCollision_vs2010_debug.lib(btManifoldResult.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>BulletCollision_vs2010_debug.lib(btSimulationIslandManager.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>BulletCollision_vs2010_debug.lib(btBvhTriangleMeshShape.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
-     1>BulletCollision_vs2010_debug.lib(btRaycastCallback.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
+     1>BulletCollision_vs2010_debug.lib(btVoronoiSimplexSolver.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>BulletCollision_vs2010_debug.lib(btGjkPairDetector.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>BulletCollision_vs2010_debug.lib(btShapeHull.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>BulletCollision_vs2010_debug.lib(btSphereShape.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
-     1>BulletCollision_vs2010_debug.lib(btPersistentManifold.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
+     1>BulletCollision_vs2010_debug.lib(btConvexShape.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>BulletCollision_vs2010_debug.lib(btConvexInternalShape.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>BulletCollision_vs2010_debug.lib(btPolyhedralConvexShape.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
-     1>BulletCollision_vs2010_debug.lib(btTetrahedronShape.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
-     1>BulletCollision_vs2010_debug.lib(btVoronoiSimplexSolver.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
+     1>BulletCollision_vs2010_debug.lib(btTetrahedronShape.obj) : warning LNK4217: locally defined symbol ___acrt_iob_func imported in function "public: virtual void __thiscall btConvexInternalShape::getPreferredPenetrationDirection(int,class btVector3 &)const " (?getPreferredPenetrationDirection@btConvexInternalShape@@UBEXHAAVbtVector3@@@Z)
+     1>BulletCollision_vs2010_debug.lib(btCollisionDispatcher.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>BulletCollision_vs2010_debug.lib(btCollisionWorld.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>BulletCollision_vs2010_debug.lib(btBoxShape.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>BulletCollision_vs2010_debug.lib(btAxisSweep3.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
-     1>BulletCollision_vs2010_debug.lib(btConvexShape.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
+     1>BulletDynamics_vs2010_debug.lib(btDiscreteDynamicsWorld.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>BulletDynamics_vs2010_debug.lib(btTypedConstraint.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>BulletDynamics_vs2010_debug.lib(btSequentialImpulseConstraintSolver.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>BulletDynamics_vs2010_debug.lib(btConeTwistConstraint.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
-     1>BulletCollision_vs2010_debug.lib(btCollisionDispatcher.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
-     1>BulletDynamics_vs2010_debug.lib(btRigidBody.obj) : warning LNK4217: locally defined symbol ___acrt_iob_func imported in function _printf
+     1>OpenGLSupport_vs2010_debug.lib(GL_ShapeDrawer.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
+     1>BulletDynamics_vs2010_debug.lib(btRigidBody.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>BulletDynamics_vs2010_debug.lib(btPoint2PointConstraint.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
      1>BulletDynamics_vs2010_debug.lib(btGeneric6DofConstraint.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
-     1>BulletDynamics_vs2010_debug.lib(btDiscreteDynamicsWorld.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
+     1>OpenGLSupport_vs2010_debug.lib(GL_Simplex1to4.obj) : warning LNK4217: locally defined symbol ___acrt_iob_func imported in function _printf
+     1>OpenGLSupport_vs2010_debug.lib(GLDebugDrawer.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
+     1>OpenGLSupport_vs2010_debug.lib(DemoApplication.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
+     1>OpenGLSupport_vs2010_debug.lib(GlutDemoApplication.obj) : warning LNK4049: locally defined symbol ___acrt_iob_func imported
+     1>LinearMath_vs2010_debug.lib(btQuickprof.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>LinearMath_vs2010_debug.lib(btConvexHullComputer.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>LinearMath_vs2010_debug.lib(btGeometryUtil.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>LinearMath_vs2010_debug.lib(btConvexHull.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
+     1>BulletCollision_vs2010_debug.lib(btHashedSimplePairCache.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>BulletCollision_vs2010_debug.lib(btBoxBoxDetector.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>BulletCollision_vs2010_debug.lib(SphereTriangleDetector.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
-     1>BulletCollision_vs2010_debug.lib(btDbvt.obj) : warning LNK4217: locally defined symbol ___stdio_common_vfprintf imported in function "public: __thiscall btAlignedObjectArray<struct btDbvtNode const *>::btAlignedObjectArray<struct btDbvtNode const *>(void)" (??0?$btAlignedObjectArray@PBUbtDbvtNode@@@@QAE@XZ)
-     1>LinearMath_vs2010_debug.lib(btQuickprof.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
+     1>BulletCollision_vs2010_debug.lib(btDbvt.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
+     1>BulletCollision_vs2010_debug.lib(btTriangleMeshShape.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>BulletCollision_vs2010_debug.lib(btQuantizedBvh.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>BulletCollision_vs2010_debug.lib(btOptimizedBvh.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>BulletCollision_vs2010_debug.lib(btPolyhedralContactClipping.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
-     1>BulletCollision_vs2010_debug.lib(btHashedSimplePairCache.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
+     1>BulletCollision_vs2010_debug.lib(btDbvtBroadphase.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>BulletCollision_vs2010_debug.lib(btConvexPolyhedron.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
-     1>BulletCollision_vs2010_debug.lib(btUnionFind.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
-     1>BulletCollision_vs2010_debug.lib(btGjkEpa2.obj) : warning LNK4217: locally defined symbol ___stdio_common_vfprintf imported in function "public: enum gjkepa2_impl::GJK::eStatus::_ __thiscall gjkepa2_impl::GJK::Evaluate(struct gjkepa2_impl::MinkowskiDiff const &,class btVector3 const &)" (?Evaluate@GJK@gjkepa2_impl@@QAE?AW4_@eStatus@12@ABUMinkowskiDiff@2@ABVbtVector3@@@Z)
-     1>BulletCollision_vs2010_debug.lib(btTriangleMeshShape.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
+     1>BulletCollision_vs2010_debug.lib(btUnionFind.obj) : warning LNK4217: locally defined symbol ___stdio_common_vfprintf imported in function "public: void __thiscall btAlignedObjectArray<struct btElement>::quickSort<class btUnionFindElementSortPredicate>(class btUnionFindElementSortPredicate const &)" (??$quickSort@VbtUnionFindElementSortPredicate@@@?$btAlignedObjectArray@UbtElement@@@@QAEXABVbtUnionFindElementSortPredicate@@@Z)
+     1>BulletCollision_vs2010_debug.lib(btGjkEpa2.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
+     1>BulletCollision_vs2010_debug.lib(btBoxBoxCollisionAlgorithm.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>BulletCollision_vs2010_debug.lib(btSphereSphereCollisionAlgorithm.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>BulletCollision_vs2010_debug.lib(btSphereTriangleCollisionAlgorithm.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
-     1>BulletCollision_vs2010_debug.lib(btOverlappingPairCache.obj) : warning LNK4217: locally defined symbol ___stdio_common_vfprintf imported in function "public: virtual void __thiscall btHashedOverlappingPairCache::removeOverlappingPairsContainingProxy(struct btBroadphaseProxy *,class btDispatcher *)" (?removeOverlappingPairsContainingProxy@btHashedOverlappingPairCache@@UAEXPAUbtBroadphaseProxy@@PAVbtDispatcher@@@Z)
-     1>BulletCollision_vs2010_debug.lib(btDbvtBroadphase.obj) : warning LNK4217: locally defined symbol ___stdio_common_vfprintf imported in function "public: void __thiscall btAlignedObjectArray<struct btBroadphasePair>::swap(int,int)" (?swap@?$btAlignedObjectArray@UbtBroadphasePair@@@@QAEXHH@Z)
-     1>BulletCollision_vs2010_debug.lib(btCompoundCollisionAlgorithm.obj) : warning LNK4217: locally defined symbol ___stdio_common_vfprintf imported in function "public: void __thiscall btCompoundLeafCallback::ProcessChildShape(class btCollisionShape const *,int)" (?ProcessChildShape@btCompoundLeafCallback@@QAEXPBVbtCollisionShape@@H@Z)
+     1>BulletCollision_vs2010_debug.lib(btOverlappingPairCache.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
+     1>BulletCollision_vs2010_debug.lib(btConvexConcaveCollisionAlgorithm.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
+     1>BulletCollision_vs2010_debug.lib(btCompoundCollisionAlgorithm.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>BulletCollision_vs2010_debug.lib(btCompoundCompoundCollisionAlgorithm.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>BulletCollision_vs2010_debug.lib(btConvexPlaneCollisionAlgorithm.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
-     1>BulletCollision_vs2010_debug.lib(btBoxBoxCollisionAlgorithm.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
+     1>BulletCollision_vs2010_debug.lib(btRaycastCallback.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>BulletCollision_vs2010_debug.lib(btSubSimplexConvexCast.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
-     1>BulletCollision_vs2010_debug.lib(btContinuousConvexCollision.obj) : warning LNK4217: locally defined symbol ___stdio_common_vfprintf imported in function "public: static void __cdecl btTransformUtil::integrateTransform(class btTransform const &,class btVector3 const &,class btVector3 const &,float,class btTransform &)" (?integrateTransform@btTransformUtil@@SAXABVbtTransform@@ABVbtVector3@@1MAAV2@@Z)
+     1>BulletCollision_vs2010_debug.lib(btContinuousConvexCollision.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>BulletCollision_vs2010_debug.lib(btConvexConvexAlgorithm.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
-     1>BulletCollision_vs2010_debug.lib(btConvexConcaveCollisionAlgorithm.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
+     1>BulletCollision_vs2010_debug.lib(btPersistentManifold.obj) : warning LNK4217: locally defined symbol ___stdio_common_vfprintf imported in function __vfprintf_l
      1>BulletCollision_vs2010_debug.lib(btManifoldResult.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>BulletCollision_vs2010_debug.lib(btSimulationIslandManager.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>BulletCollision_vs2010_debug.lib(btBvhTriangleMeshShape.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
-     1>BulletCollision_vs2010_debug.lib(btRaycastCallback.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
+     1>BulletCollision_vs2010_debug.lib(btVoronoiSimplexSolver.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>BulletCollision_vs2010_debug.lib(btGjkPairDetector.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>BulletCollision_vs2010_debug.lib(btShapeHull.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>BulletCollision_vs2010_debug.lib(btSphereShape.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
-     1>BulletCollision_vs2010_debug.lib(btPersistentManifold.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
+     1>BulletCollision_vs2010_debug.lib(btConvexShape.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>BulletCollision_vs2010_debug.lib(btConvexInternalShape.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>BulletCollision_vs2010_debug.lib(btPolyhedralConvexShape.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
-     1>BulletCollision_vs2010_debug.lib(btTetrahedronShape.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
-     1>BulletCollision_vs2010_debug.lib(btVoronoiSimplexSolver.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
+     1>BulletCollision_vs2010_debug.lib(btTetrahedronShape.obj) : warning LNK4217: locally defined symbol ___stdio_common_vfprintf imported in function "public: static void __cdecl btBU_Simplex1to4::operator delete(void *)" (??3btBU_Simplex1to4@@SAXPAX@Z)
+     1>BulletCollision_vs2010_debug.lib(btCollisionDispatcher.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>BulletCollision_vs2010_debug.lib(btCollisionWorld.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>BulletCollision_vs2010_debug.lib(btBoxShape.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>BulletCollision_vs2010_debug.lib(btAxisSweep3.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
-     1>BulletCollision_vs2010_debug.lib(btConvexShape.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
+     1>BulletDynamics_vs2010_debug.lib(btDiscreteDynamicsWorld.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>BulletDynamics_vs2010_debug.lib(btTypedConstraint.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>BulletDynamics_vs2010_debug.lib(btSequentialImpulseConstraintSolver.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>BulletDynamics_vs2010_debug.lib(btConeTwistConstraint.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
-     1>BulletCollision_vs2010_debug.lib(btCollisionDispatcher.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
-     1>BulletDynamics_vs2010_debug.lib(btRigidBody.obj) : warning LNK4217: locally defined symbol ___stdio_common_vfprintf imported in function __vfprintf_l
+     1>OpenGLSupport_vs2010_debug.lib(GL_ShapeDrawer.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
+     1>BulletDynamics_vs2010_debug.lib(btRigidBody.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
      1>BulletDynamics_vs2010_debug.lib(btPoint2PointConstraint.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
-     1>BulletDynamics_vs2010_debug.lib(btGeneric6DofConstraint.obj) : warning LNK4217: locally defined symbol ___stdio_common_vfprintf imported in function "public: __thiscall btGeneric6DofConstraint::btGeneric6DofConstraint(class btRigidBody &,class btRigidBody &,class btTransform const &,class btTransform const &,bool)" (??0btGeneric6DofConstraint@@QAE@AAVbtRigidBody@@0ABVbtTransform@@1_N@Z)
-     1>BulletDynamics_vs2010_debug.lib(btDiscreteDynamicsWorld.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
+     1>BulletDynamics_vs2010_debug.lib(btGeneric6DofConstraint.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
+     1>OpenGLSupport_vs2010_debug.lib(GL_Simplex1to4.obj) : warning LNK4217: locally defined symbol ___stdio_common_vfprintf imported in function __vfprintf_l
+     1>OpenGLSupport_vs2010_debug.lib(GLDebugDrawer.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
+     1>OpenGLSupport_vs2010_debug.lib(DemoApplication.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
+     1>OpenGLSupport_vs2010_debug.lib(GlutDemoApplication.obj) : warning LNK4049: locally defined symbol ___stdio_common_vfprintf imported
+     1>OpenGLSupport_vs2010_debug.lib(DemoApplication.obj) : warning LNK4217: locally defined symbol _exit imported in function "public: virtual void __thiscall DemoApplication::keyboardCallback(unsigned char,int,int)" (?keyboardCallback@DemoApplication@@UAEXEHH@Z)
+     1>OpenGLSupport_vs2010_debug.lib(DemoApplication.obj) : warning LNK4217: locally defined symbol _fclose imported in function "public: virtual void __thiscall DemoApplication::keyboardCallback(unsigned char,int,int)" (?keyboardCallback@DemoApplication@@UAEXEHH@Z)
+     1>OpenGLSupport_vs2010_debug.lib(DemoApplication.obj) : warning LNK4217: locally defined symbol ___stdio_common_vsprintf imported in function __vsnprintf_l
+     1>OpenGLSupport_vs2010_debug.lib(GL_ShapeDrawer.obj) : warning LNK4049: locally defined symbol ___stdio_common_vsprintf imported
      1>LinearMath_vs2010_debug.lib(btAlignedAllocator.obj) : warning LNK4217: locally defined symbol _free imported in function "void __cdecl btFreeDefault(void *)" (?btFreeDefault@@YAXPAX@Z)
      1>LinearMath_vs2010_debug.lib(btAlignedAllocator.obj) : warning LNK4217: locally defined symbol _malloc imported in function "void * __cdecl btAllocDefault(unsigned int)" (?btAllocDefault@@YAPAXI@Z)
+     1>OpenGLSupport_vs2010_debug.lib(DemoApplication.obj) : error LNK2019: unresolved external symbol __imp__strncmp referenced in function "protected: void __thiscall btDefaultSerializer::initDNA(char const *,int)" (?initDNA@btDefaultSerializer@@IAEXPBDH@Z)
+     1>OpenGLSupport_vs2010_debug.lib(DemoApplication.obj) : error LNK2019: unresolved external symbol __imp__fopen referenced in function "public: virtual void __thiscall DemoApplication::keyboardCallback(unsigned char,int,int)" (?keyboardCallback@DemoApplication@@UAEXEHH@Z)
+     1>OpenGLSupport_vs2010_debug.lib(DemoApplication.obj) : error LNK2019: unresolved external symbol __imp__fwrite referenced in function "public: virtual void __thiscall DemoApplication::keyboardCallback(unsigned char,int,int)" (?keyboardCallback@DemoApplication@@UAEXEHH@Z)
      1>MSVCRTD.lib(_chandler4gs_.obj) : error LNK2019: unresolved external symbol __except_handler4_common referenced in function __except_handler4
-     1>..\..\App_CollisionInterfaceDemo_vs2010_debug.exe : fatal error LNK1120: 1 unresolved externals
-     1>Done Building Project "H:\Year 3\Spring Semester\Game Graphics Programming\Bullet Test\DirectX11_Project\DirectX11_Starter\Bullet\build\vs2010_dx11\App_CollisionInterfaceDemo.vcxproj" (Build target(s)) -- FAILED.
+     1>..\..\App_CollisionInterfaceDemo_vs2010_debug.exe : fatal error LNK1120: 4 unresolved externals
+     1>Done Building Project "D:\DirectX11_Project\DirectX11_Project\DirectX11_Starter\Bullet\build\vs2010_dx11\App_CollisionInterfaceDemo.vcxproj" (Build target(s)) -- FAILED.
 
 Build FAILED.
 
-Time Elapsed 00:00:04.77
+Time Elapsed 00:00:12.70

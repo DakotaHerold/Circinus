@@ -31,6 +31,7 @@ public:
 	vector<btVector3> points;
 	btTriangleMesh* tempMesh;
 	btGImpactMeshShape* triMesh;
+	btConvexShape* conMesh;
 private:
 	ID3D11Buffer* vertexBuffer;
 	ID3D11Buffer* indexBuffer;

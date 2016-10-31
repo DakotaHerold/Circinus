@@ -190,6 +190,8 @@ Mesh::Mesh(char * filename, ID3D11Device * device)
 		
 	}
 	triMesh = new btGImpactMeshShape(tempMesh);
+	conMesh = new btConvexTriangleMeshShape(tempMesh);
+
 	// - At this point, "verts" is a vector of Vertex structs, and can be used
 	//    directly to create a vertex buffer:  &verts[0] is the first vert
 	//

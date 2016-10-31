@@ -25,7 +25,7 @@ public:
 	XMFLOAT4X4 getWorldMatrix();
 
 	void setPosition(float x, float y, float z);
-	void setRotation(XMFLOAT4 newRot);
+	void setRotation(XMFLOAT4X4 newRot);
 	void setScale(XMFLOAT3 newScale);
 	void setWorldMatrix(XMFLOAT4X4 newWorldMatrix);
 

@@ -1,0 +1,952 @@
+newmtl Mclaren_F1_LMSG
+illum 4
+Kd 0.20 0.21 0.22
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.13 0.13 0.13
+Ns 1.53
+newmtl Mclaren_F1_LMSG1
+illum 4
+Kd 0.71 0.04 0.04
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.13 0.13 0.13
+Ns 1.53
+newmtl Mclaren_F1_LMSG2
+illum 4
+Kd 0.20 0.20 0.20
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.10 0.10 0.10
+Ns 1.53
+newmtl Mclaren_F1_LMSG3
+illum 4
+Kd 0.02 0.02 0.02
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.10 0.10 0.10
+Ns 1.53
+newmtl Mclaren_F1_LMSG4
+illum 4
+Kd 0.12 0.12 0.12
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.20 0.20 0.20
+Ns 1.53
+newmtl Mclaren_F1_LMSG5
+illum 4
+Kd 0.24 0.24 0.25
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.05 0.05 0.05
+Ns 1.53
+newmtl Mclaren_F1_LMSG6
+illum 4
+Kd 0.90 0.51 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.03 0.03 0.03
+Ns 0.00
+newmtl Mclaren_F1_LMSG7
+illum 4
+Kd 0.20 0.20 0.21
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.03 0.03 0.03
+Ns 0.00
+newmtl Mclaren_F1_LMSG8
+illum 4
+Kd 0.20 0.20 0.21
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.20 0.20 0.20
+Ns 5.65
+newmtl Mclaren_F1_LMSG9
+illum 4
+Kd 0.73 0.76 0.68
+Ka 0.00 0.00 0.00
+Tf 0.45 0.43 0.49
+Ni 1.00
+Ks 0.15 0.15 0.15
+Ns 8.20
+newmtl Mclaren_F1_LMSG10
+illum 4
+Kd 0.12 0.14 0.16
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.15 0.15 0.15
+Ns 10.94
+newmtl Mclaren_F1_LMSG11
+illum 4
+Kd 0.55 0.56 0.57
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.05 0.05 0.05
+Ns 1.53
+newmtl Mclaren_F1_LMSG12
+illum 4
+Kd 0.20 0.20 0.22
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.20 0.20 0.20
+Ns 10.94
+newmtl Mclaren_F1_LMSG13
+illum 4
+Kd 0.78 0.80 0.82
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.45 0.45 0.45
+Ns 18.20
+newmtl Mclaren_F1_LMSG14
+illum 4
+Kd 0.86 0.86 0.86
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.10 0.10 0.10
+Ns 5.65
+newmtl Mclaren_F1_LMSG15
+illum 4
+Kd 0.16 0.16 0.18
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.10 0.10 0.10
+Ns 26.82
+newmtl Mclaren_F1_LMSG16
+illum 4
+Kd 0.78 0.78 0.78
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.15 0.15 0.15
+Ns 1.53
+newmtl Mclaren_F1_LMSG17
+illum 4
+Kd 0.78 0.80 0.80
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.30 0.30 0.30
+Ns 18.20
+newmtl Mclaren_F1_LMSG18
+illum 4
+Kd 0.16 0.16 0.16
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.20 0.20 0.20
+Ns 5.65
+newmtl Mclaren_F1_LMSG19
+illum 4
+Kd 0.75 0.78 0.82
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.10 0.10 0.10
+Ns 5.65
+newmtl Mclaren_F1_LMSG20
+illum 4
+Kd 0.14 0.15 0.16
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.20 0.20 0.20
+Ns 10.94
+newmtl Mclaren_F1_LMSG21
+illum 4
+Kd 0.86 0.71 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.20 0.20 0.20
+Ns 10.94
+newmtl Mclaren_F1_LMSG22
+illum 4
+Kd 0.47 0.48 0.49
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.03 0.03 0.03
+Ns 0.00
+newmtl Mclaren_F1_LMSG23
+illum 4
+Kd 0.47 0.48 0.49
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.03 0.03 0.03
+Ns 0.00
+newmtl Mclaren_F1_LMSG24
+illum 4
+Kd 0.78 0.80 0.80
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.30 0.30 0.30
+Ns 1.53
+newmtl Mclaren_F1_LMSG33
+illum 4
+Kd 0.78 0.80 0.80
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.25 0.25 0.25
+Ns 5.65
+newmtl Mclaren_F1_LMSG35
+illum 4
+Kd 0.78 0.80 0.80
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.25 0.25 0.25
+Ns 5.65
+newmtl Mclaren_F1_LMSG36
+illum 4
+Kd 0.78 0.80 0.80
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.25 0.25 0.25
+Ns 5.65
+newmtl Mclaren_F1_LMSG37
+illum 4
+Kd 0.78 0.80 0.80
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.25 0.25 0.25
+Ns 5.65
+newmtl Mclaren_F1_LMSG38
+illum 4
+Kd 0.47 0.48 0.49
+Ka 0.00 0.00 0.00
+Tf 0.86 0.86 0.85
+Ni 1.00
+Ks 0.01 0.01 0.01
+Ns 0.00
+newmtl Mclaren_F1_LMSG39
+illum 4
+Kd 0.35 0.36 0.36
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.01 0.01 0.01
+Ns 0.00
+newmtl Mclaren_F1_LMSG40
+illum 4
+Kd 0.94 0.63 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.25 0.25 0.25
+Ns 5.65
+newmtl Mclaren_F1_LMSG41
+illum 4
+Kd 0.12 0.13 0.14
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.20 0.20 0.20
+Ns 1.53
+newmtl Mclaren_F1_LMSG42
+illum 4
+Kd 0.12 0.13 0.14
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.20 0.20 0.20
+Ns 1.53
+newmtl Mclaren_F1_LMSG43
+illum 4
+Kd 0.94 0.63 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.25 0.25 0.25
+Ns 0.75
+newmtl Mclaren_F1_LMSG44
+illum 4
+Kd 0.94 0.63 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.25 0.25 0.25
+Ns 0.75
+newmtl Mclaren_F1_LMSG45
+illum 4
+Kd 0.14 0.14 0.15
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.05 0.05 0.05
+Ns 0.00
+newmtl Mclaren_F1_LMSG50
+illum 4
+Kd 0.24 0.24 0.25
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.20 0.20 0.20
+Ns 1.53
+newmtl Mclaren_F1_LMSG51
+illum 4
+Kd 0.94 0.51 0.08
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.25 0.25 0.25
+Ns 5.65
+newmtl Mclaren_F1_LMSG52
+illum 4
+Kd 0.20 0.20 0.22
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.03 0.03 0.03
+Ns 1.53
+newmtl Mclaren_F1_LMSG53
+illum 4
+Kd 0.12 0.13 0.14
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.20 0.20 0.20
+Ns 1.53
+newmtl Mclaren_F1_LMSG54
+illum 4
+Kd 0.12 0.13 0.14
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.20 0.20 0.20
+Ns 1.53
+newmtl Mclaren_F1_LMSG55
+illum 4
+Kd 0.73 0.76 0.68
+Ka 0.00 0.00 0.00
+Tf 0.49 0.47 0.52
+Ni 1.00
+Ks 0.15 0.15 0.15
+Ns 18.20
+newmtl Mclaren_F1_LMSG56
+illum 4
+Kd 0.24 0.24 0.25
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.15 0.15 0.15
+Ns 1.53
+newmtl Mclaren_F1_LMSG57
+illum 4
+Kd 0.55 0.56 0.57
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.03 0.03 0.03
+Ns 1.53
+newmtl Mclaren_F1_LMSG58
+illum 4
+Kd 0.39 0.23 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.15 0.15 0.15
+Ns 1.53
+newmtl Mclaren_F1_LMSG59
+illum 4
+Kd 0.59 0.60 0.61
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.10 0.10 0.10
+Ns 26.82
+newmtl Mclaren_F1_LMSG60
+illum 4
+Kd 0.55 0.40 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.20 0.20 0.20
+Ns 1.53
+newmtl Mclaren_F1_LMSG61
+illum 4
+Kd 0.78 0.53 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 5.65
+newmtl Mclaren_F1_LMSG64
+illum 4
+Kd 0.12 0.12 0.12
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.10 0.10 0.10
+Ns 5.65
+newmtl Mclaren_F1_LMSG65
+illum 4
+Kd 0.20 0.20 0.22
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.03 0.03 0.03
+Ns 1.53
+newmtl Mclaren_F1_LMSG66
+illum 4
+Kd 0.08 0.08 0.08
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.15 0.15 0.15
+Ns 5.65
+newmtl Mclaren_F1_LMSG67
+illum 4
+Kd 0.94 0.63 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.25 0.25 0.25
+Ns 0.75
+newmtl Mclaren_F1_LMSG68
+illum 4
+Kd 0.94 0.63 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.25 0.25 0.25
+Ns 0.75
+newmtl Mclaren_F1_LMSG69
+illum 4
+Kd 0.20 0.22 0.24
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.20 0.20 0.20
+Ns 5.65
+newmtl Mclaren_F1_LMSG70
+illum 4
+Kd 0.29 0.30 0.30
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.13 0.13 0.13
+Ns 5.65
+newmtl Mclaren_F1_LMSG71
+illum 4
+Kd 0.24 0.24 0.25
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.15 0.15 0.15
+Ns 1.53
+newmtl Mclaren_F1_LMSG72
+illum 4
+Kd 0.12 0.12 0.12
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.20 0.20 0.20
+Ns 5.65
+newmtl Mclaren_F1_LMSG73
+illum 4
+Kd 0.16 0.16 0.18
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.15 0.15 0.15
+Ns 8.20
+newmtl Mclaren_F1_LMSG74
+illum 4
+Kd 0.12 0.12 0.12
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.20 0.20 0.20
+Ns 5.65
+newmtl Mclaren_F1_LMSG75
+illum 4
+Kd 0.47 0.48 0.49
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.03 0.03 0.03
+Ns 0.00
+newmtl Mclaren_F1_LMSG76
+illum 4
+Kd 0.31 0.31 0.31
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.25 0.25 0.25
+Ns 1.53
+newmtl Mclaren_F1_LMSG77
+illum 4
+Kd 0.55 0.56 0.57
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.05 0.05 0.05
+Ns 1.53
+newmtl Mclaren_F1_LMSG78
+illum 4
+Kd 0.47 0.48 0.49
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.01 0.01 0.01
+Ns 0.00
+newmtl Mclaren_F1_LMSG79
+illum 4
+Kd 0.55 0.56 0.57
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.05 0.05 0.05
+Ns 1.53
+newmtl Mclaren_F1_LMSG82
+illum 4
+Kd 0.08 0.08 0.08
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.15 0.15 0.15
+Ns 5.65
+newmtl Mclaren_F1_LMSG83
+illum 4
+Kd 0.78 0.39 0.00
+Ka 0.00 0.00 0.00
+Tf 0.76 0.88 1.00
+Ni 1.00
+Ks 0.43 0.43 0.43
+Ns 1.53
+newmtl Mclaren_F1_LMSG84
+illum 4
+Kd 0.78 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 0.76 1.00 1.00
+Ni 1.00
+Ks 0.43 0.43 0.43
+Ns 1.53
+newmtl Mclaren_F1_LMSG85
+illum 4
+Kd 0.43 0.44 0.44
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.03 0.03 0.03
+Ns 10.94
+newmtl Mclaren_F1_LMSG86
+illum 4
+Kd 0.35 0.36 0.36
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.03 0.03 0.03
+Ns 10.94
+newmtl Mclaren_F1_LMSG87
+illum 4
+Kd 0.63 0.63 0.63
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.08 0.08 0.08
+Ns 10.94
+newmtl Mclaren_F1_LMSG88
+illum 4
+Kd 0.20 0.22 0.24
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 8.20
+newmtl Mclaren_F1_LMSG89
+illum 4
+Kd 0.20 0.22 0.24
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 8.20
+newmtl Mclaren_F1_LMSG90
+illum 4
+Kd 0.16 0.16 0.17
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.30 0.30 0.30
+Ns 8.20
+newmtl Mclaren_F1_LMSG91
+illum 4
+Kd 0.04 0.04 0.04
+Ka 0.00 0.00 0.00
+Tf 0.98 0.98 0.98
+Ni 1.00
+Ks 0.05 0.05 0.05
+Ns 1.53
+newmtl Mclaren_F1_LMSG92
+illum 4
+Kd 0.04 0.04 0.04
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.20 0.20 0.20
+Ns 1.53
+newmtl Mclaren_F1_LMSG93
+illum 4
+Kd 0.16 0.16 0.16
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.20 0.20 0.20
+Ns 1.53
+newmtl Mclaren_F1_LMSG94
+illum 4
+Kd 0.20 0.20 0.21
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.08 0.08 0.08
+Ns 1.53
+newmtl Mclaren_F1_LMSG95
+illum 4
+Kd 0.55 0.56 0.57
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.05 0.05 0.05
+Ns 1.53
+newmtl Mclaren_F1_LMSG96
+illum 4
+Kd 0.39 0.40 0.41
+Ka 0.00 0.00 0.00
+Tf 0.88 0.88 0.88
+Ni 1.00
+Ks 0.03 0.03 0.03
+Ns 0.00
+newmtl Mclaren_F1_LMSG97
+illum 4
+Kd 0.35 0.36 0.36
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.01 0.01 0.01
+Ns 0.00
+newmtl Mclaren_F1_LMSG98
+illum 4
+Kd 0.31 0.32 0.33
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.05 0.05 0.05
+Ns 1.53
+newmtl Mclaren_F1_LMSG99
+illum 4
+Kd 0.24 0.25 0.25
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.05 0.05 0.05
+Ns 1.53
+newmtl Mclaren_F1_LMSG100
+illum 4
+Kd 0.78 0.80 0.80
+Ka 0.00 0.00 0.00
+Tf 0.45 0.44 0.44
+Ni 1.00
+Ks 0.15 0.15 0.15
+Ns 18.20
+newmtl Mclaren_F1_LMSG101
+illum 4
+Kd 0.14 0.14 0.15
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.15 0.15 0.15
+Ns 10.94
+newmtl Mclaren_F1_LMSG102
+illum 4
+Kd 0.29 0.29 0.29
+Ka 0.00 0.00 0.00
+Tf 0.99 0.99 0.99
+Ni 1.00
+Ks 0.20 0.20 0.20
+Ns 3.49
+newmtl Mclaren_F1_LMSG103
+illum 4
+Kd 0.90 0.51 0.00
+Ka 0.00 0.00 0.00
+Tf 0.82 0.90 1.00
+Ni 1.00
+Ks 0.30 0.30 0.30
+Ns 1.53
+newmtl Mclaren_F1_LMSG104
+illum 4
+Kd 0.86 0.86 0.86
+Ka 0.00 0.00 0.00
+Tf 0.83 0.83 0.83
+Ni 1.00
+Ks 0.10 0.10 0.10
+Ns 1.53
+newmtl Mclaren_F1_LMSG105
+illum 4
+Kd 0.24 0.24 0.25
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.05 0.05 0.05
+Ns 1.53
+newmtl Mclaren_F1_LMSG106
+illum 4
+Kd 0.24 0.24 0.25
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.03 0.03 0.03
+Ns 0.00
+newmtl Mclaren_F1_LMSG107
+illum 4
+Kd 0.27 0.28 0.29
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.03 0.03 0.03
+Ns 0.00
+newmtl Mclaren_F1_LMSG108
+illum 4
+Kd 0.78 0.80 0.80
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 1.53
+newmtl Mclaren_F1_LMSG111
+illum 4
+Kd 0.08 0.08 0.08
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.15 0.15 0.15
+Ns 5.65
+newmtl Mclaren_F1_LMSG112
+illum 4
+Kd 0.78 0.80 0.80
+Ka 0.00 0.00 0.00
+Tf 0.23 0.22 0.21
+Ni 1.00
+Ks 0.30 0.30 0.30
+Ns 3.49
+newmtl Mclaren_F1_LMSG113
+illum 4
+Kd 0.20 0.20 0.20
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.15 0.15 0.15
+Ns 1.53
+newmtl Mclaren_F1_LMSG114
+illum 4
+Kd 0.78 0.78 0.78
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.15 0.15 0.15
+Ns 1.53
+newmtl Mclaren_F1_LMSG115
+illum 4
+Kd 0.12 0.12 0.12
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.10 0.10 0.10
+Ns 0.16
+newmtl Mclaren_F1_LMSG116
+illum 4
+Kd 0.12 0.12 0.12
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.20 0.20 0.20
+Ns 5.65
+newmtl Mclaren_F1_LMSG117
+illum 4
+Kd 0.78 0.80 0.80
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.25 0.25 0.25
+Ns 5.65
+newmtl Mclaren_F1_LMSG118
+illum 4
+Kd 0.20 0.20 0.21
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.15 0.15 0.15
+Ns 1.53
+newmtl Mclaren_F1_LMSG119
+illum 4
+Kd 0.78 0.78 0.78
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.20 0.20 0.20
+Ns 1.53
+newmtl Mclaren_F1_LMSG153
+illum 4
+Kd 0.18 0.18 0.18
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.08 0.08 0.08
+Ns 10.94
+newmtl Mclaren_F1_LMSG155
+illum 4
+Kd 0.20 0.20 0.20
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.10 0.10 0.10
+Ns 5.65
+newmtl Mclaren_F1_LMSG157
+illum 4
+Kd 0.78 0.80 0.86
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.43 0.43 0.43
+Ns 26.82
+newmtl Mclaren_F1_LMSG159
+illum 4
+Kd 0.14 0.14 0.15
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.08 0.08 0.08
+Ns 10.94
+newmtl Mclaren_F1_LMSG161
+illum 4
+Kd 0.22 0.20 0.20
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.13 0.13 0.13
+Ns 5.65
+newmtl Mclaren_F1_LMSG163
+illum 4
+Kd 0.94 0.63 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.20 0.20 0.20
+Ns 10.94
+newmtl Mclaren_F1_LMSG177
+illum 4
+Kd 0.16 0.16 0.18
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 3.49
+newmtl Mclaren_F1_LMSG183
+illum 4
+Kd 0.18 0.18 0.18
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.08 0.08 0.08
+Ns 1.53
+newmtl Mclaren_F1_LMSG185
+illum 4
+Kd 0.59 0.60 0.60
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.30 0.30 0.30
+Ns 1.53
+newmtl Mclaren_F1_LMSG187
+illum 4
+Kd 0.18 0.18 0.18
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.10 0.10 0.10
+Ns 5.65
+newmtl Mclaren_F1_LMSG194
+illum 4
+Kd 0.20 0.20 0.22
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.20 0.20 0.20
+Ns 1.53
+newmtl Mclaren_F1_LMSG197
+illum 4
+Kd 0.78 0.80 0.86
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.43 0.43 0.43
+Ns 5.65
+newmtl Mclaren_F1_LMSG199
+illum 4
+Kd 0.78 0.80 0.86
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.43 0.43 0.43
+Ns 5.65
+newmtl Mclaren_F1_LMSG203
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 5.65
+newmtl Mclaren_F1_LMSG205
+illum 4
+Kd 0.20 0.20 0.22
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.20 0.20 0.20
+Ns 1.53
+newmtl Mclaren_F1_LMSG233
+illum 4
+Kd 0.04 0.04 0.04
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.20 0.20 0.20
+Ns 1.53
+newmtl Mclaren_F1_LMSG235
+illum 4
+Kd 0.04 0.04 0.04
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.20 0.20 0.20
+Ns 1.53
+newmtl Mclaren_F1_LMSG248
+illum 4
+Kd 0.12 0.12 0.12
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.10 0.10 0.10
+Ns 26.82
