@@ -223,3 +223,9 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+
+# Misc 
+.cso 
+DirectX11_Project/Release/*
+DirectX11_Project/packages/*
+DirectX11_Project/.vs/*
