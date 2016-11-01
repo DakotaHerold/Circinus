@@ -26,7 +26,7 @@
 #include "btBulletCollisionCommon.h"
 #include "btBulletDynamicsCommon.h"
 #include "BulletCollision\Gimpact\btGImpactCollisionAlgorithm.h"
-#include "Skybox.h"
+//#include "Skybox.h"
 //#include "Entity.h"
 
 // For the DirectX Math library
@@ -609,7 +609,7 @@ void MyDemoGame::CreateGeometry()
 
 	Mesh* skyCube = new Mesh("Models/cube.obj", device);
 	Material* skyMat = new Material(vertexShader, pixelShader, device, deviceContext, L"Textures/sky.dds", true);
-	skybox = new Skybox(skyCube, skyMat, cam);
+	//skybox = new Skybox(skyCube, skyMat, cam);
 
 
 	//e2->move(XMFLOAT4(0, 5, 0, 0)); 
