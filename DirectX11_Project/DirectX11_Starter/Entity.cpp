@@ -1,6 +1,6 @@
 
 #include "Entity.h"
-#include "MyDemoGame.h"
+#include "Main.h"
 
 
 
@@ -98,7 +98,7 @@ Entity::Entity(Mesh * inputMesh, Material* inputMaterial, btCollisionShape* coll
 	collider = colliderTemp;
 	//collider->setCcdMotionThreshold(1);
 	//collider->setCcdSweptSphereRadius(0.2f); 
-	//MyDemoGame::dynamicsWorld->addRigidBody(colliderTemp);
+	//Main::dynamicsWorld->addRigidBody(colliderTemp);
 
 	//Find position
 	btTransform trans; 

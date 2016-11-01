@@ -21,7 +21,7 @@
 //
 // ----------------------------------------------------------------------------
 
-#include "MyDemoGame.h"
+#include "Main.h"
 #include "Vertex.h"
 #include "btBulletCollisionCommon.h"
 #include "btBulletDynamicsCommon.h"
@@ -34,14 +34,14 @@ using namespace DirectX;
 
 
 
-btBroadphaseInterface* MyDemoGame::broadphase = nullptr;
+btBroadphaseInterface* Main::broadphase = nullptr;
 
-btDefaultCollisionConfiguration* MyDemoGame::collisionConfiguration = nullptr;
-btCollisionDispatcher* MyDemoGame::dispatcher = nullptr;
+btDefaultCollisionConfiguration* Main::collisionConfiguration = nullptr;
+btCollisionDispatcher* Main::dispatcher = nullptr;
 
-btSequentialImpulseConstraintSolver* MyDemoGame::solver = nullptr;
+btSequentialImpulseConstraintSolver* Main::solver = nullptr;
 
-btDiscreteDynamicsWorld* MyDemoGame::dynamicsWorld = nullptr;
+btDiscreteDynamicsWorld* Main::dynamicsWorld = nullptr;
 
 
 
@@ -62,7 +62,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 #endif
 
 	// Create the game object.
-	MyDemoGame game(hInstance);
+	Main game(hInstance);
 
 	// This is where we'll create the window, initialize DirectX, 
 	// set up geometry and shaders, etc.
@@ -80,7 +80,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 // Base class constructor will set up all of the underlying
 // fields, and then we can overwrite any that we'd like
 // --------------------------------------------------------
-MyDemoGame::MyDemoGame(HINSTANCE hInstance)
+Main::Main(HINSTANCE hInstance)
 	: DirectXGameCore(hInstance)
 {
 	// Set up a custom caption for the game window.
@@ -145,7 +145,7 @@ MyDemoGame::MyDemoGame(HINSTANCE hInstance)
 // - When you make new DX resources, you need to release them here
 // - If you don't, you get a lot of scary looking messages in Visual Studio
 // --------------------------------------------------------
-MyDemoGame::~MyDemoGame()
+Main::~Main()
 {
 	// Release any D3D stuff that's still hanging out
 	ReleaseMacro(vertexBuffer);
@@ -170,17 +170,17 @@ MyDemoGame::~MyDemoGame()
 	//Delete Entities
 	for (unsigned int i = 0; i < entities.size(); i++)
 	{
-		MyDemoGame::dynamicsWorld->removeRigidBody(entities[i]->collider);
+		Main::dynamicsWorld->removeRigidBody(entities[i]->collider);
 		entities[i] = nullptr; 
 		delete entities[i];
 	}
 
 	// Delete Physics World
-	delete MyDemoGame::solver;
-	delete MyDemoGame::collisionConfiguration;
-	delete MyDemoGame::dispatcher;
-	delete MyDemoGame::broadphase;
-	delete MyDemoGame::dynamicsWorld;
+	delete Main::solver;
+	delete Main::collisionConfiguration;
+	delete Main::dispatcher;
+	delete Main::broadphase;
+	delete Main::dynamicsWorld;
 	
 	//Delete HUD
 	for (unsigned int i = 0; i < UI.size(); i++)
@@ -209,7 +209,7 @@ MyDemoGame::~MyDemoGame()
 // Initializes the base class (including the window and D3D),
 // sets up our geometry and loads the shaders (among other things)
 // --------------------------------------------------------
-bool MyDemoGame::Init()
+bool Main::Init()
 {
 	// Call the base class's Init() method to create the window,
 	// initialize DirectX, etc.
@@ -275,13 +275,13 @@ bool MyDemoGame::Init()
 }
 
 
-void MyDemoGame::UpdatePhysics(float deltaTime)
+void Main::UpdatePhysics(float deltaTime)
 {
 
 	
 	// Update Physics 
 	
-	MyDemoGame::dynamicsWorld->stepSimulation(deltaTime, 10);
+	Main::dynamicsWorld->stepSimulation(deltaTime, 10);
 
 	for (int i = 0; i < entities.size(); i++)
 	{
@@ -331,7 +331,7 @@ void MyDemoGame::UpdatePhysics(float deltaTime)
 // - These simple shaders provide helpful methods for sending
 //   data to individual variables on the GPU
 // --------------------------------------------------------
-void MyDemoGame::LoadShaders()
+void Main::LoadShaders()
 {
 	vertexShader = new SimpleVertexShader(device, deviceContext);
 	vertexShader->LoadShaderFile(L"VertexShader.cso");
@@ -351,7 +351,7 @@ void MyDemoGame::LoadShaders()
 // --------------------------------------------------------
 // Creates the geometry we're going to draw - a single triangle for now
 // --------------------------------------------------------
-void MyDemoGame::CreateGeometry()
+void Main::CreateGeometry()
 {
 	//	Generic UVs
 	XMFLOAT3 normal = XMFLOAT3(0, 0, -1);
@@ -646,7 +646,7 @@ void MyDemoGame::CreateGeometry()
 // Initializes the matrices necessary to represent our geometry's 
 // transformations and our 3D camera
 // --------------------------------------------------------
-void MyDemoGame::CreateMatrices()
+void Main::CreateMatrices()
 {
 	// Set up world matrix
 	// - In an actual game, each object will need one of these and they should
@@ -689,7 +689,7 @@ void MyDemoGame::CreateMatrices()
 // Handles resizing DirectX "stuff" to match the (usually) new
 // window size and updating our projection matrix to match
 // --------------------------------------------------------
-void MyDemoGame::OnResize()
+void Main::OnResize()
 {
 	// Handle base-level DX resize stuff
 	DirectXGameCore::OnResize();
@@ -704,7 +704,7 @@ void MyDemoGame::OnResize()
 // Update your game here - take input, move objects, etc.
 // --------------------------------------------------------
 float x = 0;
-void MyDemoGame::UpdateScene(float deltaTime, float totalTime)
+void Main::UpdateScene(float deltaTime, float totalTime)
 {
 	//Check if Exiting Game
 	if (gameState == GAME_STATES::EXIT)
@@ -929,7 +929,7 @@ void MyDemoGame::UpdateScene(float deltaTime, float totalTime)
 // --------------------------------------------------------
 // Clear the screen, redraw everything, present to the user
 // --------------------------------------------------------
-void MyDemoGame::DrawScene(float deltaTime, float totalTime)
+void Main::DrawScene(float deltaTime, float totalTime)
 {
 	// Background color (Cornflower Blue in this case) for clearing
 	const float color[4] = { 0.4f, 0.6f, 0.75f, 0.0f };
@@ -1030,7 +1030,7 @@ void MyDemoGame::DrawScene(float deltaTime, float totalTime)
 //
 // Feel free to add code to this method
 // --------------------------------------------------------
-void MyDemoGame::OnMouseDown(WPARAM btnState, int x, int y)
+void Main::OnMouseDown(WPARAM btnState, int x, int y)
 {
 	// Save the previous mouse position, so we have it for the future
 	prevMousePos.x = x;
@@ -1057,7 +1057,7 @@ void MyDemoGame::OnMouseDown(WPARAM btnState, int x, int y)
 //
 // Feel free to add code to this method
 // --------------------------------------------------------
-void MyDemoGame::OnMouseUp(WPARAM btnState, int x, int y)
+void Main::OnMouseUp(WPARAM btnState, int x, int y)
 {
 	// We don't care about the tracking the cursor outside
 	// the window anymore (we're not dragging if the mouse is up)
@@ -1080,7 +1080,7 @@ void MyDemoGame::OnMouseUp(WPARAM btnState, int x, int y)
 //
 // Feel free to add code to this method
 // --------------------------------------------------------
-void MyDemoGame::OnMouseMove(WPARAM btnState, int x, int y)
+void Main::OnMouseMove(WPARAM btnState, int x, int y)
 {
 	//calc Cam coords
 	float camX = x - prevMousePos.x;

@@ -39,11 +39,11 @@ static enum class GAME_STATES { MAIN_MENU, PLAYING, OPTIONS, EXIT};
 //Game State
 static GAME_STATES gameState;
 
-class MyDemoGame : public DirectXGameCore
+class Main : public DirectXGameCore
 {
 public:
-	MyDemoGame(HINSTANCE hInstance);
-	~MyDemoGame();
+	Main(HINSTANCE hInstance);
+	~Main();
 
 	// Overrides for base level methods
 	bool Init();
