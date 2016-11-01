@@ -11,107 +11,12 @@ Entity::Entity()
 
 Entity::~Entity()
 {
-	collider = nullptr; 
-	motionState = nullptr; 
-	delete motionState;
-	delete collider;
-	collisionShape = nullptr; 
-	delete collisionShape;
 
 }
 
 
-// Helper functions 
-
-// Converts an XMFLOAT3 to a btVector3 -- Richard Selneck  
-static inline btVector3 XMtoBT(const XMFLOAT3& xm)
+Entity::Entity(Mesh * inputMesh, Material* inputMaterial)
 {
-	return btVector3(xm.x, xm.y, xm.z);
-}
-
-// Converts a btVector3 to an XMFLOAT3 -- Richard Selneck 
-static inline XMFLOAT3 BTtoXM(const btVector3& bt)
-{
-	return DirectX::XMFLOAT3(bt.getX(), bt.getY(), bt.getZ());
-}
-
-// Copies Bullet's transform to our transform
-void Entity::CopyTransformFromBullet()
-{
-	// Get the two transforms
-	btTransform  btTrans;
-	motionState->getWorldTransform(btTrans);
-	
-
-	// Copy the position
-	XMFLOAT3 position = BTtoXM(btTrans.getOrigin());
-	setPosition(position.x, position.y, position.z);
-
-	//Copy the rotation
-	//btQuaternion btRot = btTrans.getRotation();
-	//float x = btRot.getX(); 
-	//float y = btRot.getY(); 
-	//float z = btRot.getZ(); 
-	//float w = btRot.getW(); 
-	//XMFLOAT4 xmRot = XMFLOAT4(x,y,z,w); 
-	//
-	//XMFLOAT4X4 newMat;
-	////XMMATRIX tempMat = XMLoadFloat4x4(&newMat); 
-	//XMVECTOR vec = XMLoadFloat4(&xmRot); 
-	//XMMATRIX mat = XMMatrixTranslationFromVector(vec); 
-	//
-
-	//XMStoreFloat4x4(&newMat, mat);
-
-
-	//setRotation( newMat );
-}
-
-// Copies our transform to Bullet's transform
-void Entity::CopyTransformToBullet()
-{
-	// Get the two transforms
-	btTransform  btTrans;
-	motionState->getWorldTransform(btTrans);
-
-
-	XMFLOAT3 currentPos = XMFLOAT3(position._14, position._24, position._34); 
-
-	// Copy the position
-	btTrans.setOrigin(XMtoBT(currentPos));
-
-	//// Copy the rotation
-	//XMFLOAT4 xmRot = XMFLOAT4(rotation._11, rotation._22, rotation._33, rotation._44);
-	//btQuaternion btRot(xmRot.x, xmRot.y, xmRot.z, xmRot.w);
-	//btTrans.setRotation(btRot);
-
-	// Now set the transform
-	motionState->setWorldTransform(btTrans);
-	collider->setWorldTransform(btTrans);
-}
-
-Entity::Entity(Mesh * inputMesh, Material* inputMaterial, btCollisionShape* colliderShape, btDefaultMotionState* mState, btRigidBody* colliderTemp)
-{
-	//Phsyics 
-	collisionShape = colliderShape;
-	motionState = mState;
-	collider = colliderTemp;
-	//collider->setCcdMotionThreshold(1);
-	//collider->setCcdSweptSphereRadius(0.2f); 
-	//Main::dynamicsWorld->addRigidBody(colliderTemp);
-
-	//Find position
-	btTransform trans; 
-	motionState->getWorldTransform(trans);
-	btVector3 pos = trans.getOrigin();
-	btMatrix3x3 matrix = trans.getBasis(); 
-
-	float x = pos.getX();
-	float y = pos.getY();
-	float z = pos.getZ();
-
-	
-	
 	// Graphics 
 	mesh = inputMesh;
 	material = inputMaterial;
@@ -137,10 +42,6 @@ Entity::Entity(Mesh * inputMesh, Material* inputMaterial, btCollisionShape* coll
 		0.0f, 0.0f, 1.0f, 0.0f,
 		0.0f, 0.0f, 0.0f, 1.0f);
 
-	//move(XMFLOAT4(x, y, z, 1.0f)); 
-	//trans.setIdentity(); 
-	//trans.setOrigin(btVector3(position._11, position._22, position._33));
-	//trans.setOrigin(btVector3(position._14, position._22, position._33));
 }
 
 XMFLOAT4X4 Entity::getPosition()
@@ -214,39 +115,6 @@ void Entity::setWorldMatrix(XMFLOAT4X4 newWorldMatrix)
 
 void Entity::updateScene()
 {
-	
-	//update mesh if at all
-	//Find position
-	/*btTransform trans = collider->getWorldTransform();
-	btVector3 pos = trans.getOrigin();
-	float x = pos.getX(); 
-	float y = pos.getY(); 
-	float z = pos.getZ(); */
-
-	btTransform trans = collider->getWorldTransform(); 
-	//collider->getMotionState()->getWorldTransform(trans); 
-
-	btVector3 newPos = trans.getOrigin(); 
-	float x = newPos.getX(); 
-	float y = newPos.getY(); 
-	float z = newPos.getZ(); 
-	//move(XMFLOAT4(x,y,z, 1.0f)); 
-
-	
-	/*btMatrix3x3 matrix = trans.getBasis();
-	btVector3 rowOne = matrix.getRow(0); 
-	btVector3 rowTwo = matrix.getRow(1);
-	btVector3 rowThree = matrix.getRow(2);
-	XMFLOAT4X4 mat = XMFLOAT4X4(
-		1, 0, 0 ,rowOne.getX(),
-		0, 1, 0, rowTwo.getY(),
-		0, 0, 1, rowThree.getZ(),
-		0, 0, 0, 1.0f
-		);
-	XMMATRIX translation = XMLoadFloat4x4(&mat); */
-	
-	
-	
 	//Update world matrix by multiplying matrices 
 	//Load Matrices for operations
 	XMMATRIX worldMat = XMLoadFloat4x4(&worldMatrix);
@@ -257,11 +125,7 @@ void Entity::updateScene()
 	worldMat = translation * rot * scaling;
 	
 	XMStoreFloat4x4(&worldMatrix, XMMatrixTranspose(worldMat));
-	
-	//btTransform t= collider->getWorldTransform();
-	//trans.setIdentity();
-	//trans.setOrigin(btVector3(position._14, position._24, position._34));
-	//t.setOrigin(btVector3(position._41, position._42, position._43));
+
 }
 
 void Entity::drawScene(ID3D11DeviceContext * deviceContext)
@@ -302,26 +166,6 @@ void Entity::move(XMFLOAT4 force)
 	matrix *= XMMatrixTranslation(force.x, force.y, force.z);
 
 	XMStoreFloat4x4(&position, matrix);
-
-
-	CopyTransformToBullet(); 
-	//CopyTransformFromBullet();
-
-	// add back to physics 
-	/*btTransform trans = collider->getWorldTransform();
-	XMFLOAT4X4 currentPos = getPosition(); 
-	float x = currentPos._11;
-	float y = currentPos._22;
-	float z = currentPos._33;
-	XMFLOAT4X4 currentRot = getRotation();
-	float xRot = currentRot._11;
-	float yRot = currentRot._22;
-	float zRot = currentRot._33;
-	float w = currentRot._44;
-	trans.setIdentity();
-	trans.setOrigin(btVector3(x , y, z));
-	trans.setRotation(btQuaternion(xRot,yRot,zRot,w));
-	collider->setWorldTransform(trans);*/
 }
 
 void Entity::scale(XMFLOAT4 nscalar)

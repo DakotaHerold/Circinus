@@ -10,10 +10,6 @@
 #include "Lights.h"
 #include "GamePadXbox.h"
 #include "HUD.h"
-#include "DrawDebug.h"
-#include "btBulletCollisionCommon.h"
-#include "btBulletDynamicsCommon.h"
-#include "BulletCollision\Gimpact\btGImpactCollisionAlgorithm.h"
 #include <sstream>
 
 
@@ -56,34 +52,6 @@ public:
 	void OnMouseUp(WPARAM btnState, int x, int y);
 	void OnMouseMove(WPARAM btnState, int x, int y);
 
-
-
-	//Physics 
-	static  btBroadphaseInterface* broadphase;
-
-	static btDefaultCollisionConfiguration* collisionConfiguration;
-	static btCollisionDispatcher* dispatcher;
-
-	static btSequentialImpulseConstraintSolver* solver;
-
-	static btDiscreteDynamicsWorld* dynamicsWorld;
-
-	void UpdatePhysics(float deltaTime); 
-
-	float engForce = 0.0f;
-	float brakeForce = 0.0f;
-	float maxEngineForce = 2000.0f; 
-	float maxBrakeForce = 200.0f; 
-	float steeringForce = 0.0f; 
-	float steeringIncrement = 0.04f;
-	float steeringClamp = 0.3f;
-	vector<btVector3> connectionPoints; 
-
-	bool enableDebugDraw; 
-
-
-
-
 private:
 	// Initialization for our "game" demo - Feel free to
 	// expand, alter, rename or remove these once you
@@ -109,9 +77,6 @@ private:
 	Entity* e7;
 	vector<Entity*> entities;
 
-	//skybox
-	Skybox* skybox;
-
 	Entity* sky;
 
 	//Camera
@@ -121,7 +86,6 @@ private:
 	GamePadXbox* pad; 
 
 	//HUD
-	//HUD* Selector;
 	HUD* Text;
 	HUD* Time; 
 	vector<HUD*> UI;
@@ -131,15 +95,11 @@ private:
 	//ID3D11Buffer* DrawDebugVB;
 	SimpleVertexShader* DrawDebugVertexShader;
 	SimplePixelShader* DrawDebugPixelShader;
-	DrawDebug* drawDebug; 
 
 	//Material 
 	Material* material;
 	Material* carMaterial;
 	Material* ballMaterial; 
-
-	// car
-	btRaycastVehicle* vehicle;
 
 	//Lights
 	DirectionalLight directionalLight;

@@ -75,7 +75,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="DrawDebug.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GamePadXbox.cpp" />
     <ClCompile Include="HUD.cpp" />
@@ -85,11 +84,9 @@
     <ClCompile Include="dxerr.cpp" />
     <ClCompile Include="DirectXGameCore.cpp" />
     <ClCompile Include="SimpleShader.cpp" />
-    <ClCompile Include="Vehicle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="DrawDebug.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GamePadXbox.h" />
     <ClInclude Include="HUD.h" />
@@ -100,7 +97,6 @@
     <ClInclude Include="dxerr.h" />
     <ClInclude Include="DirectXGameCore.h" />
     <ClInclude Include="SimpleShader.h" />
-    <ClInclude Include="Vehicle.h" />
     <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>

@@ -1,9 +1,6 @@
 #pragma once
 #include "Mesh.h"
 #include "Material.h"
-#include "btBulletCollisionCommon.h"
-#include "btBulletDynamicsCommon.h"
-#include "BulletCollision\Gimpact\btGImpactCollisionAlgorithm.h"
 
 
 using namespace DirectX;
@@ -13,7 +10,7 @@ class Entity
 public:
 	Entity();
 	~Entity();
-	Entity(Mesh* inputMeshm, Material* inputMaterial, btCollisionShape* colliderShape, btDefaultMotionState* mState, btRigidBody* colliderTemp);
+	Entity(Mesh* inputMesh, Material* inputMaterial);
 	//attributes 
 	Mesh* mesh;
 	Material* material;
@@ -36,12 +33,7 @@ public:
 	void scale(XMFLOAT4 nscalar);
 	void rotate(XMFLOAT4 axis, float angle);
 	void prepareMaterial(XMFLOAT4X4 view, XMFLOAT4X4 proj);
-	void CopyTransformFromBullet(); 
-	void CopyTransformToBullet(); 
 
-	btCollisionShape* collisionShape;
-	btRigidBody* collider;
-	btDefaultMotionState* motionState;
 private:
 	XMFLOAT4X4 position;
 	XMFLOAT4X4 rotation;

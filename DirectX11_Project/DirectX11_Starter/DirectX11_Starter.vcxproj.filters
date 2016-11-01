@@ -39,16 +39,10 @@
     <ClCompile Include="Material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Vehicle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GamePadXbox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="HUD.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DrawDebug.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
@@ -83,16 +77,10 @@
     <ClInclude Include="Lights.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Vehicle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GamePadXbox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="HUD.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DrawDebug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Main.h">
