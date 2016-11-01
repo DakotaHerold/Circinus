@@ -30,11 +30,6 @@ static GAME_STATES gameState;
 // Game class which extends the base DirectXGameCore class
 // --------------------------------------------------------
 
-//Game State Machine
-static enum class GAME_STATES { MAIN_MENU, PLAYING, OPTIONS, EXIT};
-//Game State
-static GAME_STATES gameState;
-
 class Main : public DirectXGameCore
 {
 public:

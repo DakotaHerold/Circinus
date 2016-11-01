@@ -21,9 +21,9 @@ Entity::Entity(Mesh * inputMesh, Material* inputMaterial)
 	mesh = inputMesh;
 	material = inputMaterial;
 	position = XMFLOAT4X4(
-		1.0f, 0.0f, 0.0f, x,
-		0.0f, 1.0f, 0.0f, y,
-		0.0f, 0.0f, 1.0f, z,
+		1.0f, 0.0f, 0.0f, 1.0f,
+		0.0f, 1.0f, 0.0f, 1.0f,
+		0.0f, 0.0f, 1.0f, 1.0f,
 		0, 0,0, 1.0f);
 	rotation = XMFLOAT4X4(
 		1.0f, 0.0f, 0.0f, 0.0f,
