@@ -12,8 +12,6 @@ Mesh::~Mesh()
 {
 	vertexBuffer->Release();
 	indexBuffer->Release();
-	delete triMesh;
-	delete tempMesh;
 }
 
 Mesh::Mesh(Vertex vertices[], int numVerts, unsigned int indices[], int numIndices, ID3D11Device * device)
@@ -172,25 +170,6 @@ Mesh::Mesh(char * filename, ID3D11Device * device)
 	// Close
 	obj.close();
 
-	//Store Verts for physics calc
-	for (int i = 0; i < verts.size(); ++i)
-	{
-		float x = verts[i].Position.x;
-		float y = verts[i].Position.y;
-		float z = verts[i].Position.z;
-		points.push_back(btVector3(x, y, z));
-	}
-	tempMesh = new btTriangleMesh(); 
-	for (int i = 0; i < points.size(); ++i)
-	{
-		if (i + 2 < points.size())
-		{
-			tempMesh->addTriangle(points[i], points[i + 1], points[i + 2], false);
-		}
-		
-	}
-	triMesh = new btGImpactMeshShape(tempMesh);
-	conMesh = new btConvexTriangleMeshShape(tempMesh);
 
 	// - At this point, "verts" is a vector of Vertex structs, and can be used
 	//    directly to create a vertex buffer:  &verts[0] is the first vert

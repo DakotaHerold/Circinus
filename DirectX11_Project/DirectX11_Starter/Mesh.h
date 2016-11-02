@@ -7,9 +7,6 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include "btBulletCollisionCommon.h"
-#include "btBulletDynamicsCommon.h"
-#include "BulletCollision\Gimpact\btGImpactCollisionAlgorithm.h"
 
 #if defined(DEBUG) || defined(_DEBUG)
 #define _CRTDBG_MAP_ALLOC
@@ -28,10 +25,7 @@ public:
 	ID3D11Buffer* GetVertexBuffer();
 	ID3D11Buffer* GetIndexBuffer();
 	int GetIndexCount();
-	vector<btVector3> points;
-	btTriangleMesh* tempMesh;
-	btGImpactMeshShape* triMesh;
-	btConvexShape* conMesh;
+
 private:
 	ID3D11Buffer* vertexBuffer;
 	ID3D11Buffer* indexBuffer;
