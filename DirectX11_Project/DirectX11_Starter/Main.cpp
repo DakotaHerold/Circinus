@@ -87,8 +87,6 @@ Main::Main(HINSTANCE hInstance)
 	meshThree = nullptr;
 
 	e1 = nullptr;
-	e2 = nullptr;
-	e3 = nullptr;
 
 	//Camera 
 	cam = new Camera();
@@ -120,12 +118,6 @@ Main::~Main()
 	// Delete our simple shaders
 	delete vertexShader;
 	delete pixelShader;
-
-	//delete debug shaders
-	delete DrawDebugVertexShader; 
-	delete DrawDebugPixelShader; 
-	//release
-	//ReleaseMacro(DrawDebugVB); 
 
 	// Delete Meshes
 	delete meshOne;
@@ -248,12 +240,6 @@ void Main::LoadShaders()
 	pixelShader = new SimplePixelShader(device, deviceContext);
 	pixelShader->LoadShaderFile(L"PixelShader.cso");
 
-	//Load Debug Shaders
-	DrawDebugVertexShader = new SimpleVertexShader(device, deviceContext); 
-	DrawDebugVertexShader->LoadShaderFile(L"DebugLineVS.cso"); 
-
-	DrawDebugPixelShader = new SimplePixelShader(device, deviceContext);
-	DrawDebugPixelShader->LoadShaderFile(L"DebugLinePS.cso");
 }
 
 
@@ -338,8 +324,6 @@ void Main::CreateGeometry()
 	//carMaterial = new Material(vertexShader, pixelShader, device, deviceContext, )
 	//Create entities 
 	e1 = new Entity(meshThree, material);
-	e2 = new Entity(meshTwo, ballMaterial);
-	e3 = new Entity(meshOne, carMaterial);
 
 
 	Mesh* skyCube = new Mesh("Models/cube.obj", device);
@@ -347,33 +331,22 @@ void Main::CreateGeometry()
 	//skybox = new Skybox(skyCube, skyMat, cam);
 
 
-	//e2->move(XMFLOAT4(0, 5, 0, 0)); 
-	//e2->move(XMFLOAT4(0, 10, 0, 0)); 
-	//e1->move(XMFLOAT4(0, -7.5f, 2.0f ,0 ));
-	e1->scale(XMFLOAT4(4.0f, 1.0f, 4.0f, 1.0f)); // ground
-	//e2->move(XMFLOAT4(0, 10.0f, 13.5f, 0));
-	//e2->scale(XMFLOAT4(2.0f, 2.0f, 2.0f, 1.0f)); 
+	//e1->scale(XMFLOAT4(4.0f, 1.0f, 4.0f, 1.0f)); // ground
+
+
 	//organize entities in vector
 	entities.push_back(e1);
-	entities.push_back(e2); //Ball
-	entities.push_back(e3); // car
-	/*entities.push_back(e4);
-	entities.push_back(e5);
-	entities.push_back(e6);
-	entities.push_back(e7);*/
-	//entities.push_back(e3);
-	//dynamicsWorld->addRigidBody(entities[0]->collider);
-	//dynamicsWorld->addRigidBody(entities[1]->collider);
+
+
 
 	//Create UI 
 	//Selector = new HUD(device, deviceContext, L"Sprites/Sprite1.dds", 0.0f, 0.0f);
-	Text = new HUD(device, deviceContext, L"SpriteFonts/Destroy_32.spritefont", L"Score: ", windowWidth / 2 - 400.0f, windowHeight / 2 - 325.0f);
-	Time = new HUD(device, deviceContext, L"SpriteFonts/Destroy_32.spritefont", L"0", windowWidth / 2 - 200.0f, windowHeight / 2 - 325.0f);
+	//Text = new HUD(device, deviceContext, L"SpriteFonts/Destroy_32.spritefont", L"Score: ", windowWidth / 2 - 400.0f, windowHeight / 2 - 325.0f);
+	//Time = new HUD(device, deviceContext, L"SpriteFonts/Destroy_32.spritefont", L"0", windowWidth / 2 - 200.0f, windowHeight / 2 - 325.0f);
 
 	//UI.push_back(Selector);
-	UI.push_back(Text);
-	UI.push_back(Time); 
-	score = 0; 
+	//UI.push_back(Text);
+	//UI.push_back(Time);  
 }
 
 
@@ -549,30 +522,8 @@ void Main::UpdateScene(float deltaTime, float totalTime)
 	{
 		entities[i]->updateScene();
 	}
-
-	//Update UI 
-
-	if (score == 0)
-	{
-		UI[1]->changeText(L"0");
-	}
-	else if (score == 1)
-	{
-		UI[1]->changeText(L"1");
-	}
-	else if (score == 2)
-	{
-		UI[1]->changeText(L"2");
-	}
-	else if (score >= 3)
-	{
-		UI[1]->changeText(L"You Won!");
-	}
 	
-	
-	
-	
-	 
+	//Update UI
 	for (unsigned int i = 0; i < UI.size(); i++)
 	{
 		UI[i]->Update();
@@ -641,10 +592,6 @@ void Main::DrawScene(float deltaTime, float totalTime)
 	{
 		UI[i]->Render();
 	}
-	
-	//drawDebug->drawLine(btVector3(0.0f, 0.0f, 0.0f), btVector3(0.0f, 1.0f, 1.0f), btVector3(1.0f, 0.0f, 0.0f)); 
-	DrawDebugVertexShader->SetShader(true);
-	DrawDebugPixelShader->SetShader(true);
 
 
 	//deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -657,10 +604,7 @@ void Main::DrawScene(float deltaTime, float totalTime)
 			UI[i]->Render();
 		}
 	}*/
-	for (unsigned int i = 0; i < UI.size(); i++)
-	{
-		UI[i]->Render();
-	}
+	
 	
 
 	

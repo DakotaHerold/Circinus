@@ -22,7 +22,7 @@
 
 
 //Game State Machine
-static enum class GAME_STATES { MAIN_MENU, PLAYING, OPTIONS, EXIT };
+enum class GAME_STATES { MAIN_MENU, PLAYING, OPTIONS, EXIT };
 //Game State
 static GAME_STATES gameState;
 
@@ -64,12 +64,6 @@ private:
 	////Entities - represent game objects
 
 	Entity* e1;
-	Entity* e2;
-	Entity* e3;
-	Entity* e4;
-	Entity* e5;
-	Entity* e6;
-	Entity* e7;
 	vector<Entity*> entities;
 
 	Entity* sky;
@@ -82,14 +76,13 @@ private:
 
 	//HUD
 	HUD* Text;
-	HUD* Time; 
 	vector<HUD*> UI;
 
-	int score; 
+ 
 	//Debug Lines
 	//ID3D11Buffer* DrawDebugVB;
-	SimpleVertexShader* DrawDebugVertexShader;
-	SimplePixelShader* DrawDebugPixelShader;
+	//SimpleVertexShader* DrawDebugVertexShader;
+	//SimplePixelShader* DrawDebugPixelShader;
 
 	//Material 
 	Material* material;
