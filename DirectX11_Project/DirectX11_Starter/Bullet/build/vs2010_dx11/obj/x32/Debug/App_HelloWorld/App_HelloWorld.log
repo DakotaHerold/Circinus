@@ -1,9 +1,0 @@
-﻿Build started 4/29/2016 3:28:44 PM.
-     1>Project "D:\DirectX11_Project\DirectX11_Project\DirectX11_Starter\Bullet\build\vs2010_dx11\App_HelloWorld.vcxproj" on node 3 (Build target(s)).
-     1>Link:
-         App_HelloWorld.vcxproj -> D:\DirectX11_Project\DirectX11_Project\DirectX11_Starter\Bullet\build\vs2010_dx11\..\..\App_HelloWorld_vs2010_debug.exe
-     1>Done Building Project "D:\DirectX11_Project\DirectX11_Project\DirectX11_Starter\Bullet\build\vs2010_dx11\App_HelloWorld.vcxproj" (Build target(s)).
-
-Build succeeded.
-
-Time Elapsed 00:00:00.20
