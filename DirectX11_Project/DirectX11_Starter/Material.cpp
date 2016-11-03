@@ -47,6 +47,7 @@ Material::Material(SimpleVertexShader* vShader, SimplePixelShader* pShader, ID3D
 //dds file not specified, assume false
 Material::Material(SimpleVertexShader* vShader, SimplePixelShader* pShader, ID3D11Device* device, ID3D11DeviceContext* deviceContext, const wchar_t* filePath) :
 	Material(vShader, pShader, device, deviceContext, filePath, false){
+
 }
 
 Material::~Material()

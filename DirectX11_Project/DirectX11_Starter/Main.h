@@ -57,9 +57,6 @@ private:
 
 	//Meshes
 	Mesh* meshOne;
-	Mesh* meshTwo;
-	Mesh* meshThree;
-	Mesh* meshFour;
 
 	////Entities - represent game objects
 

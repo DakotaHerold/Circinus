@@ -69,13 +69,12 @@ Main::Main(HINSTANCE hInstance)
 	// - "Wide" characters take up more space in memory (hence the name)
 	// - This allows for an extended character set (more fancy letters/symbols)
 	// - Lots of Windows functions want "wide characters", so we use the "L"
-	//windowCaption = L"My Super Fancy GGP Game";
 	windowCaption = L"DirectX 11 Racing Game";
 
 
 	// Custom window size - will be created by Init() later
-	windowWidth = 1280;
-	windowHeight = 720;
+	windowWidth = 800;
+	windowHeight = 600;
 
 
 
@@ -83,8 +82,6 @@ Main::Main(HINSTANCE hInstance)
 
 	//Meshes 
 	meshOne = nullptr;
-	meshTwo = nullptr;
-	meshThree = nullptr;
 
 	e1 = nullptr;
 
@@ -119,24 +116,21 @@ Main::~Main()
 	delete vertexShader;
 	delete pixelShader;
 
-	// Delete Meshes
-	delete meshOne;
-	delete meshTwo;
-	delete meshThree;
-
 	//Delete Entities
 	for (unsigned int i = 0; i < entities.size(); i++)
 	{
-		entities[i] = nullptr; 
 		delete entities[i];
 	}
 
-	
+	// Delete Meshes
+	delete meshOne;
+
+
 	//Delete HUD
-	for (unsigned int i = 0; i < UI.size(); i++)
+	/*for (unsigned int i = 0; i < UI.size(); i++)
 	{
 		delete UI[i];
-	}
+	}*/
 	 
 
 	//Delete Material
@@ -277,45 +271,13 @@ void Main::CreateGeometry()
 
 
 	//meshOne = new Mesh(vertices, (int)sizeof(vertices), indices, sizeof(indices), device);
-	meshOne = new Mesh("Models/car_body.obj", device);
-
-
-	//Create second Mesh
-	Vertex triVerts[] =
-	{
-		{ XMFLOAT3(+0.0f, +2.0f, +0.0f), normal, uv },
-		{ XMFLOAT3(+2.5f, -0.0f, +0.0f), normal, uv },
-		{ XMFLOAT3(-0.5f, -0.0f, +0.0f), normal, uv },
-	};
-	unsigned int triIndices[] = { 0, 1, 2 };
-
-	//meshTwo = new Mesh(triVerts, (int)sizeof(triVerts), triIndices, sizeof(triIndices), device);
-	meshTwo = new Mesh("Models/sphere.obj", device);
-
-	//Create third Mesh 
-
-	Vertex triTwoVerts[] =
-	{
-		{ XMFLOAT3(+0.0f, -2.0f, +0.0f), normal, uv },
-		{ XMFLOAT3(-2.0f, -0.0f, +0.0f), normal, uv },
-		{ XMFLOAT3(+0.5f, -0.0f, +0.0f), normal, uv },
-	};
-	unsigned int triTwoIndices[] = { 0 , 1, 2 };
-
-	//meshThree = new Mesh(triTwoVerts, (int)sizeof(triTwoVerts), triTwoIndices, sizeof(triTwoIndices), device);
-	meshThree = new Mesh("Models/flatsurface.obj", device);
-
-	meshFour = new Mesh("Models/car_wheel.obj", device);
-
-
-
-
+	meshOne = new Mesh("Models/cube.obj", device);
 
 
 	//Create Material 
-	material = new Material(vertexShader, pixelShader, device, deviceContext, L"Textures/grey.png");
-	carMaterial = new Material(vertexShader, pixelShader, device, deviceContext, L"Textures/red.png");
-	ballMaterial = new Material(vertexShader, pixelShader, device, deviceContext, L"Textures/blue.png");
+	material = new Material(vertexShader, pixelShader, device, deviceContext, L"Textures/grey.png", false);
+	carMaterial = new Material(vertexShader, pixelShader, device, deviceContext, L"Textures/red.png", false);
+	ballMaterial = new Material(vertexShader, pixelShader, device, deviceContext, L"Textures/blue.png", false);
 
 
 
@@ -323,11 +285,11 @@ void Main::CreateGeometry()
 	
 	//carMaterial = new Material(vertexShader, pixelShader, device, deviceContext, )
 	//Create entities 
-	e1 = new Entity(meshThree, material);
+	e1 = new Entity(meshOne, carMaterial);
 
 
-	Mesh* skyCube = new Mesh("Models/cube.obj", device);
-	Material* skyMat = new Material(vertexShader, pixelShader, device, deviceContext, L"Textures/sky.dds", true);
+	//Mesh* skyCube = new Mesh("Models/cube.obj", device);
+	//Material* skyMat = new Material(vertexShader, pixelShader, device, deviceContext, L"Textures/sky.dds", true);
 	//skybox = new Skybox(skyCube, skyMat, cam);
 
 
@@ -524,10 +486,10 @@ void Main::UpdateScene(float deltaTime, float totalTime)
 	}
 	
 	//Update UI
-	for (unsigned int i = 0; i < UI.size(); i++)
+	/*for (unsigned int i = 0; i < UI.size(); i++)
 	{
 		UI[i]->Update();
-	}
+	}*/
 
 
 	//update Camera and it's input
@@ -567,7 +529,7 @@ void Main::DrawScene(float deltaTime, float totalTime)
 	vertexShader->SetShader(true);
 	pixelShader->SetShader(true);
 	
-	for (unsigned int i = 0; i < entities.size(); i++)
+	for (int i = 0; i < entities.size(); i++)
 	{
 		// Send data to shader variables
 		//  - Do this ONCE PER OBJECT you're drawing
@@ -576,34 +538,18 @@ void Main::DrawScene(float deltaTime, float totalTime)
 		//  - The "SimpleShader" class handles all of that for you.
 		entities[i]->prepareMaterial(cam->getViewMatrix(), cam->getProjectionMatrix());
 		//draw here 
-		/*if (i != 2 && enableDebugDraw)
-		{
-			entities[i]->drawScene(deviceContext);
-		}
-		else if (enableDebugDraw == false)
-		{
-			entities[i]->drawScene(deviceContext);
-		}*/
+		entities[i]->drawScene(deviceContext);
 	}
 
 
 	//Draw UI
-	for (unsigned int i = 0; i < UI.size(); i++)
+	/*for (unsigned int i = 0; i < UI.size(); i++)
 	{
 		UI[i]->Render();
-	}
+	}*/
 
 
 	//deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	//Draw UI
-	/*if (gameState == GAME_STATES::MAIN_MENU)
-	{
-		for (unsigned int i = 0; i < UI.size(); i++)
-		{
-			UI[i]->Render();
-		}
-	}*/
 	
 	
 
