@@ -226,8 +226,8 @@ _Pvt_Extensions
 
 # Misc 
 .cso 
-DirectX11_Project/Release/*
-DirectX11_Project/.vs/*
-DirectX11_Project/DirectX11_Starter/Bullet/*
-DirectX11_Project/DirectX11_Starter/Debug/*
 *.cso
+Engine/Release/*
+Engine/.vs/*
+Engine/Engine/Debug/*
+
