@@ -80,10 +80,6 @@ Main::Main(HINSTANCE hInstance)
 	meshTwo = nullptr;
 	meshThree = nullptr;
 
-	e1 = nullptr;
-	e2 = nullptr;
-	e3 = nullptr;
-
 	cam = new Camera(); 
 
 	leftmouseHeld = false; 
@@ -112,9 +108,9 @@ Main::~Main()
 	delete meshThree;
 
 	//Delete Entities
-	for (unsigned int i = 0; i < entities.size(); i++)
+	for (int i = 0; i < MAX_ENTITIES; i++)
 	{
-		delete entities[i];
+		delete entities[i]; 
 	}
 	
 	//Delete Material
@@ -247,7 +243,7 @@ void Main::CreateGeometry()
 
 
 	//meshOne = new Mesh(vertices, (int)sizeof(vertices), indices, sizeof(indices), device);
-	meshOne = new Mesh("Models/cone.obj", device); 
+	meshOne = new Mesh("Models/cube.obj", device); 
 
 
 	//Create second Mesh
@@ -278,14 +274,16 @@ void Main::CreateGeometry()
 	//Create Material 
 	material = new Material(vertexShader, pixelShader); 
 	//Create entities 
-	e1 = new Entity(meshOne, material);
-	e2 = new Entity(meshThree, material);
-	e3 = new Entity(meshTwo, material);
-	//organize entities in vector
-	entities.push_back(e1);
-	entities.push_back(e2);
-	entities.push_back(e3);
+	//Entity* e1 = new Entity(meshOne, material);
+	//Entity* e2 = new Entity(meshThree, material);
+	//Entity* e3 = new Entity(meshTwo, material);
+
 	
+	// Organize fixed amount of entities in array 
+	for (int i = 0; i < MAX_ENTITIES; i++)
+	{
+		entities[i] = new Entity(meshOne, material); 
+	}
 
 }
 
@@ -364,11 +362,11 @@ void Main::UpdateScene(float deltaTime, float totalTime)
 	float rotation = 0.55f * deltaTime;
 	float buffer = 1.5f; 
 	//update entities
-	for (unsigned int i = 0; i < entities.size(); i++)
+	for (auto& i : entities)
 	{
-		//rotate all entities 
-		//entities[i]->rotate(XMFLOAT4(0.0f, 1.0f, 0.0f, 0.0f), rotation);
+		i->rotate(XMFLOAT4(0.0f, 1.0f, 0.0f, 0.0f), rotation);
 	}
+
 
 	//Check if mouse held
 	if (leftmouseHeld) { entities[0]->move(XMFLOAT4(speed, 0.f, 0.0f, 0.0f)); }
@@ -377,11 +375,14 @@ void Main::UpdateScene(float deltaTime, float totalTime)
 
 
 	//update all entities 
-	for (unsigned int i = 0; i < entities.size(); i++)
+	/*for (unsigned int i = 0; i < entities.size(); i++)
 	{
 		entities[i]->updateScene();
+	}*/
+	for (auto& i : entities)
+	{
+		i->updateScene(); 
 	}
-
 	
 	//update Camera and it's input
 	cam->cameraInput(deltaTime); 
@@ -415,17 +416,17 @@ void Main::DrawScene(float deltaTime, float totalTime)
 	//    you'll need to swap the current shaders before each draw
 	vertexShader->SetShader(true);
 	pixelShader->SetShader(true);
-	for (unsigned int i = 0; i < entities.size(); i++)
-	{
+
+	for (auto& i : entities)
+	{ 
 		// Send data to shader variables
 		//  - Do this ONCE PER OBJECT you're drawing
 		//  - This is actually a complex process of copying data to a local buffer
 		//    and then copying that entire buffer to the GPU.  
 		//  - The "SimpleShader" class handles all of that for you.
+		i->prepareMaterial(cam->getViewMatrix(), cam->getProjectionMatrix());
 		//draw here 
-		entities[i]->prepareMaterial(cam->getViewMatrix(), cam->getProjectionMatrix()); 
-		//draw here 
-		entities[i]->drawScene(deviceContext);
+		i->drawScene(deviceContext);
 	}
 	
 
