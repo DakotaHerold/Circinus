@@ -364,14 +364,14 @@ void Main::UpdateScene(float deltaTime, float totalTime)
 	//update entities
 	for (auto& i : entities)
 	{
-		i->rotate(XMFLOAT4(0.0f, 1.0f, 0.0f, 0.0f), rotation);
+		i->Rotate(0, rotation, 0);
 	}
 
 
 	//Check if mouse held
-	if (leftmouseHeld) { entities[0]->move(XMFLOAT4(speed, 0.f, 0.0f, 0.0f)); }
-	if (middlemouseHeld) { entities[1]->move(XMFLOAT4(speed, 0.f, 0.0f, 0.0f)); }
-	if (rightmouseHeld) { entities[2]->move(XMFLOAT4(speed, 0.f, 0.0f, 0.0f)); }
+	//if (leftmouseHeld) { entities[0]->Move(speed, 0, 0); }
+	//if (middlemouseHeld) { entities[1]->Move(speed, 0, 0); }
+	//if (rightmouseHeld) { entities[2]->Move(speed, 0, 0); }
 
 
 	//update all entities 

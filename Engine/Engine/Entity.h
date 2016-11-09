@@ -7,7 +7,6 @@ using namespace DirectX;
 class Entity
 {
 public:
-	Entity();
 	~Entity();
 	Entity(Mesh* inputMeshm, Material* inputMaterial); 
 	//attributes 
@@ -15,27 +14,25 @@ public:
 	Material* material; 
 	
 	//getters and setters
-	XMFLOAT4X4 getPosition(); 
-	XMFLOAT4X4 getRotation();
-	XMFLOAT4X4 getScale();
-	XMFLOAT4X4 getWorldMatrix();
+	XMFLOAT3 GetPosition() { return position; }
+	XMFLOAT3 GetRotation() { return rotation;  }
+	XMFLOAT3 GetScale() { return this->scale; }
+	XMFLOAT4X4* GetWorldMatrix() { return &worldMatrix;  }
 
-	void setPosition(XMFLOAT3 newPos);
-	void setRotation(XMFLOAT4 newRot);
-	void setScale(XMFLOAT3 newScale);
-	void setWorldMatrix(XMFLOAT4X4 newWorldMatrix);
+
+	void setWorldMatrix(XMFLOAT4X4 newWorldMatrix) { worldMatrix = newWorldMatrix; }
 
 	//Class Specific functions 
 	void updateScene(); 
 	void drawScene(ID3D11DeviceContext* deviceContext);
-	void move(XMFLOAT4 force); 
-	void scale(XMFLOAT4 nscalar); 
-	void rotate(XMFLOAT4 axis, float angle); 
+	void Move(float x, float y, float z) { position.x += x;	position.y += y;	position.z += z; }
+	void Rotate(float x, float y, float z) { rotation.x += x;	rotation.y += y;	rotation.z += z; }
+	void Scale(float x, float y, float z) { scale.x += x;	scale.y += y;	scale.z += z; }
 	void prepareMaterial(XMFLOAT4X4 view, XMFLOAT4X4 proj); 
 private:
-	XMFLOAT4X4 position;
-	XMFLOAT4X4 rotation;
-	XMFLOAT4X4 scalar;
+	DirectX::XMFLOAT3 position;
+	DirectX::XMFLOAT3 rotation;
+	DirectX::XMFLOAT3 scale;
 	XMFLOAT4X4 worldMatrix;
 	
 
