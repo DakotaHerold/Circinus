@@ -222,10 +222,6 @@ Mesh::Mesh(char * filename, ID3D11Device * device)
 	HR(device->CreateBuffer(&ibd, &initialIndexData, &indexBuffer));
 }
 
-
-
-
-
 ID3D11Buffer * Mesh::GetVertexBuffer()
 {
 	return vertexBuffer;

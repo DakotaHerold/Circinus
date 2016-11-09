@@ -20,7 +20,10 @@ public:
 	XMFLOAT4X4* GetWorldMatrix() { return &worldMatrix;  }
 
 
-	void setWorldMatrix(XMFLOAT4X4 newWorldMatrix) { worldMatrix = newWorldMatrix; }
+	void SetWorldMatrix(XMFLOAT4X4 newWorldMatrix) { worldMatrix = newWorldMatrix; }
+	void SetPosition(float x, float y, float z) { position = XMFLOAT3(x, y, z); }
+	void SetRotation(float x, float y, float z) { rotation = XMFLOAT3(x, y, z); }
+	void SetScale(float x, float y, float z) { scale = XMFLOAT3(x, y, z); }
 
 	//Class Specific functions 
 	void updateScene(); 

@@ -51,8 +51,8 @@ private:
 	Mesh* meshThree;
 
 	//Entities 
-	int MAX_ENTITIES = 5; 
-	Entity* entities[5]; 
+	int MAX_ENTITIES = 100; 
+	Entity* entities[100]; 
 
 	//Camera
 	Camera* cam; 

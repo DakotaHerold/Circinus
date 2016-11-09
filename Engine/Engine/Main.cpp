@@ -73,8 +73,6 @@ Main::Main(HINSTANCE hInstance)
 	windowWidth = 800;
 	windowHeight = 600;
 
-
-
 	//initialize
 	meshOne = nullptr;
 	meshTwo = nullptr;
@@ -280,9 +278,28 @@ void Main::CreateGeometry()
 
 	
 	// Organize fixed amount of entities in array 
-	for (int i = 0; i < MAX_ENTITIES; i++)
+	for (int i = 0; i < MAX_ENTITIES; ++i)
 	{
-		entities[i] = new Entity(meshOne, material); 
+		entities[i] = new Entity(meshOne, material);
+		// make entities tiny
+		entities[i]->SetScale(0.25f, 0.25f, 0.25f);
+	}
+	float xPos = 0.0f; 
+	float yPos = 0.0f; 
+	for (int i = 0; i < MAX_ENTITIES; ++i)
+	{
+		if (i % 5 == 0)
+		{
+			xPos = 0.0f; 
+			yPos -= 0.75f; 
+			entities[i]->Move(xPos, yPos, 0);
+		}
+		else
+		{
+			xPos += 0.75f;
+			entities[i]->Move(xPos, yPos , 0);	
+		}
+		
 	}
 
 }
