@@ -215,6 +215,7 @@ bool DirectXGameCore::InitDirect3D()
 	swapChainDesc.SampleDesc.Count = 1;
 	swapChainDesc.SampleDesc.Quality = 0;
 	
+
 	// Create the device and swap chain with the following global function
 	// This will also determine the supported feature level (version of DirectX)
 	HRESULT hr = D3D11CreateDeviceAndSwapChain(
@@ -230,6 +231,21 @@ bool DirectXGameCore::InitDirect3D()
 		&device,			// As well as the DEVICE
 		&featureLevel,		// The feature level is determined
 		&deviceContext);	// And the CONTEXT is created
+
+	// Query the driver for MultiThreading Support 
+	D3D11_FEATURE_DATA_THREADING threadingFeature;
+	device->CheckFeatureSupport(D3D11_FEATURE_THREADING, &threadingFeature, sizeof(threadingFeature));
+	// Current Driver supports creating more than one resource at a time
+	if (threadingFeature.DriverConcurrentCreates) //  && threadingFeature.DriverCommandLists --- Driver doesn't support command lists a.k.a. concurrent context calls
+	{
+
+	}
+	else
+	{
+		MessageBox(0, L"Threading not supported", 0, 0);
+		return false;
+	}
+
 
 	// Was the device created properly?
 	if( FAILED(hr) )

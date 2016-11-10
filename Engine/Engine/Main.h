@@ -1,6 +1,8 @@
 #pragma once
 
 #include <DirectXMath.h>
+#include <thread>
+#include <mutex>
 #include "DirectXGameCore.h"
 #include "SimpleShader.h"
 #include "Mesh.h"
@@ -45,10 +47,13 @@ private:
 	void CreateGeometry();
 	void CreateMatrices();
 
+	//Threading
+	mutex mtx1;
+	mutex mtx2;
+	mutex mtx3;
+
 	//Meshes
 	Mesh* meshOne;
-	Mesh* meshTwo;
-	Mesh* meshThree;
 
 	//Entities 
 	int MAX_ENTITIES = 100; 
@@ -70,6 +75,10 @@ private:
 	bool leftmouseHeld; 
 	bool middlemouseHeld;
 	bool rightmouseHeld;
+
+	// Deferred Rendering
+	ID3D11DeviceContext* deferredContext = NULL;
+	ID3D11CommandList* commandList = NULL;
 
 	// Buffers to hold actual geometry data
 	ID3D11Buffer* vertexBuffer;

@@ -75,8 +75,6 @@ Main::Main(HINSTANCE hInstance)
 
 	//initialize
 	meshOne = nullptr;
-	meshTwo = nullptr;
-	meshThree = nullptr;
 
 	cam = new Camera(); 
 
@@ -102,8 +100,6 @@ Main::~Main()
 
 	// Delete Meshes
 	delete meshOne;
-	delete meshTwo;
-	delete meshThree;
 
 	//Delete Entities
 	for (int i = 0; i < MAX_ENTITIES; i++)
@@ -137,9 +133,20 @@ bool Main::Init()
 	// Helper methods to create something to draw, load shaders to draw it 
 	// with and set up matrices so we can see how to pass data to the GPU.
 	//  - For your own projects, feel free to expand/replace these.
-	LoadShaders();
+
+	/*LoadShaders();
 	CreateGeometry();
-	CreateMatrices();
+	CreateMatrices();*/
+	// Threading here is significantly faster
+	thread t1([&] { LoadShaders(); });
+	thread t2([&] { CreateGeometry(); });
+	thread t3([&] { CreateMatrices(); });
+	t1.join();
+	t2.join();
+	t3.join();
+
+	// Initialize Deferred Context
+	//device->CreateDeferredContext(0, &deferredContext);
 
 	// Tell the input assembler stage of the pipeline what kind of
 	// geometric primitives we'll be using and how to interpret them
@@ -199,11 +206,13 @@ bool Main::Init()
 // --------------------------------------------------------
 void Main::LoadShaders()
 {
+	mtx2.lock();
 	vertexShader = new SimpleVertexShader(device, deviceContext);
 	vertexShader->LoadShaderFile(L"VertexShader.cso");
 
 	pixelShader = new SimplePixelShader(device, deviceContext);
 	pixelShader->LoadShaderFile(L"PixelShader.cso");
+	mtx2.unlock();
 }
 
 
@@ -212,6 +221,7 @@ void Main::LoadShaders()
 // --------------------------------------------------------
 void Main::CreateGeometry()
 {
+	mtx1.lock();
 	//	Generic UVs
 	XMFLOAT3 normal = XMFLOAT3(0, 0, -1); 
 	XMFLOAT2 uv = XMFLOAT2(0, 0); 
@@ -222,52 +232,9 @@ void Main::CreateGeometry()
 	XMFLOAT4 green = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
 	XMFLOAT4 blue = XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
 
-	// Set up the vertices of the triangle we would like to draw
-	// - We're going to copy this array, exactly as it exists in memory
-	//    over to a DirectX-controlled data structure (the vertex buffer)
-	Vertex vertices[] =
-	{
-		{ XMFLOAT3(+0.0f, +1.0f, +0.0f), normal, uv },
-		{ XMFLOAT3(+1.5f, -1.0f, +0.0f), normal, uv },
-		{ XMFLOAT3(-1.5f, -1.0f, +0.0f), normal, uv },
-	};
-
-	// Set up the indices, which tell us which vertices to use and in which order
-	// - This is somewhat redundant for just 3 vertices (it's a simple example)
-	// - Indices are technically not required if the vertices are in the buffer 
-	//    in the correct order and each one will be used exactly once
-	// - But just to see how it's done...
-	unsigned int indices[] = { 0, 1, 2 };
-
 
 	//meshOne = new Mesh(vertices, (int)sizeof(vertices), indices, sizeof(indices), device);
 	meshOne = new Mesh("Models/cube.obj", device); 
-
-
-	//Create second Mesh
-	Vertex triVerts[] =
-	{
-		{XMFLOAT3(+0.0f, +2.0f, +0.0f), normal, uv},
-		{ XMFLOAT3(+2.5f, -0.0f, +0.0f), normal, uv},
-		{ XMFLOAT3(-0.5f, -0.0f, +0.0f), normal, uv},
-	};
-	unsigned int triIndices[] = { 0, 1, 2 };
-
-	//meshTwo = new Mesh(triVerts, (int)sizeof(triVerts), triIndices, sizeof(triIndices), device);
-	meshTwo = new Mesh("Models/cone.obj", device); 
-
-	//Create third Mesh 
-
-	Vertex triTwoVerts[] =
-	{
-		{ XMFLOAT3(+0.0f, -2.0f, +0.0f), normal, uv },
-		{ XMFLOAT3(-2.0f, -0.0f, +0.0f), normal, uv },
-		{ XMFLOAT3(+0.5f, -0.0f, +0.0f), normal, uv },
-	};
-	unsigned int triTwoIndices[] = { 0 , 1, 2 };
-
-	//meshThree = new Mesh(triTwoVerts, (int)sizeof(triTwoVerts), triTwoIndices, sizeof(triTwoIndices), device);
-	meshThree = new Mesh("Models/cone.obj", device); 
 
 	//Create Material 
 	material = new Material(vertexShader, pixelShader); 
@@ -301,7 +268,7 @@ void Main::CreateGeometry()
 		}
 		
 	}
-
+	mtx1.unlock();
 }
 
 
@@ -311,6 +278,7 @@ void Main::CreateGeometry()
 // --------------------------------------------------------
 void Main::CreateMatrices()
 {
+	mtx3.lock();
 	// Set up world matrix
 	// - In an actual game, each object will need one of these and they should
 	//   update when/if the object moves (every frame)
@@ -342,6 +310,7 @@ void Main::CreateMatrices()
 		0.1f,						// Near clip plane distance
 		100.0f);					// Far clip plane distance
 	XMStoreFloat4x4(&projectionMatrix, XMMatrixTranspose(P)); // Transpose for HLSL!
+	mtx3.unlock();
 }
 
 #pragma endregion
@@ -361,6 +330,8 @@ void Main::OnResize()
 }
 #pragma endregion
 
+
+
 #pragma region Game Loop
 
 // --------------------------------------------------------
@@ -378,28 +349,27 @@ void Main::UpdateScene(float deltaTime, float totalTime)
 	float speed = 0.25f * deltaTime;
 	float rotation = 0.55f * deltaTime;
 	float buffer = 1.5f; 
-	//update entities
+	
+	// Manipulate matrices
 	for (auto& i : entities)
 	{
 		i->Rotate(0, rotation, 0);
 	}
 
 
-	//Check if mouse held
+	// Input
 	//if (leftmouseHeld) { entities[0]->Move(speed, 0, 0); }
 	//if (middlemouseHeld) { entities[1]->Move(speed, 0, 0); }
 	//if (rightmouseHeld) { entities[2]->Move(speed, 0, 0); }
 
 
 	//update all entities 
-	/*for (unsigned int i = 0; i < entities.size(); i++)
-	{
-		entities[i]->updateScene();
-	}*/
 	for (auto& i : entities)
 	{
 		i->updateScene(); 
 	}
+
+
 	
 	//update Camera and it's input
 	cam->cameraInput(deltaTime); 
@@ -425,6 +395,7 @@ void Main::DrawScene(float deltaTime, float totalTime)
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,
 		1.0f,
 		0);
+	
 
 
 	// Set the vertex and pixel shaders to use for the next Draw() command
@@ -444,7 +415,17 @@ void Main::DrawScene(float deltaTime, float totalTime)
 		i->prepareMaterial(cam->getViewMatrix(), cam->getProjectionMatrix());
 		//draw here 
 		i->drawScene(deviceContext);
+		//i->drawDeferred(deferredContext, commandList);
+
+		// Wait for completion of command list
+		//deferredContext->FinishCommandList(FALSE, &commandList);
+
+		//Execute deferred commands
+		//deviceContext->ExecuteCommandList(commandList, FALSE);
 	}
+
+	//Execute deferred commands
+	//deviceContext->ExecuteCommandList(commandList, FALSE);
 	
 
 
@@ -454,6 +435,8 @@ void Main::DrawScene(float deltaTime, float totalTime)
 	//  - Always at the very end of the frame
 	HR(swapChain->Present(0, 0));
 }
+
+
 
 #pragma endregion
 

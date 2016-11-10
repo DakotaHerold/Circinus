@@ -12,7 +12,7 @@ public:
 	//attributes 
 	Mesh* mesh;
 	Material* material; 
-	
+
 	//getters and setters
 	XMFLOAT3 GetPosition() { return position; }
 	XMFLOAT3 GetRotation() { return rotation;  }
@@ -28,6 +28,7 @@ public:
 	//Class Specific functions 
 	void updateScene(); 
 	void drawScene(ID3D11DeviceContext* deviceContext);
+	void drawDeferred(ID3D11DeviceContext* deferredContext, ID3D11CommandList* commandList);
 	void Move(float x, float y, float z) { position.x += x;	position.y += y;	position.z += z; }
 	void Rotate(float x, float y, float z) { rotation.x += x;	rotation.y += y;	rotation.z += z; }
 	void Scale(float x, float y, float z) { scale.x += x;	scale.y += y;	scale.z += z; }
