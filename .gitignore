@@ -6,6 +6,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+*.sln.iml
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 #*.userprefs
@@ -231,3 +232,4 @@ Engine/Release/*
 Engine/.vs/*
 Engine/Engine/Debug/*
 
+Engine/Engine.VC.db

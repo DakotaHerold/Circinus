@@ -9,6 +9,7 @@
 #include "Entity.h"
 #include "Camera.h"
 #include "Lights.h"
+#include "InputManager.h";
 #include "vld.h"
 
 

@@ -105,6 +105,11 @@ DirectXGameCore::~DirectXGameCore(void)
 // --------------------------------------------------------
 bool DirectXGameCore::Init()
 {
+	#if defined(DEBUG) | defined(_DEBUG)
+	AllocConsole();
+	freopen("CONOUT$", "w", stdout);
+	#endif
+
 	// Create the actual window itself (no DirectX yet)
 	if(!InitMainWindow())
 		return false;

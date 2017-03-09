@@ -134,16 +134,9 @@ bool Main::Init()
 	// with and set up matrices so we can see how to pass data to the GPU.
 	//  - For your own projects, feel free to expand/replace these.
 
-	/*LoadShaders();
+	LoadShaders();
 	CreateGeometry();
-	CreateMatrices();*/
-	// Threading here is significantly faster
-	thread t1([&] { LoadShaders(); });
-	thread t2([&] { CreateGeometry(); });
-	thread t3([&] { CreateMatrices(); });
-	t1.join();
-	t2.join();
-	t3.join();
+	CreateMatrices();
 
 	// Initialize Deferred Context
 	//device->CreateDeferredContext(0, &deferredContext);
@@ -330,14 +323,11 @@ void Main::OnResize()
 }
 #pragma endregion
 
-
-
-#pragma region Game Loop
+#pragma region Engine Loop
 
 // --------------------------------------------------------
 // Update your game here - take input, move objects, etc.
 // --------------------------------------------------------
-float x = 0;
 void Main::UpdateScene(float deltaTime, float totalTime)
 {
 	// Quit if the escape key is pressed
@@ -368,12 +358,12 @@ void Main::UpdateScene(float deltaTime, float totalTime)
 	{
 		i->updateScene(); 
 	}
-
-
 	
 	//update Camera and it's input
 	cam->cameraInput(deltaTime); 
 	cam->update(deltaTime);
+ 
+	//InputManager::instance().GetA(); 
 }
 
 
