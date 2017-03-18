@@ -230,6 +230,9 @@ _Pvt_Extensions
 *.cso
 Engine/Release/*
 Engine/.vs/*
-Engine/Engine/Debug/*
+#Engine/Engine/Debug/*
 
-Engine/Engine.VC.db
+
+*.db
+*.opendb
+*.cso
