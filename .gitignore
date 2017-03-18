@@ -226,8 +226,6 @@ _Pvt_Extensions
 .fake/
 
 # Misc 
-.cso 
-*.cso
 Engine/Release/*
 Engine/.vs/*
 #Engine/Engine/Debug/*
@@ -235,4 +233,3 @@ Engine/.vs/*
 
 *.db
 *.opendb
-*.cso
