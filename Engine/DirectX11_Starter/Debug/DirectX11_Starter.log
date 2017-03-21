@@ -1,0 +1,19 @@
+﻿Build started 3/21/2017 2:57:29 PM.
+     1>Project "D:\DirectX11_Project\Engine\DirectX11_Starter\DirectX11_Starter.vcxproj" on node 2 (Build target(s)).
+     1>Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\DirectX11_Project\Engine\Debug\Engine.exe" /INCREMENTAL /NOLOGO D:\DirectX11_Project\Engine\packages\directxtk_desktop_2015.2017.2.10.1\build\native\../../build/native/lib/Win32/Debug/DirectXTKAudioDX.lib D:\DirectX11_Project\Engine\packages\directxtk_desktop_2015.2017.2.10.1\build\native\../../build/native/lib/Win32/Debug/DirectXTK.lib d3d11.lib d3dcompiler.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"D:\DirectX11_Project\Engine\Debug\Engine.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\DirectX11_Project\Engine\Debug\Engine.lib" /MACHINE:X86 Debug\Camera.obj
+         Debug\Entity.obj
+         Debug\HUD.obj
+         Debug\InputManager.obj
+         Debug\Material.obj
+         Debug\Mesh.obj
+         Debug\Main.obj
+         Debug\dxerr.obj
+         Debug\DirectXGameCore.obj
+         Debug\SimpleShader.obj
+         DirectX11_Starter.vcxproj -> D:\DirectX11_Project\Engine\Debug\Engine.exe
+     1>Done Building Project "D:\DirectX11_Project\Engine\DirectX11_Starter\DirectX11_Starter.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.37
