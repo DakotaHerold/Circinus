@@ -1,12 +1,16 @@
 #pragma once
 
 #include <DirectXMath.h>
+#include <thread>
+#include <mutex>
 #include "DirectXGameCore.h"
 #include "SimpleShader.h"
 #include "Mesh.h"
 #include "Entity.h"
 #include "Camera.h"
 #include "Lights.h"
+#include "InputManager.h";
+#include "vld.h"
 
 
 // Include run-time memory checking in debug builds, so 
@@ -46,14 +50,10 @@ private:
 
 	//Meshes
 	Mesh* meshOne;
-	Mesh* meshTwo;
-	Mesh* meshThree;
 
 	//Entities 
-	Entity* e1;
-	Entity* e2;
-	Entity* e3;
-	vector<Entity*> entities; 
+	int MAX_ENTITIES = 100; 
+	Entity* entities[100]; 
 
 	//Camera
 	Camera* cam; 
@@ -71,6 +71,10 @@ private:
 	bool leftmouseHeld; 
 	bool middlemouseHeld;
 	bool rightmouseHeld;
+
+	// Deferred Rendering
+	ID3D11DeviceContext* deferredContext = NULL;
+	ID3D11CommandList* commandList = NULL;
 
 	// Buffers to hold actual geometry data
 	ID3D11Buffer* vertexBuffer;

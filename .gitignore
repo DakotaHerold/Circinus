@@ -233,3 +233,5 @@ _Pvt_Extensions
 
 *.db
 *.opendb
+*.cso
+*.idb

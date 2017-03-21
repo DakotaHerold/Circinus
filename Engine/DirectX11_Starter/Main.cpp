@@ -67,22 +67,14 @@ Main::Main(HINSTANCE hInstance)
 	// - "Wide" characters take up more space in memory (hence the name)
 	// - This allows for an extended character set (more fancy letters/symbols)
 	// - Lots of Windows functions want "wide characters", so we use the "L"
-	windowCaption = L"My Super Fancy GGP Game";
+	windowCaption = L"DirectX Engine";
 
 	// Custom window size - will be created by Init() later
-	windowWidth = 1280;
-	windowHeight = 720;
-
-
+	windowWidth = 800;
+	windowHeight = 600;
 
 	//initialize
 	meshOne = nullptr;
-	meshTwo = nullptr;
-	meshThree = nullptr;
-
-	e1 = nullptr;
-	e2 = nullptr;
-	e3 = nullptr;
 
 	cam = new Camera(); 
 
@@ -108,13 +100,11 @@ Main::~Main()
 
 	// Delete Meshes
 	delete meshOne;
-	delete meshTwo;
-	delete meshThree;
 
 	//Delete Entities
-	for (int i = 0; i < entities.size(); i++)
+	for (int i = 0; i < MAX_ENTITIES; i++)
 	{
-		delete entities[i];
+		delete entities[i]; 
 	}
 	
 	//Delete Material
@@ -143,9 +133,13 @@ bool Main::Init()
 	// Helper methods to create something to draw, load shaders to draw it 
 	// with and set up matrices so we can see how to pass data to the GPU.
 	//  - For your own projects, feel free to expand/replace these.
+
 	LoadShaders();
-	CreateGeometry();
+	//CreateGeometry();
 	CreateMatrices();
+
+	// Initialize Deferred Context
+	//device->CreateDeferredContext(0, &deferredContext);
 
 	// Tell the input assembler stage of the pipeline what kind of
 	// geometric primitives we'll be using and how to interpret them
@@ -228,65 +222,42 @@ void Main::CreateGeometry()
 	XMFLOAT4 green = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
 	XMFLOAT4 blue = XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
 
-	// Set up the vertices of the triangle we would like to draw
-	// - We're going to copy this array, exactly as it exists in memory
-	//    over to a DirectX-controlled data structure (the vertex buffer)
-	Vertex vertices[] =
-	{
-		{ XMFLOAT3(+0.0f, +1.0f, +0.0f), normal, uv },
-		{ XMFLOAT3(+1.5f, -1.0f, +0.0f), normal, uv },
-		{ XMFLOAT3(-1.5f, -1.0f, +0.0f), normal, uv },
-	};
-
-	// Set up the indices, which tell us which vertices to use and in which order
-	// - This is somewhat redundant for just 3 vertices (it's a simple example)
-	// - Indices are technically not required if the vertices are in the buffer 
-	//    in the correct order and each one will be used exactly once
-	// - But just to see how it's done...
-	unsigned int indices[] = { 0, 1, 2 };
-
 
 	//meshOne = new Mesh(vertices, (int)sizeof(vertices), indices, sizeof(indices), device);
 	meshOne = new Mesh("Models/cube.obj", device); 
 
-
-	//Create second Mesh
-	Vertex triVerts[] =
-	{
-		{XMFLOAT3(+0.0f, +2.0f, +0.0f), normal, uv},
-		{ XMFLOAT3(+2.5f, -0.0f, +0.0f), normal, uv},
-		{ XMFLOAT3(-0.5f, -0.0f, +0.0f), normal, uv},
-	};
-	unsigned int triIndices[] = { 0, 1, 2 };
-
-	//meshTwo = new Mesh(triVerts, (int)sizeof(triVerts), triIndices, sizeof(triIndices), device);
-	meshTwo = new Mesh("Models/cone.obj", device); 
-
-	//Create third Mesh 
-
-	Vertex triTwoVerts[] =
-	{
-		{ XMFLOAT3(+0.0f, -2.0f, +0.0f), normal, uv },
-		{ XMFLOAT3(-2.0f, -0.0f, +0.0f), normal, uv },
-		{ XMFLOAT3(+0.5f, -0.0f, +0.0f), normal, uv },
-	};
-	unsigned int triTwoIndices[] = { 0 , 1, 2 };
-
-	//meshThree = new Mesh(triTwoVerts, (int)sizeof(triTwoVerts), triTwoIndices, sizeof(triTwoIndices), device);
-	meshThree = new Mesh("Models/cone.obj", device); 
-
 	//Create Material 
 	material = new Material(vertexShader, pixelShader); 
 	//Create entities 
-	e1 = new Entity(meshOne, material);
-	e2 = new Entity(meshThree, material);
-	e3 = new Entity(meshTwo, material);
-	//organize entities in vector
-	entities.push_back(e1);
-	entities.push_back(e2);
-	entities.push_back(e3);
-	
+	//Entity* e1 = new Entity(meshOne, material);
+	//Entity* e2 = new Entity(meshThree, material);
+	//Entity* e3 = new Entity(meshTwo, material);
 
+	
+	// Organize fixed amount of entities in array 
+	for (int i = 0; i < MAX_ENTITIES; ++i)
+	{
+		entities[i] = new Entity(meshOne, material);
+		// make entities tiny
+		entities[i]->SetScale(0.25f, 0.25f, 0.25f);
+	}
+	float xPos = 0.0f; 
+	float yPos = 0.0f; 
+	for (int i = 0; i < MAX_ENTITIES; ++i)
+	{
+		if (i % 5 == 0)
+		{
+			xPos = 0.0f; 
+			yPos -= 0.75f; 
+			entities[i]->Move(xPos, yPos, 0);
+		}
+		else
+		{
+			xPos += 0.75f;
+			entities[i]->Move(xPos, yPos , 0);	
+		}
+		
+	}
 }
 
 
@@ -346,12 +317,11 @@ void Main::OnResize()
 }
 #pragma endregion
 
-#pragma region Game Loop
+#pragma region Engine Loop
 
 // --------------------------------------------------------
 // Update your game here - take input, move objects, etc.
 // --------------------------------------------------------
-float x = 0;
 void Main::UpdateScene(float deltaTime, float totalTime)
 {
 	// Quit if the escape key is pressed
@@ -363,29 +333,31 @@ void Main::UpdateScene(float deltaTime, float totalTime)
 	float speed = 0.25f * deltaTime;
 	float rotation = 0.55f * deltaTime;
 	float buffer = 1.5f; 
-	//update entities
-	for (int i = 0; i < entities.size(); i++)
+	
+	// Manipulate matrices
+	for (auto& i : entities)
 	{
-		//rotate all entities 
-		//entities[i]->rotate(XMFLOAT4(0.0f, 1.0f, 0.0f, 0.0f), rotation);
+		i->Rotate(0, rotation, 0);
 	}
 
-	//Check if mouse held
-	//if (leftmouseHeld) { entities[0]->move(XMFLOAT4(speed, 0.f, 0.0f, 0.0f)); }
-	//if (middlemouseHeld) { entities[1]->move(XMFLOAT4(speed, 0.f, 0.0f, 0.0f)); }
-	//if (rightmouseHeld) { entities[2]->move(XMFLOAT4(speed, 0.f, 0.0f, 0.0f)); }
+
+	// Input
+	//if (leftmouseHeld) { entities[0]->Move(speed, 0, 0); }
+	//if (middlemouseHeld) { entities[1]->Move(speed, 0, 0); }
+	//if (rightmouseHeld) { entities[2]->Move(speed, 0, 0); }
 
 
 	//update all entities 
-	for (int i = 0; i < entities.size(); i++)
+	for (auto& i : entities)
 	{
-		entities[i]->updateScene();
+		i->updateScene(); 
 	}
-
 	
 	//update Camera and it's input
 	cam->cameraInput(deltaTime); 
 	cam->update(deltaTime);
+ 
+	//InputManager::instance().GetA(); 
 }
 
 
@@ -407,6 +379,7 @@ void Main::DrawScene(float deltaTime, float totalTime)
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,
 		1.0f,
 		0);
+	
 
 
 	// Set the vertex and pixel shaders to use for the next Draw() command
@@ -415,26 +388,28 @@ void Main::DrawScene(float deltaTime, float totalTime)
 	//    you'll need to swap the current shaders before each draw
 	vertexShader->SetShader(true);
 	pixelShader->SetShader(true);
-	for (int i = 0; i < entities.size(); i++)
-	{
+
+	for (auto& i : entities)
+	{ 
 		// Send data to shader variables
 		//  - Do this ONCE PER OBJECT you're drawing
 		//  - This is actually a complex process of copying data to a local buffer
 		//    and then copying that entire buffer to the GPU.  
 		//  - The "SimpleShader" class handles all of that for you.
-		//XMFLOAT4X4 wm = entities[i]->getWorldMatrix();
-		//vertexShader->SetMatrix4x4("world", wm);
-		//vertexShader->CopyAllBufferData();
-		////draw here 
-		//entities[i]->drawScene(deviceContext);
-		////vertexShader->SetMatrix4x4("view", viewMatrix);
-		//vertexShader->SetMatrix4x4("view", cam->getViewMatrix());
-		//vertexShader->SetMatrix4x4("projection", cam->getProjectionMatrix());
-
-		entities[i]->prepareMaterial(cam->getViewMatrix(), cam->getProjectionMatrix()); 
+		i->prepareMaterial(cam->getViewMatrix(), cam->getProjectionMatrix());
 		//draw here 
-		entities[i]->drawScene(deviceContext);
+		i->drawScene(deviceContext);
+		//i->drawDeferred(deferredContext, commandList);
+
+		// Wait for completion of command list
+		//deferredContext->FinishCommandList(FALSE, &commandList);
+
+		//Execute deferred commands
+		//deviceContext->ExecuteCommandList(commandList, FALSE);
 	}
+
+	//Execute deferred commands
+	//deviceContext->ExecuteCommandList(commandList, FALSE);
 	
 
 
@@ -444,6 +419,8 @@ void Main::DrawScene(float deltaTime, float totalTime)
 	//  - Always at the very end of the frame
 	HR(swapChain->Present(0, 0));
 }
+
+
 
 #pragma endregion
 
@@ -497,8 +474,8 @@ void Main::OnMouseUp(WPARAM btnState, int x, int y)
 void Main::OnMouseMove(WPARAM btnState, int x, int y)
 {
 	//calc Cam coords
-	float camX = x - prevMousePos.x;
-	float camY = y - prevMousePos.y;
+	float camX = x - ((float)prevMousePos.x);
+	float camY = y - ((float)prevMousePos.y);
 	// Save the previous mouse position, so we have it for the future
 	prevMousePos.x = x;
 	prevMousePos.y = y;
