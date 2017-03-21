@@ -337,7 +337,7 @@ void Main::UpdateScene(float deltaTime, float totalTime)
 	// Manipulate matrices
 	for (auto& i : entities)
 	{
-		i->Rotate(0, rotation, 0);
+		//i->Rotate(0, rotation, 0);
 	}
 
 
@@ -350,7 +350,7 @@ void Main::UpdateScene(float deltaTime, float totalTime)
 	//update all entities 
 	for (auto& i : entities)
 	{
-		i->updateScene(); 
+		//i->updateScene(); 
 	}
 	
 	//update Camera and it's input
@@ -396,9 +396,11 @@ void Main::DrawScene(float deltaTime, float totalTime)
 		//  - This is actually a complex process of copying data to a local buffer
 		//    and then copying that entire buffer to the GPU.  
 		//  - The "SimpleShader" class handles all of that for you.
-		i->prepareMaterial(cam->getViewMatrix(), cam->getProjectionMatrix());
+		//i->prepareMaterial(cam->getViewMatrix(), cam->getProjectionMatrix());
 		//draw here 
-		i->drawScene(deviceContext);
+		//i->drawScene(deviceContext);
+
+
 		//i->drawDeferred(deferredContext, commandList);
 
 		// Wait for completion of command list
