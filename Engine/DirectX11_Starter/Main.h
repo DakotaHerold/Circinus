@@ -69,7 +69,7 @@ private:
 
 	//Misc
 	bool leftmouseHeld; 
-	bool middlemouseHeld;
+	bool middleMouseHeld;
 	bool rightmouseHeld;
 
 	// Deferred Rendering

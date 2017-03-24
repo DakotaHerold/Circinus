@@ -79,7 +79,7 @@ Main::Main(HINSTANCE hInstance)
 	cam = new Camera(); 
 
 	leftmouseHeld = false; 
-	middlemouseHeld = false; 
+	middleMouseHeld = false; 
 	rightmouseHeld = false; 
 }
 
@@ -337,7 +337,7 @@ void Main::UpdateScene(float deltaTime, float totalTime)
 	// Manipulate matrices
 	for (auto& i : entities)
 	{
-		//i->Rotate(0, rotation, 0);
+		i->Rotate(0, rotation, 0);
 	}
 
 
@@ -350,7 +350,7 @@ void Main::UpdateScene(float deltaTime, float totalTime)
 	//update all entities 
 	for (auto& i : entities)
 	{
-		//i->updateScene(); 
+		i->updateScene(); 
 	}
 	
 	//update Camera and it's input
@@ -444,9 +444,13 @@ void Main::OnMouseDown(WPARAM btnState, int x, int y)
 	//mouse input
 	if (btnState & 0x0001) { /* Left button is down */ leftmouseHeld = true; } else { leftmouseHeld = false;  }
 	if (btnState & 0x0002) { /* Right button is down */ rightmouseHeld = true; } else { rightmouseHeld = false; }
-	if (btnState & 0x0010) { /* Middle button is down */ middlemouseHeld = true; } else { middlemouseHeld = false; }
-	
+	if (btnState & 0x0010) { /* Middle button is down */ middleMouseHeld = true; } else { middleMouseHeld = false; }
 
+	// Pass values to Input Manager
+	InputManager::instance().SetLeftMouseHeld(leftmouseHeld);
+	InputManager::instance().SetRightMouseHeld(rightmouseHeld);
+	InputManager::instance().SetMiddleMouseHeld(middleMouseHeld);
+	InputManager::instance().SetPrevMousPos(prevMousePos);
 
 	// Caputure the mouse so we keep getting mouse move
 	// events even if the mouse leaves the window.  we'll be
@@ -481,8 +485,12 @@ void Main::OnMouseMove(WPARAM btnState, int x, int y)
 	// Save the previous mouse position, so we have it for the future
 	prevMousePos.x = x;
 	prevMousePos.y = y;
-	
 
+	// Pass values to Input Manager
+	InputManager::instance().SetPrevMousPos(prevMousePos);
+	InputManager::instance().SetMouseMovement(camX, camY); 
+	
+	// TO-DO move this movement funtion call so it can be used by controller input from Input Manager
 	cam->turn(camX, camY); 
 }
 #pragma endregion
