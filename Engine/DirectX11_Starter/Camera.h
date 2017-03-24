@@ -3,6 +3,7 @@
 #include <DirectXMath.h>
 #include "Vertex.h"
 #include "DirectXGameCore.h"
+#include "InputManager.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <d3d11.h>
@@ -57,6 +58,7 @@ private:
 	float pitch; 
 	float yaw; 
 	float cameraMoveSpeed; 
-	float sensitivityBuffer; 
+	float mouseSensitivityBuffer; 
+	float controllerSensitivityBuffer; 
 };
 

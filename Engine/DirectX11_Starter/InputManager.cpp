@@ -7,7 +7,8 @@ InputManager::InputManager()
 	auto state = gamePad->GetState(0); 
 	(state.IsConnected()) ? gamePadEnabled = true : gamePadEnabled = false; 
 	
-	
+	fireLaser = false;
+	fireMissile = false;
 }
 
 
@@ -36,19 +37,52 @@ void InputManager::UpdateInput(float deltaTime)
 			quit = true;
 		}
 
-		// Update Right thumbstick Input
+		// Update Tracker
+		tracker->Update(state);
+
+		// Update Right thumbstick input
 		controllerLookMoveX = state.thumbSticks.rightX;
-		controllerLookMoveX = state.thumbSticks.rightY;
-		//cout << controllerLookMoveX << endl;
-		cout << GetMouseMoveX() << endl; 
+		controllerLookMoveY = -state.thumbSticks.rightY;
+		// Update Left Thumbstick / DPAD Input
+		movingForward = state.IsLeftThumbStickUp() || state.IsDPadUpPressed();
+		movingLeft = state.IsLeftThumbStickLeft() || state.IsDPadLeftPressed();
+		movingBackward = state.IsLeftThumbStickDown() || state.IsDPadDownPressed();
+		movingRight = state.IsLeftThumbStickRight() || state.IsDPadRightPressed();
+		// Triggers
+		ascending = state.IsRightTriggerPressed();
+		descending = state.IsLeftTriggerPressed();
+
+		// A and B. Uses Button State tracker to only set for single press
+		fireLaser = (tracker->a == GamePad::ButtonStateTracker::PRESSED) ? true : false;
+		fireMissile = (tracker->b == GamePad::ButtonStateTracker::PRESSED) ? true : false;
+
+
+
 	}
-	// Keyboard and Mouse --------------------------------------------------------
+	// Keyboard Input. Mouse is updated by event handler in Main.cpp
 	else
 	{
-
+		movingForward = (GetAsyncKeyState('W') & 0x8000) ? true : false;
+		movingLeft = (GetAsyncKeyState('A') & 0x8000) ? true : false;
+		movingBackward = (GetAsyncKeyState('S') & 0x8000) ? true : false;
+		movingRight = (GetAsyncKeyState('D') & 0x8000) ? true : false;
+		ascending = (GetAsyncKeyState(VK_SPACE) & 0x8000) ? true : false;
+		descending = (GetAsyncKeyState('X') & 0x8000) ? true : false;
+		
+		fireLaser = (GetKeyState(VK_CONTROL) & 0x8000) ? true : false;
+		fireMissile = (GetKeyState(VK_LSHIFT) & 0x8000) ? true : false;
+		
 	}
 
-	
+	// Testing 
+	/*if (fireLaser)
+	{
+		cout << "Fired mah lazer!" << endl;
+	}
+	if (fireMissile)
+	{
+		cout << "Fired missile!" << endl;
+	}*/
 }
 
 //GamePad::ButtonStateTracker::ButtonState InputManager::GetA()

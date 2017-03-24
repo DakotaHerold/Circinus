@@ -26,8 +26,9 @@ Camera::Camera()
 		up);     // "Up" direction in 3D space (prevents roll)
 	XMStoreFloat4x4(&viewMatrix, XMMatrixTranspose(V)); // Transpose for HLSL!
 
-	// Initialize sensitivity buffer
-	sensitivityBuffer = 0.0005f;
+	// Initialize sensitivity buffers and speed. Arbitrary. 
+	mouseSensitivityBuffer = 0.0005f;
+	controllerSensitivityBuffer = 0.025f;
 	cameraMoveSpeed = 0.01f;
 }
 
@@ -66,7 +67,7 @@ void Camera::update(float deltaTime)
 
 void Camera::cameraInput(float deltaTime)
 {
-	if (GetAsyncKeyState('W') & 0x8000)
+	/*if (GetAsyncKeyState('W') & 0x8000)
 	{
 		moveForward(cameraMoveSpeed);
 	}
@@ -89,9 +90,38 @@ void Camera::cameraInput(float deltaTime)
 	if (GetAsyncKeyState(VK_SPACE) & 0x8000)
 	{
 		moveVertically(cameraMoveSpeed);
+	}*/
+
+	// Movement
+	if (InputManager::instance().GetMovingForward())
+	{
+		moveForward(cameraMoveSpeed);
 	}
-
-
+	if (InputManager::instance().GetMovingBackward())
+	{
+		moveForward(-cameraMoveSpeed);
+	}
+	if (InputManager::instance().GetMovingLeft())
+	{
+		strafe(-cameraMoveSpeed);
+	}
+	if (InputManager::instance().GetMovingRight())
+	{
+		strafe(cameraMoveSpeed);
+	}
+	if (InputManager::instance().GetDescending())
+	{
+		moveVertically(-cameraMoveSpeed);
+	}
+	if (InputManager::instance().GetAscending())
+	{
+		moveVertically(cameraMoveSpeed);
+	}
+	// Turning
+	if (InputManager::instance().GetGamePadEnabled())
+	{
+		turnWithController(InputManager::instance().GetControllerMoveX(), InputManager::instance().GetControllerMoveY());
+	}
 }
 
 void Camera::rotate(float amt)
@@ -130,8 +160,8 @@ void Camera::strafe(float displacement)
 
 void Camera::turnWithMouse(float dx, float dy)
 {
-	pitch = dy * sensitivityBuffer;
-	yaw = dx * sensitivityBuffer;
+	pitch = dy * mouseSensitivityBuffer;
+	yaw = dx * mouseSensitivityBuffer;
 	pitch = restrictAngle(pitch); 
 	yaw = restrictAngle(yaw); 
 	XMVECTOR fwd = XMLoadFloat3(&forward); 
@@ -144,8 +174,8 @@ void Camera::turnWithMouse(float dx, float dy)
 
 void Camera::turnWithController(float dx, float dy)
 {
-	pitch = dy * 0.0005f;
-	yaw = dx * 0.0005f;
+	pitch = dy * controllerSensitivityBuffer;
+	yaw = dx * controllerSensitivityBuffer;
 	pitch = restrictAngle(pitch);
 	yaw = restrictAngle(yaw);
 	XMVECTOR fwd = XMLoadFloat3(&forward);

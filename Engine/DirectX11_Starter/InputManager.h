@@ -26,11 +26,25 @@ public:
 #pragma region Getters and Setters
 	// Getters
 	bool GetQuit() { return quit;  }
+
+	// Keyboard / Mouse 
 	bool GetLeftMouseHeld() { return leftMouseHeld; }
 	bool GetRightMouseHeld() { return rightMouseHeld; }
 	bool GetMiddleMouseHeld() { return middleMouseHeld; }
+	bool GetMovingForward() { return movingForward; }
+	bool GetMovingBackward() { return movingBackward; }
+	bool GetMovingLeft() { return movingLeft; }
+	bool GetMovingRight() { return movingRight; }
+	bool GetAscending() { return ascending; }
+	bool GetDescending() { return descending; }
+
+	// Controller
 	POINT GetPrevMousePos() { return prevMousePos; }
 	bool GetGamePadEnabled() { return gamePadEnabled; }
+	float GetControllerMoveX() { return controllerLookMoveX; }
+	float GetControllerMoveY() { return controllerLookMoveY; }
+
+
 	float GetMouseMoveX() { return mouseMoveX; }
 	float GetMouseMoveY() { return mouseMoveY; }
 
@@ -40,10 +54,6 @@ public:
 	void SetRightMouseHeld(bool v) { rightMouseHeld = v; }
 	void SetMiddleMouseHeld(bool v) { middleMouseHeld = v; }
 
-	void SetPrevMousPos(float x, float y) { prevMousePos.x = x; prevMousePos.y = y; }
-	void SetPrevMousPos(POINT p) { prevMousePos = p; }
-
-	void SetMouseMovement(float x, float y) { mouseMoveX = x; mouseMoveY = y;  }
 
 #pragma endregion
 
@@ -63,14 +73,18 @@ private:
 	
 	bool quit; 
 
-	// Specific and may need to be abstracted 
+	// Movement Booleans
 	bool movingForward; 
 	bool movingBackward; 
 	bool movingLeft; 
 	bool movingRight; 
 	bool ascending; 
 	bool descending; 
+	// Gameplay Booleans
+	bool fireLaser; 
+	bool fireMissile;
 
+	// Controller Input.
 	float controllerLookMoveX;
 	float controllerLookMoveY;
 

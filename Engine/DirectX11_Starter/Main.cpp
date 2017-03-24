@@ -459,7 +459,6 @@ void Main::OnMouseDown(WPARAM btnState, int x, int y)
 	InputManager::instance().SetLeftMouseHeld(leftmouseHeld);
 	InputManager::instance().SetRightMouseHeld(rightmouseHeld);
 	InputManager::instance().SetMiddleMouseHeld(middleMouseHeld);
-	InputManager::instance().SetPrevMousPos(prevMousePos);
 
 	// Caputure the mouse so we keep getting mouse move
 	// events even if the mouse leaves the window.  we'll be
@@ -494,12 +493,11 @@ void Main::OnMouseMove(WPARAM btnState, int x, int y)
 	// Save the previous mouse position, so we have it for the future
 	prevMousePos.x = x;
 	prevMousePos.y = y;
-
-	// Pass values to Input Manager
-	InputManager::instance().SetPrevMousPos(prevMousePos);
-	InputManager::instance().SetMouseMovement(camX, camY); 
 	
-	// TO-DO move this movement funtion call so it can be used by controller input from Input Manager
-	cam->turnWithMouse(camX, camY); 
+	if (!InputManager::instance().GetGamePadEnabled())
+	{
+		cam->turnWithMouse(camX, camY);
+	}
+	 
 }
 #pragma endregion
