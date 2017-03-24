@@ -25,6 +25,10 @@ Camera::Camera()
 		dir,     // Direction the camera is looking
 		up);     // "Up" direction in 3D space (prevents roll)
 	XMStoreFloat4x4(&viewMatrix, XMMatrixTranspose(V)); // Transpose for HLSL!
+
+	// Initialize sensitivity buffer
+	sensitivityBuffer = 0.0005f;
+	cameraMoveSpeed = 0.01f;
 }
 
 
@@ -62,30 +66,29 @@ void Camera::update(float deltaTime)
 
 void Camera::cameraInput(float deltaTime)
 {
-	float speed = 0.01f;
 	if (GetAsyncKeyState('W') & 0x8000)
 	{
-		moveForward(speed);
+		moveForward(cameraMoveSpeed);
 	}
 	if (GetAsyncKeyState('A') & 0x8000)
 	{
-		strafe(-speed); 
+		strafe(-cameraMoveSpeed);
 	}
 	if (GetAsyncKeyState('S') & 0x8000)
 	{
-		moveForward(-speed); 
+		moveForward(-cameraMoveSpeed);
 	}
 	if (GetAsyncKeyState('D') & 0x8000)
 	{
-		strafe(speed); 
+		strafe(cameraMoveSpeed);
 	}
 	if (GetAsyncKeyState('X') & 0x8000)
 	{
-		moveVertically(-speed);
+		moveVertically(-cameraMoveSpeed);
 	}
 	if (GetAsyncKeyState(VK_SPACE) & 0x8000)
 	{
-		moveVertically(speed);
+		moveVertically(cameraMoveSpeed);
 	}
 
 
@@ -125,10 +128,10 @@ void Camera::strafe(float displacement)
 	XMStoreFloat3(&position, camPos);
 }
 
-void Camera::turn(float dx, float dy)
+void Camera::turnWithMouse(float dx, float dy)
 {
-	pitch = dy * 0.0005f;
-	yaw = dx * 0.0005f;
+	pitch = dy * sensitivityBuffer;
+	yaw = dx * sensitivityBuffer;
 	pitch = restrictAngle(pitch); 
 	yaw = restrictAngle(yaw); 
 	XMVECTOR fwd = XMLoadFloat3(&forward); 
@@ -137,7 +140,20 @@ void Camera::turn(float dx, float dy)
 	fwd = XMVector3TransformCoord(fwd, rotMat); 
 	fwd = XMVector3Normalize(fwd); 
 	XMStoreFloat3(&forward, fwd); 
-	
+}
+
+void Camera::turnWithController(float dx, float dy)
+{
+	pitch = dy * 0.0005f;
+	yaw = dx * 0.0005f;
+	pitch = restrictAngle(pitch);
+	yaw = restrictAngle(yaw);
+	XMVECTOR fwd = XMLoadFloat3(&forward);
+	XMVECTOR camPos = XMLoadFloat3(&position);
+	XMMATRIX rotMat = XMMatrixRotationRollPitchYaw(pitch, yaw, 0.0f);
+	fwd = XMVector3TransformCoord(fwd, rotMat);
+	fwd = XMVector3Normalize(fwd);
+	XMStoreFloat3(&forward, fwd);
 }
 
 float Camera::restrictAngle(float angle)

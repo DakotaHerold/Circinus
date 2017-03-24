@@ -27,7 +27,8 @@ public:
 	void moveForward(float displacement); 
 	void moveVertically(float displacement); 
 	void strafe(float displacement); 
-	void turn(float dx, float dy);
+	void turnWithMouse(float dx, float dy);
+	void turnWithController(float dx, float dy);
 	float restrictAngle(float angle); 
 
 	// Getters and Setters 
@@ -55,6 +56,7 @@ private:
 	XMFLOAT3 direction; 
 	float pitch; 
 	float yaw; 
-	
+	float cameraMoveSpeed; 
+	float sensitivityBuffer; 
 };
 

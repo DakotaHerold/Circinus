@@ -25,6 +25,7 @@ public:
 
 #pragma region Getters and Setters
 	// Getters
+	bool GetQuit() { return quit;  }
 	bool GetLeftMouseHeld() { return leftMouseHeld; }
 	bool GetRightMouseHeld() { return rightMouseHeld; }
 	bool GetMiddleMouseHeld() { return middleMouseHeld; }
@@ -45,7 +46,10 @@ public:
 	void SetMouseMovement(float x, float y) { mouseMoveX = x; mouseMoveY = y;  }
 
 #pragma endregion
-	
+
+#pragma region Class functions
+	void UpdateInput(float deltaTime);
+#pragma endregion
 
 private:
 	// Constructor 
@@ -57,6 +61,8 @@ private:
 	unique_ptr<GamePad> gamePad;
 	unique_ptr<GamePad::ButtonStateTracker> tracker; 
 	
+	bool quit; 
+
 	// Specific and may need to be abstracted 
 	bool movingForward; 
 	bool movingBackward; 
@@ -66,7 +72,7 @@ private:
 	bool descending; 
 
 	float controllerLookMoveX;
-	float controllerLookMoveY; 
+	float controllerLookMoveY;
 
 	// Mouse Input. Set from Main's event calls as they are tied to Windows OS. 
 	bool leftMouseHeld;

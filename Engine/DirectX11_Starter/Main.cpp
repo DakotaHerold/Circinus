@@ -138,6 +138,12 @@ bool Main::Init()
 	CreateGeometry();
 	CreateMatrices();
 
+	// Allocate Console in Debug Mode
+	#if defined(DEBUG) || defined(_DEBUG)
+	AllocConsole();
+	freopen("CONOUT$", "w", stdout);
+	#endif
+
 	// Initialize Deferred Context
 	//device->CreateDeferredContext(0, &deferredContext);
 
@@ -324,12 +330,15 @@ void Main::OnResize()
 // --------------------------------------------------------
 void Main::UpdateScene(float deltaTime, float totalTime)
 {
+	// Update User Input
+	InputManager::instance().UpdateInput(deltaTime); 
+
 	// Quit if the escape key is pressed
-	if (GetAsyncKeyState(VK_ESCAPE))
+	if (InputManager::instance().GetQuit())
 		Quit();
 	
 
-	//constants that control movement  
+	// arbitrary constants that control movement  
 	float speed = 0.25f * deltaTime;
 	float rotation = 0.55f * deltaTime;
 	float buffer = 1.5f; 
@@ -491,6 +500,6 @@ void Main::OnMouseMove(WPARAM btnState, int x, int y)
 	InputManager::instance().SetMouseMovement(camX, camY); 
 	
 	// TO-DO move this movement funtion call so it can be used by controller input from Input Manager
-	cam->turn(camX, camY); 
+	cam->turnWithMouse(camX, camY); 
 }
 #pragma endregion
