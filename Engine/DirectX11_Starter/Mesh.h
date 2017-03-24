@@ -18,20 +18,20 @@ using namespace std;
 class Mesh 
 {
 public:
-	Mesh();
+	Mesh() : vertexBuffer(nullptr), indexBuffer(nullptr), indexCount(0) {}
 	~Mesh();
-	Mesh(Vertex vertices[], int numVerts, unsigned int tempIndices[], int numIndices, ID3D11Device* device);
+	Mesh(Vertex vertices[], int numVerts, unsigned int indices[], int numIndices, ID3D11Device * device);
 	Mesh(char* filename, ID3D11Device* device);
 	ID3D11Buffer* GetVertexBuffer();
 	ID3D11Buffer* GetIndexBuffer();
 	int GetIndexCount();
 
+	void LoadFromMemory(Vertex vertices[], int numVerts, unsigned int indices[], int numIndices, ID3D11Device * device);
+	void LoadFromFile(char* filename, ID3D11Device* device);
 
-private: 
+private:
 	ID3D11Buffer* vertexBuffer; 
 	ID3D11Buffer* indexBuffer;
 	int indexCount; 
-	
-
 };
 

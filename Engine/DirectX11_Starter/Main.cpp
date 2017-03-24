@@ -135,7 +135,7 @@ bool Main::Init()
 	//  - For your own projects, feel free to expand/replace these.
 
 	LoadShaders();
-	//CreateGeometry();
+	CreateGeometry();
 	CreateMatrices();
 
 	// Initialize Deferred Context
@@ -200,10 +200,10 @@ bool Main::Init()
 void Main::LoadShaders()
 {
 	vertexShader = new SimpleVertexShader(device, deviceContext);
-	vertexShader->LoadShaderFile(L"VertexShader.cso");
+	vertexShader->LoadShaderFile(L"Assets/ShaderObjs/VertexShader.cso");
 
 	pixelShader = new SimplePixelShader(device, deviceContext);
-	pixelShader->LoadShaderFile(L"PixelShader.cso");
+	pixelShader->LoadShaderFile(L"Assets/ShaderObjs/PixelShader.cso");
 }
 
 
@@ -224,7 +224,7 @@ void Main::CreateGeometry()
 
 
 	//meshOne = new Mesh(vertices, (int)sizeof(vertices), indices, sizeof(indices), device);
-	meshOne = new Mesh("Models/cube.obj", device); 
+	meshOne = new Mesh("Assets/Models/cube.fbx", device); 
 
 	//Create Material 
 	material = new Material(vertexShader, pixelShader); 
@@ -396,9 +396,9 @@ void Main::DrawScene(float deltaTime, float totalTime)
 		//  - This is actually a complex process of copying data to a local buffer
 		//    and then copying that entire buffer to the GPU.  
 		//  - The "SimpleShader" class handles all of that for you.
-		//i->prepareMaterial(cam->getViewMatrix(), cam->getProjectionMatrix());
+		i->prepareMaterial(cam->getViewMatrix(), cam->getProjectionMatrix());
 		//draw here 
-		//i->drawScene(deviceContext);
+		i->drawScene(deviceContext);
 
 
 		//i->drawDeferred(deferredContext, commandList);

@@ -25,8 +25,8 @@ struct VertexShaderInput
 	//  |    |                |
 	//  v    v                v
 	float3 position		: POSITION;     // XYZ position
-	//float4 color		: COLOR;        // RGBA color
-	float3 normal		: NORMAL; 
+	float3 normal		: NORMAL;
+	float3 tangent		: TANGENT;        // RGBA color
 	float2 uv			: TEXCOORD; 
 };
 
@@ -43,7 +43,7 @@ struct VertexToPixel
 	//  |    |                |
 	//  v    v                v
 	float4 position		: SV_POSITION;	// XYZW position (System Value Position)
-	float3 normal		: NORMAL; 									//float4 color		: COLOR;        // RGBA color
+	float3 normal		: NORMAL;
 	float3 worldPos		: POSITION;
 	float2 uv			: TEXCOORD;
 };

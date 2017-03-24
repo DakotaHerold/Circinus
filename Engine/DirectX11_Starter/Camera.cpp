@@ -62,7 +62,7 @@ void Camera::update(float deltaTime)
 
 void Camera::cameraInput(float deltaTime)
 {
-	float speed = 0.001f;
+	float speed = 0.01f;
 	if (GetAsyncKeyState('W') & 0x8000)
 	{
 		moveForward(speed);
