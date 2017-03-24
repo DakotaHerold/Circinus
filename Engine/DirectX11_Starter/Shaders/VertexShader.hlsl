@@ -88,6 +88,8 @@ VertexToPixel main( VertexShaderInput input )
 	// World position
 	output.worldPos = mul(float4(input.position, 1.0f), world).xyz; 
 
+	output.uv = input.uv;
+
 	// Whatever we return will make its way through the pipeline to the
 	// next programmable stage we're using (the pixel shader for now)
 	return output;

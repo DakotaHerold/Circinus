@@ -58,27 +58,27 @@ cbuffer externalData : register(b0)
 // Helper Functions 
 
 // Directional Light 
-float4 calcDirectionalLight(DirectionalLight light, float3 normal, float strength)
+float3 calcDirectionalLight(DirectionalLight light, float3 normal, float strength)
 {
 	// Direction of DirectionalLight 
 	float3 dir = normalize(-light.Direction);
 	// not sure if needed, normalize to be safe 
 	normal = normalize(normal); 
 	float NdotL = saturate(dot(normal, dir)); 
-	float3 output = light.DiffuseColor * NdotL * strength; 
-	output += light.AmbientColor; 
-	return float4(output, 1); 
+	float3 output = light.DiffuseColor.xyz * NdotL * strength; 
+	output += light.AmbientColor.xyz; 
+	return output;
 }
 
-float calcPointLight(PointLight light, float3 dir, float3 normal)
+float3 calcPointLight(PointLight light, float3 dir, float3 normal)
 {
 	// not sure if needed, normalize to be safe 
 	normal = normalize(normal);
 	float NdotL = saturate(dot(normal, dir)); 
-	return NdotL * light.PointLightColor; 
+	return NdotL * light.PointLightColor.xyz; 
 }
 
-float4 calcSpecularLight(SpecularLight light, float3 normal, float3 viewDir, float intensity, float strength)
+float3 calcSpecularLight(SpecularLight light, float3 normal, float3 viewDir, float intensity, float strength)
 {
 	// Credit to http://www.rastertek.com/dx11tut10.html for reference material 
 
@@ -88,7 +88,7 @@ float4 calcSpecularLight(SpecularLight light, float3 normal, float3 viewDir, flo
 	// Assumes that strength will be greater than 0 
 	float3 reflection = normalize(2 * intensity * normal - dir);
 	float4 specular = pow(saturate(dot(reflection, viewDir)), strength); 
-	return specular * light.SpecularColor;
+	return specular.xyz * light.SpecularColor.xyz;
 }
 
 // --------------------------------------------------------
@@ -109,8 +109,8 @@ float4 main(VertexToPixel input) : SV_TARGET
 
 	// Calculate all lights in scene and output 
 	// variables needed for calculations 
-	float pLight1dir = normalize(pointLight.Position - input.worldPos);
-	float dirToCam = normalize(camPos - input.worldPos); 
+	float3 pLight1dir = normalize(pointLight.Position - input.worldPos);
+	float3 dirToCam = normalize(camPos - input.worldPos); 
 	// Do this by summing calculations from helper functions 
 	float3 output; 
 	input.normal = normalize(input.normal);
