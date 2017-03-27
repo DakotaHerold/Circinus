@@ -278,7 +278,7 @@ void Main::CreateGeometry()
 
 	skyObject = new Entity(skyMesh, skyMaterial);
 	skyObject->SetPosition(cam->getPosition().x, cam->getPosition().y, cam->getPosition().z);
-	//skyObject->Scale(3.0f, 3.0f, 3.0f);
+	skyObject->SetScale(200.0f, 200.0f, 200.0f);
 
 	//	Generic UVs
 	XMFLOAT3 normal = XMFLOAT3(0, 0, -1); 
@@ -564,6 +564,11 @@ void Main::OnMouseUp(WPARAM btnState, int x, int y)
 // --------------------------------------------------------
 void Main::OnMouseMove(WPARAM btnState, int x, int y)
 {
+	if (btnState & 0x0002)
+	{
+		cam->rotate((x - prevMousePos.x) * 0.005f);
+	}
+
 	//calc Cam coords
 	float camX = x - ((float)prevMousePos.x);
 	float camY = y - ((float)prevMousePos.y);
