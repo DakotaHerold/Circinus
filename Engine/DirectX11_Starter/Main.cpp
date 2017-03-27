@@ -156,11 +156,12 @@ bool Main::Init()
 	// Initialize Deferred Context
 	//device->CreateDeferredContext(0, &deferredContext);
 
+	//Reference: SkyMap retrieved from http://www.custommapmakers.org/skyboxes/zips/sor_borg.zip
 	if (S_OK !=
 		CreateDDSTextureFromFile(
 			device,
 			deviceContext,
-			L"Assets/Textures/sky.dds",
+			L"Assets/Textures/space.dds",
 			0,
 			&skyBox)
 		)
