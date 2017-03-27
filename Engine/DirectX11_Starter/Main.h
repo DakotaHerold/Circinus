@@ -11,6 +11,7 @@
 #include "Lights.h"
 #include "InputManager.h"
 #include "vld.h"
+#include "DDSTextureLoader.h"
 
 
 // Include run-time memory checking in debug builds, so 
@@ -48,10 +49,22 @@ private:
 	void CreateGeometry();
 	void CreateMatrices();
 
+	//DirectX related Buffers (for SkyBox)
+	ID3D11RasterizerState* rasterizerState;
+	ID3D11DepthStencilState* depthStencilState;
+
+	//Sampler
+	ID3D11SamplerState* sampler;
+
+	//SkyBox
+	ID3D11ShaderResourceView* skyBox;
+
 	//Meshes
+	Mesh* skyMesh;
 	Mesh* meshOne;
 
 	//Entities 
+	Entity* skyObject;
 	int MAX_ENTITIES = 100; 
 	Entity* entities[100]; 
 
@@ -59,6 +72,7 @@ private:
 	Camera* cam; 
 
 	//Material 
+	Material* skyMaterial;
 	Material* material; 
 
 	//Lights
@@ -83,6 +97,8 @@ private:
 	// Wrappers for DirectX shaders to provide simplified functionality
 	SimpleVertexShader* vertexShader;
 	SimplePixelShader* pixelShader;
+	SimpleVertexShader* skyVertShader;
+	SimplePixelShader* skyPixShader;
 
 	// The matrices to go from model space to screen space
 	DirectX::XMFLOAT4X4 worldMatrix;

@@ -93,21 +93,30 @@ Main::~Main()
 	// Release any D3D stuff that's still hanging out
 	ReleaseMacro(vertexBuffer);
 	ReleaseMacro(indexBuffer);
+	ReleaseMacro(rasterizerState);
+	ReleaseMacro(depthStencilState);
+	ReleaseMacro(sampler);
+	ReleaseMacro(skyBox);
 
 	// Delete our simple shaders
 	delete vertexShader;
 	delete pixelShader;
+	delete skyVertShader;
+	delete skyPixShader;
 
 	// Delete Meshes
+	delete skyMesh;
 	delete meshOne;
 
 	//Delete Entities
+	delete skyObject;
 	for (int i = 0; i < MAX_ENTITIES; i++)
 	{
 		delete entities[i]; 
 	}
 	
 	//Delete Material
+	delete skyMaterial;
 	delete material;
 
 	//Delete Camera
@@ -146,6 +155,45 @@ bool Main::Init()
 
 	// Initialize Deferred Context
 	//device->CreateDeferredContext(0, &deferredContext);
+
+	if (S_OK !=
+		CreateDDSTextureFromFile(
+			device,
+			deviceContext,
+			L"Assets/Textures/sky.dds",
+			0,
+			&skyBox)
+		)
+	{
+		return false;
+	}
+
+	// Create a sampler state for texture sampling
+	D3D11_SAMPLER_DESC samplerDesc = {};
+	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.Filter = D3D11_FILTER_ANISOTROPIC;
+	samplerDesc.MaxAnisotropy = 16;
+	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+
+	// Ask the device to create a state
+	device->CreateSamplerState(&samplerDesc, &sampler);
+
+
+	D3D11_DEPTH_STENCIL_DESC lessEqualsDesc = {};
+	lessEqualsDesc.DepthEnable = true;
+	lessEqualsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	lessEqualsDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+
+	device->CreateDepthStencilState(&lessEqualsDesc, &depthStencilState);
+
+	// Set up a rasterizer state with no culling
+	D3D11_RASTERIZER_DESC rd = {};
+	rd.CullMode = D3D11_CULL_FRONT;
+	rd.FillMode = D3D11_FILL_SOLID;
+	rd.DepthClipEnable = true;
+	device->CreateRasterizerState(&rd, &rasterizerState);
 
 	// Tell the input assembler stage of the pipeline what kind of
 	// geometric primitives we'll be using and how to interpret them
@@ -210,6 +258,12 @@ void Main::LoadShaders()
 
 	pixelShader = new SimplePixelShader(device, deviceContext);
 	pixelShader->LoadShaderFile(L"Assets/ShaderObjs/PixelShader.cso");
+
+	skyVertShader = new SimpleVertexShader(device, deviceContext);
+	skyVertShader->LoadShaderFile(L"Assets/ShaderObjs/VertexShaderSky.cso");
+
+	skyPixShader = new SimplePixelShader(device, deviceContext);
+	skyPixShader->LoadShaderFile(L"Assets/ShaderObjs/PixelShaderSky.cso");
 }
 
 
@@ -218,6 +272,13 @@ void Main::LoadShaders()
 // --------------------------------------------------------
 void Main::CreateGeometry()
 {
+	skyMaterial = new Material(skyVertShader, skyPixShader);
+	skyMesh = new Mesh("Assets/Models/cube.fbx", device);
+
+	skyObject = new Entity(skyMesh, skyMaterial);
+	skyObject->SetPosition(cam->getPosition().x, cam->getPosition().y, cam->getPosition().z);
+	//skyObject->Scale(3.0f, 3.0f, 3.0f);
+
 	//	Generic UVs
 	XMFLOAT3 normal = XMFLOAT3(0, 0, -1); 
 	XMFLOAT2 uv = XMFLOAT2(0, 0); 
@@ -330,6 +391,9 @@ void Main::OnResize()
 // --------------------------------------------------------
 void Main::UpdateScene(float deltaTime, float totalTime)
 {
+	//Skymap position
+	skyObject->SetPosition(cam->getPosition().x, cam->getPosition().y, cam->getPosition().z);
+
 	// Update User Input
 	InputManager::instance().UpdateInput(deltaTime); 
 
@@ -389,7 +453,7 @@ void Main::DrawScene(float deltaTime, float totalTime)
 		1.0f,
 		0);
 	
-
+	deviceContext->RSSetState(nullptr);
 
 	// Set the vertex and pixel shaders to use for the next Draw() command
 	//  - These don't technically need to be set every frame...YET
@@ -422,6 +486,18 @@ void Main::DrawScene(float deltaTime, float totalTime)
 	//Execute deferred commands
 	//deviceContext->ExecuteCommandList(commandList, FALSE);
 	
+	// Draw SkyBox
+
+	deviceContext->RSSetState(rasterizerState);
+	deviceContext->OMSetDepthStencilState(depthStencilState, 1);
+
+	skyObject->prepareMaterial(cam->getViewMatrix(), cam->getProjectionMatrix());
+	skyPixShader->SetSamplerState("linearSampler", sampler);
+	skyPixShader->SetShaderResourceView("skyMap", skyBox);
+	skyObject->drawScene(deviceContext);
+
+	skyVertShader->SetShader();
+	skyPixShader->SetShader();
 
 
 	// Present the buffer
