@@ -89,9 +89,15 @@ void Entity::prepareMaterial(XMFLOAT4X4& view, XMFLOAT4X4& proj)
 
 	// TODO move these outside
 	material->vertexShader->SetMatrix4x4("matView", view); 
-	material->vertexShader->SetMatrix4x4("matProj", proj); 
-	material->pixelShader->SetShaderResourceView("texDiffuse", material->texDiffuse->GetSRV());
-	material->pixelShader->SetSamplerState("sampBasic", material->sampBasic);
+	material->vertexShader->SetMatrix4x4("matProj", proj);
+	if (nullptr != material->texDiffuse)
+	{
+		material->pixelShader->SetShaderResourceView("texDiffuse", material->texDiffuse->GetSRV());
+	}
+	if (nullptr != material->sampBasic)
+	{
+		material->pixelShader->SetSamplerState("sampBasic", material->sampBasic);
+	}
 
 
 	material->vertexShader->SetShader(true); 

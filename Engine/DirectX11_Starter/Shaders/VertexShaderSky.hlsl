@@ -1,8 +1,8 @@
 cbuffer externalData : register(b0)
 {
-	matrix world;
-	matrix view;
-	matrix projection;
+	matrix matWorld;
+	matrix matView;
+	matrix matProj;
 };
 
 struct VertexShaderInput
@@ -23,7 +23,7 @@ VertexToPixel main(VertexShaderInput input)
 	VertexToPixel output;
 
 	//Swizzle such that z == w i.e. z is always 1 i.e. farthest away
-	output.position = mul(mul(mul(input.position, world), view), projection).xyww;
+	output.position = mul(mul(mul(input.position, matWorld), matView), matProj).xyww;
 
 	output.uv = input.position;
 

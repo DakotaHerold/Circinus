@@ -139,10 +139,10 @@
     <FxCompile Include="Shaders\VertexShaderSky.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="Opaque_VS.hlsl">
+    <FxCompile Include="Shaders\Opaque_PS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="Opaque_PS.hlsl">
+    <FxCompile Include="Shaders\Opaque_VS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>
