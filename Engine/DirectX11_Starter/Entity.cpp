@@ -78,12 +78,22 @@ void Entity::drawDeferred(ID3D11DeviceContext * deferredContext, ID3D11CommandLi
 	
 }
 
-void Entity::prepareMaterial(XMFLOAT4X4 view, XMFLOAT4X4 proj)
+void Entity::prepareMaterial(XMFLOAT4X4& view, XMFLOAT4X4& proj)
 {
-	//Prepares material object for reuse 
-	material->vertexShader->SetMatrix4x4("world", worldMatrix); 
-	material->vertexShader->SetMatrix4x4("view", view); 
-	material->vertexShader->SetMatrix4x4("projection", proj); 
+	XMFLOAT4X4 worldMatrixIT;
+	XMStoreFloat4x4(&worldMatrixIT, XMMatrixInverse(nullptr, XMMatrixTranspose(XMLoadFloat4x4(&worldMatrix))));
+
+	//Prepares material object for reuse
+	material->vertexShader->SetMatrix4x4("matWorld", worldMatrix);
+	material->vertexShader->SetMatrix4x4("matWorld_IT", worldMatrixIT);
+
+	// TODO move these outside
+	material->vertexShader->SetMatrix4x4("matView", view); 
+	material->vertexShader->SetMatrix4x4("matProj", proj); 
+	material->pixelShader->SetShaderResourceView("texDiffuse", material->texDiffuse->GetSRV());
+	material->pixelShader->SetSamplerState("sampBasic", material->sampBasic);
+
+
 	material->vertexShader->SetShader(true); 
 	material->pixelShader->SetShader(true); 
 }

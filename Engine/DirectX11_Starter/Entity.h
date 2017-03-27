@@ -32,7 +32,7 @@ public:
 	void Move(float x, float y, float z) { position.x += x;	position.y += y;	position.z += z; }
 	void Rotate(float x, float y, float z) { rotation.x += x;	rotation.y += y;	rotation.z += z; }
 	void Scale(float x, float y, float z) { scale.x += x;	scale.y += y;	scale.z += z; }
-	void prepareMaterial(XMFLOAT4X4 view, XMFLOAT4X4 proj); 
+	void prepareMaterial(XMFLOAT4X4& view, XMFLOAT4X4& proj); 
 private:
 	DirectX::XMFLOAT3 position;
 	DirectX::XMFLOAT3 rotation;

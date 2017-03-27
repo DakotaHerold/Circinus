@@ -90,6 +90,8 @@ Main::Main(HINSTANCE hInstance)
 // --------------------------------------------------------
 Main::~Main()
 {
+	ReleaseMacro(sampBasic);
+
 	// Release any D3D stuff that's still hanging out
 	ReleaseMacro(vertexBuffer);
 	ReleaseMacro(indexBuffer);
@@ -255,11 +257,13 @@ bool Main::Init()
 void Main::LoadShaders()
 {
 	vertexShader = new SimpleVertexShader(device, deviceContext);
-	vertexShader->LoadShaderFile(L"Assets/ShaderObjs/VertexShader.cso");
+	//vertexShader->LoadShaderFile(L"Assets/ShaderObjs/VertexShader.cso");
+	vertexShader->LoadShaderFile(L"Assets/ShaderObjs/Opaque_VS.cso");
 
 	pixelShader = new SimplePixelShader(device, deviceContext);
-	pixelShader->LoadShaderFile(L"Assets/ShaderObjs/PixelShader.cso");
-
+	//pixelShader->LoadShaderFile(L"Assets/ShaderObjs/PixelShader.cso");
+	pixelShader->LoadShaderFile(L"Assets/ShaderObjs/Opaque_PS.cso");
+	
 	skyVertShader = new SimpleVertexShader(device, deviceContext);
 	skyVertShader->LoadShaderFile(L"Assets/ShaderObjs/VertexShaderSky.cso");
 
@@ -296,6 +300,20 @@ void Main::CreateGeometry()
 
 	//Create Material 
 	material = new Material(vertexShader, pixelShader); 
+
+	texDiffuse.LoadTextureFromFile(L"Assets/Textures/crate.png", device);
+	material->texDiffuse = &texDiffuse;
+
+	D3D11_SAMPLER_DESC sampDesc = {};
+	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
+	HR(device->CreateSamplerState(&sampDesc, &sampBasic));
+
+	material->sampBasic = sampBasic;
+
 	//Create entities 
 	//Entity* e1 = new Entity(meshOne, material);
 	//Entity* e2 = new Entity(meshThree, material);

@@ -5,6 +5,8 @@
 #include <mutex>
 #include "DirectXGameCore.h"
 #include "SimpleShader.h"
+#include "Texture.h"
+#include "Material.h"
 #include "Mesh.h"
 #include "Entity.h"
 #include "Camera.h"
@@ -99,6 +101,9 @@ private:
 	SimplePixelShader* pixelShader;
 	SimpleVertexShader* skyVertShader;
 	SimplePixelShader* skyPixShader;
+
+	Texture texDiffuse;
+	ID3D11SamplerState*	sampBasic;
 
 	// The matrices to go from model space to screen space
 	DirectX::XMFLOAT4X4 worldMatrix;

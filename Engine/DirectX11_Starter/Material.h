@@ -1,5 +1,7 @@
 #pragma once
 #include "SimpleShader.h"
+#include "Texture.h"
+
 class Material
 {
 public:
@@ -8,6 +10,8 @@ public:
 	~Material();
 	
 	SimpleVertexShader* vertexShader; 
-	SimplePixelShader* pixelShader; 
+	SimplePixelShader* pixelShader;
+	Texture* texDiffuse;
+	ID3D11SamplerState* sampBasic;
 };
 
