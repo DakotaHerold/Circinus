@@ -112,4 +112,5 @@ void Transform::UpdateMatrix()
 	}
 
 	dirty = false;
+	modified = true;
 }

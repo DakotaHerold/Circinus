@@ -29,6 +29,7 @@ private:
 private:
 	Transform*				parent;
 	bool					dirty;
+	bool					modified;
 
 	DirectX::XMFLOAT3		position;
 	DirectX::XMFLOAT3		rotation;

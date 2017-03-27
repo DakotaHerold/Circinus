@@ -21,6 +21,38 @@
 //
 // ----------------------------------------------------------------------------
 
+#define TEST_RENDERING_SYSTEM 1
+
+#if defined(TEST_RENDERING_SYSTEM)
+
+#include "NativeWindow.h"
+#include "RenderingSystem.h"
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPSTR cmdLine, int showCmd)
+{	
+	// Enable run-time memory check for debug builds.
+#if defined(DEBUG) | defined(_DEBUG)
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
+
+	NativeWindow window;
+	RenderingSystem renderer;
+
+	if (!window.Init() || !renderer.Init(window.GetWindowHandle()))
+		return 0;
+
+	while (!window.WindowIsClosed())
+	{
+		window.ProcessEvent();
+		renderer.UpdateScene(window.GetDeltaTime(), window.GetTotalTime());
+		renderer.DrawScene();
+	}
+
+	return 0;
+}
+
+#else
+
 #include "Main.h"
 #include "Vertex.h"
 
@@ -601,3 +633,5 @@ void Main::OnMouseMove(WPARAM btnState, int x, int y)
 	 
 }
 #pragma endregion
+
+#endif
