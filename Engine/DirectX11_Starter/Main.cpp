@@ -21,7 +21,7 @@
 //
 // ----------------------------------------------------------------------------
 
-#define TEST_RENDERING_SYSTEM 1
+//#define TEST_RENDERING_SYSTEM 1
 
 #if defined(TEST_RENDERING_SYSTEM)
 

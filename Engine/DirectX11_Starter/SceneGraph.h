@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vector>
+#include "Renderable.h"
 
-class Renderable;
+#include <vector>
 
 class SceneGraph
 {

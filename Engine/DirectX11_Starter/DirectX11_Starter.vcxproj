@@ -91,6 +91,7 @@
     <ClCompile Include="DirectXGameCore.cpp" />
     <ClCompile Include="NativeWindow.cpp" />
     <ClCompile Include="RenderingSystem.cpp" />
+    <ClCompile Include="SceneGraph.cpp" />
     <ClCompile Include="SimpleShader.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Transform.cpp" />
@@ -109,6 +110,7 @@
     <ClInclude Include="DirectXGameCore.h" />
     <ClInclude Include="NativeWindow.h" />
     <ClInclude Include="RenderingSystem.h" />
+    <ClInclude Include="SceneGraph.h" />
     <ClInclude Include="SimpleShader.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Transform.h" />

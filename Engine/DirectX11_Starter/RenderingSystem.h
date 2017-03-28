@@ -39,6 +39,7 @@
 #endif
 #endif
 
+class SceneGraph;
 
 class RenderingSystem
 {
