@@ -27,6 +27,7 @@
 
 #include "NativeWindow.h"
 #include "RenderingSystem.h"
+#include "SceneGraph.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPSTR cmdLine, int showCmd)
 {	
@@ -41,11 +42,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPSTR cmdLine, i
 	if (!window.Init() || !renderer.Init(window.GetWindowHandle()))
 		return 0;
 
+	SceneGraph scene;
+
+	Renderable* r = scene.CreateRenderable();
+	
+
 	while (!window.WindowIsClosed())
 	{
 		window.ProcessEvent();
-		renderer.UpdateScene(window.GetDeltaTime(), window.GetTotalTime());
-		renderer.DrawScene();
+		renderer.DrawScene(&scene);
 	}
 
 	return 0;

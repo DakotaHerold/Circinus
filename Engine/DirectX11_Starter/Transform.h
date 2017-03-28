@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include <DirectXMath.h>
 
 class Transform
@@ -37,4 +38,7 @@ private:
 
 	DirectX::XMFLOAT4X4		matLocal;
 	DirectX::XMFLOAT4X4		matWorld;
+
+private:
+	// TODO allocator for transforms;
 };

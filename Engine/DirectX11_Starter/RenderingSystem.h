@@ -1,14 +1,3 @@
-// -------------------------------------------------------------
-//  Base class for a DirectX 11 Game, borrowing from
-//  the structure set up by Frank D. Luna in "3D Game
-//  Programming with DirectX 11" (d3dApp.h & d3dApp.cpp)
-//
-//  This version doesn't rely on D3DX or the Effect framework,
-//  as these libraries are deprecated.
-//
-//  You should not need to edit this class at all.
-// -------------------------------------------------------------
-
 #pragma once
 
 #include <Windows.h>
@@ -50,21 +39,18 @@
 #endif
 #endif
 
-// --------------------------------------------------------
-// The core class for the DirectX Starter Code
-// --------------------------------------------------------
+
 class RenderingSystem
 {
 public:
 	RenderingSystem();
-	virtual ~RenderingSystem(void);
+	~RenderingSystem(void);
 
 	// Methods called by the game loop - override these in
 	// derived classes to implement custom functionality
 	bool Init(void* wndHandle);
 	void OnResize(int windowWidth, int windowHeight);
-	void UpdateScene(float deltaTime, float totalTime);
-	void DrawScene();
+	void DrawScene(SceneGraph* scene);
 
 protected:
 	// Handles Direct3D initialization

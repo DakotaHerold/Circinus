@@ -10,6 +10,7 @@
 // -------------------------------------------------------------
 
 #include "RenderingSystem.h"
+#include "SceneGraph.h"
 #include <WindowsX.h>
 #include <sstream>
 
@@ -214,13 +215,10 @@ void RenderingSystem::OnResize(int windowWidth, int windowHeight)
 }
 #pragma endregion
 
-#pragma region Game Loop
+#pragma region Draw
 
-void RenderingSystem::UpdateScene(float deltaTime, float totalTime)
-{
-}
 
-void RenderingSystem::DrawScene()
+void RenderingSystem::DrawScene(SceneGraph* scene)
 {
 }
 
