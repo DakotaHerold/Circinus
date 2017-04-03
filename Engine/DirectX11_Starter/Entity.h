@@ -1,6 +1,8 @@
 #pragma once
 #include "Mesh.h"
 #include "Material.h"
+#include "Component.h"
+#include "ComponentType.h"
 
 using namespace DirectX; 
 
@@ -33,12 +35,27 @@ public:
 	void Rotate(float x, float y, float z) { rotation.x += x;	rotation.y += y;	rotation.z += z; }
 	void Scale(float x, float y, float z) { scale.x += x;	scale.y += y;	scale.z += z; }
 	void prepareMaterial(XMFLOAT4X4& view, XMFLOAT4X4& proj); 
+
+	void Update();
+
+
+	//Component functions
+	bool AddComponent(Component* com);
+	bool RemoveComponent(ComponentType type);
+	Component* GetComponent(ComponentType type);
+	
+
+
+	
+
 private:
 	DirectX::XMFLOAT3 position;
 	DirectX::XMFLOAT3 rotation;
 	DirectX::XMFLOAT3 scale;
 	XMFLOAT4X4 worldMatrix;
+	vector <Component*> allComponets;
 	
 
 };
+
 

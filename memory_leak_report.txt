@@ -1,0 +1,1371 @@
+Visual Leak Detector Version 2.5 installed.
+    Outputting the report to the debugger and to C:\Users\xiaobei\Desktop\GameEngine\DirectX11_Project\memory_leak_report.txt
+WARNING: Visual Leak Detector detected memory leaks!
+---------- Block 1160589 at 0x00A12A88: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1245458 at 0x00A12CF0: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 590968 at 0x00A6AEB8: 4 bytes ----------
+  Leak Hash: 0x9BA43227, Count: 1, Total 4 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    c:\program files (x86)\microsoft visual studio 14.0\vc\include\xmemory0 (977): Engine.exe!std::_Wrap_alloc<std::allocator<Component *> >::allocate()
+    c:\program files (x86)\microsoft visual studio 14.0\vc\include\vector (1602): Engine.exe!std::vector<Component *,std::allocator<Component *> >::_Reallocate() + 0x13 bytes
+    c:\program files (x86)\microsoft visual studio 14.0\vc\include\vector (1633): Engine.exe!std::vector<Component *,std::allocator<Component *> >::_Reserve()
+    c:\program files (x86)\microsoft visual studio 14.0\vc\include\vector (1291): Engine.exe!std::vector<Component *,std::allocator<Component *> >::push_back()
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\entity.cpp (131): Engine.exe!Entity::AddComponent()
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x72 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    68 86 BE 03                                                  h....... ........
+
+
+---------- Block 1155690 at 0x030D0770: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1248724 at 0x030D08C0: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1250357 at 0x031167A8: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1240559 at 0x03116BD0: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    B8 75 BB 03    00 00 00 00                    .....u.. ........
+
+
+---------- Block 594234 at 0x03120408: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 595867 at 0x03120440: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 597500 at 0x03120478: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 590967 at 0x031204B0: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    B8 75 BB 03    00 00 00 00                    .....u.. ........
+
+
+---------- Block 592601 at 0x031205C8: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 599133 at 0x03120718: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1162222 at 0x03120750: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1247091 at 0x03120788: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1242192 at 0x03134F08: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 13194 at 0x03BB02D0: 8 bytes ----------
+  Leak Hash: 0xC41566EF, Count: 1, Total 8 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    c:\program files (x86)\microsoft visual studio 14.0\vc\include\xmemory0 (977): Engine.exe!std::_Wrap_alloc<std::allocator<std::_Container_proxy> >::allocate()
+    c:\program files (x86)\microsoft visual studio 14.0\vc\include\vector (580): Engine.exe!std::_Vector_alloc<std::_Vec_base_types<Component *,std::allocator<Component *> > >::_Alloc_proxy() + 0xA bytes
+    c:\program files (x86)\microsoft visual studio 14.0\vc\include\vector (546): Engine.exe!std::_Vector_alloc<std::_Vec_base_types<Component *,std::allocator<Component *> > >::_Vector_alloc<std::_Vec_base_types<Component *,std::allocator<Component *> > >()
+    c:\program files (x86)\microsoft visual studio 14.0\vc\include\vector (708): Engine.exe!std::vector<Component *,std::allocator<Component *> >::vector<Component *,std::allocator<Component *> >()
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\entity.cpp (14): Engine.exe!Entity::Entity() + 0x37 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (389): Engine.exe!Main::CreateGeometry() + 0x4C bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (187): Engine.exe!Main::Init()
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (85): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    24 76 BB 03    00 00 00 00                                   $v...... ........
+
+
+---------- Block 1158956 at 0x03BB0538: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 834156 at 0x03BB0810: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 842321 at 0x03BB08B8: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 839055 at 0x03BB08F0: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 843954 at 0x03BB0928: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 840688 at 0x03BB0998: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 845587 at 0x03BB09D0: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 847220 at 0x03BB0A08: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1150785 at 0x03BB0B90: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    B8 75 BB 03    00 00 00 00                    .....u.. ........
+
+
+---------- Block 832523 at 0x03BB0BC8: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    B8 75 BB 03    00 00 00 00                    .....u.. ........
+
+
+---------- Block 1152418 at 0x03BB0C00: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1154051 at 0x03BB0C38: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 835789 at 0x03BB0D18: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 600766 at 0x03BB0E30: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 837422 at 0x03BB0E68: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1243825 at 0x03BB1108: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1157323 at 0x03BB1568: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 13193 at 0x03BB75B8: 124 bytes ----------
+  Leak Hash: 0x85EA8FD4, Count: 1, Total 124 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (389): Engine.exe!Main::CreateGeometry() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (187): Engine.exe!Main::Init()
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (85): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    88 14 BB 03    E0 29 BB 03    00 00 00 00    00 00 00 00     .....).. ........
+    00 00 00 00    00 00 00 00    00 00 00 00    00 00 00 00     ........ ........
+    00 00 00 40    00 00 00 40    00 00 00 40    00 00 80 3F     ...@...@ ...@...?
+    00 00 00 00    00 00 00 00    00 00 00 00    00 00 00 00     ........ ........
+    00 00 80 3F    00 00 00 00    00 00 00 00    00 00 00 00     ...?.... ........
+    00 00 00 00    00 00 80 3F    00 00 00 00    00 00 00 00     .......? ........
+    00 00 00 00    00 00 00 00    00 00 80 3F    D0 02 BB 03     ........ ...?....
+    B8 AE A6 00    B8 AE A6 00    BC AE A6 00                    ........ ........
+
+
+---------- Block 1323819 at 0x03BE84E0: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1364629 at 0x03BE8518: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1322186 at 0x03BE8550: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1317287 at 0x03BE8588: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    B8 75 BB 03    00 00 00 00                    .....u.. ........
+
+
+---------- Block 1299332 at 0x03BE85C0: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1369528 at 0x03BE85F8: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1296066 at 0x03BE8630: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    B8 75 BB 03    00 00 00 00                    .....u.. ........
+
+
+---------- Block 1384218 at 0x03BE8668: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    B8 75 BB 03    00 00 00 00                    .....u.. ........
+
+
+---------- Block 1276473 at 0x03BE86A0: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1348306 at 0x03BE86D8: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1366262 at 0x03BE8710: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1349939 at 0x03BE8748: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1325452 at 0x03BE8780: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1346673 at 0x03BE87B8: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1343407 at 0x03BE87F0: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1345040 at 0x03BE8828: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1273207 at 0x03BE8860: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1367895 at 0x03BE8898: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1371161 at 0x03BE88D0: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1385851 at 0x03BE8908: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1341774 at 0x03BE8940: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1300965 at 0x03BE8978: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1278106 at 0x03BE89B0: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1320553 at 0x03BE89E8: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1271574 at 0x03BE8A20: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    B8 75 BB 03    00 00 00 00                    .....u.. ........
+
+
+---------- Block 1318920 at 0x03BE8A58: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1340141 at 0x03BE8A90: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    B8 75 BB 03    00 00 00 00                    .....u.. ........
+
+
+---------- Block 1274840 at 0x03BE8AC8: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1297699 at 0x03BE8B00: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1279739 at 0x03BE8B38: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1362996 at 0x03BE8B70: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    B8 75 BB 03    00 00 00 00                    .....u.. ........
+
+
+---------- Block 1302598 at 0x03BE8BA8: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1390750 at 0x03BE8BE0: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1387484 at 0x03BE8C50: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1389117 at 0x03BE8C88: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+---------- Block 1392383 at 0x03BE8D68: 12 bytes ----------
+  Leak Hash: 0x49326398, Count: 1, Total 12 bytes
+  Call Stack (TID 3612):
+    ucrtbased.dll!malloc()
+    f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): Engine.exe!operator new() + 0x9 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (500): Engine.exe!Main::UpdateScene() + 0x7 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\directxgamecore.cpp (348): Engine.exe!DirectXGameCore::Run() + 0x31 bytes
+    c:\users\xiaobei\desktop\gameengine\directx11_project\engine\directx11_starter\main.cpp (89): Engine.exe!WinMain() + 0xB bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (99): Engine.exe!invoke_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (253): Engine.exe!__scrt_common_main_seh() + 0x5 bytes
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl (296): Engine.exe!__scrt_common_main()
+    f:\dd\vctools\crt\vcstartup\src\startup\exe_winmain.cpp (17): Engine.exe!WinMainCRTStartup()
+    KERNEL32.DLL!BaseThreadInitThunk() + 0x24 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x439 bytes
+    ntdll.dll!RtlSubscribeWnfStateChangeNotification() + 0x404 bytes
+  Data:
+    A8 E1 00 01    00 00 00 00    00 00 00 00                    ........ ........
+
+
+Visual Leak Detector detected 71 memory leaks (3508 bytes).
+Largest number used: 2129444 bytes.
+Total allocations: 79463044 bytes.
+Visual Leak Detector is now exiting.
