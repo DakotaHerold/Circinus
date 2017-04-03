@@ -14,6 +14,8 @@
 #include "InputManager.h"
 #include "vld.h"
 #include "DDSTextureLoader.h"
+#include "TestCom.h"
+#include "ComponentType.h"
 
 
 // Include run-time memory checking in debug builds, so 
@@ -69,6 +71,7 @@ private:
 	Entity* skyObject;
 	int MAX_ENTITIES = 100; 
 	Entity* entities[100]; 
+	Entity* testEnt;
 
 	//Camera
 	Camera* cam; 

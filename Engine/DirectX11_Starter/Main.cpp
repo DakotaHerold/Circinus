@@ -185,6 +185,10 @@ bool Main::Init()
 	LoadShaders();
 	CreateGeometry();
 	CreateMatrices();
+	
+	
+	
+	//
 
 	// Allocate Console in Debug Mode
 	#if defined(DEBUG) || defined(_DEBUG)
@@ -321,6 +325,7 @@ void Main::CreateGeometry()
 	skyObject->SetPosition(cam->getPosition().x, cam->getPosition().y, cam->getPosition().z);
 	skyObject->SetScale(200.0f, 200.0f, 200.0f);
 
+	
 	//	Generic UVs
 	XMFLOAT3 normal = XMFLOAT3(0, 0, -1); 
 	XMFLOAT2 uv = XMFLOAT2(0, 0); 
@@ -381,6 +386,9 @@ void Main::CreateGeometry()
 		}
 		
 	}
+	testEnt = new Entity(meshOne, material);
+	testEnt->SetScale(2, 2, 2);
+	testEnt->SetPosition(0, 0, 0);
 }
 
 
@@ -487,6 +495,24 @@ void Main::UpdateScene(float deltaTime, float totalTime)
 	cam->update(deltaTime);
  
 	//InputManager::instance().GetA(); 
+	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+	{
+		if (testEnt->AddComponent(new TestCom())) {
+			cout << "yes" << endl;
+		}
+		else {
+			cout << "no" << endl;
+		}
+	}
+	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+	{
+		if (testEnt->RemoveComponent(TestComponent)) {
+			cout << "yes" << endl;
+		}
+		else {
+			cout << "no" << endl;
+		}
+	}
 }
 
 
@@ -539,6 +565,9 @@ void Main::DrawScene(float deltaTime, float totalTime)
 		//deviceContext->ExecuteCommandList(commandList, FALSE);
 	}
 
+	testEnt->prepareMaterial(cam->getViewMatrix(), cam->getProjectionMatrix());
+	testEnt->drawScene(deviceContext);
+	testEnt->Update();
 	//Execute deferred commands
 	//deviceContext->ExecuteCommandList(commandList, FALSE);
 	

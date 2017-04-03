@@ -2,6 +2,12 @@
 
 Entity::~Entity()
 {
+	//delete components
+	for each (Component* var in allComponets)
+	{
+		var->Release();
+	}
+	allComponets.clear();
 }
 
 Entity::Entity(Mesh * inputMesh, Material* inputMaterial)
@@ -102,6 +108,49 @@ void Entity::prepareMaterial(XMFLOAT4X4& view, XMFLOAT4X4& proj)
 
 	material->vertexShader->SetShader(true); 
 	material->pixelShader->SetShader(true); 
+}
+
+void Entity::Update()
+{
+	for (int i = 0; i < allComponets.size(); i++) {
+		allComponets[i]->Update();
+	}
+}
+
+bool Entity::AddComponent(Component* com)
+{
+	vector<Component*>::iterator itr = allComponets.begin();
+	int i = 0;
+	for (unsigned i = 0; i < allComponets.size(); i++) {
+		if (allComponets[i]->GetType() == com->GetType()) {
+			return false;
+		}
+	}
+	com->SetEntity(this);
+	allComponets.push_back(com);
+	return true;
+}
+
+bool Entity::RemoveComponent(ComponentType type)
+{	
+	int i = 0;
+	for (unsigned i = 0; i < allComponets.size();i++) {
+		if (allComponets[i]->GetType() == type) {
+			allComponets.erase(allComponets.begin() + i);
+			return true;
+		}
+	}
+	return false;
+}
+
+Component * Entity::GetComponent(ComponentType type)
+{
+	for (int i = 0; i < allComponets.size(); i++) {
+		if (allComponets[i]->GetType() == type) {
+			return allComponets[i];
+		}
+	}
+	return nullptr;
 }
 
 
