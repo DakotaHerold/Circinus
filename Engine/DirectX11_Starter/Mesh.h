@@ -2,36 +2,38 @@
 
 #include <DirectXMath.h>
 #include "Vertex.h"
-#include "DirectXGameCore.h"
-#include <d3d11.h>
-#include <iostream>
-#include <fstream>
-#include <vector>
 
-#if defined(DEBUG) || defined(_DEBUG)
-#define _CRTDBG_MAP_ALLOC
-#include <crtdbg.h>
-#endif
+struct ID3D11Device;
+struct ID3D11Buffer;
 
-using namespace std; 
+class RenderingSystem;
 
-class Mesh 
+class Mesh
 {
-public:
-	Mesh() : vertexBuffer(nullptr), indexBuffer(nullptr), indexCount(0) {}
-	~Mesh();
-	Mesh(Vertex vertices[], int numVerts, unsigned int indices[], int numIndices, ID3D11Device * device);
-	Mesh(char* filename, ID3D11Device* device);
-	ID3D11Buffer* GetVertexBuffer();
-	ID3D11Buffer* GetIndexBuffer();
-	int GetIndexCount();
+private:
+	friend class RenderingSystem;
 
-	void LoadFromMemory(Vertex vertices[], int numVerts, unsigned int indices[], int numIndices, ID3D11Device * device);
-	void LoadFromFile(char* filename, ID3D11Device* device);
+	Mesh() : valid(false), vertexBuffer(nullptr), indexBuffer(nullptr), indexCount(0) {}
+	~Mesh();
+
+	void CleanUp();
+
+	bool LoadFromMemory(Vertex vertices[], int numVerts, unsigned int indices[], int numIndices, ID3D11Device * device);
+	bool LoadFromFile(const char* filename, ID3D11Device* device);
+
+public:
+
+	bool IsValid() const { return valid; }
+
+	// TODO delete them
+	ID3D11Buffer* GetVertexBuffer() { return vertexBuffer; }
+	ID3D11Buffer* GetIndexBuffer() { return indexBuffer; }
+	int GetIndexCount() { return indexCount; }
 
 private:
-	ID3D11Buffer* vertexBuffer; 
-	ID3D11Buffer* indexBuffer;
-	int indexCount; 
+	bool			valid;
+	ID3D11Buffer*	vertexBuffer;
+	ID3D11Buffer*	indexBuffer;
+	int				indexCount;
 };
 

@@ -2,6 +2,7 @@
 
 #include <Windows.h>
 #include <string>
+#include <functional>
 
 class NativeWindow
 {
@@ -18,6 +19,8 @@ public:
 	void* GetWindowHandle() const { return (void*)hMainWnd; }
 
 	bool WindowIsClosed() const { return quit; }
+
+	void SetResizeCallback(const std::function<void(int, int)>& func) { callbackOnResize = func; }
 
 private:
 	// Handles window initialization
@@ -73,4 +76,6 @@ private:
 	float deltaTime;
 
 	bool quit;
+
+	std::function<void(int, int)>	callbackOnResize;
 };

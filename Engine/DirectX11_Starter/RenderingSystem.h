@@ -2,9 +2,16 @@
 
 #include <Windows.h>
 #include <string>
+#include <vector>
+#include <unordered_map>
 #include <d3d11.h>
 
 #include "dxerr.h"
+
+#include "Mesh.h"
+#include "Shader.h"
+#include "Texture.h"
+#include "Material.h"
 
 // --------------------------------------------------------
 // Convenience macro for releasing COM objects.
@@ -39,6 +46,7 @@
 #endif
 #endif
 
+class NativeWindow;
 class SceneGraph;
 
 class RenderingSystem
@@ -47,13 +55,28 @@ public:
 	RenderingSystem();
 	~RenderingSystem(void);
 
-	// Methods called by the game loop - override these in
-	// derived classes to implement custom functionality
-	bool Init(void* wndHandle);
+	bool Init(NativeWindow* win);
+
 	void OnResize(int windowWidth, int windowHeight);
+
 	void DrawScene(SceneGraph* scene);
 
-protected:
+public:
+	Mesh* CreateMesh(const char* filename);
+
+	Shader* CreateShader(const wchar_t* filename);
+
+	Texture* CreateTexture(const wchar_t* filename);
+
+	Material* CreateMaterial(Shader* shader);
+
+private:
+	std::unordered_map<std::string, Mesh*>		meshes;
+	std::unordered_map<std::wstring, Shader*>	shaders;
+	std::unordered_map<std::wstring, Texture*>	textures;
+	std::vector<Material*>						materials;
+
+private:
 	// Handles Direct3D initialization
 	bool InitDirect3D(void* wndHandle);
 

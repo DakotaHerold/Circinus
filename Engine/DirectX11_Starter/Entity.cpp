@@ -84,24 +84,24 @@ void Entity::prepareMaterial(XMFLOAT4X4& view, XMFLOAT4X4& proj)
 	XMStoreFloat4x4(&worldMatrixIT, XMMatrixInverse(nullptr, XMMatrixTranspose(XMLoadFloat4x4(&worldMatrix))));
 
 	//Prepares material object for reuse
-	material->vertexShader->SetMatrix4x4("matWorld", worldMatrix);
-	material->vertexShader->SetMatrix4x4("matWorld_IT", worldMatrixIT);
+	//material->vertexShader->SetMatrix4x4("matWorld", worldMatrix);
+	//material->vertexShader->SetMatrix4x4("matWorld_IT", worldMatrixIT);
 
-	// TODO move these outside
-	material->vertexShader->SetMatrix4x4("matView", view); 
-	material->vertexShader->SetMatrix4x4("matProj", proj);
-	if (nullptr != material->texDiffuse)
-	{
-		material->pixelShader->SetShaderResourceView("texDiffuse", material->texDiffuse->GetSRV());
-	}
-	if (nullptr != material->sampBasic)
-	{
-		material->pixelShader->SetSamplerState("sampBasic", material->sampBasic);
-	}
+	//// TODO move these outside
+	//material->vertexShader->SetMatrix4x4("matView", view); 
+	//material->vertexShader->SetMatrix4x4("matProj", proj);
+	//if (nullptr != material->texDiffuse)
+	//{
+	//	material->pixelShader->SetShaderResourceView("texDiffuse", material->texDiffuse->GetSRV());
+	//}
+	//if (nullptr != material->sampBasic)
+	//{
+	//	material->pixelShader->SetSamplerState("sampBasic", material->sampBasic);
+	//}
 
 
-	material->vertexShader->SetShader(true); 
-	material->pixelShader->SetShader(true); 
+	//material->vertexShader->SetShader(true); 
+	//material->pixelShader->SetShader(true); 
 }
 
 

@@ -367,4 +367,6 @@ LRESULT NativeWindow::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 void NativeWindow::OnResize()
 {
+	if (callbackOnResize)
+		callbackOnResize(windowWidth, windowHeight);
 }

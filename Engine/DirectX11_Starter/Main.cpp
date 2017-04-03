@@ -21,7 +21,7 @@
 //
 // ----------------------------------------------------------------------------
 
-//#define TEST_RENDERING_SYSTEM 1
+#define TEST_RENDERING_SYSTEM 1
 
 #if defined(TEST_RENDERING_SYSTEM)
 
@@ -39,13 +39,44 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPSTR cmdLine, i
 	NativeWindow window;
 	RenderingSystem renderer;
 
-	if (!window.Init() || !renderer.Init(window.GetWindowHandle()))
+	if (!window.Init() || !renderer.Init(&window))
 		return 0;
 
 	SceneGraph scene;
 
 	Renderable* r = scene.CreateRenderable();
-	
+
+	Shader* shader = renderer.CreateShader(L"Assets/ShaderObjs/Opaque.cso");
+
+	Mesh* mesh = renderer.CreateMesh("Assets/Models/cube.fbx");
+	Texture* tex = renderer.CreateTexture(L"Assets/Textures/crate.png");
+	Material* mat = renderer.CreateMaterial(shader);
+
+	if (!mat->SetTexture("texDiffuse", tex))
+	{
+		return -1;
+	}
+
+	r->SetMesh(mesh);
+	r->SetMaterial(mat);
+
+	DirectX::XMFLOAT4X4 matrix;
+	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixIdentity());
+
+	mat->SetMatrix4x4("matWorld", matrix);
+	mat->SetMatrix4x4("matWorld_IT", matrix);
+
+	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixTranspose(
+		DirectX::XMMatrixTranslation(0.0f, 0.0f, 5.0f)
+	));
+
+	mat->SetMatrix4x4("matView", matrix);
+
+	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixTranspose(
+		DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PI * 0.3f, 800.0f / 600.0f, 0.1f, 10.0f)
+	));
+
+	mat->SetMatrix4x4("matProj", matrix);
 
 	while (!window.WindowIsClosed())
 	{
