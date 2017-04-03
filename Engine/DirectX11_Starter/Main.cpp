@@ -153,6 +153,7 @@ Main::~Main()
 	{
 		delete entities[i]; 
 	}
+	delete testEnt;
 	
 	//Delete Material
 	delete skyMaterial;
