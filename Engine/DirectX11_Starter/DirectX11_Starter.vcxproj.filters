@@ -43,6 +43,9 @@
     <Filter Include="Header Files\CoreEngine">
       <UniqueIdentifier>{e9ae5114-dc3e-41e2-bd70-17af0503b703}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts">
+      <UniqueIdentifier>{7789f504-c7d4-4c25-a5b1-8a3bd4b09fee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -98,6 +101,9 @@
     </ClCompile>
     <ClCompile Include="TestCom.cpp">
       <Filter>Source Files\CoreEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptComponent.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -164,6 +170,9 @@
     <ClInclude Include="ComponentType.h">
       <Filter>Header Files\CoreEngine</Filter>
     </ClInclude>
+    <ClInclude Include="ScriptComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\PixelShader.hlsl">
@@ -187,5 +196,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="script.lua">
+      <Filter>Scripts</Filter>
+    </None>
   </ItemGroup>
 </Project>

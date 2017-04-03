@@ -15,6 +15,7 @@
 #include "vld.h"
 #include "DDSTextureLoader.h"
 #include "TestCom.h"
+#include "ScriptComponent.h"
 #include "ComponentType.h"
 
 

@@ -7,6 +7,6 @@ class TestCom :
 public:
 	TestCom();
 	~TestCom();
-	void Update();
+	void Update() override;
 };
 

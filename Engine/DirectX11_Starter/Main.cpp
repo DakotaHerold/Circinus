@@ -390,6 +390,7 @@ void Main::CreateGeometry()
 	testEnt = new Entity(meshOne, material);
 	testEnt->SetScale(2, 2, 2);
 	testEnt->SetPosition(0, 0, 0);
+	testEnt->AddComponent(new ScriptComponent());
 }
 
 
@@ -497,8 +498,8 @@ void Main::UpdateScene(float deltaTime, float totalTime)
  
 	//InputManager::instance().GetA(); 
 	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
-	{
-		if (testEnt->AddComponent(new TestCom())) {
+	{ 
+		if (testEnt->AddComponent(new ScriptComponent())) {
 			cout << "yes" << endl;
 		}
 		else {
@@ -507,7 +508,7 @@ void Main::UpdateScene(float deltaTime, float totalTime)
 	}
 	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 	{
-		if (testEnt->RemoveComponent(TestComponent)) {
+		if (testEnt->RemoveComponent(ScriptComp)) {
 			cout << "yes" << endl;
 		}
 		else {
