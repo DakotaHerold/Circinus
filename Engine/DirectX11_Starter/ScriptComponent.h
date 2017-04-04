@@ -24,7 +24,6 @@ public:
 	~ScriptComponent();
 
 private: 
-	lua_State* L; 
 	std::string luaString; 
 	int answer;
 };

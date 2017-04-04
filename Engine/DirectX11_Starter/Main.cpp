@@ -381,7 +381,7 @@ void Main::CreateGeometry()
 	testEnt = new Entity(meshOne, material);
 	testEnt->SetScale(2, 2, 2);
 	testEnt->SetPosition(0, 0, 0);
-	testEnt->AddComponent<ScriptComponent>();
+	//testEnt->AddComponent<ScriptComponent>();
 }
 
 
