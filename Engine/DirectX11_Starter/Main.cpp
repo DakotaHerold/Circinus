@@ -114,6 +114,7 @@ Main::Main(HINSTANCE hInstance)
 	meshOne = nullptr;
 
 	cam = new Camera(); 
+	debugCam = new DebugCam();
 
 	leftmouseHeld = false; 
 	middleMouseHeld = false; 
@@ -160,6 +161,7 @@ Main::~Main()
 
 	//Delete Camera
 	delete cam; 
+	delete debugCam;
 }
 
 #pragma endregion
@@ -268,7 +270,11 @@ bool Main::Init()
 		sizeof(PointLight)); // size of data to copy 
 
 	// Store Camera for for specular lighting 
-	pixelShader->SetData("camPos", &cam->getPosition(), sizeof(XMFLOAT3)); 
+#ifdef _DEBUG
+	pixelShader->SetData("camPos", &debugCam->getPosition(), sizeof(XMFLOAT3));
+#else
+	pixelShader->SetData("camPos", &cam->getPosition(), sizeof(XMFLOAT3));
+#endif // _DEBUG
 
 	// Specular Lights 
 	specularLight.SpecularColor = XMFLOAT4(1.0f, 0.1449275f, 0.0f, 1.0f); 
@@ -318,7 +324,12 @@ void Main::CreateGeometry()
 	skyMesh = new Mesh("Assets/Models/cube.fbx", device);
 
 	skyObject = new Entity(skyMesh, skyMaterial);
+#ifdef _DEBUG
+		skyObject->SetPosition(debugCam->getPosition().x, debugCam->getPosition().y, debugCam->getPosition().z);
+#else
 	skyObject->SetPosition(cam->getPosition().x, cam->getPosition().y, cam->getPosition().z);
+#endif // _DEBUG
+
 	skyObject->SetScale(200.0f, 200.0f, 200.0f);
 
 	//	Generic UVs
@@ -421,6 +432,11 @@ void Main::CreateMatrices()
 		0.1f,						// Near clip plane distance
 		100.0f);					// Far clip plane distance
 	XMStoreFloat4x4(&projectionMatrix, XMMatrixTranspose(P)); // Transpose for HLSL!
+
+#ifdef _DEBUG
+	debugCam->setProjectionMatrix(aspectRatio);
+#endif // _DEBUG
+
 }
 
 #pragma endregion
@@ -436,7 +452,11 @@ void Main::OnResize()
 	// Handle base-level DX resize stuff
 	DirectXGameCore::OnResize();
 
-	cam->onResize(aspectRatio); 
+#ifdef _DEBUG
+	debugCam->setProjectionMatrix(aspectRatio);
+#else
+	cam->onResize(aspectRatio);
+#endif // _DEBUG
 }
 #pragma endregion
 
@@ -448,7 +468,12 @@ void Main::OnResize()
 void Main::UpdateScene(float deltaTime, float totalTime)
 {
 	//Skymap position
+#ifdef _DEBUG
+	skyObject->SetPosition(debugCam->getPosition().x, debugCam->getPosition().y, debugCam->getPosition().z);
+#else
 	skyObject->SetPosition(cam->getPosition().x, cam->getPosition().y, cam->getPosition().z);
+#endif // _DEBUG
+
 
 	// Update User Input
 	InputManager::instance().UpdateInput(deltaTime); 
@@ -483,9 +508,13 @@ void Main::UpdateScene(float deltaTime, float totalTime)
 	}
 	
 	//update Camera and it's input
-	cam->cameraInput(deltaTime); 
+#ifdef _DEBUG
+	debugCam->update(deltaTime, totalTime);
+#else
+	cam->cameraInput(deltaTime);
 	cam->update(deltaTime);
- 
+#endif // _DEBUG
+
 	//InputManager::instance().GetA(); 
 }
 
@@ -525,7 +554,13 @@ void Main::DrawScene(float deltaTime, float totalTime)
 		//  - This is actually a complex process of copying data to a local buffer
 		//    and then copying that entire buffer to the GPU.  
 		//  - The "SimpleShader" class handles all of that for you.
+#ifdef _DEBUG
+
+		i->prepareMaterial(debugCam->getViewMatrix(), debugCam->getProjectionMatrix());
+#else
 		i->prepareMaterial(cam->getViewMatrix(), cam->getProjectionMatrix());
+#endif // _DEBUG
+
 		//draw here 
 		i->drawScene(deviceContext);
 
@@ -547,7 +582,13 @@ void Main::DrawScene(float deltaTime, float totalTime)
 	deviceContext->RSSetState(rasterizerState);
 	deviceContext->OMSetDepthStencilState(depthStencilState, 1);
 
+#ifdef _DEBUG
+	skyObject->prepareMaterial(debugCam->getViewMatrix(), debugCam->getProjectionMatrix());
+#else
 	skyObject->prepareMaterial(cam->getViewMatrix(), cam->getProjectionMatrix());
+#endif // _DEBUG
+
+	
 	skyPixShader->SetSamplerState("linearSampler", sampler);
 	skyPixShader->SetShaderResourceView("skyMap", skyBox);
 	skyObject->drawScene(deviceContext);
@@ -619,23 +660,40 @@ void Main::OnMouseUp(WPARAM btnState, int x, int y)
 // --------------------------------------------------------
 void Main::OnMouseMove(WPARAM btnState, int x, int y)
 {
-	if (btnState & 0x0002)
+#ifdef _DEBUG
+	if (btnState & 0x0001)	// Left button is down
 	{
-		cam->rotate((x - prevMousePos.x) * 0.005f);
+		debugCam->moveSideways((x - prevMousePos.x) * 0.005f);
+		debugCam->moveVertical((y - prevMousePos.y) * 0.005f);
 	}
-
-	//calc Cam coords
+	if (btnState & 0x0002)	// Right button is down
+	{
+		debugCam->setRotationY(x - prevMousePos.x);
+		debugCam->setRotationX(y - prevMousePos.y);
+	}
+#else
+	//calc cam coords
 	float camX = x - ((float)prevMousePos.x);
 	float camY = y - ((float)prevMousePos.y);
-	// Save the previous mouse position, so we have it for the future
-	prevMousePos.x = x;
-	prevMousePos.y = y;
-	
+
 	if (!InputManager::instance().GetGamePadEnabled())
 	{
 		cam->turnWithMouse(camX, camY);
 	}
+#endif // _DEBUG
+
+	// Save the previous mouse position, so we have it for the future
+	prevMousePos.x = x;
+	prevMousePos.y = y;
+	
 	 
+}
+void Main::OnMouseWheel(float wheelDelta, int x, int y)
+{
+#ifdef _DEBUG
+	debugCam->moveAlongDirection(wheelDelta * 0.1f);
+#endif // _DEBUG
+
 }
 #pragma endregion
 
