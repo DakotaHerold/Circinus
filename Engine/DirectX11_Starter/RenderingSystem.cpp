@@ -51,6 +51,10 @@ RenderingSystem::RenderingSystem()
 // --------------------------------------------------------
 RenderingSystem::~RenderingSystem(void)
 {
+	for (auto i = preBoundCBs.begin(); i != preBoundCBs.end(); ++i)
+	{
+		i->second.CleanUp();
+	}
 	for (auto i = meshes.begin(); i != meshes.end(); ++i)
 	{
 		delete i->second;
@@ -98,8 +102,34 @@ bool RenderingSystem::Init(NativeWindow* win)
 
 	win->SetResizeCallback(std::bind(&RenderingSystem::OnResize, this, std::placeholders::_1, std::placeholders::_2));
 
+	if (!InitPreBoundConstantBuffers())
+	{
+		return false;
+	}
+
 	// Everything was set up properly
 	return true;
+}
+
+
+bool RenderingSystem::InitPreBoundConstantBuffers()
+{
+
+	ConstantBuffer cb = ConstantBuffer();
+	if (!cb.Init(device, sizeof(BuiltinFrameCB)))
+		return false;
+
+	preBoundCBs.insert(std::pair<std::string, ConstantBuffer>("FrameConstants", cb));
+
+	return true;
+}
+
+void RenderingSystem::UpdatePreBoundConstantBuffers()
+{
+	for (auto i = preBoundCBs.begin(); i != preBoundCBs.end(); ++i)
+	{
+		i->second.UploadBuffer(deviceContext);
+	}
 }
 
 // --------------------------------------------------------
@@ -237,8 +267,7 @@ void RenderingSystem::OnResize(int windowWidth, int windowHeight)
 
 #pragma region Draw
 
-
-void RenderingSystem::DrawScene(SceneGraph* scene)
+void RenderingSystem::DrawScene(Camera* cam, SceneGraph* scene)
 {
 	float clearColor[4] = { 0.3f, 0.3f, 0.3f, 1.0f };
 	deviceContext->ClearRenderTargetView(renderTargetView, clearColor);
@@ -259,6 +288,10 @@ void RenderingSystem::DrawScene(SceneGraph* scene)
 
 	swapChain->Present(0, 0);
 }
+
+#pragma endregion
+
+#pragma region Resources
 
 Mesh * RenderingSystem::CreateMesh(const char* filename)
 {
@@ -323,7 +356,7 @@ Texture * RenderingSystem::CreateTexture(const wchar_t * filename)
 Material * RenderingSystem::CreateMaterial(Shader * shader)
 {
 	Material* mat = new Material();
-	mat->InitWithShader(device, shader);
+	mat->InitWithShader(device, shader, &preBoundCBs);
 
 	if (mat->IsValid())
 	{

@@ -64,6 +64,8 @@ bool NativeWindow::Init()
 	if (!InitMainWindow())
 		return false;
 
+	InitTimer();
+
 	return true;
 }
 

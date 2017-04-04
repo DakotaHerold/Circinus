@@ -29,7 +29,7 @@ void Material::CleanUp()
 	texTable.clear();
 }
 
-bool Material::InitWithShader(ID3D11Device* device, Shader * shader)
+bool Material::InitWithShader(ID3D11Device* device, Shader * shader, const std::unordered_map<std::string, ConstantBuffer>* preBoundCBs)
 {
 	CleanUp();
 
@@ -43,7 +43,6 @@ bool Material::InitWithShader(ID3D11Device* device, Shader * shader)
 	HR(effect->GetDesc(&desc));
 
 	cbCount = desc.ConstantBuffers;
-	cbs.resize(cbCount);
 
 	uint32_t varCount = desc.GlobalVariables;
 
@@ -52,6 +51,17 @@ bool Material::InitWithShader(ID3D11Device* device, Shader * shader)
 		auto cb = effect->GetConstantBufferByIndex(i);
 		D3DX11_EFFECT_VARIABLE_DESC desc = {};
 		cb->GetDesc(&desc);
+
+		if (nullptr != preBoundCBs)
+		{
+			auto iter = preBoundCBs->find(desc.Name);
+			if (iter != preBoundCBs->end())
+			{
+				cb->SetConstantBuffer(iter->second.buffer);
+				continue;
+			}
+		}
+
 		auto type = cb->GetType();
 		D3DX11_EFFECT_TYPE_DESC typeDesc = {};
 		HR(type->GetDesc(&typeDesc));
@@ -61,12 +71,14 @@ bool Material::InitWithShader(ID3D11Device* device, Shader * shader)
 		bufDesc.ByteWidth = typeDesc.UnpackedSize;
 		bufDesc.Usage = D3D11_USAGE_DEFAULT;
 
-		HR(device->CreateBuffer(&bufDesc, 0, &(cbs[i].buffer)));
-		cbs[i].cache = new uint8_t[typeDesc.UnpackedSize];
-		cbs[i].size = typeDesc.UnpackedSize;
-		cbs[i].dirty = true;
+		ConstantBuffer newCB = ConstantBuffer();
 
-		HR(cb->SetConstantBuffer(cbs[i].buffer));
+		if (!newCB.Init(device, typeDesc.UnpackedSize))
+			return false;
+
+		cbs.push_back(newCB);
+
+		HR(cb->SetConstantBuffer(newCB.buffer));
 
 		for (uint32_t m = 0; m < typeDesc.Members; m++)
 		{
@@ -136,15 +148,7 @@ bool Material::UpdateConstants(ID3D11DeviceContext * context)
 {
 	for (auto i = cbs.begin(); i != cbs.end(); ++i)
 	{
-		if (i->dirty)
-		{
-			/*D3D11_MAPPED_SUBRESOURCE res = {};
-			HR(context->Map(i->buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &res));
-			memcpy(res.pData, i->cache, i->size);
-			context->Unmap(i->buffer, 0);*/
-			context->UpdateSubresource(i->buffer, 0, nullptr, i->cache, 0, 0);
-			i->dirty = false;
-		}
+		i->UploadBuffer(context);
 	}
 
 	return true;
@@ -166,9 +170,10 @@ bool Material::SetData(const std::string & name, const void * data, unsigned int
 	if (varTable.end() == iter) return false;
 
 	Variable& var = iter->second;
-	if (size > var.size) return false;
-	memcpy(cbs[var.cbIndex].cache + var.offset, data, size);
-	cbs[var.cbIndex].dirty = true;
+
+	if (!cbs[var.cbIndex].UpdateData(data, var.offset, size))
+		return false;
+
 	return true;
 }
 
@@ -234,11 +239,3 @@ bool Material::SetTexture(const std::string & name, Texture * tex)
 	return true;
 }
 
-Material::ConstantBuffer::~ConstantBuffer()
-{
-	delete[] cache;
-	if (nullptr != buffer)
-	{
-		buffer->Release();
-	}
-}

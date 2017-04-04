@@ -82,6 +82,7 @@
   <ItemGroup>
     <ClCompile Include="AssimpLoader.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ConstantBuffer.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="InputManager.cpp" />
@@ -101,6 +102,7 @@
   <ItemGroup>
     <ClInclude Include="AssimpLoader.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="InputManager.h" />

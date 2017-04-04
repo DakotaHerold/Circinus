@@ -5,6 +5,8 @@
 #include <vector>
 #include <DirectXMath.h>
 
+#include "ConstantBuffer.h"
+
 struct ID3D11Device;
 struct ID3D11DeviceContext;
 struct ID3D11Buffer;
@@ -26,7 +28,7 @@ private:
 
 	void CleanUp();
 
-	bool InitWithShader(ID3D11Device* device, Shader* shader);
+	bool InitWithShader(ID3D11Device* device, Shader* shader, const std::unordered_map<std::string, ConstantBuffer>* preBoundCBs);
 
 	bool UpdateConstants(ID3D11DeviceContext* context);
 
@@ -57,25 +59,12 @@ private:
 
 	uint32_t				cbCount;
 
-	struct ConstantBuffer
-	{
-		ID3D11Buffer*	buffer;
-		uint8_t*		cache;
-		uint32_t		size;
-		bool			dirty;
-
-		ConstantBuffer() : buffer(nullptr), cache(nullptr), size(0), dirty(false) {}
-
-		~ConstantBuffer();
-	};
-
 	struct Variable
 	{
 		uint32_t	cbIndex;
 		uint32_t	offset;
 		uint32_t	size;
 	};
-
 
 	std::vector<ConstantBuffer>			cbs;
 	std::vector<void*>					cbCaches;

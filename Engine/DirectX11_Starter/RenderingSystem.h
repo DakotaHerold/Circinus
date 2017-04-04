@@ -8,6 +8,7 @@
 
 #include "dxerr.h"
 
+#include "ConstantBuffer.h"
 #include "Mesh.h"
 #include "Shader.h"
 #include "Texture.h"
@@ -48,6 +49,7 @@
 
 class NativeWindow;
 class SceneGraph;
+class Camera;
 
 class RenderingSystem
 {
@@ -59,7 +61,7 @@ public:
 
 	void OnResize(int windowWidth, int windowHeight);
 
-	void DrawScene(SceneGraph* scene);
+	void DrawScene(Camera* cam, SceneGraph* scene);
 
 public:
 	Mesh* CreateMesh(const char* filename);
@@ -75,6 +77,30 @@ private:
 	std::unordered_map<std::wstring, Shader*>	shaders;
 	std::unordered_map<std::wstring, Texture*>	textures;
 	std::vector<Material*>						materials;
+
+private:
+	bool InitPreBoundConstantBuffers();
+
+	void UpdatePreBoundConstantBuffers();
+
+private:
+
+	struct BuiltinFrameCB
+	{
+		DirectX::XMFLOAT4X4		matView;
+		DirectX::XMFLOAT4X4		matProj;
+	};
+
+	// TODO
+	/*struct BuiltinInstanceCB
+	{
+
+	};*/
+
+	BuiltinFrameCB			builtinFrameCB;
+	//BuiltinInstanceCB		builtinInstanceCB;
+
+	std::unordered_map<std::string, ConstantBuffer> preBoundCBs;
 
 private:
 	// Handles Direct3D initialization
