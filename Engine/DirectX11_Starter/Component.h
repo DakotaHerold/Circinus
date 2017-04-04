@@ -1,7 +1,6 @@
 #pragma once
-#include<string>
-#include <iostream>
-#include "ComponentType.h"
+#include "ClassTypeId.h"
+
 class Entity;
 class Component
 {
@@ -13,11 +12,14 @@ public:
 	virtual void Release();
 
 	Entity* GetEntity();
-	ComponentType GetType();
 	void SetEntity(Entity* entity);
+
 protected:
 	Entity* gameEntity;
-	ComponentType type;
-	
 };
 
+template <typename T>
+TypeId ComponentTypeId()
+{
+	return ClassTypeId<Component>::GetTypeId<T>();
+}

@@ -2,8 +2,9 @@
 
 #include <vector>
 #include <DirectXMath.h>
+#include "Component.h"
 
-class Transform
+class Transform : public Component
 {
 public:
 	Transform();

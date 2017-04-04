@@ -15,8 +15,7 @@
 #include "vld.h"
 #include "DDSTextureLoader.h"
 #include "TestCom.h"
-#include "ComponentType.h"
-
+#include "ScriptComponent.h"
 
 // Include run-time memory checking in debug builds, so 
 // we can be notified of memory leaks

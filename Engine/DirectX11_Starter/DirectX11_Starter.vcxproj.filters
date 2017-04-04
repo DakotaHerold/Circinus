@@ -43,6 +43,18 @@
     <Filter Include="Header Files\CoreEngine">
       <UniqueIdentifier>{e9ae5114-dc3e-41e2-bd70-17af0503b703}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts">
+      <UniqueIdentifier>{7789f504-c7d4-4c25-a5b1-8a3bd4b09fee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Component">
+      <UniqueIdentifier>{565f5f41-4556-4774-8d5c-e71f3557ad11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Component">
+      <UniqueIdentifier>{7f28f136-d1df-4c04-b612-b69db5144194}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\System">
+      <UniqueIdentifier>{3622c3e5-0359-45ed-9f3c-9ab41925cd85}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -96,8 +108,14 @@
     <ClCompile Include="Component.cpp">
       <Filter>Source Files\CoreEngine</Filter>
     </ClCompile>
+    <ClCompile Include="ScriptComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="TestCom.cpp">
-      <Filter>Source Files\CoreEngine</Filter>
+      <Filter>Source Files\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformSystem.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -155,13 +173,19 @@
     <ClInclude Include="Entity.h">
       <Filter>Header Files\CoreEngine</Filter>
     </ClInclude>
+    <ClInclude Include="ScriptComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Component.h">
       <Filter>Header Files\CoreEngine</Filter>
     </ClInclude>
     <ClInclude Include="TestCom.h">
-      <Filter>Header Files\CoreEngine</Filter>
+      <Filter>Header Files\Component</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentType.h">
+    <ClInclude Include="TransformSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassTypeId.h">
       <Filter>Header Files\CoreEngine</Filter>
     </ClInclude>
   </ItemGroup>
@@ -187,5 +211,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="script.lua">
+      <Filter>Scripts</Filter>
+    </None>
   </ItemGroup>
 </Project>

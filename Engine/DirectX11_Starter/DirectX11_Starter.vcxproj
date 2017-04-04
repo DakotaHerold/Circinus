@@ -42,7 +42,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>$(SolutionDir)..\3rdParty\assimp\lib\x86;$(LibraryPath);$(DXSDK_DIR)Lib\x86;$(ProjectDir)\VisualLeakDetector\lib\Win32</LibraryPath>
-    <IncludePath>$(SolutionDir)..\3rdParty\assimp\include;$(IncludePath);$(DXSDK_DIR)Include</IncludePath>
+    <IncludePath>$(SolutionDir)..\3rdParty\assimp\include;$(IncludePath);$(DXSDK_DIR)Include;$(SolutionDir)..\3rdParty\LuaBridge</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LibraryPath>$(SolutionDir)..\3rdParty\assimp\lib\x86;$(LibraryPath);$(DXSDK_DIR)Lib\x86;$(ProjectDir)\VisualLeakDetector\lib\Win32</LibraryPath>
@@ -93,16 +93,18 @@
     <ClCompile Include="NativeWindow.cpp" />
     <ClCompile Include="RenderingSystem.cpp" />
     <ClCompile Include="SceneGraph.cpp" />
+    <ClCompile Include="ScriptComponent.cpp" />
     <ClCompile Include="SimpleShader.cpp" />
     <ClCompile Include="TestCom.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="TransformSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssimpLoader.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ClassTypeId.h" />
     <ClInclude Include="Component.h" />
-    <ClInclude Include="ComponentType.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="InputManager.h" />
@@ -115,10 +117,12 @@
     <ClInclude Include="NativeWindow.h" />
     <ClInclude Include="RenderingSystem.h" />
     <ClInclude Include="SceneGraph.h" />
+    <ClInclude Include="ScriptComponent.h" />
     <ClInclude Include="SimpleShader.h" />
     <ClInclude Include="TestCom.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="TransformSystem.h" />
     <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>
@@ -176,10 +180,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="script.lua" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\directxtk_desktop_2015.2017.2.10.1\build\native\directxtk_desktop_2015.targets" Condition="Exists('..\packages\directxtk_desktop_2015.2017.2.10.1\build\native\directxtk_desktop_2015.targets')" />
+    <Import Project="..\packages\lua.redist.5.3.3\build\native\lua.redist.targets" Condition="Exists('..\packages\lua.redist.5.3.3\build\native\lua.redist.targets')" />
+    <Import Project="..\packages\lua.5.3.3\build\native\lua.targets" Condition="Exists('..\packages\lua.5.3.3\build\native\lua.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -187,5 +194,7 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\directxtk_desktop_2015.2017.2.10.1\build\native\directxtk_desktop_2015.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\directxtk_desktop_2015.2017.2.10.1\build\native\directxtk_desktop_2015.props'))" />
     <Error Condition="!Exists('..\packages\directxtk_desktop_2015.2017.2.10.1\build\native\directxtk_desktop_2015.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\directxtk_desktop_2015.2017.2.10.1\build\native\directxtk_desktop_2015.targets'))" />
+    <Error Condition="!Exists('..\packages\lua.redist.5.3.3\build\native\lua.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\lua.redist.5.3.3\build\native\lua.redist.targets'))" />
+    <Error Condition="!Exists('..\packages\lua.5.3.3\build\native\lua.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\lua.5.3.3\build\native\lua.targets'))" />
   </Target>
 </Project>
