@@ -3,11 +3,18 @@
 Entity::~Entity()
 {
 	//delete components
-	for each (Component* var in allComponets)
+	for (auto p : allComponets)
 	{
-		var->Release();
+		delete p.second;
 	}
 	allComponets.clear();
+}
+
+Entity::Entity() {
+	// TODO: Lock for parallel
+	static eid nextIndex = 0;
+
+	id = nextIndex++;
 }
 
 Entity::Entity(Mesh * inputMesh, Material* inputMaterial)
@@ -112,30 +119,61 @@ void Entity::prepareMaterial(XMFLOAT4X4& view, XMFLOAT4X4& proj)
 
 void Entity::Update()
 {
-	for (int i = 0; i < allComponets.size(); i++) {
-		allComponets[i]->Update();
-	}
+	//for (int i = 0; i < allComponets.size(); i++) {
+	//	allComponets[i]->Update();
+	//}
 }
 
-bool Entity::AddComponent(Component* com)
+//bool Entity::AddComponent(Component* com)
+//{
+//	vector<Component*>::iterator itr = allComponets.begin();
+//	int i = 0;
+//	for (unsigned i = 0; i < allComponets.size(); i++) {
+//		if (allComponets[i]->GetType() == com->GetType()) {
+//			return false;
+//		}
+//	}
+//	com->SetEntity(this);
+//	allComponets.push_back(com);
+//	return true;
+//}
+//
+//bool Entity::RemoveComponent(ComponentType type)
+//{	
+//	int i = 0;
+//	for (unsigned i = 0; i < allComponets.size();i++) {
+//		if (allComponets[i]->GetType() == type) {
+//			allComponets.erase(allComponets.begin() + i);
+//			return true;
+//		}
+//	}
+//	return false;
+//}
+
+//Component * Entity::GetComponent(ComponentType type)
+//{
+//	for (int i = 0; i < allComponets.size(); i++) {
+//		if (allComponets[i]->GetType() == type) {
+//			return allComponets[i];
+//		}
+//	}
+//	return nullptr;
+//}
+
+void Entity::AddComponent(Component* component, TypeId componentTypeId)
 {
-	vector<Component*>::iterator itr = allComponets.begin();
-	int i = 0;
-	for (unsigned i = 0; i < allComponets.size(); i++) {
-		if (allComponets[i]->GetType() == com->GetType()) {
-			return false;
-		}
-	}
-	com->SetEntity(this);
-	allComponets.push_back(com);
-	return true;
+	//getWorld().m_entityAttributes.componentStorage.addComponent(*this, component, componentTypeId);
+
+	component->SetEntity(this);
+	allComponets.push_back(make_pair(componentTypeId, component));
 }
 
-bool Entity::RemoveComponent(ComponentType type)
-{	
-	int i = 0;
-	for (unsigned i = 0; i < allComponets.size();i++) {
-		if (allComponets[i]->GetType() == type) {
+bool Entity::RemoveComponent(TypeId componentTypeId)
+{
+	//getWorld().m_entityAttributes.componentStorage.removeComponent(*this, componentTypeId);
+	
+	for (int i = 0; i < allComponets.size(); i++) {
+		if (allComponets[i].first == componentTypeId) {
 			allComponets.erase(allComponets.begin() + i);
 			return true;
 		}
@@ -143,14 +181,31 @@ bool Entity::RemoveComponent(ComponentType type)
 	return false;
 }
 
-Component * Entity::GetComponent(ComponentType type)
+Component * Entity::GetComponent(TypeId componentTypeId) const
 {
-	for (int i = 0; i < allComponets.size(); i++) {
-		if (allComponets[i]->GetType() == type) {
-			return allComponets[i];
+	for (auto p : allComponets) {
+		if (p.first == componentTypeId) {
+			return p.second;
 		}
 	}
 	return nullptr;
+
+	//return getWorld().m_entityAttributes.componentStorage.getComponent(*this, componentTypeId);
+}
+
+bool Entity::HasComponent(TypeId componentTypeId) const
+{
+	for (auto p : allComponets) {
+		if (p.first == componentTypeId) {
+			return true;
+		}
+	}
+	return false;
+}
+
+void Entity::RemoveAllComponents()
+{
+	/*getWorld().m_entityAttributes.componentStorage.removeAllComponents(*this);*/
 }
 
 

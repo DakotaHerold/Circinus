@@ -1,11 +1,9 @@
 #include "Component.h"
-
-
+#include <iostream>
 
 Component::Component()
 {
 }
-
 
 Component::~Component()
 {
@@ -21,18 +19,10 @@ void Component::Release()
 	this->~Component();
 }
 
-
 Entity * Component::GetEntity()
 {
 	return gameEntity;
 }
-
-ComponentType Component::GetType()
-{
-	return type;
-}
-
-
 
 void Component::SetEntity(Entity * entity)
 {

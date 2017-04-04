@@ -178,7 +178,6 @@ bool Main::Init()
 	if (!DirectXGameCore::Init())
 		return false;
 
-
 	// Helper methods to create something to draw, load shaders to draw it 
 	// with and set up matrices so we can see how to pass data to the GPU.
 	//  - For your own projects, feel free to expand/replace these.
@@ -186,10 +185,6 @@ bool Main::Init()
 	LoadShaders();
 	CreateGeometry();
 	CreateMatrices();
-	
-	
-	
-	//
 
 	// Allocate Console in Debug Mode
 	#if defined(DEBUG) || defined(_DEBUG)
@@ -285,7 +280,6 @@ bool Main::Init()
 		&specularLight,	// address in memory
 		sizeof(SpecularLight)); // size of data to copy 
 
-
 	// Successfully initialized
 	return true;
 }
@@ -313,7 +307,6 @@ void Main::LoadShaders()
 	skyPixShader->LoadShaderFile(L"Assets/ShaderObjs/PixelShaderSky.cso");
 }
 
-
 // --------------------------------------------------------
 // Creates the geometry we're going to draw - a single triangle for now
 // --------------------------------------------------------
@@ -326,7 +319,6 @@ void Main::CreateGeometry()
 	skyObject->SetPosition(cam->getPosition().x, cam->getPosition().y, cam->getPosition().z);
 	skyObject->SetScale(200.0f, 200.0f, 200.0f);
 
-	
 	//	Generic UVs
 	XMFLOAT3 normal = XMFLOAT3(0, 0, -1); 
 	XMFLOAT2 uv = XMFLOAT2(0, 0); 
@@ -336,7 +328,6 @@ void Main::CreateGeometry()
 	XMFLOAT4 red = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
 	XMFLOAT4 green = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
 	XMFLOAT4 blue = XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
-
 
 	//meshOne = new Mesh(vertices, (int)sizeof(vertices), indices, sizeof(indices), device);
 	meshOne = new Mesh("Assets/Models/cube.fbx", device); 
@@ -390,7 +381,7 @@ void Main::CreateGeometry()
 	testEnt = new Entity(meshOne, material);
 	testEnt->SetScale(2, 2, 2);
 	testEnt->SetPosition(0, 0, 0);
-	testEnt->AddComponent(new ScriptComponent());
+	testEnt->AddComponent<ScriptComponent>();
 }
 
 
@@ -499,7 +490,7 @@ void Main::UpdateScene(float deltaTime, float totalTime)
 	//InputManager::instance().GetA(); 
 	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
 	{ 
-		if (testEnt->AddComponent(new ScriptComponent())) {
+		if (testEnt->AddComponent<ScriptComponent>()) {
 			cout << "yes" << endl;
 		}
 		else {
@@ -508,7 +499,7 @@ void Main::UpdateScene(float deltaTime, float totalTime)
 	}
 	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 	{
-		if (testEnt->RemoveComponent(ScriptComp)) {
+		if (testEnt->RemoveComponent<ScriptComponent>()) {
 			cout << "yes" << endl;
 		}
 		else {
@@ -516,8 +507,6 @@ void Main::UpdateScene(float deltaTime, float totalTime)
 		}
 	}
 }
-
-
 
 // --------------------------------------------------------
 // Clear the screen, redraw everything, present to the user
@@ -585,7 +574,6 @@ void Main::DrawScene(float deltaTime, float totalTime)
 
 	skyVertShader->SetShader();
 	skyPixShader->SetShader();
-
 
 	// Present the buffer
 	//  - Puts the image we're drawing into the window so the user can see it

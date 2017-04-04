@@ -98,12 +98,13 @@
     <ClCompile Include="TestCom.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="TransformSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssimpLoader.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ClassTypeId.h" />
     <ClInclude Include="Component.h" />
-    <ClInclude Include="ComponentType.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="InputManager.h" />
@@ -121,6 +122,7 @@
     <ClInclude Include="TestCom.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="TransformSystem.h" />
     <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>
