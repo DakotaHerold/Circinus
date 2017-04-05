@@ -28,7 +28,7 @@ private:
 
 	void CleanUp();
 
-	bool InitWithShader(ID3D11Device* device, Shader* shader, const std::unordered_map<std::string, ConstantBuffer>* preBoundCBs);
+	bool InitWithShader(ID3D11Device* device, Shader* shader, const std::unordered_map<std::string, ConstantBuffer*>* preBoundCBs);
 
 	bool UpdateConstants(ID3D11DeviceContext* context);
 

@@ -4,7 +4,7 @@
 
 #define HR(x) if ((x) != S_OK) return false;
 
-bool ConstantBuffer::Init(ID3D11Device * device, uint32_t size)
+bool ConstantBuffer::Init(ID3D11Device * device, uint32_t size, void* cacheBuf)
 {
 	CleanUp();
 
@@ -14,7 +14,8 @@ bool ConstantBuffer::Init(ID3D11Device * device, uint32_t size)
 	bufDesc.Usage = D3D11_USAGE_DEFAULT;
 
 	HR(device->CreateBuffer(&bufDesc, 0, &buffer));
-	cache = new uint8_t[size];
+	externalCache = (nullptr != cacheBuf);
+	cache = externalCache ? reinterpret_cast<uint8_t*>(cacheBuf) : new uint8_t[size];
 	this->size = size;
 	dirty = true;
 
@@ -23,8 +24,11 @@ bool ConstantBuffer::Init(ID3D11Device * device, uint32_t size)
 
 void ConstantBuffer::CleanUp()
 {
-	delete[] cache;
+	if (!externalCache)
+		delete[] cache;
 	cache = nullptr;
+
+	externalCache = false;
 
 	if (nullptr != buffer)
 	{

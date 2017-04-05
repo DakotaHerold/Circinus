@@ -27,6 +27,7 @@
 
 #include "NativeWindow.h"
 #include "RenderingSystem.h"
+#include "Camera.h"
 #include "SceneGraph.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPSTR cmdLine, int showCmd)
@@ -66,19 +67,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPSTR cmdLine, i
 	mat->SetMatrix4x4("matWorld", matrix);
 	mat->SetMatrix4x4("matWorld_IT", matrix);
 
-	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixTranspose(
-		DirectX::XMMatrixTranslation(0.0f, 0.0f, 5.0f)
-	));
-
-	mat->SetMatrix4x4("matView", matrix);
-
-	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixTranspose(
-		DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PI * 0.3f, 800.0f / 600.0f, 0.1f, 10.0f)
-	));
-
-	mat->SetMatrix4x4("matProj", matrix);
-
-
+	Camera cam;
+	
+	
 	float rot = 0.0f;
 	while (!window.WindowIsClosed())
 	{
@@ -95,8 +86,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPSTR cmdLine, i
 		DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixInverse(nullptr, rotM));
 		mat->SetMatrix4x4("matWorld_IT", matrix);
 
-		renderer.DrawScene(nullptr, &scene);
-	}
+		renderer.DrawScene(&cam, &scene);
+	} 
 
 	return 0;
 }

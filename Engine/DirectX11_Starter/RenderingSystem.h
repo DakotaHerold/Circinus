@@ -81,7 +81,11 @@ private:
 private:
 	bool InitPreBoundConstantBuffers();
 
-	void UpdatePreBoundConstantBuffers();
+	void UploadPreBoundConstantBuffers();
+
+	void UpdateViewMatrix(const DirectX::XMFLOAT4X4& m);
+
+	void UpdateProjectionMatrix(const DirectX::XMFLOAT4X4& m);
 
 private:
 
@@ -97,10 +101,10 @@ private:
 
 	};*/
 
-	BuiltinFrameCB			builtinFrameCB;
+	ConstantBuffer			builtinFrameCB;
 	//BuiltinInstanceCB		builtinInstanceCB;
 
-	std::unordered_map<std::string, ConstantBuffer> preBoundCBs;
+	std::unordered_map<std::string, ConstantBuffer*> preBoundCBs;
 
 private:
 	// Handles Direct3D initialization

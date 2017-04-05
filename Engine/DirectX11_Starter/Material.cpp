@@ -29,7 +29,7 @@ void Material::CleanUp()
 	texTable.clear();
 }
 
-bool Material::InitWithShader(ID3D11Device* device, Shader * shader, const std::unordered_map<std::string, ConstantBuffer>* preBoundCBs)
+bool Material::InitWithShader(ID3D11Device* device, Shader * shader, const std::unordered_map<std::string, ConstantBuffer*>* preBoundCBs)
 {
 	CleanUp();
 
@@ -57,7 +57,7 @@ bool Material::InitWithShader(ID3D11Device* device, Shader * shader, const std::
 			auto iter = preBoundCBs->find(desc.Name);
 			if (iter != preBoundCBs->end())
 			{
-				cb->SetConstantBuffer(iter->second.buffer);
+				cb->SetConstantBuffer(iter->second->GetBuffer());
 				continue;
 			}
 		}
@@ -66,19 +66,14 @@ bool Material::InitWithShader(ID3D11Device* device, Shader * shader, const std::
 		D3DX11_EFFECT_TYPE_DESC typeDesc = {};
 		HR(type->GetDesc(&typeDesc));
 
-		D3D11_BUFFER_DESC bufDesc = {};
-		bufDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		bufDesc.ByteWidth = typeDesc.UnpackedSize;
-		bufDesc.Usage = D3D11_USAGE_DEFAULT;
-
-		ConstantBuffer newCB = ConstantBuffer();
+		cbs.push_back(ConstantBuffer());
+		ConstantBuffer& newCB = cbs.back();
 
 		if (!newCB.Init(device, typeDesc.UnpackedSize))
 			return false;
 
-		cbs.push_back(newCB);
 
-		HR(cb->SetConstantBuffer(newCB.buffer));
+		HR(cb->SetConstantBuffer(newCB.GetBuffer()));
 
 		for (uint32_t m = 0; m < typeDesc.Members; m++)
 		{

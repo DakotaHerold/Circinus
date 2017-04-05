@@ -12,6 +12,7 @@
 #include "RenderingSystem.h"
 #include "NativeWindow.h"
 #include "SceneGraph.h"
+#include "Camera.h"
 #include <WindowsX.h>
 #include <sstream>
 
@@ -53,7 +54,7 @@ RenderingSystem::~RenderingSystem(void)
 {
 	for (auto i = preBoundCBs.begin(); i != preBoundCBs.end(); ++i)
 	{
-		i->second.CleanUp();
+		i->second->CleanUp();
 	}
 	for (auto i = meshes.begin(); i != meshes.end(); ++i)
 	{
@@ -114,22 +115,30 @@ bool RenderingSystem::Init(NativeWindow* win)
 
 bool RenderingSystem::InitPreBoundConstantBuffers()
 {
-
-	ConstantBuffer cb = ConstantBuffer();
-	if (!cb.Init(device, sizeof(BuiltinFrameCB)))
+	if (!builtinFrameCB.Init(device, sizeof(BuiltinFrameCB)))
 		return false;
 
-	preBoundCBs.insert(std::pair<std::string, ConstantBuffer>("FrameConstants", cb));
+	preBoundCBs.insert(std::pair<std::string, ConstantBuffer*>("FrameConstants", &builtinFrameCB));
 
 	return true;
 }
 
-void RenderingSystem::UpdatePreBoundConstantBuffers()
+void RenderingSystem::UploadPreBoundConstantBuffers()
 {
 	for (auto i = preBoundCBs.begin(); i != preBoundCBs.end(); ++i)
 	{
-		i->second.UploadBuffer(deviceContext);
+		i->second->UploadBuffer(deviceContext);
 	}
+}
+
+void RenderingSystem::UpdateViewMatrix(const DirectX::XMFLOAT4X4 & m)
+{
+	builtinFrameCB.UpdateData(&m, offsetof(BuiltinFrameCB, matView), sizeof(m));
+}
+
+void RenderingSystem::UpdateProjectionMatrix(const DirectX::XMFLOAT4X4 & m)
+{
+	builtinFrameCB.UpdateData(&m, offsetof(BuiltinFrameCB, matProj), sizeof(m));
 }
 
 // --------------------------------------------------------
@@ -269,6 +278,9 @@ void RenderingSystem::OnResize(int windowWidth, int windowHeight)
 
 void RenderingSystem::DrawScene(Camera* cam, SceneGraph* scene)
 {
+	UpdateViewMatrix(cam->getViewMatrix());
+	UpdateProjectionMatrix(cam->getProjectionMatrix());
+
 	float clearColor[4] = { 0.3f, 0.3f, 0.3f, 1.0f };
 	deviceContext->ClearRenderTargetView(renderTargetView, clearColor);
 	deviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
@@ -276,6 +288,7 @@ void RenderingSystem::DrawScene(Camera* cam, SceneGraph* scene)
 	std::list<Renderable>& list = scene->renderables;
 	for (auto i = list.begin(); i != list.end(); ++i)
 	{
+		UploadPreBoundConstantBuffers();
 		i->material->Apply(deviceContext);
 		UINT strides[] = { sizeof(Vertex) };
 		UINT offsets[] = { 0 };
