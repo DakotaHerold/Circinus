@@ -172,5 +172,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Shaders\ConstantBuffers.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\Lights.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\CommonStructs.hlsli">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
