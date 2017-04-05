@@ -2,7 +2,9 @@
 
 #include "Renderable.h"
 
-#include <vector>
+#include <list>
+
+class RenderingSystem;
 
 class SceneGraph
 {
@@ -12,8 +14,10 @@ public:
 	void			ClearRenderables();
 
 private:
+	friend class RenderingSystem;
+
 	Renderable*		root;
 
 	// TODO allocator for renderables
-	std::vector<Renderable>		renderables;
+	std::list<Renderable>		renderables;
 };

@@ -1,26 +1,54 @@
 #pragma once
 
+#include <cstdint>
+
 struct ID3D11Device;
 struct ID3D11ShaderResourceView;
 
+class RenderingSystem;
+class Material;
+
+enum TextureType
+{
+	TextureUnknown,
+	Texture1D,
+	Texture2D,
+	Texture3D
+};
+
+struct TextureInfo
+{
+	TextureType		type;
+	uint32_t		width;
+	uint32_t		height;
+	uint32_t		depth;
+	uint32_t		arraySize;
+	uint32_t		mipLevels;
+};
+
 class Texture
 {
-public:
-	Texture() : texSRV(nullptr) {}
+private:
+	friend class RenderingSystem;
+	friend class Material;
 
-	Texture(const wchar_t* filename, ID3D11Device* device);
-
+	Texture() : valid(false), texSRV(nullptr) {}
 	~Texture();
 
-	void LoadTextureFromFile(const wchar_t* filename, ID3D11Device* device);
+	void CleanUp();
 
-	void LoadTextureFromMemory(const void* data, int width, int height, ID3D11Device* device);
+	bool LoadTextureFromFile(const wchar_t* filename, ID3D11Device* device);
+	bool LoadTextureFromMemory(const void* data, int width, int height, ID3D11Device* device);
 
-	void Release();
+public:
 
+	bool IsValid() const { return valid; }
 
-	ID3D11ShaderResourceView*	GetSRV() const { return texSRV; }
+	const TextureInfo* GetInfo() const { return &texInfo; }
 
 private:
+	bool						valid;
 	ID3D11ShaderResourceView*	texSRV;
+
+	TextureInfo					texInfo;
 };

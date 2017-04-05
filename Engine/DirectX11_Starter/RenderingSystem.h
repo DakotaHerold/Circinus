@@ -2,9 +2,17 @@
 
 #include <Windows.h>
 #include <string>
+#include <vector>
+#include <unordered_map>
 #include <d3d11.h>
 
 #include "dxerr.h"
+
+#include "ConstantBuffer.h"
+#include "Mesh.h"
+#include "Shader.h"
+#include "Texture.h"
+#include "Material.h"
 
 // --------------------------------------------------------
 // Convenience macro for releasing COM objects.
@@ -39,21 +47,78 @@
 #endif
 #endif
 
+class NativeWindow;
 class SceneGraph;
+
+#if defined(_DEBUG)
+class DebugCam;
+typedef DebugCam Camera;
+#else
+class Camera;
+#endif
 
 class RenderingSystem
 {
+private:
+	static RenderingSystem* _instance;
+
+public:
+	inline static RenderingSystem* instance() { return _instance; }
+
 public:
 	RenderingSystem();
 	~RenderingSystem(void);
 
-	// Methods called by the game loop - override these in
-	// derived classes to implement custom functionality
-	bool Init(void* wndHandle);
-	void OnResize(int windowWidth, int windowHeight);
-	void DrawScene(SceneGraph* scene);
+	bool Init(NativeWindow* win);
 
-protected:
+	void OnResize(int windowWidth, int windowHeight);
+
+	void DrawScene(DebugCam* cam, SceneGraph* scene);
+
+public:
+	Mesh* CreateMesh(const char* filename);
+
+	Shader* CreateShader(const wchar_t* filename);
+
+	Texture* CreateTexture(const wchar_t* filename);
+
+	Material* CreateMaterial(Shader* shader);
+
+private:
+	std::unordered_map<std::string, Mesh*>		meshes;
+	std::unordered_map<std::wstring, Shader*>	shaders;
+	std::unordered_map<std::wstring, Texture*>	textures;
+	std::vector<Material*>						materials;
+
+private:
+	bool InitPreBoundConstantBuffers();
+
+	void UploadPreBoundConstantBuffers();
+
+	void UpdateViewMatrix(const DirectX::XMFLOAT4X4& m);
+
+	void UpdateProjectionMatrix(const DirectX::XMFLOAT4X4& m);
+
+private:
+
+	struct BuiltinFrameCB
+	{
+		DirectX::XMFLOAT4X4		matView;
+		DirectX::XMFLOAT4X4		matProj;
+	};
+
+	// TODO
+	/*struct BuiltinInstanceCB
+	{
+
+	};*/
+
+	ConstantBuffer			builtinFrameCB;
+	//BuiltinInstanceCB		builtinInstanceCB;
+
+	std::unordered_map<std::string, ConstantBuffer*> preBoundCBs;
+
+private:
 	// Handles Direct3D initialization
 	bool InitDirect3D(void* wndHandle);
 

@@ -3,6 +3,9 @@
 #include <WindowsX.h>
 #include <sstream>
 
+#include <Keyboard.h>
+#include <Mouse.h>
+
 namespace
 {
 	// --------------------------------------------------------
@@ -13,13 +16,20 @@ namespace
 	// --------------------------------------------------------
 	LRESULT CALLBACK MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
-		if (msg == WM_DESTROY)
+		switch(msg)
 		{
+		case WM_CREATE:
+			{
+				CREATESTRUCT* d = reinterpret_cast<CREATESTRUCT*>(lParam);
+				SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG>(d->lpCreateParams));
+			}
+			return DefWindowProc(hwnd, msg, wParam, lParam);
+		case WM_DESTROY:
 			PostQuitMessage(0);
 			return DefWindowProc(hwnd, msg, wParam, lParam);
-		}
+		};
 
-		LONG ptr = GetWindowLongPtr(hwnd, 0);
+		LONG ptr = GetWindowLongPtr(hwnd, GWLP_USERDATA);
 
 		if (!ptr)
 			return DefWindowProc(hwnd, msg, wParam, lParam);
@@ -42,20 +52,9 @@ NativeWindow::NativeWindow()
 	minimized(false),
 	maximized(false),
 	resizing(false),
-	perfCounterSeconds(0.0),
-	startTime(0),
-	currentTime(0),
-	previousTime(0),
-	totalTime(0.0f),
-	deltaTime(0.0f),
 	quit(false)
 {
 	hAppInst = GetModuleHandle(nullptr);
-
-	// Query the performance counter for accurate timing information
-	__int64 perfFreq;
-	QueryPerformanceFrequency((LARGE_INTEGER*)&perfFreq);
-	perfCounterSeconds = 1.0 / (double)perfFreq;
 }
 
 bool NativeWindow::Init()
@@ -86,15 +85,53 @@ int NativeWindow::ProcessEvent()
 		}
 	}
 
-	// Update the timer for this frame
-	UpdateTimer();
-
-	// Standard game loop type stuff
-	CalculateFrameStats();
-
 	// If we make it outside the game loop, return the most
 	// recent message's exit code
 	return (int)msg.wParam;
+}
+
+void NativeWindow::CalculateFrameStats(float totalTime)
+{
+	static int frameCount = 0;
+	static float timeElapsed = 0.0f;
+
+	frameCount++;
+
+	// Compute averages over ONE SECOND.
+	if ((totalTime - timeElapsed) >= 1.0f)
+	{
+		float fps = (float)frameCount; // Count over one second
+		float mspf = 1000.0f / fps;    // Milliseconds per frame
+
+									   // Quick and dirty string manipulation for title bar text
+		std::wostringstream outs;
+		outs.precision(6);
+		outs << windowCaption << L"    "
+			<< L"Width: " << windowWidth << L"    "
+			<< L"Height: " << windowHeight << L"    "
+			<< L"FPS: " << fps << L"    "
+			<< L"Frame Time: " << mspf << L"ms";
+
+		//// Include feature level
+		//switch (featureLevel)
+		//{
+		//case D3D_FEATURE_LEVEL_11_1: outs << "    DX 11.1"; break;
+		//case D3D_FEATURE_LEVEL_11_0: outs << "    DX 11.0"; break;
+		//case D3D_FEATURE_LEVEL_10_1: outs << "    DX 10.1"; break;
+		//case D3D_FEATURE_LEVEL_10_0: outs << "    DX 10.0"; break;
+		//case D3D_FEATURE_LEVEL_9_3:  outs << "    DX 9.3";  break;
+		//case D3D_FEATURE_LEVEL_9_2:  outs << "    DX 9.2";  break;
+		//case D3D_FEATURE_LEVEL_9_1:  outs << "    DX 9.1";  break;
+		//default:                     outs << "    DX ???";  break;
+		//}
+
+		SetWindowText(hMainWnd, outs.str().c_str());
+
+		// Reset frame count, and adjust time elapsed
+		// to wait another second
+		frameCount = 0;
+		timeElapsed += 1.0f;
+	}
 }
 
 bool NativeWindow::InitMainWindow()
@@ -155,86 +192,9 @@ bool NativeWindow::InitMainWindow()
 	return true;
 }
 
-void NativeWindow::InitTimer()
-{
-	// Grab the start time
-	__int64 now;
-	QueryPerformanceCounter((LARGE_INTEGER*)&now);
-	startTime = now;
-	currentTime = now;
-	previousTime = now;
-}
-
 void NativeWindow::Quit()
 {
 	PostQuitMessage(0);
-}
-
-void NativeWindow::UpdateTimer()
-{
-
-	// Grab the current time
-	__int64 now;
-	QueryPerformanceCounter((LARGE_INTEGER*)&now);
-	currentTime = now;
-
-	// Calculate delta time and clamp to zero if negative.
-	//  - This could happen if the processor goes into a
-	//    power save mode or the process itself gets moved
-	//    to another processor core.
-	deltaTime = (float)((currentTime - previousTime) * perfCounterSeconds);
-	if (deltaTime < 0.0f)
-		deltaTime = 0.0f;
-
-	// Calculate total time
-	totalTime = (float)((currentTime - startTime) * perfCounterSeconds);
-
-	// Save the previous time
-	previousTime = currentTime;
-}
-
-void NativeWindow::CalculateFrameStats()
-{
-	static int frameCount = 0;
-	static float timeElapsed = 0.0f;
-
-	frameCount++;
-
-	// Compute averages over ONE SECOND.
-	if ((totalTime - timeElapsed) >= 1.0f)
-	{
-		float fps = (float)frameCount; // Count over one second
-		float mspf = 1000.0f / fps;    // Milliseconds per frame
-
-									   // Quick and dirty string manipulation for title bar text
-		std::wostringstream outs;
-		outs.precision(6);
-		outs << windowCaption << L"    "
-			<< L"Width: " << windowWidth << L"    "
-			<< L"Height: " << windowHeight << L"    "
-			<< L"FPS: " << fps << L"    "
-			<< L"Frame Time: " << mspf << L"ms";
-
-		//// Include feature level
-		//switch (featureLevel)
-		//{
-		//case D3D_FEATURE_LEVEL_11_1: outs << "    DX 11.1"; break;
-		//case D3D_FEATURE_LEVEL_11_0: outs << "    DX 11.0"; break;
-		//case D3D_FEATURE_LEVEL_10_1: outs << "    DX 10.1"; break;
-		//case D3D_FEATURE_LEVEL_10_0: outs << "    DX 10.0"; break;
-		//case D3D_FEATURE_LEVEL_9_3:  outs << "    DX 9.3";  break;
-		//case D3D_FEATURE_LEVEL_9_2:  outs << "    DX 9.2";  break;
-		//case D3D_FEATURE_LEVEL_9_1:  outs << "    DX 9.1";  break;
-		//default:                     outs << "    DX ???";  break;
-		//}
-
-		SetWindowText(hMainWnd, outs.str().c_str());
-
-		// Reset frame count, and adjust time elapsed
-		// to wait another second
-		frameCount = 0;
-		timeElapsed += 1.0f;
-	}
 }
 
 LRESULT NativeWindow::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -338,26 +298,30 @@ LRESULT NativeWindow::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		((MINMAXINFO*)lParam)->ptMinTrackSize.y = 200;
 		return 0;
 
-		// Messages that correspond to mouse button being pressed while the cursor
-		// is currently over our window
-	case WM_LBUTTONDOWN:
-	case WM_MBUTTONDOWN:
-	case WM_RBUTTONDOWN:
-		OnMouseDown(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
-		return 0;
 
-		// Messages that correspond to mouse button being released while the cursor
-		// is currently over our window
-	case WM_LBUTTONUP:
-	case WM_MBUTTONUP:
-	case WM_RBUTTONUP:
-		OnMouseUp(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+	case WM_ACTIVATEAPP:
+		DirectX::Keyboard::ProcessMessage(msg, wParam, lParam);
+		DirectX::Mouse::ProcessMessage(msg, wParam, lParam);
 		return 0;
-
-		// Message that occurs while the mouse moves over the window or while
-		// we're currently capturing it
+	case WM_INPUT:
 	case WM_MOUSEMOVE:
-		OnMouseMove(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+	case WM_LBUTTONDOWN:
+	case WM_LBUTTONUP:
+	case WM_RBUTTONDOWN:
+	case WM_RBUTTONUP:
+	case WM_MBUTTONDOWN:
+	case WM_MBUTTONUP:
+	case WM_MOUSEWHEEL:
+	case WM_XBUTTONDOWN:
+	case WM_XBUTTONUP:
+	case WM_MOUSEHOVER:
+		DirectX::Mouse::ProcessMessage(msg, wParam, lParam);
+		return 0;
+	case WM_KEYDOWN:
+	case WM_SYSKEYDOWN:
+	case WM_KEYUP:
+	case WM_SYSKEYUP:
+		DirectX::Keyboard::ProcessMessage(msg, wParam, lParam);
 		return 0;
 	}
 
@@ -367,4 +331,6 @@ LRESULT NativeWindow::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 void NativeWindow::OnResize()
 {
+	if (callbackOnResize)
+		callbackOnResize(windowWidth, windowHeight);
 }

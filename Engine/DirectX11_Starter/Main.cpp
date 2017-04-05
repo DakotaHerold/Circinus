@@ -22,15 +22,38 @@
 // ----------------------------------------------------------------------------
 
 //#define TEST_RENDERING_SYSTEM 1
+#define TEST_NEW_ENGINE 1
 
-#if defined(TEST_RENDERING_SYSTEM)
+#if defined(TEST_NEW_ENGINE)
+
+#include <crtdbg.h>
+#include <Windows.h>
+#include "Engine.h"
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPSTR cmdLine, int showCmd)
+{
+	// Enable run-time memory check for debug builds.
+#if defined(DEBUG) | defined(_DEBUG)
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
+
+	Engine engine;
+
+	if (!engine.Init())
+		return - 1;
+
+	return engine.Run();
+}
+
+#elif defined(TEST_RENDERING_SYSTEM)
 
 #include "NativeWindow.h"
 #include "RenderingSystem.h"
+#include "DebugCam.h"
 #include "SceneGraph.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPSTR cmdLine, int showCmd)
-{	
+{
 	// Enable run-time memory check for debug builds.
 #if defined(DEBUG) | defined(_DEBUG)
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -39,19 +62,57 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPSTR cmdLine, i
 	NativeWindow window;
 	RenderingSystem renderer;
 
-	if (!window.Init() || !renderer.Init(window.GetWindowHandle()))
+	if (!window.Init() || !renderer.Init(&window))
 		return 0;
 
 	SceneGraph scene;
 
 	Renderable* r = scene.CreateRenderable();
-	
 
+	Shader* shader = renderer.CreateShader(L"Assets/ShaderObjs/Opaque.cso");
+
+	Mesh* mesh = renderer.CreateMesh("Assets/Models/cube.fbx");
+	Texture* tex = renderer.CreateTexture(L"Assets/Textures/crate.png");
+	Material* mat = renderer.CreateMaterial(shader);
+
+	if (!mat->SetTexture("texDiffuse", tex))
+	{
+		return -1;
+	}
+
+	r->SetMesh(mesh);
+	r->SetMaterial(mat);
+
+	DirectX::XMFLOAT4X4 matrix;
+	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixIdentity());
+
+	mat->SetMatrix4x4("matWorld", matrix);
+	mat->SetMatrix4x4("matWorld_IT", matrix);
+
+	DebugCam cam;
+	cam.getViewMatrix();
+	cam.setProjectionMatrix(800.0f / 600.0f);
+	
+	float rot = 0.0f;
 	while (!window.WindowIsClosed())
 	{
 		window.ProcessEvent();
-		renderer.DrawScene(&scene);
-	}
+
+		float deltaTime = window.GetDeltaTime();
+
+		cam.update(deltaTime);
+
+		rot += deltaTime * 1.0f;
+
+		auto rotM = DirectX::XMMatrixRotationY(rot);
+
+		DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixTranspose(rotM));
+		mat->SetMatrix4x4("matWorld", matrix);
+		DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixInverse(nullptr, rotM));
+		mat->SetMatrix4x4("matWorld_IT", matrix);
+
+		renderer.DrawScene(&cam, &scene);
+	} 
 
 	return 0;
 }
@@ -116,9 +177,9 @@ Main::Main(HINSTANCE hInstance)
 	cam = new Camera(); 
 	debugCam = new DebugCam();
 
-	leftmouseHeld = false; 
-	middleMouseHeld = false; 
-	rightmouseHeld = false; 
+	leftmouseHeld = false;
+	middleMouseHeld = false;
+	rightmouseHeld = false;
 }
 
 // --------------------------------------------------------
@@ -152,9 +213,9 @@ Main::~Main()
 	delete skyObject;
 	for (int i = 0; i < MAX_ENTITIES; i++)
 	{
-		delete entities[i]; 
+		delete entities[i];
 	}
-	
+
 	//Delete Material
 	delete skyMaterial;
 	delete material;
@@ -189,10 +250,10 @@ bool Main::Init()
 	CreateMatrices();
 
 	// Allocate Console in Debug Mode
-	#if defined(DEBUG) || defined(_DEBUG)
+#if defined(DEBUG) || defined(_DEBUG)
 	AllocConsole();
 	freopen("CONOUT$", "w", stdout);
-	#endif
+#endif
 
 	// Initialize Deferred Context
 	//device->CreateDeferredContext(0, &deferredContext);
@@ -262,8 +323,8 @@ bool Main::Init()
 		sizeof(DirectionalLight)); // size of data to copy 
 
 	// Point Lights 
-	pointLight.PointLightColor = XMFLOAT4(1.0f, 1.0f, 1.0f, 0.0f); 
-	pointLight.Position = XMFLOAT3(0.0f, 1.0f, -3.0f); 
+	pointLight.PointLightColor = XMFLOAT4(1.0f, 1.0f, 1.0f, 0.0f);
+	pointLight.Position = XMFLOAT3(0.0f, 1.0f, -3.0f);
 	pixelShader->SetData(
 		"pointLight",	//name in shader variable
 		&pointLight,	// address in memory
@@ -277,9 +338,9 @@ bool Main::Init()
 #endif // _DEBUG
 
 	// Specular Lights 
-	specularLight.SpecularColor = XMFLOAT4(1.0f, 0.1449275f, 0.0f, 1.0f); 
+	specularLight.SpecularColor = XMFLOAT4(1.0f, 0.1449275f, 0.0f, 1.0f);
 	specularLight.Direction = XMFLOAT3(-3.0f, -1.0f, -2.0f);
-	specularLight.SpecularStrength = 0.75f; 
+	specularLight.SpecularStrength = 0.75f;
 	specularLight.LightIntensity = 0.5f;
 	pixelShader->SetData(
 		"specularLight",	//name in shader variable
@@ -306,7 +367,7 @@ void Main::LoadShaders()
 	pixelShader = new SimplePixelShader(device, deviceContext);
 	//pixelShader->LoadShaderFile(L"Assets/ShaderObjs/PixelShader.cso");
 	pixelShader->LoadShaderFile(L"Assets/ShaderObjs/Opaque_PS.cso");
-	
+
 	skyVertShader = new SimpleVertexShader(device, deviceContext);
 	skyVertShader->LoadShaderFile(L"Assets/ShaderObjs/VertexShaderSky.cso");
 
@@ -333,8 +394,8 @@ void Main::CreateGeometry()
 	skyObject->SetScale(200.0f, 200.0f, 200.0f);
 
 	//	Generic UVs
-	XMFLOAT3 normal = XMFLOAT3(0, 0, -1); 
-	XMFLOAT2 uv = XMFLOAT2(0, 0); 
+	XMFLOAT3 normal = XMFLOAT3(0, 0, -1);
+	XMFLOAT2 uv = XMFLOAT2(0, 0);
 
 	// Create some temporary variables to represent colors
 	// - Not necessary, just makes things more readable
@@ -344,10 +405,10 @@ void Main::CreateGeometry()
 
 
 	//meshOne = new Mesh(vertices, (int)sizeof(vertices), indices, sizeof(indices), device);
-	meshOne = new Mesh("Assets/Models/cube.fbx", device); 
+	meshOne = new Mesh("Assets/Models/cube.fbx", device);
 
 	//Create Material 
-	material = new Material(vertexShader, pixelShader); 
+	material = new Material(vertexShader, pixelShader);
 
 	texDiffuse.LoadTextureFromFile(L"Assets/Textures/crate.png", device);
 	material->texDiffuse = &texDiffuse;
@@ -367,7 +428,7 @@ void Main::CreateGeometry()
 	//Entity* e2 = new Entity(meshThree, material);
 	//Entity* e3 = new Entity(meshTwo, material);
 
-	
+
 	// Organize fixed amount of entities in array 
 	for (int i = 0; i < MAX_ENTITIES; ++i)
 	{
@@ -375,22 +436,22 @@ void Main::CreateGeometry()
 		// make entities tiny
 		entities[i]->SetScale(0.25f, 0.25f, 0.25f);
 	}
-	float xPos = 0.0f; 
-	float yPos = 0.0f; 
+	float xPos = 0.0f;
+	float yPos = 0.0f;
 	for (int i = 0; i < MAX_ENTITIES; ++i)
 	{
 		if (i % 5 == 0)
 		{
-			xPos = 0.0f; 
-			yPos -= 0.75f; 
+			xPos = 0.0f;
+			yPos -= 0.75f;
 			entities[i]->Move(xPos, yPos, 0);
 		}
 		else
 		{
 			xPos += 0.75f;
-			entities[i]->Move(xPos, yPos , 0);	
+			entities[i]->Move(xPos, yPos, 0);
 		}
-		
+
 	}
 }
 
@@ -476,18 +537,18 @@ void Main::UpdateScene(float deltaTime, float totalTime)
 
 
 	// Update User Input
-	InputManager::instance().UpdateInput(deltaTime); 
+	InputManager::instance().UpdateInput(deltaTime);
 
 	// Quit if the escape key is pressed
 	if (InputManager::instance().GetQuit())
 		Quit();
-	
+
 
 	// arbitrary constants that control movement  
 	float speed = 0.25f * deltaTime;
 	float rotation = 0.55f * deltaTime;
-	float buffer = 1.5f; 
-	
+	float buffer = 1.5f;
+
 	// Manipulate matrices
 	for (auto& i : entities)
 	{
@@ -504,9 +565,9 @@ void Main::UpdateScene(float deltaTime, float totalTime)
 	//update all entities 
 	for (auto& i : entities)
 	{
-		i->updateScene(); 
+		i->updateScene();
 	}
-	
+
 	//update Camera and it's input
 #ifdef _DEBUG
 	debugCam->update(deltaTime, totalTime);
@@ -537,7 +598,7 @@ void Main::DrawScene(float deltaTime, float totalTime)
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,
 		1.0f,
 		0);
-	
+
 	deviceContext->RSSetState(nullptr);
 
 	// Set the vertex and pixel shaders to use for the next Draw() command
@@ -548,7 +609,7 @@ void Main::DrawScene(float deltaTime, float totalTime)
 	pixelShader->SetShader(true);
 
 	for (auto& i : entities)
-	{ 
+	{
 		// Send data to shader variables
 		//  - Do this ONCE PER OBJECT you're drawing
 		//  - This is actually a complex process of copying data to a local buffer
@@ -576,7 +637,7 @@ void Main::DrawScene(float deltaTime, float totalTime)
 
 	//Execute deferred commands
 	//deviceContext->ExecuteCommandList(commandList, FALSE);
-	
+
 	// Draw SkyBox
 
 	deviceContext->RSSetState(rasterizerState);
@@ -624,9 +685,12 @@ void Main::OnMouseDown(WPARAM btnState, int x, int y)
 	prevMousePos.y = y;
 
 	//mouse input
-	if (btnState & 0x0001) { /* Left button is down */ leftmouseHeld = true; } else { leftmouseHeld = false;  }
-	if (btnState & 0x0002) { /* Right button is down */ rightmouseHeld = true; } else { rightmouseHeld = false; }
-	if (btnState & 0x0010) { /* Middle button is down */ middleMouseHeld = true; } else { middleMouseHeld = false; }
+	if (btnState & 0x0001) { /* Left button is down */ leftmouseHeld = true; }
+	else { leftmouseHeld = false; }
+	if (btnState & 0x0002) { /* Right button is down */ rightmouseHeld = true; }
+	else { rightmouseHeld = false; }
+	if (btnState & 0x0010) { /* Middle button is down */ middleMouseHeld = true; }
+	else { middleMouseHeld = false; }
 
 	// Pass values to Input Manager
 	InputManager::instance().SetLeftMouseHeld(leftmouseHeld);

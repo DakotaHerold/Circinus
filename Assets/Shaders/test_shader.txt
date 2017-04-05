@@ -1,0 +1,3 @@
+/// depth 	on  
+/// vs_cso 	Opaque_VS.cso  
+/// ps_cso 	Opaque_PS.cso 

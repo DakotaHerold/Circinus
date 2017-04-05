@@ -17,7 +17,7 @@
 #pragma comment(lib, "assimp-x86d.lib")
 #pragma comment(lib, "zlibstaticd.lib")
 #else
-#pragma comment(lib, "assimp-x86d.lib")
+#pragma comment(lib, "assimp-x86.lib")
 #pragma comment(lib, "zlibstatic.lib")
 #endif
 #endif

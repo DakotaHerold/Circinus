@@ -7,6 +7,7 @@ class Transform;
 class Mesh;
 class Material;
 class SceneGraph;
+class RenderingSystem;
 
 class Renderable
 {
@@ -23,6 +24,7 @@ public:
 	const DirectX::BoundingBox& BoundingBox() const { return bounds; }
 
 private:
+	friend class RenderingSystem;
 	friend class SceneGraph;
 
 	Renderable()
