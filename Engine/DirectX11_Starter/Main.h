@@ -10,6 +10,7 @@
 #include "Mesh.h"
 #include "Entity.h"
 #include "Camera.h"
+#include "DebugCam.h"
 #include "Lights.h"
 #include "InputManager.h"
 #include "vld.h"
@@ -42,6 +43,7 @@ public:
 	void OnMouseDown(WPARAM btnState, int x, int y);
 	void OnMouseUp(WPARAM btnState, int x, int y);
 	void OnMouseMove(WPARAM btnState, int x, int y);
+	void OnMouseWheel(float wheelDelta, int x, int y);
 
 private:
 	// Initialization for our "game" demo - Feel free to
@@ -72,6 +74,7 @@ private:
 
 	//Camera
 	Camera* cam; 
+	DebugCam* debugCam;
 
 	//Material 
 	Material* skyMaterial;
