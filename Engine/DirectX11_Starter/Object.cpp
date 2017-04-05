@@ -26,15 +26,8 @@ int Object::GetID()
 	return id;
 }
 
-template <typename T>
-T* Object::GetObjectWithID(int id) {
-	for (auto o : allObjects) {
-		if (o.first == id) {
-			return o.second;
-		}
-	}
-	return nullptr;
-}
+
+
 
 int Object::nextID = 0;
 vector<pair<int, Object*>> Object::allObjects;

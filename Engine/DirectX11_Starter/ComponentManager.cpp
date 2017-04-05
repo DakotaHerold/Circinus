@@ -31,8 +31,8 @@ bool ComponentManager::RemoveComponent(int entityID, TypeId componentTypeId)
 {
 	//getWorld().m_entityAttributes.componentStorage.removeComponent(*this, componentTypeId);
 
-	for (int i = 0; i < allComponets.size(); i++) {
-		if (allComponets[i].second->GetEntityID == entityID && allComponets[i].first == componentTypeId) {
+	for (unsigned i = 0; i < allComponets.size(); i++) {
+		if (allComponets[i].second->GetEntityID() == entityID && allComponets[i].first == componentTypeId) {
 			allComponets.erase(allComponets.begin() + i);
 			return true;
 		}

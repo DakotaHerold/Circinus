@@ -78,4 +78,5 @@ void Scene::Tick(float deltaTime, float totalTime)
 
 void Scene::Exit()
 {
+
 }

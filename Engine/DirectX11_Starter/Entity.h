@@ -3,13 +3,11 @@
 #include <d3d11.h>
 #include "Mesh.h"
 #include "Material.h"
-#include "Component.h"
 #include "Object.h"
 #include <utility>
+#include"Component.h"
 
-using namespace DirectX; 
-
-typedef std::size_t eid;
+using namespace DirectX;
 class ComponentManager;
 class Entity : public Object
 {
@@ -55,7 +53,6 @@ public :
 	bool RemoveComponent();
 
 	/// Removes all the components attached to the Entity
-	void RemoveAllComponents();
 
 	/// Retrives a component from this Entity
 	/// \tparam The type of component you wish to retrieve

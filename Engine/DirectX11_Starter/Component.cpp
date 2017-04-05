@@ -1,5 +1,6 @@
 #include "Component.h"
-#include <iostream>
+#include"Entity.h"
+
 
 Component::Component()
 {
@@ -11,7 +12,7 @@ Component::~Component()
 
 void Component::Update()
 {
-	std::cout << "Base" << std::endl;
+
 }
 
 void Component::Release()
@@ -20,8 +21,8 @@ void Component::Release()
 }
 
 Entity* Component::GetEntity()
-{
-	return Object::GetObjectWithID<Entity>(gameEntityID);
+{	
+	return (Object::GetObjectWithID<Entity>(gameEntityID));
 }
 
 int Component::GetEntityID()

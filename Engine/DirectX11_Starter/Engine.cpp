@@ -69,7 +69,6 @@ int Engine::Run()
 		// scripting system
 		// TODO
 
-
 		// TODO !
 		// hardcoded debug code, 
 		// this should be done by SceneManager

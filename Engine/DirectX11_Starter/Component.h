@@ -1,7 +1,6 @@
 #pragma once
 #include "ClassTypeId.h"
 #include "Object.h"
-
 class Entity;
 class Component : public Object
 {
