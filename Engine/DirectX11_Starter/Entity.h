@@ -2,14 +2,14 @@
 #include "Mesh.h"
 #include "Material.h"
 #include "Component.h"
-
+#include "Object.h"
 #include <utility>
 
 using namespace DirectX; 
 
 typedef std::size_t eid;
-
-class Entity
+class ComponentManager;
+class Entity : public Object
 {
 public:
 	~Entity();
@@ -38,7 +38,6 @@ public:
 	void Scale(float x, float y, float z) { scale.x += x;	scale.y += y;	scale.z += z; }
 	void prepareMaterial(XMFLOAT4X4& view, XMFLOAT4X4& proj); 
 
-	void Update();
 
 	
 public :
@@ -68,14 +67,6 @@ public :
 	template <typename T>
 	bool HasComponent() const;
 
-private :
-	eid id;
-
-	void AddComponent(Component* component, TypeId componentTypeId);
-	bool RemoveComponent(TypeId componentTypeId);
-	Component * GetComponent(TypeId componentTypeId) const;
-	bool HasComponent(TypeId componentTypeId) const;
-
 private:
 	DirectX::XMFLOAT3 position;
 	DirectX::XMFLOAT3 rotation;
@@ -91,7 +82,8 @@ T* Entity::AddComponent(Args&&... args)
 	static_assert(std::is_base_of<Component, T>(), "T is not a component, cannot add T to entity");
 	// TODO: align components by type
 	auto component = new T{ std::forward<Args>(args)... };
-	AddComponent(component, ComponentTypeId<T>());
+	ComponentManager::GetCurrent()->AddComponent(this, component, ComponentTypeId<T>());
+	//AddComponent(component, ComponentTypeId<T>());
 	return component;
 }
 
@@ -99,19 +91,22 @@ template <typename T>
 bool Entity::RemoveComponent()
 {
 	static_assert(std::is_base_of<Component, T>(), "T is not a component, cannot remove T from entity");
-	return RemoveComponent(ComponentTypeId<T>());
+	return ComponentManager::GetCurrent()->RemoveComponent(this, ComponentTypeId<T>());
+	//return RemoveComponent(ComponentTypeId<T>());
 }
 
 template <typename T>
 T* Entity::GetComponent() const
 {
 	static_assert(std::is_base_of<Component, T>(), "T is not a component, cannot retrieve T from entity");
-	return GetComponent(ComponentTypeId<T>());
+	return ComponentManager::GetCurrent()->GetComponent(this, ComponentTypeId<T>());
+	//return GetComponent(ComponentTypeId<T>());
 }
 
 template <typename T>
 bool Entity::HasComponent() const
 {
 	static_assert(std::is_base_of<Component, T>(), "T is not a component, cannot determine if entity has T");
-	return HasComponent(ComponentTypeId<T>());
+	return ComponentManager::GetCurrent()->HasComponent(this, ComponentTypeId<T>());
+	//return HasComponent(ComponentTypeId<T>());
 }

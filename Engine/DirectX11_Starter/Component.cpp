@@ -19,12 +19,17 @@ void Component::Release()
 	this->~Component();
 }
 
-Entity * Component::GetEntity()
+Entity* Component::GetEntity()
 {
-	return gameEntity;
+	return Object::GetObjectWithID<Entity>(gameEntityID);
 }
 
-void Component::SetEntity(Entity * entity)
+int Component::GetEntityID()
 {
-	gameEntity = entity;
+	return gameEntityID;
+}
+
+void Component::SetEntity(int id)
+{
+	gameEntityID = id;
 }

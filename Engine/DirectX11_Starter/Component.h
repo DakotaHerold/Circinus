@@ -1,8 +1,9 @@
 #pragma once
 #include "ClassTypeId.h"
+#include "Object.h"
 
 class Entity;
-class Component
+class Component : public Object
 {
 public:
 	Component();
@@ -11,11 +12,12 @@ public:
 	virtual void Update();
 	virtual void Release();
 
+	void SetEntity(int id);
 	Entity* GetEntity();
-	void SetEntity(Entity* entity);
+	int GetEntityID();
 
-protected:
-	Entity* gameEntity;
+private:
+	int gameEntityID;
 };
 
 template <typename T>

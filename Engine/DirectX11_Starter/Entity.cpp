@@ -117,12 +117,7 @@ void Entity::prepareMaterial(XMFLOAT4X4& view, XMFLOAT4X4& proj)
 	material->pixelShader->SetShader(true); 
 }
 
-void Entity::Update()
-{
-	//for (int i = 0; i < allComponets.size(); i++) {
-	//	allComponets[i]->Update();
-	//}
-}
+
 
 //bool Entity::AddComponent(Component* com)
 //{
@@ -164,7 +159,7 @@ void Entity::AddComponent(Component* component, TypeId componentTypeId)
 {
 	//getWorld().m_entityAttributes.componentStorage.addComponent(*this, component, componentTypeId);
 
-	component->SetEntity(this);
+	component->SetEntity(id);
 	allComponets.push_back(make_pair(componentTypeId, component));
 }
 

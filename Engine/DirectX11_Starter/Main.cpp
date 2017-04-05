@@ -181,11 +181,11 @@ bool Main::Init()
 	// Helper methods to create something to draw, load shaders to draw it 
 	// with and set up matrices so we can see how to pass data to the GPU.
 	//  - For your own projects, feel free to expand/replace these.
-
+	ComponentManager::NewComManager();
 	LoadShaders();
 	CreateGeometry();
 	CreateMatrices();
-
+	
 	// Allocate Console in Debug Mode
 	#if defined(DEBUG) || defined(_DEBUG)
 	AllocConsole();
@@ -381,7 +381,6 @@ void Main::CreateGeometry()
 	testEnt = new Entity(meshOne, material);
 	testEnt->SetScale(2, 2, 2);
 	testEnt->SetPosition(0, 0, 0);
-	testEnt->AddComponent<ScriptComponent>();
 }
 
 
@@ -558,7 +557,6 @@ void Main::DrawScene(float deltaTime, float totalTime)
 
 	testEnt->prepareMaterial(cam->getViewMatrix(), cam->getProjectionMatrix());
 	testEnt->drawScene(deviceContext);
-	testEnt->Update();
 	//Execute deferred commands
 	//deviceContext->ExecuteCommandList(commandList, FALSE);
 	
