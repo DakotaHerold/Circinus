@@ -9,10 +9,7 @@ Renderable * SceneGraph::CreateRenderable()
 {
 	renderables.push_back(Renderable());
 
-	Renderable& r = renderables[renderables.size() - 1];
-
-	// TODO : transform from allocator
-	r.transform = new Transform();
+	Renderable& r = renderables.back();
 
 	return &r;
 }

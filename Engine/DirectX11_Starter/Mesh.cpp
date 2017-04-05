@@ -1,42 +1,37 @@
 #include "Mesh.h"
 #include "AssimpLoader.h"
 
+#include <d3d11.h>
+
+#define HR(x) if ((x) != S_OK) return false;
+
 // For the DirectX Math library
 using namespace DirectX;
 
 Mesh::~Mesh()
 {
-	vertexBuffer->Release(); 
-	indexBuffer->Release(); 
+	CleanUp();
 }
 
-Mesh::Mesh(Vertex vertices[], int numVerts, unsigned int indices[], int numIndices, ID3D11Device * device)
+void Mesh::CleanUp()
 {
-	LoadFromMemory(vertices, numVerts, indices, numIndices, device);
+	valid = false;
+	if (nullptr != vertexBuffer) 
+	{ 
+		vertexBuffer->Release(); 
+		vertexBuffer = nullptr;
+	}
+	if (nullptr != indexBuffer)
+	{
+		indexBuffer->Release();
+		indexBuffer = nullptr;
+	}
+	indexCount = 0;
 }
 
-Mesh::Mesh(char* filename, ID3D11Device * device)
+bool Mesh::LoadFromMemory(Vertex vertices[], int numVerts, unsigned int indices[], int numIndices, ID3D11Device * device)
 {
-	LoadFromFile(filename, device);
-}
-
-ID3D11Buffer * Mesh::GetVertexBuffer()
-{
-	return vertexBuffer;
-}
-
-ID3D11Buffer * Mesh::GetIndexBuffer()
-{
-	return indexBuffer;
-}
-
-int Mesh::GetIndexCount()
-{
-	return indexCount;
-}
-
-void Mesh::LoadFromMemory(Vertex vertices[], int numVerts, unsigned int indices[], int numIndices, ID3D11Device * device)
-{
+	CleanUp();
 	// Create the VERTEX BUFFER description -----------------------------------
 	// - The description is created on the stack because we only need
 	//    it to create the buffer.  The description is then useless.
@@ -77,10 +72,14 @@ void Mesh::LoadFromMemory(Vertex vertices[], int numVerts, unsigned int indices[
 	// Actually create the buffer with the initial data
 	// - Once we do this, we'll NEVER CHANGE THE BUFFER AGAIN
 	HR(device->CreateBuffer(&ibd, &initialIndexData, &indexBuffer));
+
+	valid = true;
+	return true;
 }
 
-void Mesh::LoadFromFile(char * filename, ID3D11Device * device)
+bool Mesh::LoadFromFile(const char * filename, ID3D11Device * device)
 {
+	CleanUp();
 	AssimpLoader loader;
 	loader.LoadFromFile(filename);
 
@@ -89,7 +88,12 @@ void Mesh::LoadFromFile(char * filename, ID3D11Device * device)
 
 	loader.FillInVerticesData(pData);
 
-	LoadFromMemory(reinterpret_cast<Vertex*>(pData), loader.GetVerticesCount(), const_cast<unsigned int*>(loader.GetIndices()), loader.GetIndicesCount(), device);
+	if (!LoadFromMemory(reinterpret_cast<Vertex*>(pData), loader.GetVerticesCount(), const_cast<unsigned int*>(loader.GetIndices()), loader.GetIndicesCount(), device))
+	{
+		free(pData);
+		return false;
+	}
 
 	free(pData);
+	return true;
 }

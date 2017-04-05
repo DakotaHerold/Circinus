@@ -1,6 +1,9 @@
 #pragma once
+
+#include <Windows.h>
 #include "GamePad.h"
-#include "Windows.h"
+#include "Keyboard.h"
+#include "Mouse.h"
 #include <iostream>
 
 using namespace DirectX; 
@@ -39,7 +42,6 @@ public:
 	bool GetDescending() { return descending; }
 
 	// Controller
-	POINT GetPrevMousePos() { return prevMousePos; }
 	bool GetGamePadEnabled() { return gamePadEnabled; }
 	float GetControllerMoveX() { return controllerLookMoveX; }
 	float GetControllerMoveY() { return controllerLookMoveY; }
@@ -47,17 +49,13 @@ public:
 
 	float GetMouseMoveX() { return mouseMoveX; }
 	float GetMouseMoveY() { return mouseMoveY; }
-
-
-	// Setters
-	void SetLeftMouseHeld(bool v) { leftMouseHeld = v; }
-	void SetRightMouseHeld(bool v) { rightMouseHeld = v; }
-	void SetMiddleMouseHeld(bool v) { middleMouseHeld = v; }
-
+	float GetMouseWheelDelta() { return mouseWheelValue - prevMouseWheelValue; }
 
 #pragma endregion
 
 #pragma region Class functions
+	void SetWindowHandle(void* handle);
+
 	void UpdateInput(float deltaTime);
 #pragma endregion
 
@@ -71,6 +69,9 @@ private:
 	unique_ptr<GamePad> gamePad;
 	unique_ptr<GamePad::ButtonStateTracker> tracker; 
 	
+	unique_ptr<Mouse>		mouse;
+	unique_ptr<Keyboard>	keyboard;
+
 	bool quit; 
 
 	// Movement Booleans
@@ -92,9 +93,10 @@ private:
 	bool leftMouseHeld;
 	bool middleMouseHeld;
 	bool rightMouseHeld;
-	POINT prevMousePos; 
 	float mouseMoveX; 
-	float mouseMoveY; 
+	float mouseMoveY;
+	float mouseWheelValue;
+	float prevMouseWheelValue;
 	#pragma endregion
 
 	#pragma region Helper Functions

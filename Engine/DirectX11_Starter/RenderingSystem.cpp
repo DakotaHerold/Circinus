@@ -10,7 +10,14 @@
 // -------------------------------------------------------------
 
 #include "RenderingSystem.h"
+#include "NativeWindow.h"
 #include "SceneGraph.h"
+#if defined(_DEBUG)
+#include "DebugCam.h"
+typedef DebugCam Camera;
+#else
+#include "Camera.h"
+#endif
 #include <WindowsX.h>
 #include <sstream>
 
@@ -21,13 +28,19 @@ namespace
 	RenderingSystem* renderingSystemInstance = 0;
 }
 
+#pragma region Singleton
+
+RenderingSystem* RenderingSystem::_instance = nullptr;
+
+#pragma endregion
+
 #pragma region Constructor / Destructor
 
 // --------------------------------------------------------
 // Constructor - Set up fields and timer
 // --------------------------------------------------------
 RenderingSystem::RenderingSystem()
-	: 
+	:
 	device(0),
 	deviceContext(0),
 	swapChain(0),
@@ -50,6 +63,27 @@ RenderingSystem::RenderingSystem()
 // --------------------------------------------------------
 RenderingSystem::~RenderingSystem(void)
 {
+	for (auto i = preBoundCBs.begin(); i != preBoundCBs.end(); ++i)
+	{
+		i->second->CleanUp();
+	}
+	for (auto i = meshes.begin(); i != meshes.end(); ++i)
+	{
+		delete i->second;
+	}
+	for (auto i = shaders.begin(); i != shaders.end(); ++i)
+	{
+		delete i->second;
+	}
+	for (auto i = textures.begin(); i != textures.end(); ++i)
+	{
+		delete i->second;
+	}
+	for (auto i = materials.begin(); i != materials.end(); ++i)
+	{
+		delete *i;
+	}
+
 	// Release the core DirectX "stuff" we set up
 	ReleaseMacro(renderTargetView);
 	ReleaseMacro(depthStencilView);
@@ -71,15 +105,56 @@ RenderingSystem::~RenderingSystem(void)
 // --------------------------------------------------------
 // Handles the window and Direct3D initialization
 // --------------------------------------------------------
-bool RenderingSystem::Init(void* wndHandle)
+bool RenderingSystem::Init(NativeWindow* win)
 {
+	if (nullptr != _instance)
+		return false;
+
 	// Now that the window is ready, initialize
 	// DirectX (specifically Direct3D)
-	if (!InitDirect3D(wndHandle))
+	if (!InitDirect3D(win->GetWindowHandle()))
 		return false;
+
+	win->SetResizeCallback(std::bind(&RenderingSystem::OnResize, this, std::placeholders::_1, std::placeholders::_2));
+
+	if (!InitPreBoundConstantBuffers())
+	{
+		return false;
+	}
+
+	_instance = this;
 
 	// Everything was set up properly
 	return true;
+}
+
+
+bool RenderingSystem::InitPreBoundConstantBuffers()
+{
+	if (!builtinFrameCB.Init(device, sizeof(BuiltinFrameCB)))
+		return false;
+
+	preBoundCBs.insert(std::pair<std::string, ConstantBuffer*>("FrameConstants", &builtinFrameCB));
+
+	return true;
+}
+
+void RenderingSystem::UploadPreBoundConstantBuffers()
+{
+	for (auto i = preBoundCBs.begin(); i != preBoundCBs.end(); ++i)
+	{
+		i->second->UploadBuffer(deviceContext);
+	}
+}
+
+void RenderingSystem::UpdateViewMatrix(const DirectX::XMFLOAT4X4 & m)
+{
+	builtinFrameCB.UpdateData(&m, offsetof(BuiltinFrameCB, matView), sizeof(m));
+}
+
+void RenderingSystem::UpdateProjectionMatrix(const DirectX::XMFLOAT4X4 & m)
+{
+	builtinFrameCB.UpdateData(&m, offsetof(BuiltinFrameCB, matProj), sizeof(m));
 }
 
 // --------------------------------------------------------
@@ -217,9 +292,109 @@ void RenderingSystem::OnResize(int windowWidth, int windowHeight)
 
 #pragma region Draw
 
-
-void RenderingSystem::DrawScene(SceneGraph* scene)
+void RenderingSystem::DrawScene(DebugCam* cam, SceneGraph* scene)
 {
+	UpdateViewMatrix(cam->getViewMatrix());
+	UpdateProjectionMatrix(cam->getProjectionMatrix());
+
+	float clearColor[4] = { 0.3f, 0.3f, 0.3f, 1.0f };
+	deviceContext->ClearRenderTargetView(renderTargetView, clearColor);
+	deviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+
+	std::list<Renderable>& list = scene->renderables;
+	for (auto i = list.begin(); i != list.end(); ++i)
+	{
+		UploadPreBoundConstantBuffers();
+		i->material->Apply(deviceContext);
+		UINT strides[] = { sizeof(Vertex) };
+		UINT offsets[] = { 0 };
+		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		deviceContext->IASetInputLayout(i->material->shader->layout);
+		deviceContext->IASetVertexBuffers(0, 1, &(i->mesh->vertexBuffer), strides, offsets);
+		deviceContext->IASetIndexBuffer(i->mesh->indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+		deviceContext->DrawIndexed(i->mesh->indexCount, 0, 0);
+	}
+
+	swapChain->Present(0, 0);
+}
+
+#pragma endregion
+
+#pragma region Resources
+
+Mesh * RenderingSystem::CreateMesh(const char* filename)
+{
+	if (meshes.find(filename) != meshes.end())
+	{
+		return meshes[filename];
+	}
+
+	Mesh* mesh = new Mesh();
+	mesh->LoadFromFile(filename, device);
+
+	if (mesh->IsValid())
+	{
+		meshes.insert(std::pair<std::string, Mesh*>(filename, mesh));
+		return mesh;
+	}
+
+	delete mesh;
+	return mesh;
+}
+
+Shader * RenderingSystem::CreateShader(const wchar_t * filename)
+{
+	if (shaders.find(filename) != shaders.end())
+	{
+		return shaders[filename];
+	}
+
+	Shader* shader = new Shader();
+	shader->LoadShaderFromCSO(device, filename);
+
+	if (shader->IsValid())
+	{
+		shaders.insert(std::pair<std::wstring, Shader*>(filename, shader));
+		return shader;
+	}
+
+	delete shader;
+	return nullptr;
+}
+
+Texture * RenderingSystem::CreateTexture(const wchar_t * filename)
+{
+	if (textures.find(filename) != textures.end())
+	{
+		return textures[filename];
+	}
+
+	Texture* tex = new Texture();
+	tex->LoadTextureFromFile(filename, device);
+
+	if (tex->IsValid())
+	{
+		textures.insert(std::pair<std::wstring, Texture*>(filename, tex));
+		return tex;
+	}
+
+	delete tex;
+	return nullptr;
+}
+
+Material * RenderingSystem::CreateMaterial(Shader * shader)
+{
+	Material* mat = new Material();
+	mat->InitWithShader(device, shader, &preBoundCBs);
+
+	if (mat->IsValid())
+	{
+		materials.push_back(mat);
+		return mat;
+	}
+
+	delete mat;
+	return nullptr;
 }
 
 #pragma endregion

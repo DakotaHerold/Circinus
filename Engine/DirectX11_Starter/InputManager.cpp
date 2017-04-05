@@ -1,23 +1,36 @@
 #include "InputManager.h"
 
 InputManager::InputManager()
-	: gamePad(new GamePad), tracker(new GamePad::ButtonStateTracker)
+	:
+	gamePad(new GamePad),
+	tracker(new GamePad::ButtonStateTracker),
+	mouse(new Mouse),
+	keyboard(new Keyboard),
+	mouseMoveX(0.0f),
+	mouseMoveY(0.0f)
+
 {
 	// Initial check to see if controller is plugged in.
-	auto state = gamePad->GetState(0); 
-	(state.IsConnected()) ? gamePadEnabled = true : gamePadEnabled = false; 
-	
+	auto state = gamePad->GetState(0);
+	(state.IsConnected()) ? gamePadEnabled = true : gamePadEnabled = false;
+
 	fireLaser = false;
 	fireMissile = false;
 }
 
 
+void InputManager::SetWindowHandle(void * handle)
+{
+	mouse->SetWindow((HWND)handle);
+	mouse->SetMode(Mouse::MODE_RELATIVE);
+}
+
 void InputManager::UpdateInput(float deltaTime)
 {
 	// Check if quit key was pressed
 	if (GetAsyncKeyState(VK_ESCAPE))
-	{ 
-		quit = true; 
+	{
+		quit = true;
 	}
 
 	// Get current state of gamepad  ---------------------------------------------
@@ -32,7 +45,7 @@ void InputManager::UpdateInput(float deltaTime)
 	if (gamePadEnabled)
 	{
 		// Check if quit key was pressed on controller 
-		if(state.IsViewPressed())
+		if (state.IsViewPressed())
 		{
 			quit = true;
 		}
@@ -68,10 +81,24 @@ void InputManager::UpdateInput(float deltaTime)
 		movingRight = (GetAsyncKeyState('D') & 0x8000) ? true : false;
 		ascending = (GetAsyncKeyState(VK_SPACE) & 0x8000) ? true : false;
 		descending = (GetAsyncKeyState('X') & 0x8000) ? true : false;
-		
+
 		fireLaser = (GetKeyState(VK_CONTROL) & 0x8000) ? true : false;
 		fireMissile = (GetKeyState(VK_LSHIFT) & 0x8000) ? true : false;
-		
+
+		mouse->SetMode(Mouse::MODE_RELATIVE);
+		Mouse::State m = mouse->GetState();
+		leftMouseHeld = m.leftButton;
+		rightMouseHeld = m.rightButton;
+		middleMouseHeld = m.middleButton;
+
+		prevMouseWheelValue = mouseWheelValue;
+		mouseWheelValue = static_cast<float>(m.scrollWheelValue);
+
+		if (m.positionMode == Mouse::MODE_RELATIVE)
+		{
+			mouseMoveX = static_cast<float>(m.x);
+			mouseMoveY = static_cast<float>(m.y);
+		}
 	}
 
 	// Testing 
