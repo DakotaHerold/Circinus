@@ -35,6 +35,9 @@ SamplerState	sampBasic
 	AddressW = WRAP;
 };
 
+DepthStencilState defaultDS;
+RasterizerState defaultRS;
+
 V2F vs_main(Input input)
 {
 	V2F output;
@@ -60,6 +63,8 @@ technique11
 {
 	pass
 	{
+		SetRasterizerState(defaultRS);
+		SetDepthStencilState(defaultDS, 0);
 		SetVertexShader(CompileShader(vs_5_0, vs_main()));
 		SetPixelShader(CompileShader(ps_5_0, ps_main()));
 	}

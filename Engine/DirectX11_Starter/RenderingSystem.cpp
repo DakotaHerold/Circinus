@@ -12,7 +12,12 @@
 #include "RenderingSystem.h"
 #include "NativeWindow.h"
 #include "SceneGraph.h"
+#if defined(_DEBUG)
+#include "DebugCam.h"
+typedef DebugCam Camera;
+#else
 #include "Camera.h"
+#endif
 #include <WindowsX.h>
 #include <sstream>
 
@@ -22,6 +27,12 @@ namespace
 	// pass OS-level window messages to our application.
 	RenderingSystem* renderingSystemInstance = 0;
 }
+
+#pragma region Singleton
+
+RenderingSystem* RenderingSystem::_instance = nullptr;
+
+#pragma endregion
 
 #pragma region Constructor / Destructor
 
@@ -96,6 +107,9 @@ RenderingSystem::~RenderingSystem(void)
 // --------------------------------------------------------
 bool RenderingSystem::Init(NativeWindow* win)
 {
+	if (nullptr != _instance)
+		return false;
+
 	// Now that the window is ready, initialize
 	// DirectX (specifically Direct3D)
 	if (!InitDirect3D(win->GetWindowHandle()))
@@ -107,6 +121,8 @@ bool RenderingSystem::Init(NativeWindow* win)
 	{
 		return false;
 	}
+
+	_instance = this;
 
 	// Everything was set up properly
 	return true;
@@ -276,7 +292,7 @@ void RenderingSystem::OnResize(int windowWidth, int windowHeight)
 
 #pragma region Draw
 
-void RenderingSystem::DrawScene(Camera* cam, SceneGraph* scene)
+void RenderingSystem::DrawScene(DebugCam* cam, SceneGraph* scene)
 {
 	UpdateViewMatrix(cam->getViewMatrix());
 	UpdateProjectionMatrix(cam->getProjectionMatrix());

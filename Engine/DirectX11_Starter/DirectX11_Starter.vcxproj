@@ -84,6 +84,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DebugCam.cpp" />
     <ClCompile Include="ConstantBuffer.cpp" />
+    <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="InputManager.cpp" />
@@ -94,6 +95,7 @@
     <ClCompile Include="DirectXGameCore.cpp" />
     <ClCompile Include="NativeWindow.cpp" />
     <ClCompile Include="RenderingSystem.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneGraph.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SimpleShader.cpp" />
@@ -105,6 +107,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DebugCam.h" />
     <ClInclude Include="ConstantBuffer.h" />
+    <ClInclude Include="Engine.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="InputManager.h" />
@@ -117,6 +120,7 @@
     <ClInclude Include="NativeWindow.h" />
     <ClInclude Include="Renderable.h" />
     <ClInclude Include="RenderingSystem.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneGraph.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SimpleShader.h" />
@@ -160,6 +164,14 @@
     <FxCompile Include="Shaders\PixelShaderSky.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)..\Assets\ShaderObjs\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)..\Assets\ShaderObjs\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Shaders\Skybox.fx">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)..\Assets\ShaderObjs\%(Filename).cso</ObjectFileOutput>

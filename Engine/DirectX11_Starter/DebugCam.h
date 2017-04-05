@@ -29,7 +29,7 @@ public:
 	~DebugCam();
 	XMFLOAT4X4& getViewMatrix();
 	XMFLOAT4X4& getProjectionMatrix();
-	void update(float deltaTime, float totalTime);
+	void update(float deltaTime);
 	void setRotationX(float rotVal);
 	void setRotationY(float rotVal);
 	void setProjectionMatrix(float aspectRatio);

@@ -3,7 +3,7 @@
 
 
 
-void DebugCam::update(float deltaTime, float totalTime)
+void DebugCam::update(float deltaTime)
 {
 	handleKeyboardInput(deltaTime);
 

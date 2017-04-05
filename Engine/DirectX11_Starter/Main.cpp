@@ -21,13 +21,35 @@
 //
 // ----------------------------------------------------------------------------
 
-#define TEST_RENDERING_SYSTEM 1
+//#define TEST_RENDERING_SYSTEM 1
+#define TEST_NEW_ENGINE 1
 
-#if defined(TEST_RENDERING_SYSTEM)
+#if defined(TEST_NEW_ENGINE)
+
+#include <crtdbg.h>
+#include <Windows.h>
+#include "Engine.h"
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPSTR cmdLine, int showCmd)
+{
+	// Enable run-time memory check for debug builds.
+#if defined(DEBUG) | defined(_DEBUG)
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
+
+	Engine engine;
+
+	if (!engine.Init())
+		return - 1;
+
+	return engine.Run();
+}
+
+#elif defined(TEST_RENDERING_SYSTEM)
 
 #include "NativeWindow.h"
 #include "RenderingSystem.h"
-#include "Camera.h"
+#include "DebugCam.h"
 #include "SceneGraph.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPSTR cmdLine, int showCmd)
@@ -67,8 +89,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPSTR cmdLine, i
 	mat->SetMatrix4x4("matWorld", matrix);
 	mat->SetMatrix4x4("matWorld_IT", matrix);
 
-	Camera cam;
-	
+	DebugCam cam;
+	cam.getViewMatrix();
+	cam.setProjectionMatrix(800.0f / 600.0f);
 	
 	float rot = 0.0f;
 	while (!window.WindowIsClosed())
@@ -76,6 +99,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPSTR cmdLine, i
 		window.ProcessEvent();
 
 		float deltaTime = window.GetDeltaTime();
+
+		cam.update(deltaTime);
 
 		rot += deltaTime * 1.0f;
 

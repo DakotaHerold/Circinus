@@ -49,10 +49,22 @@
 
 class NativeWindow;
 class SceneGraph;
+
+#if defined(_DEBUG)
+class DebugCam;
+typedef DebugCam Camera;
+#else
 class Camera;
+#endif
 
 class RenderingSystem
 {
+private:
+	static RenderingSystem* _instance;
+
+public:
+	inline static RenderingSystem* instance() { return _instance; }
+
 public:
 	RenderingSystem();
 	~RenderingSystem(void);
@@ -61,7 +73,7 @@ public:
 
 	void OnResize(int windowWidth, int windowHeight);
 
-	void DrawScene(Camera* cam, SceneGraph* scene);
+	void DrawScene(DebugCam* cam, SceneGraph* scene);
 
 public:
 	Mesh* CreateMesh(const char* filename);
