@@ -93,6 +93,7 @@
     <ClCompile Include="dxerr.cpp" />
     <ClCompile Include="DirectXGameCore.cpp" />
     <ClCompile Include="NativeWindow.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="RenderingSystem.cpp" />
     <ClCompile Include="SceneGraph.cpp" />
     <ClCompile Include="ScriptComponent.cpp" />
@@ -119,6 +120,7 @@
     <ClInclude Include="dxerr.h" />
     <ClInclude Include="DirectXGameCore.h" />
     <ClInclude Include="NativeWindow.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="RenderingSystem.h" />
     <ClInclude Include="SceneGraph.h" />
     <ClInclude Include="ScriptComponent.h" />

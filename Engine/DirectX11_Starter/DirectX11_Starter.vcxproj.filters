@@ -123,6 +123,9 @@
     <ClCompile Include="EntityManager.cpp">
       <Filter>Source Files\CoreEngine</Filter>
     </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Source Files\CoreEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lights.h">
@@ -198,6 +201,9 @@
       <Filter>Header Files\CoreEngine</Filter>
     </ClInclude>
     <ClInclude Include="EntityManager.h">
+      <Filter>Header Files\CoreEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
       <Filter>Header Files\CoreEngine</Filter>
     </ClInclude>
   </ItemGroup>
