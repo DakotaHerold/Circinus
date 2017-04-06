@@ -79,8 +79,6 @@ void Entity::drawDeferred(ID3D11DeviceContext * deferredContext, ID3D11CommandLi
 	// Add rendering code to command list 
 	//deferredContext->FinishCommandList
 	deferredContext->FinishCommandList(FALSE, &commandList);
-
-	
 }
 
 void Entity::prepareMaterial(XMFLOAT4X4& view, XMFLOAT4X4& proj)
@@ -136,9 +134,5 @@ void Entity::prepareMaterial(XMFLOAT4X4& view, XMFLOAT4X4& proj)
 //	}
 //	return false;
 //}
-
-
-
-
 
 

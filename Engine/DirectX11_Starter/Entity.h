@@ -3,6 +3,7 @@
 #include <d3d11.h>
 #include "Mesh.h"
 #include "Material.h"
+#include "Component.h"
 #include "Object.h"
 #include <utility>
 #include"Component.h"
@@ -39,7 +40,6 @@ public:
 	void prepareMaterial(XMFLOAT4X4& view, XMFLOAT4X4& proj); 
 
 
-	
 public :
 	
 	Entity();
@@ -98,9 +98,11 @@ template <typename T>
 T* Entity::GetComponent() const
 {
 	static_assert(std::is_base_of<Component, T>(), "T is not a component, cannot retrieve T from entity");
-	return ComponentManager::GetCurrent()->GetComponent(this, ComponentTypeId<T>());
+	return static_cast<T*>ComponentManager::GetCurrent()->GetComponent(this, ComponentTypeId<T>());
 	//return GetComponent(ComponentTypeId<T>());
 }
+
+// TODO: Get all component
 
 template <typename T>
 bool Entity::HasComponent() const

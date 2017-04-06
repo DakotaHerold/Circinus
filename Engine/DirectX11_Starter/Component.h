@@ -11,7 +11,7 @@ public:
 	virtual void Update();
 	virtual void Release();
 
-	void SetEntity(int id);
+	virtual void SetEntity(int id);
 	Entity* GetEntity();
 	int GetEntityID();
 

@@ -3,11 +3,11 @@
 #include <vector>
 class Entity;
 
-class TransformSystem
+class PhysicsSystem
 {
 public:
-	TransformSystem();
-	~TransformSystem();
+	PhysicsSystem();
+	~PhysicsSystem();
 
 	void update(float delta, std::vector<Entity *> entities);
 };
