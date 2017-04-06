@@ -487,8 +487,11 @@ void Main::UpdateScene(float deltaTime, float totalTime)
 	cam->cameraInput(deltaTime); 
 	cam->update(deltaTime);
  
+
+	// Testing ------------------------------------------------------------------------
+
 	//InputManager::instance().GetA(); 
-	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+	/*if (GetAsyncKeyState(VK_LEFT) & 0x8000)
 	{ 
 		if (testEnt->AddComponent<ScriptComponent>()) {
 			cout << "yes" << endl;
@@ -505,7 +508,7 @@ void Main::UpdateScene(float deltaTime, float totalTime)
 		else {
 			cout << "no" << endl;
 		}
-	}
+	}*/
 }
 
 // --------------------------------------------------------
