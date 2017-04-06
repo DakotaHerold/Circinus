@@ -107,32 +107,31 @@ void Entity::prepareMaterial(XMFLOAT4X4& view, XMFLOAT4X4& proj)
 	//material->pixelShader->SetShader(true); 
 }
 
+void Entity::AddComponent(Component* component, TypeId componentTypeId)
+{
+	//getWorld().m_entityAttributes.componentStorage.addComponent(*this, component, componentTypeId);
+	ComponentManager::GetCurrent()->AddComponent(GetID(), component, componentTypeId);
+}
 
+bool Entity::RemoveComponent(TypeId componentTypeId)
+{
+	//getWorld().m_entityAttributes.componentStorage.removeComponent(*this, componentTypeId);
+	return ComponentManager::GetCurrent()->RemoveComponent(GetID(), componentTypeId);
+}
 
-//bool Entity::AddComponent(Component* com)
+Component * Entity::GetComponent(TypeId componentTypeId) const
+{
+	//return getWorld().m_entityAttributes.componentStorage.getComponent(*this, componentTypeId);
+	return (ComponentManager::GetCurrent()->GetComponent(GetID(), componentTypeId));
+}
+
+bool Entity::HasComponent(TypeId componentTypeId) const
+{
+	return ComponentManager::GetCurrent()->HasComponent(GetID(), componentTypeId);
+}
+
+//void Entity::RemoveAllComponents()
 //{
-//	vector<Component*>::iterator itr = allComponets.begin();
-//	int i = 0;
-//	for (unsigned i = 0; i < allComponets.size(); i++) {
-//		if (allComponets[i]->GetType() == com->GetType()) {
-//			return false;
-//		}
-//	}
-//	com->SetEntity(this);
-//	allComponets.push_back(com);
-//	return true;
+//	/*getWorld().m_entityAttributes.componentStorage.removeAllComponents(*this);*/
 //}
-//
-//bool Entity::RemoveComponent(ComponentType type)
-//{	
-//	int i = 0;
-//	for (unsigned i = 0; i < allComponets.size();i++) {
-//		if (allComponets[i]->GetType() == type) {
-//			allComponets.erase(allComponets.begin() + i);
-//			return true;
-//		}
-//	}
-//	return false;
-//}
-
 

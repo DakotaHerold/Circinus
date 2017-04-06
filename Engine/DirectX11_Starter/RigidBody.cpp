@@ -23,9 +23,9 @@ bool RigidBody::IsDirty()
 	return dirty;
 }
 
-void RigidBody::SetEntity(Entity * entity)
+void RigidBody::SetEntity(int id)
 {
-	this->Component::SetEntity(entity);
+	this->Component::SetEntity(id);
 	// TODO: Update with transform position
 }
 

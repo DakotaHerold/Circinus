@@ -21,12 +21,10 @@ Object::~Object()
 }
 
 
-int Object::GetID()
+int Object::GetID() const
 {
 	return id;
 }
-
-
 
 
 int Object::nextID = 0;

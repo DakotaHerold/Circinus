@@ -9,7 +9,7 @@ public:
 	RigidBody();
 	~RigidBody();
 
-	void SetEntity(Entity* entity) override;
+	void SetEntity(int id) override;
 
 	//void					SetPosition(float x, float y, float z);
 	void					SetPosition(DirectX::XMFLOAT3 position);

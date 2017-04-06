@@ -6,7 +6,8 @@
 #include "Component.h"
 #include "Object.h"
 #include <utility>
-#include"Component.h"
+#include "Component.h"
+#include "ComponentManager.h"
 
 using namespace DirectX;
 class ComponentManager;
@@ -66,13 +67,17 @@ public :
 	template <typename T>
 	bool HasComponent() const;
 
+private :
+	void AddComponent(Component* component, TypeId componentTypeId);
+	bool RemoveComponent(TypeId componentTypeId);
+	Component * GetComponent(TypeId componentTypeId) const;
+	bool HasComponent(TypeId componentTypeId) const;
+
 private:
 	DirectX::XMFLOAT3 position;
 	DirectX::XMFLOAT3 rotation;
 	DirectX::XMFLOAT3 scale;
 	XMFLOAT4X4 worldMatrix;
-
-	vector<pair<TypeId, Component*>> allComponets;
 };
 
 template <typename T, typename... Args>
@@ -81,8 +86,7 @@ T* Entity::AddComponent(Args&&... args)
 	static_assert(std::is_base_of<Component, T>(), "T is not a component, cannot add T to entity");
 	// TODO: align components by type
 	auto component = new T{ std::forward<Args>(args)... };
-	ComponentManager::GetCurrent()->AddComponent(this, component, ComponentTypeId<T>());
-	//AddComponent(component, ComponentTypeId<T>());
+	AddComponent(component, ComponentTypeId<T>());
 	return component;
 }
 
@@ -90,24 +94,19 @@ template <typename T>
 bool Entity::RemoveComponent()
 {
 	static_assert(std::is_base_of<Component, T>(), "T is not a component, cannot remove T from entity");
-	return ComponentManager::GetCurrent()->RemoveComponent(this, ComponentTypeId<T>());
-	//return RemoveComponent(ComponentTypeId<T>());
+	return RemoveComponent(ComponentTypeId<T>());
 }
 
 template <typename T>
 T* Entity::GetComponent() const
 {
 	static_assert(std::is_base_of<Component, T>(), "T is not a component, cannot retrieve T from entity");
-	return static_cast<T*>ComponentManager::GetCurrent()->GetComponent(this, ComponentTypeId<T>());
-	//return GetComponent(ComponentTypeId<T>());
+	return static_cast<T*>(GetComponent(ComponentTypeId<T>()));
 }
-
-// TODO: Get all component
 
 template <typename T>
 bool Entity::HasComponent() const
 {
 	static_assert(std::is_base_of<Component, T>(), "T is not a component, cannot determine if entity has T");
-	return ComponentManager::GetCurrent()->HasComponent(this, ComponentTypeId<T>());
-	//return HasComponent(ComponentTypeId<T>());
+	return HasComponent(ComponentTypeId<T>());
 }

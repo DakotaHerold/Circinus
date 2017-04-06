@@ -7,7 +7,7 @@ class Object
 public:
 	Object();
 	virtual ~Object();
-	int GetID();	
+	int GetID() const;	
 	template <class T>
 	static T* GetObjectWithID(int id);
 private:

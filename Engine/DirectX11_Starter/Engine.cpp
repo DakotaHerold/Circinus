@@ -2,7 +2,12 @@
 
 #include "NativeWindow.h"
 #include "RenderingSystem.h"
+#include "TransformSystem.h"
+#include "PhysicsSystem.h"
 #include "Scene.h"
+#include "Entity.h"
+
+using std::vector;
 
 Engine* Engine::_instance = nullptr;
 
@@ -14,12 +19,22 @@ bool Engine::Init()
 	// other module could use this;
 	_instance = this;
 
+	ComponentManager::NewComManager();
+
 	nativeWindow = new NativeWindow();
 
 	if (!nativeWindow->Init())
 		return false;
 
+	// FIXME: get world entities 
+	entities = new vector<Entity *>();
+
+	Entity *entity = new Entity();
+	entities->push_back(entity);
+	
 	renderingSystem = new RenderingSystem();
+	transformSystem = new TransformSystem();
+	physicsSystem = new PhysicsSystem();
 
 	if (!renderingSystem->Init(nativeWindow))
 		return false;
@@ -63,8 +78,8 @@ int Engine::Run()
 			Quit(0);
 		}
 
-		// physics system
 		// TODO
+		transformSystem->update(deltaTime, *entities);
 
 		// scripting system
 		// TODO
@@ -77,6 +92,9 @@ int Engine::Run()
 		// rendering System
 		// TODO
 		renderingSystem->DrawScene(currentScene->GetCamera(), currentScene->GetSceneGraph());
+
+		// TODO
+		physicsSystem->update(deltaTime, *entities);
 	}
 
 	CleanUp();

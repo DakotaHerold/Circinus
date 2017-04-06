@@ -4,6 +4,11 @@ class NativeWindow;
 class RenderingSystem;
 class InputManager;
 class Scene;
+class TransformSystem;
+class PhysicsSystem;
+class Entity;
+
+#include <vector>
 
 class Engine
 {
@@ -46,9 +51,13 @@ private:
 
 	NativeWindow*		nativeWindow;
 	RenderingSystem*	renderingSystem;
+	PhysicsSystem*		physicsSystem;
+	TransformSystem*	transformSystem;
 	InputManager*		inputManager;
 
 	Scene*				currentScene;
+
+	std::vector<Entity *>*	entities;
 
 private:
 	void		InitTimer();

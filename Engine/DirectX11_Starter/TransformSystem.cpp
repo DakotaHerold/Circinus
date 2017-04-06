@@ -15,6 +15,9 @@ void TransformSystem::update(float delta, std::vector<Entity*> entities)
 {
 	for (Entity *entity : entities) {
 		// FIXME: Get all component
+		if (!entity->HasComponent<Transform>())
+			return;
+
 		Transform *transform = entity->GetComponent<Transform>();
 
 		if (transform->IsDirty()) {
