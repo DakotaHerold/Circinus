@@ -55,6 +55,9 @@
     <Filter Include="Source Files\System">
       <UniqueIdentifier>{3622c3e5-0359-45ed-9f3c-9ab41925cd85}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Scripting">
+      <UniqueIdentifier>{343d1828-8619-4bb5-b52d-1abb12d59696}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
