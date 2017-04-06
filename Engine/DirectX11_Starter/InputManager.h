@@ -9,22 +9,6 @@
 using namespace DirectX; 
 using namespace std;
 
-#pragma region Key State Management 
-enum KeyStates
-{
-	RELEASED = 0,
-	PRESSED,
-	HELD
-};
-
-struct KeyInfo
-{
-	int vKey;
-	SHORT keyState;
-};
-#pragma endregion
-
-// Class Definition 
 class InputManager
 {
 public: 
@@ -113,16 +97,10 @@ private:
 	float mouseMoveY;
 	float mouseWheelValue;
 	float prevMouseWheelValue;
-
-	// Keyboard 
-	KeyInfo laserKey;
-	KeyInfo missileKey; 
-
 	#pragma endregion
 
 	#pragma region Helper Functions
-	bool GetKeyDown(KeyInfo& key);
-	bool GetKeyHolding(KeyInfo& key);
+	//GamePad::ButtonStateTracker::ButtonState GetA();
 	#pragma endregion
 
 

@@ -215,7 +215,7 @@ Main::~Main()
 	{
 		delete entities[i];
 	}
-	testEnt->RemoveAllComponents();
+
 	delete testEnt;
 	
 	//Delete Material
@@ -454,7 +454,6 @@ void Main::CreateGeometry()
 	testEnt = new Entity(meshOne, material);
 	testEnt->SetScale(2, 2, 2);
 	testEnt->SetPosition(0, 0, 0);
-	//testEnt->AddComponent<ScriptComponent>("script.lua");
 }
 
 
@@ -574,29 +573,25 @@ void Main::UpdateScene(float deltaTime, float totalTime)
 #else
 	cam->cameraInput(deltaTime);
 	cam->update(deltaTime);
- 
-
-	// Testing ------------------------------------------------------------------------
-
 #endif // _DEBUG
 
 	//InputManager::instance().GetA(); 
 	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
 	{ 
-		if (testEnt->AddComponent<ScriptComponent>("script.lua")) {
-			//cout << "yes" << endl;
+		if (testEnt->AddComponent<ScriptComponent>()) {
+			cout << "yes" << endl;
 		}
 		else {
-			//cout << "no" << endl;
+			cout << "no" << endl;
 		}
 	}
 	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 	{
 		if (testEnt->RemoveComponent<ScriptComponent>()) {
-			//cout << "yes" << endl;
+			cout << "yes" << endl;
 		}
 		else {
-			//cout << "no" << endl;
+			cout << "no" << endl;
 		}
 	}
 }

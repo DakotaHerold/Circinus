@@ -11,15 +11,11 @@ InputManager::InputManager()
 
 {
 	// Initial check to see if controller is plugged in.
-	auto state = gamePad->GetState(0); 
-	(state.IsConnected()) ? gamePadEnabled = true : gamePadEnabled = false; 
+	auto state = gamePad->GetState(0);
+	(state.IsConnected()) ? gamePadEnabled = true : gamePadEnabled = false;
 
-	// Initialize Keyboard keys 
-	laserKey.vKey = 0x11; 
-	laserKey.keyState = 0; 
-
-	missileKey.vKey = 0xA0; 
-	missileKey.keyState = 0; 
+	fireLaser = false;
+	fireMissile = false;
 }
 
 
@@ -106,40 +102,22 @@ void InputManager::UpdateInput(float deltaTime)
 	}
 
 	// Testing 
-	//if (fireLaser)
-	//{
-	//	cout << "Fired laser!" << endl;
-	//}
-	//if (fireMissile)
-	//{
-	//	cout << "Fired missile!" << endl;
-	//}
+	/*if (fireLaser)
+	{
+		cout << "Fired mah lazer!" << endl;
+	}
+	if (fireMissile)
+	{
+		cout << "Fired missile!" << endl;
+	}*/
 }
 
-bool InputManager::GetKeyDown(KeyInfo& key)
-{
-	if ((GetAsyncKeyState(key.vKey) & 0x8000) && (key.keyState != 1))
-	{
-		key.keyState = KeyStates::PRESSED;
-		return true;
-	}
-
-	if (!(GetAsyncKeyState(key.vKey) & 0x8000))
-	{
-		key.keyState = KeyStates::RELEASED;
-	}
-
-	return false;
-}
-
-bool InputManager::GetKeyHolding(KeyInfo& key)
-{
-	if ((GetAsyncKeyState(key.vKey) & 0x8000))
-	{
-		key.keyState = KeyStates::HELD;
-		return true;
-	}
-
-	key.keyState = KeyStates::RELEASED;
-	return false;
-}
+//GamePad::ButtonStateTracker::ButtonState InputManager::GetA()
+//{
+//	auto state = gamePad->GetState(0);
+//	if (state.IsConnected())
+//	{
+//		tracker->Update(state); 
+//	}
+//	return tracker->a; 
+//}
