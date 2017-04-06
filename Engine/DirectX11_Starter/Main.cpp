@@ -470,12 +470,10 @@ void Main::UpdateScene(float deltaTime, float totalTime)
 		i->Rotate(0, rotation, 0);
 	}
 
-
 	// Input
 	//if (leftmouseHeld) { entities[0]->Move(speed, 0, 0); }
 	//if (middlemouseHeld) { entities[1]->Move(speed, 0, 0); }
 	//if (rightmouseHeld) { entities[2]->Move(speed, 0, 0); }
-
 
 	//update all entities 
 	for (auto& i : entities)

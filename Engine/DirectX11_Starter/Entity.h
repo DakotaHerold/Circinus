@@ -2,7 +2,6 @@
 #include "Mesh.h"
 #include "Material.h"
 #include "Component.h"
-
 #include <utility>
 
 using namespace DirectX; 
@@ -40,7 +39,6 @@ public:
 
 	void Update();
 
-	
 public :
 	
 	Entity();
@@ -106,8 +104,10 @@ template <typename T>
 T* Entity::GetComponent() const
 {
 	static_assert(std::is_base_of<Component, T>(), "T is not a component, cannot retrieve T from entity");
-	return GetComponent(ComponentTypeId<T>());
+	return static_cast<T*>(GetComponent(ComponentTypeId<T>()));
 }
+
+// TODO: Get all component
 
 template <typename T>
 bool Entity::HasComponent() const

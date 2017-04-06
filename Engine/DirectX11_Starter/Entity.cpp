@@ -87,8 +87,6 @@ void Entity::drawDeferred(ID3D11DeviceContext * deferredContext, ID3D11CommandLi
 	// Add rendering code to command list 
 	//deferredContext->FinishCommandList
 	deferredContext->FinishCommandList(FALSE, &commandList);
-
-	
 }
 
 void Entity::prepareMaterial(XMFLOAT4X4& view, XMFLOAT4X4& proj)
@@ -175,6 +173,7 @@ bool Entity::RemoveComponent(TypeId componentTypeId)
 	for (int i = 0; i < allComponets.size(); i++) {
 		if (allComponets[i].first == componentTypeId) {
 			allComponets.erase(allComponets.begin() + i);
+			// TODO: Memory Leak
 			return true;
 		}
 	}
@@ -204,7 +203,8 @@ bool Entity::HasComponent(TypeId componentTypeId) const
 }
 
 void Entity::RemoveAllComponents()
-{
+{	
+	//FIXME:
 	/*getWorld().m_entityAttributes.componentStorage.removeAllComponents(*this);*/
 }
 

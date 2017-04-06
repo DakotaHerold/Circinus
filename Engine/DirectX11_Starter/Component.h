@@ -12,7 +12,7 @@ public:
 	virtual void Release();
 
 	Entity* GetEntity();
-	void SetEntity(Entity* entity);
+	virtual void SetEntity(Entity* entity);
 
 protected:
 	Entity* gameEntity;

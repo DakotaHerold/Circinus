@@ -75,6 +75,16 @@ void Transform::SetParent(Transform * t)
 	parent = t;
 }
 
+Transform * Transform::GetParent()
+{
+	return parent;
+}
+
+bool Transform::IsDirty()
+{
+	return dirty;
+}
+
 void Transform::UpdateMatrix()
 {
 	XMMATRIX m = XMMatrixMultiply(

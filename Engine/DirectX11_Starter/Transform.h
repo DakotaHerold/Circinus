@@ -22,7 +22,9 @@ public:
 	DirectX::XMFLOAT4X4*	GetWorldMatrix();
 
 	void					SetParent(Transform *t);
+	Transform *				GetParent();
 
+	bool					IsDirty();
 	void					MarkDirty() { dirty = true; }
 
 private:
