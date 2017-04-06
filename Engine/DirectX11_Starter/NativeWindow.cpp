@@ -6,6 +6,9 @@
 #include <Keyboard.h>
 #include <Mouse.h>
 
+
+#include "GUI.h"
+
 namespace
 {
 	// --------------------------------------------------------
