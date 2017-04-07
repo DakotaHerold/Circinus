@@ -206,7 +206,9 @@ LRESULT NativeWindow::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 
 	// Pass the input to GUI First and check if wants to process the information first.
-	ImGui_ImplDX11_WndProcHandler(hwnd, msg, wParam, lParam);
+	if (ImGui_ImplDX11_WndProcHandler(hwnd, msg, wParam, lParam)) {
+		return 0;
+	}
 
 	switch (msg)
 	{
