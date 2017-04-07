@@ -4,9 +4,8 @@
 
 GUI::GUI()
 {
-
+	
 }
-
 
 void GUI::Init(HWND hwnd, ID3D11Device* device, ID3D11DeviceContext* device_context)
 {
@@ -17,6 +16,25 @@ void GUI::Init(HWND hwnd, ID3D11Device* device, ID3D11DeviceContext* device_cont
 
 }
 
+void GUI::Draw()
+{
+
+	ImGui::Render();
+
+}
+
+void GUI::Update()
+{
+
+	// Use this to Update the frames. I.e, create new stuff I guess.
+	ImGui_ImplDX11_NewFrame();
+	{
+		ImGui::Text("Hello");
+	}
+
+}
+
 GUI::~GUI()
 {
+
 }

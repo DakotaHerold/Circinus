@@ -8,6 +8,7 @@
 
 
 #include "GUI.h"
+//#include "ImGui\imgui_impl_dx11.cpp"
 
 namespace
 {
@@ -200,8 +201,13 @@ void NativeWindow::Quit()
 	PostQuitMessage(0);
 }
 
+extern LRESULT ImGui_ImplDX11_WndProcHandler(HWND, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT NativeWindow::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+
+	// Pass the input to GUI First and check if wants to process the information first.
+	ImGui_ImplDX11_WndProcHandler(hwnd, msg, wParam, lParam);
+
 	switch (msg)
 	{
 		// WM_ACTIVATE is sent when the window is activated or deactivated.

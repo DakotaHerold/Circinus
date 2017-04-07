@@ -1,6 +1,7 @@
 #pragma once
 
 #pragma region Import ImGUI
+//#include "ImGui\imgui_impl_dx11.cpp"
 #include "ImGui\imgui_impl_dx11.h"
 #pragma endregion
 
@@ -9,6 +10,14 @@
 class GUI
 {
 
+private:
+
+	static GUI Instance;
+
+	GUI();
+
+public:
+
 	// Singleton reference
 	static GUI& instance()
 	{
@@ -16,13 +25,9 @@ class GUI
 		return gui_instance;
 	}
 
-private: 
-
-	GUI();
-
-public:
-	
 	void Init(HWND hwnd, ID3D11Device* device, ID3D11DeviceContext* device_context);
+	void Draw();
+	void Update();
 
 	~GUI(); // Fix the Destructor. Search for Singletons in C++
 

@@ -14,6 +14,12 @@
 #include "Texture.h"
 #include "Material.h"
 
+#pragma region Include GUI
+
+#include "GUI.h"
+
+#pragma endregion
+
 // --------------------------------------------------------
 // Convenience macro for releasing COM objects.
 //

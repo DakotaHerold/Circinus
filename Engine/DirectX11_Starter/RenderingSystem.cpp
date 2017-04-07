@@ -222,6 +222,10 @@ bool RenderingSystem::InitDirect3D(void* wndHandle)
 	RECT rect;
 	GetClientRect(hwnd, &rect);
 	OnResize(rect.right, rect.bottom);
+
+	// Initialize the GUI
+	GUI::instance().Init(hwnd, device, deviceContext);
+
 	return true;
 }
 #pragma endregion
@@ -314,6 +318,8 @@ void RenderingSystem::DrawScene(DebugCam* cam, SceneGraph* scene)
 		deviceContext->IASetIndexBuffer(i->mesh->indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 		deviceContext->DrawIndexed(i->mesh->indexCount, 0, 0);
 	}
+
+	GUI::instance().Draw();
 
 	swapChain->Present(0, 0);
 }
