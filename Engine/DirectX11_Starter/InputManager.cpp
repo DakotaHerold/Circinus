@@ -26,7 +26,7 @@ InputManager::InputManager()
 void InputManager::SetWindowHandle(void * handle)
 {
 	mouse->SetWindow((HWND)handle);
-	mouse->SetMode(Mouse::MODE_RELATIVE);
+	mouse->SetMode(Mouse::MODE_ABSOLUTE);
 }
 
 void InputManager::UpdateInput(float deltaTime)
@@ -89,7 +89,6 @@ void InputManager::UpdateInput(float deltaTime)
 		fireLaser = (GetKeyState(VK_CONTROL) & 0x8000) ? true : false;
 		fireMissile = (GetKeyState(VK_LSHIFT) & 0x8000) ? true : false;
 
-		mouse->SetMode(Mouse::MODE_RELATIVE);
 		Mouse::State m = mouse->GetState();
 		leftMouseHeld = m.leftButton;
 		rightMouseHeld = m.rightButton;
@@ -102,6 +101,20 @@ void InputManager::UpdateInput(float deltaTime)
 		{
 			mouseMoveX = static_cast<float>(m.x);
 			mouseMoveY = static_cast<float>(m.y);
+		}
+		else
+		{
+			mousePosX = static_cast<float>(m.x);
+			mousePosY = static_cast<float>(m.y);
+		}
+
+		if (leftMouseHeld || rightMouseHeld || middleMouseHeld)
+		{
+			mouse->SetMode(Mouse::MODE_RELATIVE);
+		}
+		else
+		{
+			mouse->SetMode(Mouse::MODE_ABSOLUTE);
 		}
 	}
 

@@ -62,9 +62,13 @@ public:
 	float GetControllerMoveX() { return controllerLookMoveX; }
 	float GetControllerMoveY() { return controllerLookMoveY; }
 
-
+	// works when cursor is shown
+	float GetMousePositionX() { return mousePosX; }
+	float GetMousePositionY() { return mousePosY; }
+	// works when cursor is hidden
 	float GetMouseMoveX() { return mouseMoveX; }
 	float GetMouseMoveY() { return mouseMoveY; }
+
 	float GetMouseWheelDelta() { return mouseWheelValue - prevMouseWheelValue; }
 
 #pragma endregion
@@ -109,6 +113,8 @@ private:
 	bool leftMouseHeld;
 	bool middleMouseHeld;
 	bool rightMouseHeld;
+	float mousePosX;
+	float mousePosY;
 	float mouseMoveX; 
 	float mouseMoveY;
 	float mouseWheelValue;
