@@ -6,6 +6,10 @@
 #include <Keyboard.h>
 #include <Mouse.h>
 
+
+#include "GUI.h"
+//#include "ImGui\imgui_impl_dx11.cpp"
+
 namespace
 {
 	// --------------------------------------------------------
@@ -197,8 +201,15 @@ void NativeWindow::Quit()
 	PostQuitMessage(0);
 }
 
+extern LRESULT ImGui_ImplDX11_WndProcHandler(HWND, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT NativeWindow::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+
+	// Pass the input to GUI First and check if wants to process the information first.
+	if (ImGui_ImplDX11_WndProcHandler(hwnd, msg, wParam, lParam)) {
+		return 0;
+	}
+
 	switch (msg)
 	{
 		// WM_ACTIVATE is sent when the window is activated or deactivated.
