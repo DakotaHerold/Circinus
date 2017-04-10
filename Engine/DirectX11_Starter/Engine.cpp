@@ -98,6 +98,9 @@ int Engine::Run()
 		physicsSystem->update(deltaTime, *entities);
 	}
 
+	// GUI Cleanup
+	GUI::instance().End();
+
 	CleanUp();
 
 	return 0;
