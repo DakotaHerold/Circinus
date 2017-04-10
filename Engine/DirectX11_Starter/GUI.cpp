@@ -34,6 +34,13 @@ void GUI::Update()
 
 }
 
+void GUI::End()
+{
+	ImGui_ImplDX11_InvalidateDeviceObjects();
+	ImGui::Shutdown();
+}
+
+
 GUI::~GUI()
 {
 

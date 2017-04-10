@@ -28,6 +28,7 @@ public:
 	void Init(HWND hwnd, ID3D11Device* device, ID3D11DeviceContext* device_context);
 	void Draw();
 	void Update();
+	void End();
 
 	~GUI(); // Fix the Destructor. Search for Singletons in C++
 
