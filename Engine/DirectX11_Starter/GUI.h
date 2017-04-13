@@ -29,6 +29,8 @@ public:
 	void Draw();
 	void Update();
 	void End();
+	void AddMenuBar();
+	void ShowExampleMenuFile();
 
 	~GUI(); // Fix the Destructor. Search for Singletons in C++
 
