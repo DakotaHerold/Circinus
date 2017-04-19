@@ -20,7 +20,7 @@ typedef DebugCam Camera;
 #endif
 #include <WindowsX.h>
 #include <sstream>
-
+#include "ComponentManager.h"
 namespace
 {
 	// We need a global reference to the DirectX Game so that we can
@@ -305,9 +305,23 @@ void RenderingSystem::DrawScene(DebugCam* cam, SceneGraph* scene)
 	deviceContext->ClearRenderTargetView(renderTargetView, clearColor);
 	deviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
-	std::list<Renderable>& list = scene->renderables;
+	std::list<Renderable>& list = scene->renderables;	
 	for (auto i = list.begin(); i != list.end(); ++i)
 	{
+		UploadPreBoundConstantBuffers();
+		i->material->Apply(deviceContext);
+		UINT strides[] = { sizeof(Vertex) };
+		UINT offsets[] = { 0 };
+		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		deviceContext->IASetInputLayout(i->material->shader->layout);
+		deviceContext->IASetVertexBuffers(0, 1, &(i->mesh->vertexBuffer), strides, offsets);
+		deviceContext->IASetIndexBuffer(i->mesh->indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+		deviceContext->DrawIndexed(i->mesh->indexCount, 0, 0);
+	}
+
+	std::vector<Renderable*>& renderables = ComponentManager::current->renderables;
+	for (int j = 0; j < renderables.size(); j++) {
+		Renderable* i = renderables[j];
 		UploadPreBoundConstantBuffers();
 		i->material->Apply(deviceContext);
 		UINT strides[] = { sizeof(Vertex) };

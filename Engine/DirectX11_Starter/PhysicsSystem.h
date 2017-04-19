@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-class Entity;
+class RigidBody;
 
 class PhysicsSystem
 {
@@ -9,6 +9,6 @@ public:
 	PhysicsSystem();
 	~PhysicsSystem();
 
-	void update(float delta, std::vector<Entity *> entities);
+	void update(float delta, std::vector<RigidBody *> entities);
 };
 

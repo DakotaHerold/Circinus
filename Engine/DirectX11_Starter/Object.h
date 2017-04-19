@@ -27,6 +27,5 @@ T* Object::GetObjectWithID(int id) {
 		}
 	}
 
-
 	return nullptr;
 }

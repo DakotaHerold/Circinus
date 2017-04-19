@@ -19,7 +19,6 @@ bool Engine::Init()
 	// other module could use this;
 	_instance = this;
 
-	ComponentManager::NewComManager();
 
 	nativeWindow = new NativeWindow();
 
@@ -27,10 +26,10 @@ bool Engine::Init()
 		return false;
 
 	// FIXME: get world entities 
-	entities = new vector<Entity *>();
+	//entities = new vector<Entity *>();
 
-	Entity *entity = new Entity();
-	entities->push_back(entity);
+	//Entity *entity = new Entity();
+	//entities->push_back(entity);
 	
 	renderingSystem = new RenderingSystem();
 	transformSystem = new TransformSystem();
@@ -80,7 +79,8 @@ int Engine::Run()
 		}
 
 		// TODO
-		transformSystem->update(deltaTime, *entities);
+		//Transform System
+		transformSystem->update(deltaTime, currentScene->componentManager->transfromComponents);
 
 		// scripting system
 		// TODO
@@ -95,7 +95,7 @@ int Engine::Run()
 		renderingSystem->DrawScene(currentScene->GetCamera(), currentScene->GetSceneGraph());
 
 		// TODO
-		physicsSystem->update(deltaTime, *entities);
+		physicsSystem->update(deltaTime, currentScene->componentManager->rigidBodyComponents);
 	}
 
 	// GUI Cleanup

@@ -2,6 +2,7 @@
 
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
+#include "Component.h"
 
 class Transform;
 class Mesh;
@@ -9,10 +10,10 @@ class Material;
 class SceneGraph;
 class RenderingSystem;
 
-class Renderable
+class Renderable : public Component
 {
 public:
-	
+	Renderable(Mesh* mesh, Material* mat) { this->mesh = mesh; this->material = mat; }
 	void Destroy() { flagDestroy = true; }
 
 	void SetMesh(Mesh* m) { mesh = m; }
@@ -25,21 +26,16 @@ public:
 
 private:
 	friend class RenderingSystem;
-	friend class SceneGraph;
-
+	friend class SceneGraph;	
 	Renderable()
 		:
-		parent(nullptr),
-		transform(nullptr),
 		mesh(nullptr),
 		material(nullptr),
 		bounds(),
 		flagDestroy(false)
 	{}
 
-	Renderable*				parent;
 
-	Transform*				transform;
 	Mesh*					mesh;
 	Material*				material;
 	DirectX::BoundingBox	bounds;

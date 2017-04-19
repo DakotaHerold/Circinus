@@ -8,7 +8,8 @@ typedef DebugCam Camera;
 #endif
 
 #include "SceneGraph.h"
-
+#include "ComponentManager.h"
+class Entity;
 class Material;
 
 // 
@@ -27,10 +28,12 @@ public:
 
 	Camera* GetCamera() { return &cam; }
 	SceneGraph* GetSceneGraph() { return &sceneGraph; }
+	ComponentManager* componentManager;
 
 private:
 	Camera			cam;
 	SceneGraph		sceneGraph;
 
 	Material*		mat;
+	Entity*			enti;
 };
