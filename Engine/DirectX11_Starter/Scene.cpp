@@ -15,26 +15,20 @@ void Scene::Enter()
 	Shader* shader = renderer.CreateShader(L"Assets/ShaderObjs/Opaque.cso");
 	Texture* tex = renderer.CreateTexture(L"Assets/Textures/rust.jpg");
 
-
-
 	mat = renderer.CreateMaterial(shader);
 	mat->SetTexture("texDiffuse", tex);
 
 
-	//Renderable* r = sceneGraph.CreateRenderable();
-	//r->SetMesh(mesh);
-	//r->SetMaterial(mat);
-
-	DirectX::XMFLOAT4X4 matrix;
-	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixIdentity());
-
 	enti = new Entity();
 	Transform* t = enti->AddComponent<Transform>();
 	Renderable* r = enti->AddComponent<Renderable>(mesh, mat);
-	r->GetMaterial()->SetMatrix4x4("matWorld", matrix);
-	//mat->SetMatrix4x4("matWorld", matrix);
-	r->GetMaterial()->SetMatrix4x4("matWorld_IT", matrix);
 
+	Entity* e = new Entity();
+	Transform* t2 = e->AddComponent<Transform>();
+	e->AddComponent<Renderable>(mesh, mat);
+
+	t2->SetParent(t);
+	t2->SetPosition(2.0f, 0.0f, 0.0f);
 
 	// skybox
 
@@ -80,16 +74,11 @@ void Scene::Tick(float deltaTime, float totalTime)
 
 	rot += deltaTime * 1.0f;
 
-	DirectX::XMFLOAT4X4 matrix;
-	auto rotM = DirectX::XMMatrixRotationY(rot);
-	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixTranspose(rotM));
-	mat->SetMatrix4x4("matWorld", matrix);
-	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixInverse(nullptr, rotM));
-	mat->SetMatrix4x4("matWorld_IT", matrix);
+	auto* t = enti->GetComponent<Transform>();
+	t->SetRotationEuler(0, rot, 0);
 
-
-
-
+	t = t->children[0];
+	t->SetRotationEuler(rot * 2.0f, 0, 0);
 }
 
 void Scene::Exit()

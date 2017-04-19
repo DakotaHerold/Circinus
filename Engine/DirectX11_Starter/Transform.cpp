@@ -14,10 +14,7 @@ Transform::Transform()
 		root = ComponentManager::current->root;
 		parent = root;
 		root->AddChild(this);
-		UpdateMatrix();
 	}
-
-
 }
 
 void Transform::SetPosition(float x, float y, float z)
@@ -64,7 +61,12 @@ DirectX::XMFLOAT4X4 * Transform::GetWorldMatrix()
 
 void Transform::SetParent(Transform * t)
 {
-	if (t == this) {
+	if (parent == t)
+	{
+		return;
+	}
+
+	if (t == this || t == nullptr) {
 		if (parent == root) {
 			return;
 		}
@@ -79,32 +81,8 @@ void Transform::SetParent(Transform * t)
 		parent = t;
 		parent->AddChild(this);
 	}
-	//if (t == this) {
-	//	//set no parent
-	//	if (parent != root) {
-	//		//had a parent
-	//		parent->RemoveChild(this);
-	//		parent = root;
-	//	}
-	//	else {
-	//		//didn't have parent
-	//		parent = root;
-	//	}
-	//}
-	//else {
-	//	//set a parent
-	//	if (parent != root) {
-	//		//had a parent
-	//		parent->RemoveChild(this);
-	//		parent = t;
-	//		parent->AddChild(this);
-	//	}
-	//	else {
-	//		//didn't have parent
-	//		parent = t;
-	//		parent->AddChild(this);
-	//	}
-	//}
+
+	dirty = true;
 }
 
 void Transform::AddChild(Transform * t)
@@ -114,7 +92,7 @@ void Transform::AddChild(Transform * t)
 
 void Transform::RemoveChild(Transform * t)
 {
-	for (int i = 0; i < children.size(); i++) {
+	for (size_t i = 0; i < children.size(); i++) {
 		if (children[i]->GetID() == t->GetID()) {
 			children.erase(children.begin() + i);
 			return;
@@ -149,24 +127,32 @@ void Transform::UpdateMatrix()
 	if (parent != nullptr) {
 		XMMATRIX w = XMMatrixMultiply(
 			m,
-			XMLoadFloat4x4(parent->GetWorldMatrix())
+			XMMatrixTranspose(
+				XMLoadFloat4x4(parent->GetWorldMatrix())
+			)
 		);
 
 		XMStoreFloat4x4(
 			&matWorld,
 			XMMatrixTranspose(w)
 		);
-	}	
+	}
+	else
+	{
+		matWorld = matLocal;
+	}
+
 	dirty = false;
 }
 
 void Transform::UpdateTransform()
 {
+	bool wasDirty = dirty;
 	if (dirty) {
 		UpdateMatrix();
 	}
-	for (int i = 0; i < children.size(); i++) {
-		if (dirty) {
+	for (size_t i = 0; i < children.size(); i++) {
+		if (wasDirty) {
 			children[i]->dirty = true;
 		}
 		children[i]->UpdateTransform();
