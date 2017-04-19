@@ -157,6 +157,11 @@ void RenderingSystem::UpdateProjectionMatrix(const DirectX::XMFLOAT4X4 & m)
 	builtinFrameCB.UpdateData(&m, offsetof(BuiltinFrameCB, matProj), sizeof(m));
 }
 
+void RenderingSystem::UpdateCameraPosition(const DirectX::XMFLOAT3 & f)
+{
+	//builtinFrameCB.UpdateData(&f, offsetof(BuiltinFrameCB, camPos), sizeof(f));
+}
+
 // --------------------------------------------------------
 // Create the device, device context, swap chain and 
 // necessary buffers to properly draw to the window
@@ -296,6 +301,7 @@ void RenderingSystem::DrawScene(DebugCam* cam, SceneGraph* scene)
 {
 	UpdateViewMatrix(cam->getViewMatrix());
 	UpdateProjectionMatrix(cam->getProjectionMatrix());
+	//UpdateCameraPosition(cam->getPosition());
 
 	float clearColor[4] = { 0.3f, 0.3f, 0.3f, 1.0f };
 	deviceContext->ClearRenderTargetView(renderTargetView, clearColor);
