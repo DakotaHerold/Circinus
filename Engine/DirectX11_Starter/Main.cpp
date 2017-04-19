@@ -42,6 +42,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPSTR cmdLine, i
 	if (!engine.Init())
 		return - 1;
 
+	// Allocate Console in Debug Mode
+	#if defined(DEBUG) || defined(_DEBUG)
+	AllocConsole();
+	freopen("CONOUT$", "w", stdout);
+	#endif
+
 	return engine.Run();
 }
 
@@ -141,6 +147,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 	// Create the game object.
 	Main game(hInstance);
 
+
+
 	// This is where we'll create the window, initialize DirectX, 
 	// set up geometry and shaders, etc.
 	if (!game.Init())
@@ -180,6 +188,8 @@ Main::Main(HINSTANCE hInstance)
 	leftmouseHeld = false;
 	middleMouseHeld = false;
 	rightmouseHeld = false;
+
+
 }
 
 // --------------------------------------------------------
@@ -250,11 +260,7 @@ bool Main::Init()
 	CreateGeometry();
 	CreateMatrices();
 	
-	// Allocate Console in Debug Mode
-#if defined(DEBUG) || defined(_DEBUG)
-	AllocConsole();
-	freopen("CONOUT$", "w", stdout);
-#endif
+
 
 	// Initialize Deferred Context
 	//device->CreateDeferredContext(0, &deferredContext);

@@ -230,6 +230,8 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Scripts\script.lua" />
+    <None Include="..\..\Scripts\script2.lua" />
     <None Include="packages.config" />
     <None Include="Shaders\CommonStructs.hlsli" />
     <None Include="Shaders\ConstantBuffers.hlsli">
@@ -238,7 +240,6 @@
     <None Include="Shaders\Lights.hlsli">
       <FileType>Document</FileType>
     </None>
-    <None Include="script.lua" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

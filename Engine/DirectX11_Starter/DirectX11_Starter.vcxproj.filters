@@ -346,7 +346,10 @@
     <None Include="Shaders\CommonStructs.hlsli">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="script.lua">
+    <None Include="..\..\Scripts\script.lua">
+      <Filter>Scripts</Filter>
+    </None>
+    <None Include="..\..\Scripts\script2.lua">
       <Filter>Scripts</Filter>
     </None>
   </ItemGroup>
