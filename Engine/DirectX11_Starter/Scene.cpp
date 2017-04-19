@@ -80,19 +80,17 @@ void Scene::Tick(float deltaTime, float totalTime)
 
 	rot += deltaTime * 1.0f;
 
+	Renderable* r = enti->GetComponent<Renderable>();
 	DirectX::XMFLOAT4X4 matrix;
 	auto rotM = DirectX::XMMatrixRotationY(rot);
 	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixTranspose(rotM));
-	mat->SetMatrix4x4("matWorld", matrix);
+	r->GetMaterial()->SetMatrix4x4("matWorld", matrix);
 	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixInverse(nullptr, rotM));
-	mat->SetMatrix4x4("matWorld_IT", matrix);
-
-
-
-
+	r->GetMaterial()->SetMatrix4x4("matWorld_IT", matrix);
 }
 
 void Scene::Exit()
 {
+	delete enti;
 	componentManager->Release();
 }

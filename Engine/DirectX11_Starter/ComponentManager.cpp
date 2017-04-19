@@ -121,6 +121,20 @@ bool ComponentManager::HasComponent(int entityID, TypeId componentTypeId) const
 
 void ComponentManager::Release()
 {
+	for (int i = 0; i < transfromComponents.size(); i++) {
+		delete transfromComponents[i];
+	}
+	transfromComponents.clear();
+
+	for (int i = 0; i < rigidBodyComponents.size(); i++) {
+		delete rigidBodyComponents[i];
+	}
+	rigidBodyComponents.clear();
+
+	for (int i = 0; i < renderables.size(); i++) {
+		delete renderables[i];
+	}
+	renderables.clear();
 	this->~ComponentManager();
 }
 
