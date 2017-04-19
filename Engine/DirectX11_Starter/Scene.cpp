@@ -35,6 +35,12 @@ void Scene::Enter()
 	//mat->SetMatrix4x4("matWorld", matrix);
 	r->GetMaterial()->SetMatrix4x4("matWorld_IT", matrix);
 
+	Entity* e = new Entity();
+	Transform* t2 = e->AddComponent<Transform>();
+	e->AddComponent<Renderable>(mesh, mat);
+
+	t2->SetParent(t);
+	t2->SetPosition(2.0f, 0.0f, 0.0f);
 
 	// skybox
 
@@ -80,13 +86,11 @@ void Scene::Tick(float deltaTime, float totalTime)
 
 	rot += deltaTime * 1.0f;
 
-	Renderable* r = enti->GetComponent<Renderable>();
-	DirectX::XMFLOAT4X4 matrix;
-	auto rotM = DirectX::XMMatrixRotationY(rot);
-	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixTranspose(rotM));
-	r->GetMaterial()->SetMatrix4x4("matWorld", matrix);
-	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixInverse(nullptr, rotM));
-	r->GetMaterial()->SetMatrix4x4("matWorld_IT", matrix);
+	auto* t = enti->GetComponent<Transform>();
+	t->SetRotationEuler(0, rot, 0);
+
+	t = t->children[0];
+	t->SetRotationEuler(rot * 2.0f, 0, 0);
 }
 
 void Scene::Exit()

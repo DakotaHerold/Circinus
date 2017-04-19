@@ -3,7 +3,6 @@ using namespace luabridge;
 
 ScriptComponent::ScriptComponent(string scriptFile)
 {
-	testNumber = 3;
 
 	scriptFile = "script2.lua";
 
@@ -18,25 +17,28 @@ ScriptComponent::ScriptComponent(string scriptFile)
 	//luaL_dostring(L, "testString = \"Works\" \nnumber = 42"); 
 	luaL_openlibs(L);
 	lua_pcall(L, 0, 0, 0);
-	//LuaRef s = getGlobal(L, "testString");
-	//LuaRef n = getGlobal(L, "number");
-	//std::string luaString = s.cast<std::string>();
-	//int answer = n.cast<int>();
-	//std::cout << luaString << std::endl;
-	//std::cout << "And here's our number:" << answer << std::endl;
+
+	getGlobalNamespace(L)
+		.beginNamespace("test")
+		.addVariable("var1", &globalVar)
+		//.addVariable("var2", &staticVar, false)     // read-only
+		//.addProperty("prop1", getString, setString)
+		//.addProperty("prop2", getString)            // read only
+		//.addFunction("foo", foo)
+		//.addFunction("bar", bar)
+		//.addCFunction("cfunc", cFunc)
+		.endNamespace();
+
 
 	// Calling lua function example 
 	cout << endl; 
-	//LuaRef  updateFunc = getGlobal(L, "Update");
+	LuaRef  updateFunc = getGlobal(L, "Update");
 	//try {
-	//updateFunc();
+	updateFunc();
 	//}
 	//catch (LuaException const& e) {
 	//	std::cerr && e.what();
 	//}
-
-
-	LuaRef testPrint = getGlobal(L, "var1");
 
 	//testPrint();
 
