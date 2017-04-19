@@ -27,11 +27,18 @@ public:
 	~ScriptComponent();
 
 private: 
-	int testNumber; 
-
-
 	lua_State* L; 
-	std::string luaString; 
-	int answer;
+	int globalVar;
+	static float staticVar;
+
+	std::string stringProperty;
+	std::string getString() { return stringProperty; }
+	void setString(std::string s) { stringProperty = s; }
+
+	int foo() { return 42; }
+	void bar(char const*) { }
+	int cFunc(lua_State* L) { return 0; }
+	//std::string luaString; 
+	//int answer;
 };
 

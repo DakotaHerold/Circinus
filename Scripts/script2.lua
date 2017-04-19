@@ -1,8 +1,7 @@
 -- global vars
 --var1
 
-getGlobalNamespace (L)
-  .beginNamespace ("test")
-    .addVariable ("var1", &testNumber)
-  .endNamespace ();
+function Update()
+	print("Update from Lua called: " .. test.var1)
+end
   
