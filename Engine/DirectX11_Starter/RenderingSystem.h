@@ -144,6 +144,7 @@ private:
 
 	// The window's aspect ratio, used mostly for your projection matrix
 	float aspectRatio;
+	bool aspectRatioChanged;
 
 	// Derived class can set these in derived constructor to customize starting values.
 	int windowWidth;

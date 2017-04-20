@@ -50,7 +50,8 @@ RenderingSystem::RenderingSystem()
 	renderTargetView(0),
 	depthStencilView(0),
 	driverType(D3D_DRIVER_TYPE_HARDWARE),
-	featureLevel(D3D_FEATURE_LEVEL_11_0)
+	featureLevel(D3D_FEATURE_LEVEL_11_0),
+	aspectRatioChanged(false)
 {
 	// Zero out the viewport struct
 	ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
@@ -298,6 +299,7 @@ void RenderingSystem::OnResize(int windowWidth, int windowHeight)
 
 	// Recalculate the aspect ratio, since it probably changed
 	aspectRatio = (float)windowWidth / windowHeight;
+	aspectRatioChanged = true;
 }
 #pragma endregion
 
@@ -305,6 +307,11 @@ void RenderingSystem::OnResize(int windowWidth, int windowHeight)
 
 void RenderingSystem::DrawScene(DebugCam* cam, SceneGraph* scene)
 {
+	if (aspectRatioChanged)
+	{
+		cam->setProjectionMatrix(aspectRatio);
+		aspectRatioChanged = false;
+	}
 	UpdateViewMatrix(cam->getViewMatrix());
 	UpdateProjectionMatrix(cam->getProjectionMatrix());
 	//UpdateCameraPosition(cam->getPosition());
