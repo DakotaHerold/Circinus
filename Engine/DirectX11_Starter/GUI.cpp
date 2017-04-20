@@ -23,14 +23,19 @@ void GUI::Draw()
 
 }
 
-void GUI::Update()
+void GUI::Update(int _windowWidth, int _windowHeight)
 {
 
 	// Use this to Update the frames. I.e, create new stuff I guess.
+
+	// TODO: Remove this hardcoded value.
+	ImVec2 WindowPos = ImVec2(_windowWidth - 450, 0 + 20);
+	ImGui::SetNextWindowPos(WindowPos);
 	ImGui_ImplDX11_NewFrame();
 	{
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	}
+
 
 	AddMenuBar();
 
