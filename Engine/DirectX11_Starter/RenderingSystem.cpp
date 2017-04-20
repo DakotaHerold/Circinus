@@ -20,6 +20,8 @@ typedef DebugCam Camera;
 #endif
 #include <WindowsX.h>
 #include <sstream>
+#include "ComponentManager.h"
+#include "Transform.h"
 
 namespace
 {
@@ -227,6 +229,10 @@ bool RenderingSystem::InitDirect3D(void* wndHandle)
 	RECT rect;
 	GetClientRect(hwnd, &rect);
 	OnResize(rect.right, rect.bottom);
+
+	// Initialize the GUI
+	GUI::instance().Init(hwnd, device, deviceContext);
+
 	return true;
 }
 #pragma endregion
@@ -307,7 +313,7 @@ void RenderingSystem::DrawScene(DebugCam* cam, SceneGraph* scene)
 	deviceContext->ClearRenderTargetView(renderTargetView, clearColor);
 	deviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
-	std::list<Renderable>& list = scene->renderables;
+	/*std::list<Renderable>& list = scene->renderables;
 	for (auto i = list.begin(); i != list.end(); ++i)
 	{
 		UploadPreBoundConstantBuffers();
@@ -319,7 +325,53 @@ void RenderingSystem::DrawScene(DebugCam* cam, SceneGraph* scene)
 		deviceContext->IASetVertexBuffers(0, 1, &(i->mesh->vertexBuffer), strides, offsets);
 		deviceContext->IASetIndexBuffer(i->mesh->indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 		deviceContext->DrawIndexed(i->mesh->indexCount, 0, 0);
+	}*/
+
+	auto& frustum =	cam->getFrustum();
+
+	std::vector<Renderable*>& renderables = ComponentManager::current->renderables;
+	for (size_t j = 0; j < renderables.size(); j++) {
+		Renderable* i = renderables[j];
+
+		Transform* t = i->GetEntity()->GetComponent<Transform>();
+		auto* m = t->GetWorldMatrix();
+		
+		DirectX::XMMATRIX worldMat = DirectX::XMMatrixTranspose(
+			DirectX::XMLoadFloat4x4(m)
+		);
+
+		DirectX::BoundingBox bounds;
+		i->GetMesh()->GetBounds().Transform(bounds, worldMat);
+		
+		if (!frustum.Intersects(bounds))
+			continue;
+
+		{
+			DirectX::XMFLOAT4X4 world_it;
+
+			DirectX::XMStoreFloat4x4(
+				&world_it,
+				DirectX::XMMatrixInverse(nullptr,
+					worldMat
+				)
+			);
+
+			i->GetMaterial()->SetMatrix4x4("matWorld", *m);
+			i->GetMaterial()->SetMatrix4x4("matWorld_IT", world_it);
+		}
+
+		UploadPreBoundConstantBuffers();
+		i->material->Apply(deviceContext);
+		UINT strides[] = { sizeof(Vertex) };
+		UINT offsets[] = { 0 };
+		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		deviceContext->IASetInputLayout(i->material->shader->layout);
+		deviceContext->IASetVertexBuffers(0, 1, &(i->mesh->vertexBuffer), strides, offsets);
+		deviceContext->IASetIndexBuffer(i->mesh->indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+		deviceContext->DrawIndexed(i->mesh->indexCount, 0, 0);
 	}
+
+	GUI::instance().Draw();
 
 	swapChain->Present(0, 0);
 }

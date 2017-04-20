@@ -3,21 +3,30 @@
 #include<vector>
 #include <utility>
 #include "Entity.h"
+#include "Transform.h"
+#include "RigidBody.h"
+#include "Renderable.h"
+
+class Scene;
 class ComponentManager
 {
 public:
 	ComponentManager();
 	~ComponentManager();
-	static void NewComManager();
 	void AddComponent(int entityID, Component* component, TypeId componentTypeId);
 	bool RemoveComponent(int entityID, TypeId componentTypeId);
 	Component * GetComponent(int entityID, TypeId componentTypeId) const;
 	bool HasComponent(int entityID, TypeId componentTypeId) const;
-	static ComponentManager* GetCurrent();
-private:
-	std::vector<std::pair<TypeId, Component*>> allComponets;
-	static ComponentManager* current;
+
 	
+	std::vector<Transform*> transfromComponents;
+	std::vector<RigidBody*> rigidBodyComponents;
+	std::vector<Renderable*> renderables;
+	void Release();
+
+	Transform* root;
+	static ComponentManager* current;	
+private:
+	Scene* curScene;
 	
 };
-

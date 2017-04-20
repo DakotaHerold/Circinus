@@ -1,5 +1,6 @@
 #pragma once
 #include <DirectXMath.h>
+#include <DirectXCollision.h>
 #include <math.h>
 #include "DirectXGameCore.h"
 #include "Vertex.h"
@@ -13,6 +14,7 @@ class DebugCam
 private:
 	XMFLOAT4X4 viewMatrix;
 	XMFLOAT4X4 projectionMatrix;
+	BoundingFrustum frustum;
 	XMFLOAT3 position;
 	XMFLOAT3 direction;
 	XMFLOAT3 up;
@@ -37,5 +39,6 @@ public:
 	void moveSideways(float val);
 	void moveVertical(float val);
 	XMFLOAT3& getPosition();
+	BoundingFrustum& getFrustum();
 };
 

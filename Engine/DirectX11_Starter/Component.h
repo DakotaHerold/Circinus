@@ -1,6 +1,7 @@
 #pragma once
 #include "ClassTypeId.h"
 #include "Object.h"
+#include <utility>
 class Entity;
 class Component : public Object
 {
@@ -8,15 +9,16 @@ public:
 	Component();
 	~Component();
 	
-	virtual void Update();
-	virtual void Release();
+	virtual void				Update();
 
-	virtual void SetEntity(int id);
-	Entity* GetEntity();
-	int GetEntityID();
+	virtual void				Release();
+
+	virtual void				SetEntity(int id);
+	Entity*						GetEntity();
+	int							GetEntityID();
 
 private:
-	int gameEntityID;
+	int							gameEntityID;
 };
 
 template <typename T>
@@ -24,3 +26,5 @@ TypeId ComponentTypeId()
 {
 	return ClassTypeId<Component>::GetTypeId<T>();
 }
+
+

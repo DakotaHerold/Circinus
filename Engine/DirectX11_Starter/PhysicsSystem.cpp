@@ -11,20 +11,20 @@ PhysicsSystem::~PhysicsSystem()
 {
 }
 
-void PhysicsSystem::update(float delta, std::vector<Entity*> entities)
+void PhysicsSystem::update(float delta, std::vector<RigidBody*> entities)
 {
-	for (Entity *entity : entities) {
-		RigidBody *body = entity->GetComponent<RigidBody>();
+	//for (Entity *entity : entities) {
+	//	RigidBody *body = entity->GetComponent<RigidBody>();
 
-		if (!body) {
-			continue;
-		}
+	//	if (!body) {
+	//		continue;
+	//	}
 
-		if (body->IsDirty()) {
-			entity->GetComponent<Transform>()->SetPosition(body->GetPosition()->x, body->GetPosition()->y, body->GetPosition()->z);
+	//	if (body->IsDirty()) {
+	//		entity->GetComponent<Transform>()->SetPosition(body->GetPosition()->x, body->GetPosition()->y, body->GetPosition()->z);
 
-			// TODO: Rotation, Scale(?)
-		}
-	}
+	//		// TODO: Rotation, Scale(?)
+	//	}
+	//}
 }
 

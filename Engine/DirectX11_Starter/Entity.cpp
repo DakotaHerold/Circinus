@@ -6,128 +6,32 @@ Entity::~Entity()
 }
 
 Entity::Entity() {
-	// TODO: Lock for parallel
+	// 
 }
 
-Entity::Entity(Mesh * inputMesh, Material* inputMaterial)
-{
-	mesh = inputMesh; 
-	material = inputMaterial; 
-	XMStoreFloat4x4(&worldMatrix, XMMatrixIdentity());
-	position = XMFLOAT3(0, 0, 0);
-	rotation = XMFLOAT3(0, 0, 0);
-	scale = XMFLOAT3(1, 1, 1);
-}
 
-void Entity::updateScene()
-{
-	//mtx.lock();
-	//update mesh if at all
-	//Update world matrix by multiplying matrices 
-	XMMATRIX trans = XMMatrixTranslation(position.x, position.y, position.z);
-	XMMATRIX rotX = XMMatrixRotationX(rotation.x);
-	XMMATRIX rotY = XMMatrixRotationY(rotation.y);
-	XMMATRIX rotZ = XMMatrixRotationZ(rotation.z);
-	XMMATRIX sc = XMMatrixScaling(scale.x, scale.y, scale.z);
-
-	XMMATRIX total = sc * rotZ * rotY * rotX * trans;
-	XMStoreFloat4x4(&worldMatrix, XMMatrixTranspose(total));
-	//mtx.unlock();
-}
-
-void Entity::drawScene(ID3D11DeviceContext * deviceContext)
-{
-	UINT stride = sizeof(Vertex);
-	UINT offset = 0;
-
-	ID3D11Buffer* tempBuffer = this->mesh->GetVertexBuffer();
-
-	deviceContext->IASetVertexBuffers(0, 1, &tempBuffer, &stride, &offset);
-	deviceContext->IASetIndexBuffer(this->mesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
-
-	// Finally do the actual drawing
-	//  - Do this ONCE PER OBJECT you intend to draw
-	//  - This will use all of the currently set DirectX "stuff" (shaders, buffers, etc)
-	//  - DrawIndexed() uses the currently set INDEX BUFFER to look up corresponding
-	//     vertices in the currently set VERTEX BUFFER
-	deviceContext->DrawIndexed(
-		this->mesh->GetIndexCount(),     // The number of indices to use (we could draw a subset if we wanted)
-		0,     // Offset to the first index we want to use
-		0);    // Offset to add to each index when looking up vertices
-}
-
-void Entity::drawDeferred(ID3D11DeviceContext * deferredContext, ID3D11CommandList* commandList)
-{
-	UINT stride = sizeof(Vertex);
-	UINT offset = 0;
-
-	ID3D11Buffer* tempBuffer = this->mesh->GetVertexBuffer();
-
-	deferredContext->IASetVertexBuffers(0, 1, &tempBuffer, &stride, &offset);
-	deferredContext->IASetIndexBuffer(this->mesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
-
-	// Finally do the actual drawing
-	//  - Do this ONCE PER OBJECT you intend to draw
-	//  - This will use all of the currently set DirectX "stuff" (shaders, buffers, etc)
-	//  - DrawIndexed() uses the currently set INDEX BUFFER to look up corresponding
-	//     vertices in the currently set VERTEX BUFFER
-	deferredContext->DrawIndexed(
-		this->mesh->GetIndexCount(),     // The number of indices to use (we could draw a subset if we wanted)
-		0,     // Offset to the first index we want to use
-		0);    // Offset to add to each index when looking up vertices
-
-	// Add rendering code to command list 
-	//deferredContext->FinishCommandList
-	deferredContext->FinishCommandList(FALSE, &commandList);
-}
-
-void Entity::prepareMaterial(XMFLOAT4X4& view, XMFLOAT4X4& proj)
-{
-	XMFLOAT4X4 worldMatrixIT;
-	XMStoreFloat4x4(&worldMatrixIT, XMMatrixInverse(nullptr, XMMatrixTranspose(XMLoadFloat4x4(&worldMatrix))));
-
-	//Prepares material object for reuse
-	//material->vertexShader->SetMatrix4x4("matWorld", worldMatrix);
-	//material->vertexShader->SetMatrix4x4("matWorld_IT", worldMatrixIT);
-
-	//// TODO move these outside
-	//material->vertexShader->SetMatrix4x4("matView", view); 
-	//material->vertexShader->SetMatrix4x4("matProj", proj);
-	//if (nullptr != material->texDiffuse)
-	//{
-	//	material->pixelShader->SetShaderResourceView("texDiffuse", material->texDiffuse->GetSRV());
-	//}
-	//if (nullptr != material->sampBasic)
-	//{
-	//	material->pixelShader->SetSamplerState("sampBasic", material->sampBasic);
-	//}
-
-
-	//material->vertexShader->SetShader(true); 
-	//material->pixelShader->SetShader(true); 
-}
 
 void Entity::AddComponent(Component* component, TypeId componentTypeId)
 {
 	//getWorld().m_entityAttributes.componentStorage.addComponent(*this, component, componentTypeId);
-	ComponentManager::GetCurrent()->AddComponent(GetID(), component, componentTypeId);
+	ComponentManager::current->AddComponent(GetID(), component, componentTypeId);
 }
 
 bool Entity::RemoveComponent(TypeId componentTypeId)
 {
 	//getWorld().m_entityAttributes.componentStorage.removeComponent(*this, componentTypeId);
-	return ComponentManager::GetCurrent()->RemoveComponent(GetID(), componentTypeId);
+	return ComponentManager::current->RemoveComponent(GetID(), componentTypeId);
 }
 
 Component * Entity::GetComponent(TypeId componentTypeId) const
 {
 	//return getWorld().m_entityAttributes.componentStorage.getComponent(*this, componentTypeId);
-	return (ComponentManager::GetCurrent()->GetComponent(GetID(), componentTypeId));
+	return (ComponentManager::current->GetComponent(GetID(), componentTypeId));
 }
 
 bool Entity::HasComponent(TypeId componentTypeId) const
 {
-	return ComponentManager::GetCurrent()->HasComponent(GetID(), componentTypeId);
+	return ComponentManager::current->HasComponent(GetID(), componentTypeId);
 }
 
 //void Entity::RemoveAllComponents()

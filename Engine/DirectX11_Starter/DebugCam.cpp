@@ -17,7 +17,15 @@ void DebugCam::update(float deltaTime)
 
 		XMStoreFloat3(&up, XMQuaternionNormalize(XMVector3Rotate(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), rotationQuat)));
 
-		XMStoreFloat4x4(&viewMatrix, XMMatrixTranspose(XMMatrixLookToLH(XMLoadFloat3(&position), rotatedVector, XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f))));
+		XMMATRIX vMat = XMMatrixLookToLH(XMLoadFloat3(&position), rotatedVector, XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f));
+
+		XMStoreFloat4x4(&viewMatrix, XMMatrixTranspose(vMat));
+
+		XMMATRIX pMat = XMMatrixTranspose(XMLoadFloat4x4(&projectionMatrix));
+
+		BoundingFrustum f;
+		BoundingFrustum::CreateFromMatrix(f, pMat);
+		f.Transform(frustum, XMMatrixInverse(nullptr, vMat));
 
 		isDirty = false;
 	}
@@ -84,6 +92,11 @@ XMFLOAT3 & DebugCam::getPosition()
 {
 	// TODO: insert return statement here
 	return position;
+}
+
+BoundingFrustum& DebugCam::getFrustum()
+{
+	return frustum;
 }
 
 void DebugCam::handleKeyboardInput(float moveSpeed)

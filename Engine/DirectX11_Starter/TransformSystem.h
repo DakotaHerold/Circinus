@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-class Entity;
+#include "Transform.h"
 
 class TransformSystem
 {
@@ -9,6 +9,6 @@ public:
 	TransformSystem();
 	~TransformSystem();
 
-	void update(float delta, std::vector<Entity *> entities);
+	void update(float delta, std::vector<Transform*> &transforms);
 };
 

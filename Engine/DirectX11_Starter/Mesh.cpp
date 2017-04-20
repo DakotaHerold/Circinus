@@ -73,6 +73,13 @@ bool Mesh::LoadFromMemory(Vertex vertices[], int numVerts, unsigned int indices[
 	// - Once we do this, we'll NEVER CHANGE THE BUFFER AGAIN
 	HR(device->CreateBuffer(&ibd, &initialIndexData, &indexBuffer));
 
+	DirectX::BoundingBox::CreateFromPoints(
+		bounds,
+		numVerts,
+		reinterpret_cast<const DirectX::XMFLOAT3*>(vertices),
+		sizeof(Vertex)
+	);
+
 	valid = true;
 	return true;
 }

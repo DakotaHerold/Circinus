@@ -26,5 +26,6 @@ T* Object::GetObjectWithID(int id) {
 			return dynamic_cast<T*>(o.second);
 		}
 	}
+
 	return nullptr;
 }

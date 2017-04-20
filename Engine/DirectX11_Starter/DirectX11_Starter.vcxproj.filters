@@ -61,6 +61,15 @@
     <Filter Include="Header Files\System">
       <UniqueIdentifier>{df78f7da-ea1d-439c-8751-6416713aec77}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GUI">
+      <UniqueIdentifier>{b6b31d27-4252-4eb2-9ceb-5a7811de889c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GUI">
+      <UniqueIdentifier>{706134f9-e1a7-473d-870d-d3f233b89a2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGUI Dependencies">
+      <UniqueIdentifier>{bc0fea48-0e2c-4490-9c97-9899a7424546}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -152,6 +161,21 @@
     </ClCompile>
     <ClCompile Include="Object.cpp">
       <Filter>Source Files\CoreEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui.cpp">
+      <Filter>ImGUI Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_demo.cpp">
+      <Filter>ImGUI Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_draw.cpp">
+      <Filter>ImGUI Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_impl_dx11.cpp">
+      <Filter>ImGUI Dependencies</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -260,6 +284,30 @@
     <ClInclude Include="Object.h">
       <Filter>Header Files\CoreEngine</Filter>
     </ClInclude>
+    <ClInclude Include="GUI.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imconfig.h">
+      <Filter>ImGUI Dependencies</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui.h">
+      <Filter>ImGUI Dependencies</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_impl_dx11.h">
+      <Filter>ImGUI Dependencies</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_internal.h">
+      <Filter>ImGUI Dependencies</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\stb_rect_pack.h">
+      <Filter>ImGUI Dependencies</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\stb_textedit.h">
+      <Filter>ImGUI Dependencies</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\stb_truetype.h">
+      <Filter>ImGUI Dependencies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\PixelShader.hlsl">
@@ -298,7 +346,10 @@
     <None Include="Shaders\CommonStructs.hlsli">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="script.lua">
+    <None Include="..\..\Scripts\script.lua">
+      <Filter>Scripts</Filter>
+    </None>
+    <None Include="..\..\Scripts\script2.lua">
       <Filter>Scripts</Filter>
     </None>
   </ItemGroup>
