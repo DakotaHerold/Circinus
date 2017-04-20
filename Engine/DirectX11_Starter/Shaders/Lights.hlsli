@@ -56,20 +56,20 @@ Lighting calcPointLight(PointLight light, float3 normal, float3 dir, float3 dirT
 	OUT.Ambient = float4(0, 0, 0, 0);
 	OUT.Diffuse = float4(0, 0, 0, 0);
 	OUT.Specular = float4(0, 0, 0, 0);
+
 	// not sure if needed, normalize to be safe 
 	normal = normalize(normal);
 	float NdotL = saturate(dot(normal, dir));
 	OUT.Diffuse = NdotL * light.diffuseColor * light.diffusePower;
 
+	// Blinn-Phong lighting
 	// Calculate “half-way” vector between the light vector
 	// and view vector (direction from surface to camera)
 	float3 h = normalize(dir + dirToCamera);
-	// Calculate the cosine of the normal and halfway vector
-	// Saturate() ensures it’s between 0 and 1
+
 	float NdotH = saturate(dot(normal, h));
 	// Raise the ratio to a power equal to some
-	// “shininess” factor – try a number between 1 and 64
-	float4 specAmt = pow(NdotH, light.specularPower);
+	float4 specAmt = pow(NdotH, pow(2, light.specularPower));
 
 	OUT.Specular = specAmt * light.specularColor;
 	return OUT;

@@ -9,13 +9,13 @@ struct DirectionalLight
 	XMFLOAT3 Direction;
 };
 
-struct SpecularLight
-{
-	XMFLOAT4 SpecularColor; 
-	XMFLOAT3 Direction;
-	float SpecularStrength; 
-	float LightIntensity; 
-};
+//struct SpecularLight
+//{
+//	XMFLOAT4 SpecularColor; 
+//	XMFLOAT3 Direction;
+//	float SpecularStrength; 
+//	float LightIntensity; 
+//};
 
 struct PointLight
 {

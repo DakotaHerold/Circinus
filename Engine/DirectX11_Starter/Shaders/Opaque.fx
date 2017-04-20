@@ -68,36 +68,19 @@ float4 ps_main(V2F input) : SV_TARGET
 	dL.Direction = float3(0, -1.0f, 0);
 
 	PointLight pL;
-	pL.position = float3(1, 1, 0);
+	pL.position = float3(0, -0.5f, 0);
 	pL.diffuseColor = float4(1, 0, 0, 1);
 	pL.diffusePower = 1;
 	pL.specularColor = float4(1, 1, 1, 1);
-	pL.specularPower = 128;
+	pL.specularPower = 8;
 
-	float3 pLight1dir = normalize(pL.position - input.worldPos);
+	float3 pLight1dir = normalize(input.worldPos - pL.position);
 	float3 dirToCam = normalize(camPos - input.worldPos);
 
-	//DirectionalLight dL2;
-	//dL2.AmbientColor = float4(0, 0, 0, 1);
-	//dL2.DiffuseColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
-	//dL2.Direction = float3(-1, -1.0f, -1);
-
-	//DirectionalLight dL3;
-	//dL3.AmbientColor = float4(0, 0, 0, 1);
-	//dL3.DiffuseColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
-	//dL3.Direction = float3(-1, -1.0f, 1);
-
-	//DirectionalLight dL4;
-	//dL4.AmbientColor = float4(0, 0, 0, 1);
-	//dL4.DiffuseColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
-	//dL4.Direction = float3(1, -1.0f, -1);
-
-	 Lighting lightOut = calcDirectionalLight(dL, input.normal, 1.0f) /*+ calcDirectionalLight(dL2, input.normal, 1.0f) + calcDirectionalLight(dL3, input.normal, 1.0f) + calcDirectionalLight(dL4, input.normal, 1.0f)*/;
-	 Lighting pLight = calcPointLight(pL, input.normal, pLight1dir, dirToCam);
-
-	 //float4 totalLight = float4(lightOut, 1) * texDiffuse.Sample(sampBasic, input.uv);
-
-	 return ((lightOut.Ambient + lightOut.Diffuse) + (pLight.Ambient + pLight.Diffuse)) * texDiffuse.Sample(sampBasic, input.uv) + (lightOut.Specular + pLight.Specular);
+	Lighting lightOut = calcDirectionalLight(dL, input.normal, 1.0f) /*+ calcDirectionalLight(dL2, input.normal, 1.0f) + calcDirectionalLight(dL3, input.normal, 1.0f) + calcDirectionalLight(dL4, input.normal, 1.0f)*/;
+	Lighting pLight = calcPointLight(pL, input.normal, pLight1dir, dirToCam);
+	
+	return ((lightOut.Ambient + lightOut.Diffuse) + (pLight.Ambient + pLight.Diffuse)) * texDiffuse.Sample(sampBasic, input.uv) + (lightOut.Specular + pLight.Specular);
 }
 
 technique11
