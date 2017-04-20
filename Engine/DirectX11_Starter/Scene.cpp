@@ -15,9 +15,16 @@ void Scene::Enter()
 	Shader* shader = renderer.CreateShader(L"Assets/ShaderObjs/Opaque.cso");
 	Texture* tex = renderer.CreateTexture(L"Assets/Textures/rust.jpg");
 
+
+
 	mat = renderer.CreateMaterial(shader);
 	mat->SetTexture("texDiffuse", tex);
 
+
+
+
+	DirectX::XMFLOAT4X4 matrix;
+	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixIdentity());
 
 	enti = new Entity();
 	Transform* t = enti->AddComponent<Transform>();
@@ -78,10 +85,11 @@ void Scene::Tick(float deltaTime, float totalTime)
 	t->SetRotationEuler(0, rot, 0);
 
 	t = t->children[0];
-	t->SetRotationEuler(rot * 2.0f, 0, 0);
+	t->SetRotationEuler(rot * 10.0f, 0,  0);
 }
 
 void Scene::Exit()
 {
+	delete enti;
 	componentManager->Release();
 }

@@ -53,7 +53,6 @@ private:
 
 	DirectX::XMFLOAT4X4		matLocal;
 	DirectX::XMFLOAT4X4		matWorld;
-	DirectX::XMFLOAT4X4		localToWorldMatrix;
 	
 private:
 	// TODO allocator for transforms;
