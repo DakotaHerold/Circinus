@@ -35,18 +35,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPSTR cmdLine, i
 	// Enable run-time memory check for debug builds.
 #if defined(DEBUG) | defined(_DEBUG)
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
+	// Allocate console in debug mode
+	AllocConsole();
+	// Redirect the CRT standard input, output, and error handles to the console
+	freopen("CONIN$", "r", stdin);
+	freopen("CONOUT$", "w", stdout);
+	freopen("CONOUT$", "w", stderr);
 #endif
 
 	Engine engine;
 
 	if (!engine.Init())
 		return - 1;
-
-	// Allocate Console in Debug Mode
-	#if defined(DEBUG) || defined(_DEBUG)
-	AllocConsole();
-	freopen("CONOUT$", "w", stdout);
-	#endif
 
 	return engine.Run();
 }
@@ -460,7 +461,7 @@ void Main::CreateGeometry()
 	testEnt = new Entity(meshOne, material);
 	testEnt->SetScale(2, 2, 2);
 	testEnt->SetPosition(0, 0, 0);
-	//testEnt->AddComponent<ScriptComponent>("script.lua");
+	testEnt->AddComponent<ScriptComponent>("script.lua");
 }
 
 
