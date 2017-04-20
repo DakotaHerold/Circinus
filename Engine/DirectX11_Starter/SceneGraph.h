@@ -9,12 +9,19 @@ class RenderingSystem;
 class SceneGraph
 {
 public:
+
 	Renderable*		CreateRenderable();
 
 	void			ClearRenderables();
 
+	void			SetSkyBox(Renderable* skybox) { this->skybox = skybox; }
+
+	Renderable*		GetSkyBox() { return skybox; }
+
 private:
 	friend class RenderingSystem;
+
+	Renderable*		skybox;
 
 	Renderable*		root;
 

@@ -371,6 +371,22 @@ void RenderingSystem::DrawScene(DebugCam* cam, SceneGraph* scene)
 		deviceContext->DrawIndexed(i->mesh->indexCount, 0, 0);
 	}
 
+	{
+		Renderable* skybox = scene->GetSkyBox();
+		if (nullptr != skybox)
+		{
+			UploadPreBoundConstantBuffers();
+			skybox->material->Apply(deviceContext);
+			UINT strides[] = { sizeof(Vertex) };
+			UINT offsets[] = { 0 };
+			deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			deviceContext->IASetInputLayout(skybox->material->shader->layout);
+			deviceContext->IASetVertexBuffers(0, 1, &(skybox->mesh->vertexBuffer), strides, offsets);
+			deviceContext->IASetIndexBuffer(skybox->mesh->indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+			deviceContext->DrawIndexed(skybox->mesh->indexCount, 0, 0);
+		}
+	}
+
 	GUI::instance().Draw();
 
 	swapChain->Present(0, 0);

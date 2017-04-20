@@ -54,6 +54,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPSTR cmdLine, i
 
 #elif defined(TEST_RENDERING_SYSTEM)
 
+// REMOVE THIS PART !!!!!
+
 #include "NativeWindow.h"
 #include "RenderingSystem.h"
 #include "DebugCam.h"

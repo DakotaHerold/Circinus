@@ -58,6 +58,8 @@ void Scene::Enter()
 	skybox->SetMesh(mesh);
 	skybox->SetMaterial(skyboxMaterial);
 
+	sceneGraph.SetSkyBox(skybox);
+
 	cam.getViewMatrix();
 	cam.setProjectionMatrix(800.0f / 600.0f);
 
