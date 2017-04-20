@@ -105,12 +105,15 @@ private:
 
 	void UpdateProjectionMatrix(const DirectX::XMFLOAT4X4& m);
 
+	void UpdateCameraPosition(const DirectX::XMFLOAT3& f);
+
 private:
 
 	struct BuiltinFrameCB
 	{
 		DirectX::XMFLOAT4X4		matView;
 		DirectX::XMFLOAT4X4		matProj;
+		DirectX::XMFLOAT3		camPos;
 	};
 
 	// TODO

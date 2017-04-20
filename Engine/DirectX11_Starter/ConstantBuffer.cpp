@@ -10,7 +10,15 @@ bool ConstantBuffer::Init(ID3D11Device * device, uint32_t size, void* cacheBuf)
 
 	D3D11_BUFFER_DESC bufDesc = {};
 	bufDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	bufDesc.ByteWidth = size;
+	uint32_t padded_size = size;
+
+	// Add padding to the struct if it is not a factor of 16
+	if ((padded_size % 16) != 0)
+	{
+		padded_size += 16 - (padded_size % 16);
+	}
+
+	bufDesc.ByteWidth = padded_size;
 	bufDesc.Usage = D3D11_USAGE_DEFAULT;
 
 	HR(device->CreateBuffer(&bufDesc, 0, &buffer));
