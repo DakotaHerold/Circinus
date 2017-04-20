@@ -1,10 +1,14 @@
 #include "ScriptComponent.h"
 using namespace luabridge;
 
-ScriptComponent::ScriptComponent(string scriptFile)
+ScriptComponent::ScriptComponent(string scriptFile, Transform* t)
 {
+	trans = t;
+	x = trans->GetWorldPosition()->x;
+	y = trans->GetWorldPosition()->y;
+	z = trans->GetWorldPosition()->z;
 
-	scriptFile = "script2.lua";
+	globalVar = 5;
 
 	// Define a Lua State object
 	L = luaL_newstate();
@@ -21,6 +25,10 @@ ScriptComponent::ScriptComponent(string scriptFile)
 	getGlobalNamespace(L)
 		.beginNamespace("test")
 		.addVariable("var1", &globalVar)
+		.addVariable("x", &x)
+		.addVariable("y", &y)
+		.addVariable("z", &z)
+
 		//.addVariable("var2", &staticVar, false)     // read-only
 		//.addProperty("prop1", getString, setString)
 		//.addProperty("prop2", getString)            // read only
@@ -28,20 +36,6 @@ ScriptComponent::ScriptComponent(string scriptFile)
 		//.addFunction("bar", bar)
 		//.addCFunction("cfunc", cFunc)
 		.endNamespace();
-
-
-	// Calling lua function example 
-	cout << endl; 
-	LuaRef  updateFunc = getGlobal(L, "Update");
-	//try {
-	updateFunc();
-	//}
-	//catch (LuaException const& e) {
-	//	std::cerr && e.what();
-	//}
-
-	//testPrint();
-
 
 	cout << "Script Initialized" << endl; 
 	
@@ -52,9 +46,12 @@ ScriptComponent::ScriptComponent(string scriptFile)
 
 void ScriptComponent::Update()
 {
+	// Calling lua function example 
+	//cout << endl;
+	LuaRef  updateFunc = getGlobal(L, "UpdateTransform");
+	//updateFunc();
 
-	//std::cout << luaString << std::endl;
-	//std::cout << "And here's our number:" << answer << std::endl;
+	trans->SetPosition(x, y, z);
 }
 
 void ScriptComponent::Release()
@@ -70,5 +67,5 @@ void ScriptComponent::TestLua()
 
 ScriptComponent::~ScriptComponent()
 {
-	
+	lua_close(L);
 }

@@ -43,6 +43,9 @@ void Scene::Enter()
 	t2->SetParent(t);
 	t2->SetPosition(2.0f, 0.0f, 0.0f);
 
+	//Script 
+	enti->AddComponent<ScriptComponent>("script2.lua", t); 
+
 	// skybox
 
 	Shader* skyboxShader = renderer.CreateShader(L"Assets/ShaderObjs/Skybox.cso");
@@ -92,6 +95,8 @@ void Scene::Tick(float deltaTime, float totalTime)
 
 	t = t->children[0];
 	t->SetRotationEuler(rot * 10.0f, 0,  0);
+
+	enti->GetComponent<ScriptComponent>()->Update(); 
 }
 
 void Scene::Exit()

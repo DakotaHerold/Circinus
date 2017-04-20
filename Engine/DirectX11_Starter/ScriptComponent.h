@@ -8,6 +8,7 @@ extern "C" {
 
 
 #include "Component.h"
+#include "Transform.h"
 #include <LuaBridge.h>
 #include <iostream>
 
@@ -23,11 +24,17 @@ public:
 
 	void TestLua(); 
 
-	ScriptComponent(string scriptFile);
+	ScriptComponent(string scriptFile, Transform* t);
 	~ScriptComponent();
 
 private: 
 	lua_State* L; 
+	Transform* trans; 
+
+	// transform variables for lua
+	float x, y, z; 
+
+	// LUA TESTING VARIABLES/FUNCTIONS
 	int globalVar;
 	static float staticVar;
 
