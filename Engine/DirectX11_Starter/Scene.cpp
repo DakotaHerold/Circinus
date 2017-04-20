@@ -21,9 +21,7 @@ void Scene::Enter()
 	mat->SetTexture("texDiffuse", tex);
 
 
-	//Renderable* r = sceneGraph.CreateRenderable();
-	//r->SetMesh(mesh);
-	//r->SetMaterial(mat);
+
 
 	DirectX::XMFLOAT4X4 matrix;
 	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixIdentity());
@@ -31,9 +29,6 @@ void Scene::Enter()
 	enti = new Entity();
 	Transform* t = enti->AddComponent<Transform>();
 	Renderable* r = enti->AddComponent<Renderable>(mesh, mat);
-	r->GetMaterial()->SetMatrix4x4("matWorld", matrix);
-	//mat->SetMatrix4x4("matWorld", matrix);
-	r->GetMaterial()->SetMatrix4x4("matWorld_IT", matrix);
 
 	Entity* e = new Entity();
 	Transform* t2 = e->AddComponent<Transform>();
@@ -90,7 +85,7 @@ void Scene::Tick(float deltaTime, float totalTime)
 	t->SetRotationEuler(0, rot, 0);
 
 	t = t->children[0];
-	t->SetRotationEuler(rot * 2.0f, 0, 0);
+	t->SetRotationEuler(rot * 10.0f, 0,  0);
 }
 
 void Scene::Exit()
