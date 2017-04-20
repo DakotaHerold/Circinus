@@ -1,6 +1,8 @@
 // dear imgui, v1.50 WIP
 // (main code and documentation)
 
+#include <iostream>
+
 // See ImGui::ShowTestWindow() in imgui_demo.cpp for demo code.
 // Newcomers, read 'Programmer guide' below for notes on how to setup ImGui in your codebase.
 // Get latest version at https://github.com/ocornut/imgui
@@ -8869,6 +8871,7 @@ bool ImGui::BeginMenu(const char* label, bool enabled)
         PushStyleVar(ImGuiStyleVar_ItemSpacing, style.ItemSpacing * 2.0f);
         float w = label_size.x;
         pressed = Selectable(label, menu_is_open, ImGuiSelectableFlags_Menu | ImGuiSelectableFlags_DontClosePopups | (!enabled ? ImGuiSelectableFlags_Disabled : 0), ImVec2(w, 0.0f));
+		printf("%d\n", pressed);
         PopStyleVar();
         SameLine();
         window->DC.CursorPos.x += (float)(int)(style.ItemSpacing.x * 0.5f);

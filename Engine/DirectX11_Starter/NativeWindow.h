@@ -23,6 +23,10 @@ public:
 	// updates the window's title bar
 	void CalculateFrameStats(float totalTime);
 
+	int GetWindowWidth() const { return windowWidth; }
+	int GetWindowHeight() const { return windowHeight; }
+
+
 private:
 	// Handles window initialization
 	bool InitMainWindow();
