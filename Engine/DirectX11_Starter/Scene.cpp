@@ -2,6 +2,7 @@
 
 #include "RenderingSystem.h"
 #include "Entity.h"
+#include "ComponentPool.h"
 
 void Scene::Enter()
 {
@@ -33,6 +34,11 @@ void Scene::Enter()
 	Entity* e = new Entity();
 	Transform* t2 = e->AddComponent<Transform>();
 	e->AddComponent<Renderable>(mesh, mat);
+
+
+	ComponentPool<Renderable> test(20, 10);
+	test.AddComponent(mesh, mat);
+	test.AddComponent(mesh, mat);
 
 	t2->SetParent(t);
 	t2->SetPosition(2.0f, 0.0f, 0.0f);
