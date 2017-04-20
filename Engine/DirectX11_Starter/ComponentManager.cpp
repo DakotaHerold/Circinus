@@ -31,6 +31,9 @@ void ComponentManager::AddComponent(int entityID, Component* component, TypeId c
 	else if (componentTypeId == ComponentTypeId<Renderable>()) {
 		renderables.push_back(dynamic_cast<Renderable*>(component));
 	}
+	else if (componentTypeId == ComponentTypeId<ScriptComponent>()) {
+		scriptComponents.push_back(dynamic_cast<ScriptComponent*>(component));
+	}
 	
 }
 
@@ -57,6 +60,14 @@ bool ComponentManager::RemoveComponent(int entityID, TypeId componentTypeId)
 		for (unsigned i = 0; i < renderables.size(); i++) {
 			if (renderables[i]->GetEntityID() == entityID) {
 				renderables.erase(renderables.begin() + i);
+				return true;
+			}
+		}
+	}
+	else if (componentTypeId == ComponentTypeId<ScriptComponent>()) {
+		for (unsigned i = 0; i < renderables.size(); i++) {
+			if (scriptComponents[i]->GetEntityID() == entityID) {
+				scriptComponents.erase(scriptComponents.begin() + i);
 				return true;
 			}
 		}
@@ -88,6 +99,15 @@ Component * ComponentManager::GetComponent(int entityID, TypeId componentTypeId)
 			}
 		}
 	}
+	else if (componentTypeId == ComponentTypeId<ScriptComponent>()) {
+		for (auto p : scriptComponents) {
+			if (p->GetEntityID() == entityID) {
+				return p;
+			}
+		}
+	}
+
+
 	return nullptr;
 
 	//return getWorld().m_entityAttributes.componentStorage.getComponent(*this, componentTypeId);
@@ -116,6 +136,13 @@ bool ComponentManager::HasComponent(int entityID, TypeId componentTypeId) const
 			}
 		}
 	}
+	else if (componentTypeId == ComponentTypeId<ScriptComponent>()) {
+		for (auto p : scriptComponents) {
+			if (p->GetEntityID() == entityID) {
+				return true;
+			}
+		}
+	}
 	return false;
 }
 
@@ -135,6 +162,13 @@ void ComponentManager::Release()
 		delete renderables[i];
 	}
 	renderables.clear();
+
+	for (int i = 0; i < scriptComponents.size(); i++) {
+		delete scriptComponents[i];
+	}
+
+	scriptComponents.clear();
+
 	this->~ComponentManager();
 }
 

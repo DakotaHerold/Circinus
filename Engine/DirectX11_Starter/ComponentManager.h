@@ -6,6 +6,7 @@
 #include "Transform.h"
 #include "RigidBody.h"
 #include "Renderable.h"
+#include "ScriptComponent.h"
 
 class Scene;
 class ComponentManager
@@ -22,6 +23,7 @@ public:
 	std::vector<Transform*> transfromComponents;
 	std::vector<RigidBody*> rigidBodyComponents;
 	std::vector<Renderable*> renderables;
+	std::vector<ScriptComponent*> scriptComponents;
 	void Release();
 
 	Transform* root;
