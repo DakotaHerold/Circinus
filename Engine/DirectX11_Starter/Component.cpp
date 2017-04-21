@@ -1,9 +1,9 @@
 #include "Component.h"
-#include"Entity.h"
-
+#include "Entity.h"
 
 Component::Component()
 {
+	poolIndex = -1;
 }
 
 Component::~Component()

@@ -5,9 +5,14 @@
 class Entity;
 class Component : public Object
 {
+	template <typename U>
+	friend class ComponentPool;
+
 public:
 	Component();
 	~Component();
+
+	
 	
 	virtual void				Update();
 
@@ -17,8 +22,10 @@ public:
 	Entity*						GetEntity();
 	int							GetEntityID();
 
+
 private:
 	int							gameEntityID;
+	int							poolIndex;
 };
 
 template <typename T>
