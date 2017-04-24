@@ -2,7 +2,10 @@
 #include "ClassTypeId.h"
 #include "Object.h"
 #include <utility>
+#include "ComponentPool.h"
+
 class Entity;
+
 class Component : public Object
 {
 	template <typename U>
@@ -12,8 +15,6 @@ public:
 	Component();
 	~Component();
 
-	
-	
 	virtual void				Update();
 
 	virtual void				Release();
@@ -22,10 +23,12 @@ public:
 	Entity*						GetEntity();
 	int							GetEntityID();
 
+	typePoolIndex*				getPoolIndex() { return poolIndex; }
 
 private:
 	int							gameEntityID;
-	int							poolIndex;
+
+	typePoolIndex*				poolIndex = nullptr;
 };
 
 template <typename T>

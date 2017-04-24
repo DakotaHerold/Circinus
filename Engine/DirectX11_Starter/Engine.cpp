@@ -80,7 +80,7 @@ int Engine::Run()
 
 		// TODO
 		//Transform System
-		transformSystem->update(deltaTime, currentScene->componentManager->transfromComponents);
+		transformSystem->update(deltaTime, currentScene->componentManager->GetAllComponent<Transform>());
 
 		// scripting system
 		// TODO
@@ -95,7 +95,7 @@ int Engine::Run()
 		renderingSystem->DrawScene(currentScene->GetCamera(), currentScene->GetSceneGraph());
 
 		// TODO
-		physicsSystem->update(deltaTime, currentScene->componentManager->rigidBodyComponents);
+		//physicsSystem->update(deltaTime, currentScene->componentManager->rigidBodyComponents);
 	}
 
 	// GUI Cleanup
@@ -122,6 +122,8 @@ void Engine::CleanUp()
 
 
 	delete renderingSystem;
+	delete transformSystem;
+	delete physicsSystem;
 	delete nativeWindow;
 }
 

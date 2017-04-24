@@ -28,7 +28,7 @@ public:
 private:
 	friend class RenderingSystem;
 	friend class SceneGraph;
-	friend class ComponentPool<Renderable>;
+
 	Renderable()
 		:
 		mesh(nullptr),

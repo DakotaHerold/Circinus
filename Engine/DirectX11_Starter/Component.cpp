@@ -3,11 +3,13 @@
 
 Component::Component()
 {
-	poolIndex = -1;
+	
 }
 
 Component::~Component()
 {
+	if(poolIndex)
+		delete poolIndex;
 }
 
 void Component::Update()
