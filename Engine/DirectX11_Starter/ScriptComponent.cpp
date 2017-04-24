@@ -4,9 +4,10 @@ using namespace luabridge;
 ScriptComponent::ScriptComponent(string scriptFile, Transform* t)
 {
 	trans = t;
-	x = trans->GetWorldPosition()->x;
-	y = trans->GetWorldPosition()->y;
-	z = trans->GetWorldPosition()->z;
+	//x = trans->GetWorldPosition()->x;
+	//y = trans->GetWorldPosition()->y;
+	//z = trans->GetWorldPosition()->z;
+	x = y = z = 0;
 
 	globalVar = 5;
 

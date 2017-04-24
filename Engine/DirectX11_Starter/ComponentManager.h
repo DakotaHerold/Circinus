@@ -75,6 +75,8 @@ inline T* ComponentManager::AddComponent(int entityID, Args && ...args)
 	}
 		
 	T *component = pool->AddComponent(std::forward<Args>(args)...);
+
+	// FIXME: what to do?
 	component->SetEntity(entityID);
 
 	// http://www.cplusplus.com/reference/map/map/operator[]/
