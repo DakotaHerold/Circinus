@@ -16,13 +16,8 @@ void Scene::Enter()
 	Shader* shader = renderer.CreateShader(L"Assets/ShaderObjs/Opaque.cso");
 	Texture* tex = renderer.CreateTexture(L"Assets/Textures/rust.jpg");
 
-
-
 	mat = renderer.CreateMaterial(shader);
 	mat->SetTexture("texDiffuse", tex);
-
-
-
 
 	DirectX::XMFLOAT4X4 matrix;
 	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixIdentity());
@@ -31,14 +26,9 @@ void Scene::Enter()
 	Transform* t = enti->AddComponent<Transform>();
 	Renderable* r = enti->AddComponent<Renderable>(mesh, mat);
 
-	Entity* e = new Entity();
+	e = new Entity();
 	Transform* t2 = e->AddComponent<Transform>();
 	e->AddComponent<Renderable>(mesh, mat);
-
-
-	//ComponentPool<Renderable> test(20, 10);
-	//test.AddComponent(mesh, mat);
-	//test.AddComponent(mesh, mat);
 
 	t2->SetParent(t);
 	t2->SetPosition(2.0f, 0.0f, 0.0f);
@@ -104,5 +94,7 @@ void Scene::Tick(float deltaTime, float totalTime)
 void Scene::Exit()
 {
 	delete enti;
-	componentManager->Release();
+	delete e;
+	delete componentManager;
+	//componentManager->Release();
 }

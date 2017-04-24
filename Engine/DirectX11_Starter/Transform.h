@@ -8,6 +8,7 @@ class Transform : public Component
 {
 public:
 	Transform();
+	~Transform();
 
 	void					SetPosition(float x, float y, float z);
 	void					SetRotationEuler(float x, float y, float z);

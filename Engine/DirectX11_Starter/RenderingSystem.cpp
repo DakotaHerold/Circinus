@@ -336,9 +336,12 @@ void RenderingSystem::DrawScene(DebugCam* cam, SceneGraph* scene)
 
 	auto& frustum =	cam->getFrustum();
 
-	std::vector<Renderable*>& renderables = ComponentManager::current->renderables;
-	for (size_t j = 0; j < renderables.size(); j++) {
-		Renderable* i = renderables[j];
+	//std::vector<Renderable*>& renderables = ComponentManager::current->renderables;
+
+	ResultComponents<Renderable> r = ComponentManager::current->GetAllComponent<Renderable>();
+
+	for (size_t j = 0; j < r.size; j++) {
+		Renderable* i = &r.components[j];
 
 		Transform* t = i->GetEntity()->GetComponent<Transform>();
 		auto* m = t->GetWorldMatrix();

@@ -6,5 +6,5 @@ function Update()
 end
 
 function UpdateTransform()
-	test.x = test.x + 0.0001
+	test.x = test.x + 0.1
 end  

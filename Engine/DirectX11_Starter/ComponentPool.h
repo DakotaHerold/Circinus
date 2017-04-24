@@ -1,122 +1,157 @@
 #pragma once
 
 #include <utility>
+#include <stdint.h>
+#include <stdlib.h> 
+#include <new>
 #include <assert.h>
 
-template <class T>
-class ComponentPool
+class ComponentPoolBase
 {
 public:
-	ComponentPool(int initialSize, int resizeAmount);
+	ComponentPoolBase() {};
+	virtual ~ComponentPoolBase() {};
+};
+
+//typedef uint16_t pSize;
+typedef int typePoolIndex;
+
+template <typename T>
+struct ResultComponents {
+	T* components;
+	int size;
+};
+
+template <typename T>
+class ComponentPool : public ComponentPoolBase
+{
+public:
+	ComponentPool(int initialSize, int resizeAmount, bool isResizeAllowed = true);
 	~ComponentPool();
 
-	int GetInvalidCount();
+	int GetCount();
 	int GetValidCount();
 
 	template <class... Args>
 	T* AddComponent(Args&& ...args);
+	T* GetComponent(typePoolIndex index);
+	ResultComponents<T> GetAllComponents();
 
-	//void ReturnComponent(T component);
+	void ReturnComponent(T* component);
 
 private:
-	int m_ResizeAmount;
-	int m_InvalidCount;
+	int				m_length;
+	int				m_resizeAmount;
+	bool			m_isResizeAllowed;
 
-	T* components;
-	int length;
+	T*				m_components;
+	int				m_count;
 };
 
-template<class T>
-ComponentPool<T>::ComponentPool(int initialSize, int resizePool)
+template<typename T>
+ComponentPool<T>::ComponentPool(int initialSize, int resizeAmount, bool isResizeAllowed)
+	:m_length(initialSize), m_resizeAmount(resizeAmount), m_isResizeAllowed(isResizeAllowed)
 {
-	components = new T[initialSize];
+	m_components = reinterpret_cast<T *>(malloc(sizeof(T) * initialSize));
 
-	length = sizeof(components) / sizeof(*components);
-	m_InvalidCount = length;
-}
-
-template<class T>
-ComponentPool<T>::~ComponentPool()
-{
-	assert(components != nullptr);
-	delete[] components;
-}
-
-template<class T>
-int ComponentPool<T>::GetInvalidCount()
-{
-	return m_InvalidCount;
-}
-
-template<class T>
-int ComponentPool<T>::GetValidCount()
-{
-	return length - this->GetInvalidCount();
-}
-
-template<class T>
-template<class ...Args>
-inline T * ComponentPool<T>::AddComponent(Args && ...args)
-{
-	//T[] newComponents = new T[length + m_ResizeAmount];
-
-	if (this->GetInvalidCount() == 0)
-	{
-		//// If we can't resize, then we can not give the user back any instance.
-		//if (!this.isResizeAllowed)
-		//{
-		//	throw new Exception("Limit Exceeded " + this.components.Length + ", and the pool was set to not resize.");
-		//}
-
-		// Create a new array with some more slots and copy over the existing components.
-		T* newComponents = new T[length + m_ResizeAmount];
-
-		for (int index = length - 1; index >= 0; --index)
-		{
-			/*if (index >= this->GetInvalidCount())
-			{
-			this.components[index].PoolId = index + this.ResizeAmount;
-			}*/
-
-			newComponents[index + m_ResizeAmount] = components[index];
-		}
-
-		components = newComponents;
-
-		// move the invalid count based on our resize amount
-		m_InvalidCount += m_ResizeAmount;
+	if (m_components == nullptr) {
+		throw "alloc error!";
 	}
 
-	// decrement the counter
-	--m_InvalidCount;
+	if(m_isResizeAllowed)
+		assert(resizeAmount != 0);
 
-	//components[0] = T{ std::forward<Args>(args)... };
-	//components[m_InvalidCount] = T{ std::forward<Args>(args)... };
+	m_count = 0;
 
-	return &components[m_InvalidCount];
-
-	//// get the next component in the list
-	//T result = components[m_InvalidCount];
-
-	//// if the component is null, we need to allocate a new instance
-	//if (result == null)
-	//{
-	//	result = this.allocate(this.innerType);
-
-	//	if (result == null)
-	//	{
-	//		throw new InvalidOperationException("The pool's allocate method returned a null object reference.");
-	//	}
-
-	//	this.components[this.InvalidCount] = result;
+	//for (int i = 0; i < initialSize; i++) {
+	//	cout << m_components + i << endl;
 	//}
+}
 
-	//result.PoolId = this.InvalidCount;
+template<typename T>
+ComponentPool<T>::~ComponentPool()
+{
+	assert(m_components != nullptr);
 
-	// Initialize the object if a delegate was provided.
-	//result.Initialize();
+	for (int i = 0; i < m_count; i++) {
+		// http://stackoverflow.com/questions/2995099/malloc-and-constructors
+		// http://en.cppreference.com/w/cpp/language/new
+		reinterpret_cast<T *>(m_components + i)->~T();
 
-	//return result;
+		//delete (m_components + i);
+	}
 
-	//return nullptr;
+	free(m_components);
+}
+
+template<typename T>
+inline int ComponentPool<T>::GetCount()
+{
+	return m_count;
+}
+
+template<typename T>
+inline int ComponentPool<T>::GetValidCount()
+{
+	return m_length - m_count;
+}
+
+template<typename T>
+template<typename ...Args>
+inline T * ComponentPool<T>::AddComponent(Args && ...args)
+{
+	if (m_count == m_length)
+	{
+		// if we can't resize, then we can not give the user back any instance.
+		if (!m_isResizeAllowed)
+		{
+			throw "limit exceeded length, and the pool was set to not resize.";
+		}
+
+		// Create a new array with some more slots and copy over the existing m_components.
+		//T* newComponents = new T[m_length + m_resizeAmount];
+
+		m_length += m_resizeAmount;
+
+		m_components = reinterpret_cast<T *>(realloc(m_components, sizeof(T) * m_length));
+
+		if (m_components == nullptr) {
+			throw "realloc error!";
+		}
+	}
+
+	// TODO: Replace T's variable when T is already existed at the position 
+	T* result = new (m_components + m_count) T(std::forward<Args>(args)...);
+	// TODO: Get from global allocator
+	result->poolIndex = new int(m_count++);
+
+	return result;
+}
+
+template<typename T>
+inline T * ComponentPool<T>::GetComponent(typePoolIndex index)
+{
+	assert(index < m_length);
+	return &m_components[index];
+}
+
+template<typename T>
+inline ResultComponents<T> ComponentPool<T>::GetAllComponents()
+{
+	return {m_components, m_count};
+}
+
+template<typename T>
+inline void ComponentPool<T>::ReturnComponent(T * component)
+{
+	assert(component >= m_components && component < m_components + m_length);
+
+	--count;
+
+	*(m_components[count].poolIndex) = *(component->poolIndex);
+
+	m_components[component->poolIndex] = m_components[count];
+
+	// TODO: Reset component's variable to reuse object
+	//m_componets[count].poolIndex = -1;
 }

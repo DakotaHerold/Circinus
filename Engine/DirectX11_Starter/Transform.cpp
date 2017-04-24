@@ -17,6 +17,10 @@ Transform::Transform()
 	}
 }
 
+Transform::~Transform()
+{
+}
+
 void Transform::SetPosition(float x, float y, float z)
 {
 	localPosition.x = x;
