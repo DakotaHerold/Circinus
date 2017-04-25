@@ -15,6 +15,8 @@ private:
 
 	static GUI Instance;
 
+	bool running = true;
+
 	GUI();
 
 public:
@@ -28,7 +30,7 @@ public:
 
 	void Init(HWND hwnd, ID3D11Device* device, ID3D11DeviceContext* device_context);
 	void Draw();
-	void Update(int _windowWidth, int _windowHeight);
+	bool Update(int _windowWidth, int _windowHeight);
 	void End();
 	void AddMenuBar();
 	void ShowExampleMenuFile();

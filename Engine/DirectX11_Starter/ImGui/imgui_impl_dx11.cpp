@@ -237,98 +237,99 @@ IMGUI_API LRESULT ImGui_ImplDX11_WndProcHandler(HWND, UINT msg, WPARAM wParam, L
 	ImGuiIO& io = ImGui::GetIO();
 
 	//bool returnToApp = !io.WantCaptureMouse || !io.WantCaptureKeyboard;
-	bool returnToApp = !io.WantCaptureMouse;
-	bool tempRetVal = false;
+	//bool returnToApp = !io.WantCaptureMouse;
+	//bool tempRetVal = false;
 
-	switch (msg)
-	{
-	case WM_LBUTTONDOWN:
-		io.MouseDown[0] = true;
-		tempRetVal = true;
-	case WM_LBUTTONUP:
-		io.MouseDown[0] = false;
-		tempRetVal = true;
-	case WM_RBUTTONDOWN:
-		io.MouseDown[1] = true;
-		tempRetVal = true;
-	case WM_RBUTTONUP:
-		io.MouseDown[1] = false;
-		tempRetVal = true;
-	case WM_MBUTTONDOWN:
-		io.MouseDown[2] = true;
-		tempRetVal = true;
-	case WM_MBUTTONUP:
-		io.MouseDown[2] = false;
-		tempRetVal = true;
-	case WM_MOUSEWHEEL:
-		io.MouseWheel += GET_WHEEL_DELTA_WPARAM(wParam) > 0 ? +1.0f : -1.0f;
-		tempRetVal = true;
-	case WM_MOUSEMOVE:
-		io.MousePos.x = (signed short)(lParam);
-		io.MousePos.y = (signed short)(lParam >> 16);
-		tempRetVal = true;
-	case WM_KEYDOWN:
-		if (wParam < 256)
-			io.KeysDown[wParam] = 1;
-		tempRetVal = true;
-	case WM_KEYUP:
-		if (wParam < 256)
-			io.KeysDown[wParam] = 0;
-		tempRetVal = true;
-	case WM_CHAR:
-		// You can also use ToAscii()+GetKeyboardState() to retrieve characters.
-		if (wParam > 0 && wParam < 0x10000)
-			io.AddInputCharacter((unsigned short)wParam);
-		tempRetVal = true;
-	}
-
-	return tempRetVal && !returnToApp;
-
-
+	bool GUIWantsControl = io.WantCaptureKeyboard || io.WantCaptureMouse;
 
 	//switch (msg)
 	//{
 	//case WM_LBUTTONDOWN:
 	//	io.MouseDown[0] = true;
-	//	return true;
+	//	tempRetVal = true;
 	//case WM_LBUTTONUP:
 	//	io.MouseDown[0] = false;
-	//	return true;
+	//	tempRetVal = true;
 	//case WM_RBUTTONDOWN:
 	//	io.MouseDown[1] = true;
-	//	return true;
+	//	tempRetVal = true;
 	//case WM_RBUTTONUP:
 	//	io.MouseDown[1] = false;
-	//	return true;
+	//	tempRetVal = true;
 	//case WM_MBUTTONDOWN:
 	//	io.MouseDown[2] = true;
-	//	return true;
+	//	tempRetVal = true;
 	//case WM_MBUTTONUP:
 	//	io.MouseDown[2] = false;
-	//	return true;
+	//	tempRetVal = true;
 	//case WM_MOUSEWHEEL:
 	//	io.MouseWheel += GET_WHEEL_DELTA_WPARAM(wParam) > 0 ? +1.0f : -1.0f;
-	//	return true;;
+	//	tempRetVal = true;
 	//case WM_MOUSEMOVE:
 	//	io.MousePos.x = (signed short)(lParam);
 	//	io.MousePos.y = (signed short)(lParam >> 16);
-	//	return true;
+	//	tempRetVal = true;
 	//case WM_KEYDOWN:
 	//	if (wParam < 256)
 	//		io.KeysDown[wParam] = 1;
-	//	return true;
+	//	tempRetVal = true;
 	//case WM_KEYUP:
 	//	if (wParam < 256)
 	//		io.KeysDown[wParam] = 0;
-	//	return true;
+	//	tempRetVal = true;
 	//case WM_CHAR:
 	//	// You can also use ToAscii()+GetKeyboardState() to retrieve characters.
 	//	if (wParam > 0 && wParam < 0x10000)
 	//		io.AddInputCharacter((unsigned short)wParam);
-	//	return true;
+	//	tempRetVal = true;
 	//}
 
-	//return 0;
+	//return tempRetVal && !returnToApp;
+
+
+	switch (msg)
+	{
+	case WM_LBUTTONDOWN:
+		io.MouseDown[0] = true;
+		return true && GUIWantsControl;
+	case WM_LBUTTONUP:
+		io.MouseDown[0] = false;
+		return true && GUIWantsControl;
+	case WM_RBUTTONDOWN:
+		io.MouseDown[1] = true;
+		return true && GUIWantsControl;
+	case WM_RBUTTONUP:
+		io.MouseDown[1] = false;
+		return true && GUIWantsControl;
+	case WM_MBUTTONDOWN:
+		io.MouseDown[2] = true;
+		return true && GUIWantsControl;
+	case WM_MBUTTONUP:
+		io.MouseDown[2] = false;
+		return true && GUIWantsControl;
+	case WM_MOUSEWHEEL:
+		io.MouseWheel += GET_WHEEL_DELTA_WPARAM(wParam) > 0 ? +1.0f : -1.0f;
+		return true && GUIWantsControl;
+	case WM_MOUSEMOVE:
+		io.MousePos.x = (signed short)(lParam);
+		io.MousePos.y = (signed short)(lParam >> 16);
+		return true && GUIWantsControl;
+	case WM_KEYDOWN:
+		if (wParam < 256)
+			io.KeysDown[wParam] = 1;
+		return true && GUIWantsControl;
+	case WM_KEYUP:
+		if (wParam < 256)
+			io.KeysDown[wParam] = 0;
+		return true && GUIWantsControl;
+	case WM_CHAR:
+		// You can also use ToAscii()+GetKeyboardState() to retrieve characters.
+		if (wParam > 0 && wParam < 0x10000)
+			io.AddInputCharacter((unsigned short)wParam);
+		return true && GUIWantsControl;
+	}
+
+	return 0;
 }
 
 static void ImGui_ImplDX11_CreateFontsTexture()
