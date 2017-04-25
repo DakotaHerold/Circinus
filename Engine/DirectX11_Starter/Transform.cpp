@@ -21,7 +21,7 @@ Transform::~Transform()
 {
 }
 
-void Transform::SetPosition(float x, float y, float z)
+void Transform::SetLocalPosition(float x, float y, float z)
 {
 	localPosition.x = x;
 	localPosition.y = y;
