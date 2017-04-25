@@ -23,7 +23,7 @@ void GUI::Draw()
 
 }
 
-void GUI::Update(int _windowWidth, int _windowHeight)
+bool GUI::Update(int _windowWidth, int _windowHeight)
 {
 
 	// Use this to Update the frames. I.e, create new stuff I guess.
@@ -45,9 +45,12 @@ void GUI::Update(int _windowWidth, int _windowHeight)
 		ImGui::Text("GUI %s Mouse Input ", (ImGui::GetIO().WantCaptureMouse) ? "wants" : "doesn't want");
 		ImGui::Text("GUI %s Keyboard Input ", (ImGui::GetIO().WantCaptureKeyboard ) ? "wants" : "doesn't want");
 		ImGui::Text("Mouse %s Down", ImGui::IsMouseDown(0) ? "" : "not");
+		ImGui::Text("Mouse %s Clicked", ImGui::IsMouseClicked ? "" : "not");
 
 		ImGui::End();
 	}
+
+	return running;
 
 }
 
@@ -55,6 +58,12 @@ void GUI::AddMenuBar() {
 
 	if (ImGui::BeginMainMenuBar())
 	{
+		if (ImGui::BeginMenu("Engine")) {
+			if (ImGui::MenuItem("Quit", "ALT+F4")) { running = false; }
+			ImGui::MenuItem("Test");
+			ImGui::EndMenu();
+		}
+
 		if (ImGui::BeginMenu("File"))
 		{
 			ShowExampleMenuFile();
