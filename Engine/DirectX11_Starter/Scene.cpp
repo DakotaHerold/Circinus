@@ -31,10 +31,11 @@ void Scene::Enter()
 	e->AddComponent<Renderable>(mesh, mat);
 
 	t2->SetParent(t);
-	t2->SetPosition(2.0f, 0.0f, 0.0f);
+	t2->SetLocalPosition(2.0f, 0.0f, 0.0f);
 
 	//Script 
-	//enti->AddComponent<ScriptComponent>("script2.lua", t); 
+	//RigidBody* r = new enti->AddComponent<RigidBody>(t, r->BoundingBox);
+	//enti->AddComponent<ScriptComponent>("script2.lua", ); 
 
 	// skybox
 

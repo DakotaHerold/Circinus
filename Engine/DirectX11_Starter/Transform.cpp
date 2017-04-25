@@ -21,6 +21,14 @@ Transform::~Transform()
 {
 }
 
+void Transform::SetWorldPosition(float x, float y, float z)
+{
+	worldPosition.x = x; 
+	worldPosition.y = y; 
+	worldPosition.z = z; 
+	dirty = true; 
+}
+
 void Transform::SetLocalPosition(float x, float y, float z)
 {
 	localPosition.x = x;

@@ -2,36 +2,24 @@
 #include "Component.h"
 #include "Transform.h"
 #include <DirectXMath.h>
+#include <DirectXCollision.h>
 
 class RigidBody :
 	public Component
 {
 public:
-	RigidBody();
+	RigidBody(Transform* t, DirectX::BoundingBox* boxCollider);
 	~RigidBody();
 
 	void SetEntity(int id) override;
 
 	#pragma region Getters and Setters
-	void					SetPosition(float x, float y, float z);
-	void					SetPosition(DirectX::XMFLOAT3 position);
-	void					SetRotationEuler(float x, float y, float z);
-
-	DirectX::XMFLOAT3*		GetLocalPosition() { return &trans->GetLocalPosition; }
-	DirectX::XMFLOAT3*		GetLocalRotation() { return &trans->GetLocalRotation; }
-	DirectX::XMFLOAT3*		GetWorldPosition() { return &trans->GetWorldPosition; }
-	DirectX::XMFLOAT3*		GetWorldRotation() { return &trans->GetWorldRotation; }
-
-
-	bool					IsDirty();
+	Transform* GetTransform() { return trans; }
 	#pragma endregion 
 
 
 private:
 	Transform* trans; 
-	DirectX::XMFLOAT3		_position;
-	DirectX::XMFLOAT3		_rotation;
-
-	bool					dirty;	
+	DirectX::BoundingBox* box; 
 };
 

@@ -10,6 +10,7 @@ public:
 	Transform();
 	~Transform();
 
+	void					SetWorldPosition(float x, float y, float z);
 	void					SetLocalPosition(float x, float y, float z);
 	void					SetRotationEuler(float x, float y, float z);
 	void					SetScale(float x, float y, float z);
