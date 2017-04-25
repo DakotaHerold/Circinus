@@ -50,7 +50,8 @@ RenderingSystem::RenderingSystem()
 	renderTargetView(0),
 	depthStencilView(0),
 	driverType(D3D_DRIVER_TYPE_HARDWARE),
-	featureLevel(D3D_FEATURE_LEVEL_11_0)
+	featureLevel(D3D_FEATURE_LEVEL_11_0),
+	aspectRatioChanged(false)
 {
 	// Zero out the viewport struct
 	ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
@@ -161,7 +162,7 @@ void RenderingSystem::UpdateProjectionMatrix(const DirectX::XMFLOAT4X4 & m)
 
 void RenderingSystem::UpdateCameraPosition(const DirectX::XMFLOAT3 & f)
 {
-	//builtinFrameCB.UpdateData(&f, offsetof(BuiltinFrameCB, camPos), sizeof(f));
+	builtinFrameCB.UpdateData(&f, offsetof(BuiltinFrameCB, camPos), sizeof(f));
 }
 
 // --------------------------------------------------------
@@ -298,6 +299,7 @@ void RenderingSystem::OnResize(int windowWidth, int windowHeight)
 
 	// Recalculate the aspect ratio, since it probably changed
 	aspectRatio = (float)windowWidth / windowHeight;
+	aspectRatioChanged = true;
 }
 #pragma endregion
 
@@ -305,9 +307,14 @@ void RenderingSystem::OnResize(int windowWidth, int windowHeight)
 
 void RenderingSystem::DrawScene(DebugCam* cam, SceneGraph* scene)
 {
+	if (aspectRatioChanged)
+	{
+		cam->setProjectionMatrix(aspectRatio);
+		aspectRatioChanged = false;
+	}
 	UpdateViewMatrix(cam->getViewMatrix());
 	UpdateProjectionMatrix(cam->getProjectionMatrix());
-	//UpdateCameraPosition(cam->getPosition());
+	UpdateCameraPosition(cam->getPosition());
 
 	float clearColor[4] = { 0.3f, 0.3f, 0.3f, 1.0f };
 	deviceContext->ClearRenderTargetView(renderTargetView, clearColor);
@@ -329,9 +336,12 @@ void RenderingSystem::DrawScene(DebugCam* cam, SceneGraph* scene)
 
 	auto& frustum =	cam->getFrustum();
 
-	std::vector<Renderable*>& renderables = ComponentManager::current->renderables;
-	for (size_t j = 0; j < renderables.size(); j++) {
-		Renderable* i = renderables[j];
+	//std::vector<Renderable*>& renderables = ComponentManager::current->renderables;
+
+	ResultComponents<Renderable> r = ComponentManager::current->GetAllComponent<Renderable>();
+
+	for (size_t j = 0; j < r.size; j++) {
+		Renderable* i = &r.components[j];
 
 		Transform* t = i->GetEntity()->GetComponent<Transform>();
 		auto* m = t->GetWorldMatrix();
@@ -369,6 +379,22 @@ void RenderingSystem::DrawScene(DebugCam* cam, SceneGraph* scene)
 		deviceContext->IASetVertexBuffers(0, 1, &(i->mesh->vertexBuffer), strides, offsets);
 		deviceContext->IASetIndexBuffer(i->mesh->indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 		deviceContext->DrawIndexed(i->mesh->indexCount, 0, 0);
+	}
+
+	{
+		Renderable* skybox = scene->GetSkyBox();
+		if (nullptr != skybox)
+		{
+			UploadPreBoundConstantBuffers();
+			skybox->material->Apply(deviceContext);
+			UINT strides[] = { sizeof(Vertex) };
+			UINT offsets[] = { 0 };
+			deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			deviceContext->IASetInputLayout(skybox->material->shader->layout);
+			deviceContext->IASetVertexBuffers(0, 1, &(skybox->mesh->vertexBuffer), strides, offsets);
+			deviceContext->IASetIndexBuffer(skybox->mesh->indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+			deviceContext->DrawIndexed(skybox->mesh->indexCount, 0, 0);
+		}
 	}
 
 	GUI::instance().Draw();

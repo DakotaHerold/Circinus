@@ -1,13 +1,15 @@
 #include "Component.h"
-#include"Entity.h"
-
+#include "Entity.h"
 
 Component::Component()
 {
+	
 }
 
 Component::~Component()
 {
+	if(poolIndex)
+		delete poolIndex;
 }
 
 void Component::Update()

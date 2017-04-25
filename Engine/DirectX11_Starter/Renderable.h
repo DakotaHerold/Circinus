@@ -3,6 +3,7 @@
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
 #include "Component.h"
+#include "ComponentPool.h"
 
 class Transform;
 class Mesh;
@@ -26,7 +27,8 @@ public:
 
 private:
 	friend class RenderingSystem;
-	friend class SceneGraph;	
+	friend class SceneGraph;
+
 	Renderable()
 		:
 		mesh(nullptr),

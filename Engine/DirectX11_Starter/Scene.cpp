@@ -2,6 +2,7 @@
 
 #include "RenderingSystem.h"
 #include "Entity.h"
+#include "ComponentPool.h"
 
 void Scene::Enter()
 {
@@ -18,17 +19,22 @@ void Scene::Enter()
 	mat = renderer.CreateMaterial(shader);
 	mat->SetTexture("texDiffuse", tex);
 
+	DirectX::XMFLOAT4X4 matrix;
+	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixIdentity());
 
 	enti = new Entity();
 	Transform* t = enti->AddComponent<Transform>();
 	Renderable* r = enti->AddComponent<Renderable>(mesh, mat);
 
-	Entity* e = new Entity();
+	e = new Entity();
 	Transform* t2 = e->AddComponent<Transform>();
 	e->AddComponent<Renderable>(mesh, mat);
 
 	t2->SetParent(t);
 	t2->SetPosition(2.0f, 0.0f, 0.0f);
+
+	//Script 
+	//enti->AddComponent<ScriptComponent>("script2.lua", t); 
 
 	// skybox
 
@@ -41,6 +47,8 @@ void Scene::Enter()
 	Renderable* skybox = sceneGraph.CreateRenderable();
 	skybox->SetMesh(mesh);
 	skybox->SetMaterial(skyboxMaterial);
+
+	sceneGraph.SetSkyBox(skybox);
 
 	cam.getViewMatrix();
 	cam.setProjectionMatrix(800.0f / 600.0f);
@@ -78,10 +86,15 @@ void Scene::Tick(float deltaTime, float totalTime)
 	t->SetRotationEuler(0, rot, 0);
 
 	t = t->children[0];
-	t->SetRotationEuler(rot * 2.0f, 0, 0);
+	t->SetRotationEuler(rot * 10.0f, 0,  0);
+
+	//enti->GetComponent<ScriptComponent>()->Update(); 
 }
 
 void Scene::Exit()
 {
-	componentManager->Release();
+	delete enti;
+	delete e;
+	delete componentManager;
+	//componentManager->Release();
 }

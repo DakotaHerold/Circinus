@@ -8,8 +8,9 @@ class Transform : public Component
 {
 public:
 	Transform();
+	~Transform();
 
-	void					SetPosition(float x, float y, float z);
+	void					SetLocalPosition(float x, float y, float z);
 	void					SetRotationEuler(float x, float y, float z);
 	void					SetScale(float x, float y, float z);
 	void					SetScale(float s);
@@ -53,7 +54,6 @@ private:
 
 	DirectX::XMFLOAT4X4		matLocal;
 	DirectX::XMFLOAT4X4		matWorld;
-	DirectX::XMFLOAT4X4		localToWorldMatrix;
 	
 private:
 	// TODO allocator for transforms;

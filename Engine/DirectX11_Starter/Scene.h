@@ -36,4 +36,5 @@ private:
 
 	Material*		mat;
 	Entity*			enti;
+	Entity*			e;
 };
