@@ -56,6 +56,12 @@ void ScriptComponent::Update()
 
 void ScriptComponent::Release()
 {
+	
+}
+
+
+ScriptComponent::~ScriptComponent()
+{
 	LuaRef  releaseFunc = getGlobal(L, "Release");
 	try {
 		releaseFunc();
@@ -64,10 +70,5 @@ void ScriptComponent::Release()
 		std::cerr && e.what();
 	}
 	lua_close(L);
-}
-
-
-ScriptComponent::~ScriptComponent()
-{
 	delete rigidbody; 
 }

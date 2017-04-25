@@ -2,29 +2,16 @@
 
 
 
-RigidBody::RigidBody()
+RigidBody::RigidBody(Transform* t, DirectX::BoundingBox* boxCollider)
 {
+	trans = t; 
+	box = boxCollider;
 }
 
 
 RigidBody::~RigidBody()
 {
 	delete trans; 
-}
-
-void RigidBody::SetPosition(DirectX::XMFLOAT3 position)
-{
-	trans->SetLocalPosition(position.x, position.y, position.z);
-}
-
-void RigidBody::SetPosition(float x, float y, float z)
-{
-	trans->SetLocalPosition(x, y, z);
-}
-
-bool RigidBody::IsDirty()
-{
-	return dirty;
 }
 
 void RigidBody::SetEntity(int id)
