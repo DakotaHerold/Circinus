@@ -11,7 +11,6 @@ RigidBody::RigidBody(Transform* t, DirectX::BoundingBox* boxCollider)
 
 RigidBody::~RigidBody()
 {
-	delete trans; 
 }
 
 void RigidBody::SetEntity(int id)

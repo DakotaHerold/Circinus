@@ -132,9 +132,6 @@
     <ClCompile Include="ScriptComponent.cpp">
       <Filter>Source Files\Component</Filter>
     </ClCompile>
-    <ClCompile Include="PhysicsSystem.cpp">
-      <Filter>Source Files\System</Filter>
-    </ClCompile>
     <ClCompile Include="RigidBody.cpp">
       <Filter>Source Files\Component</Filter>
     </ClCompile>
@@ -270,9 +267,6 @@
       <Filter>Header Files\Component</Filter>
     </ClInclude>
     <ClInclude Include="TransformSystem.h">
-      <Filter>Header Files\System</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysicsSystem.h">
       <Filter>Header Files\System</Filter>
     </ClInclude>
     <ClInclude Include="RigidBody.h">

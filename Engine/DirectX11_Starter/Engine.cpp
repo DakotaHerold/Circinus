@@ -3,7 +3,6 @@
 #include "NativeWindow.h"
 #include "RenderingSystem.h"
 #include "TransformSystem.h"
-#include "PhysicsSystem.h"
 #include "Scene.h"
 #include "Entity.h"
 
@@ -33,7 +32,7 @@ bool Engine::Init()
 	
 	renderingSystem = new RenderingSystem();
 	transformSystem = new TransformSystem();
-	physicsSystem = new PhysicsSystem();
+	//physicsSystem = new PhysicsSystem();
 
 	if (!renderingSystem->Init(nativeWindow))
 		return false;
