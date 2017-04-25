@@ -1,34 +1,6 @@
+#include "ConstantBuffers.hlsli"
+#include "CommonStructs.hlsli"
 #include "Lights.hlsli"
-
-struct Input
-{
-	float3 position		: POSITION;
-	float3 normal		: NORMAL;
-	float3 tangent		: TANGENT;
-	float2 uv			: TEXCOORD;
-};
-
-struct V2F
-{
-	float4 position		: SV_POSITION;
-	float3 normal		: NORMAL;
-	float3 worldPos		: POSITION;
-	float3 tangent		: TANGENT;
-	float2 uv			: TEXCOORD;
-};
-
-cbuffer InstanceConstants : register (b0)
-{
-	matrix	matWorld;
-	matrix	matWorld_IT;
-}
-
-cbuffer FrameConstants : register (b1)
-{
-	matrix	matView;
-	matrix	matProj;
-	float3	camPos;
-}
 
 Texture2D		texDiffuse	: register(t0);
 
