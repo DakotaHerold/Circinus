@@ -1,5 +1,7 @@
 #pragma once
+
 #include <DirectXCollision.h>
+#include "RigidBody.h"
 
 using namespace DirectX;
 
@@ -16,8 +18,7 @@ public:
 	// Singleton destructors
 	CollisionDetection(CollisionDetection const&) = delete;
 
-	bool SphereCollision(BoundingSphere &sphere1, BoundingSphere &sphere2);
-	bool BoxCollsion(BoundingBox &box1, BoundingBox &box2);
+	bool CollisionCheck(RigidBody *rBody1, RigidBody *rBody2);
 
 private:
 	// Constructor 
