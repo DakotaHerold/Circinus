@@ -27,10 +27,6 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 {
 
 	// Use this to Update the frames. I.e, create new stuff I guess.
-
-	// TODO: Remove this hardcoded value.
-	ImVec2 WindowPos = ImVec2(_windowWidth - 450, 0 + 20);
-	ImGui::SetNextWindowPos(WindowPos);
 	ImGui_ImplDX11_NewFrame();
 
 	AddMenuBar(_running);
@@ -44,6 +40,24 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 			ImGui::Text("Mouse %s Down", ImGui::IsMouseDown(0) ? "" : "not");
 			ImGui::Text("Mouse %s Clicked", ImGui::IsMouseClicked ? "" : "not");
 
+			ImGui::End();
+		}
+	}
+
+	// Hierarchy Window
+	if (HierarchyDisplayFlag) {
+		ImGuiWindowFlags hwflag = 0;
+		hwflag |= ImGuiWindowFlags_NoMove;
+		hwflag |= ImGuiWindowFlags_NoSavedSettings;
+		hwflag |= ImGuiWindowFlags_NoResize;
+
+		ImVec2 hwPos = ImVec2(2 * _windowWidth / 3, 20);
+		ImVec2 hwSize = ImVec2(_windowWidth / 3, _windowHeight / 2);
+		ImGui::SetNextWindowPos(hwPos);
+		ImGui::SetNextWindowSize(hwSize);
+		ImGui::Begin("Hierarchy", &HierarchyDisplayFlag, hwflag);
+		{
+			ImGui::Text("Hierarchy Logic Goes here");
 			ImGui::End();
 		}
 	}
@@ -63,9 +77,12 @@ void GUI::AddMenuBar(bool * _running) {
 
 		if (ImGui::BeginMenu("Window"))
 		{
+			if (ImGui::MenuItem("Hierarchy")) { HierarchyDisplayFlag = true; }
+			ImGui::Separator();
 			if (ImGui::MenuItem("Debug")) {
 				DebugDisplayFlag = true;
 			}
+			
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();

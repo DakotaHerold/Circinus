@@ -14,7 +14,9 @@ class GUI
 private:
 
 	static GUI Instance;
+
 	bool DebugDisplayFlag = false;
+	bool HierarchyDisplayFlag = false;
 
 	GUI();
 
