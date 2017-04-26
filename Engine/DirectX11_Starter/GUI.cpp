@@ -57,7 +57,23 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 		ImGui::SetNextWindowSize(hwSize);
 		ImGui::Begin("Hierarchy", &HierarchyDisplayFlag, hwflag);
 		{
-			ImGui::Text("Hierarchy Logic Goes here");
+			ImGui::Text("Hierarchy");
+			ImGui::Separator();
+			if (ImGui::TreeNode("First Object")) {
+				// TODO:: Abstract the context menu thing. We would use that a lot.
+				if (ImGui::BeginPopupContextItem("First Object Context Menu")) {
+					ImGui::Button("Rename");
+					ImGui::Button("Duplicate");
+					ImGui::Separator();
+					ImGui::Button("Delete");
+					ImGui::EndPopup();
+				}
+				ImGui::Text("Mesh");
+				ImGui::Text("Rigidbody");
+
+				ImGui::TreePop();
+			}
+
 			ImGui::End();
 		}
 	}
