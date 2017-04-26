@@ -1,5 +1,7 @@
 // Light Structs 
-
+#ifndef _LIGHTS_HLSLI
+#define _LIGHTS_HLSLI
+#define MAX_LIGHTS 8
 struct Light
 {
 	float4      Position;               // 16 bytes
@@ -27,15 +29,11 @@ float4 DoDiffuse(Light light, float3 L, float3 N)
 
 float4 DoSpecular(Light light, float3 V, float3 L, float3 N)
 {
-	// Phong lighting.
-	float3 R = normalize(reflect(-L, N));
-	float RdotV = max(0, dot(R, V));
-
 	// Blinn-Phong lighting
 	float3 H = normalize(L + V);
 	float NdotH = max(0, dot(N, H));
 
-	return light.Color * pow(RdotV, 64/*Material.SpecularPower*/);
+	return light.Color * pow(NdotH, 128/*Material.SpecularPower*/);
 }
 
 float DoAttenuation(Light light, float d)
@@ -102,7 +100,47 @@ LightingResult DoSpotLight(Light light, float3 V, float4 P, float3 N)
 	return result;
 }
 
+LightingResult ComputeLighting(float4 P, float3 N, float4 EyePosition, Light Lights[MAX_LIGHTS])
+{
+	float3 V = normalize(EyePosition - P).xyz;
 
+	LightingResult totalResult = { { 0, 0, 0, 0 },{ 0, 0, 0, 0 } };
+
+	[unroll]
+	for (int i = 0; i < MAX_LIGHTS; ++i)
+	{
+		LightingResult result = { { 0, 0, 0, 0 },{ 0, 0, 0, 0 } };
+
+		if (!Lights[i].Enabled) continue;
+
+		switch (Lights[i].LightType)
+		{
+		case 0:
+		{
+			result = DoDirectionalLight(Lights[i], V, P, N);
+		}
+		break;
+		case 1:
+		{
+			result = DoPointLight(Lights[i], V, P, N);
+		}
+		break;
+		case 2:
+		{
+			result = DoSpotLight(Lights[i], V, P, N);
+		}
+		break;
+		}
+		totalResult.Diffuse += result.Diffuse;
+		totalResult.Specular += result.Specular;
+	}
+
+	totalResult.Diffuse = saturate(totalResult.Diffuse);
+	totalResult.Specular = saturate(totalResult.Specular);
+
+	return totalResult;
+}
+#endif
 //
 //struct Lighting
 //{

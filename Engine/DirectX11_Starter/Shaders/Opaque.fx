@@ -31,47 +31,6 @@ V2F vs_main(Input input)
 	return output;
 }
 
-LightingResult ComputeLighting(float4 P, float3 N)
-{
-	float3 V = normalize(EyePosition - P).xyz;
-
-	LightingResult totalResult = { { 0, 0, 0, 0 },{ 0, 0, 0, 0 } };
-
-	[unroll]
-	for (int i = 0; i < MAX_LIGHTS; ++i)
-	{
-		LightingResult result = { { 0, 0, 0, 0 },{ 0, 0, 0, 0 } };
-
-		if (!Lights[i].Enabled) continue;
-
-		switch (Lights[i].LightType)
-		{
-		case 0:
-		{
-			result = DoDirectionalLight(Lights[i], V, P, N);
-		}
-		break;
-		case 1:
-		{
-			result = DoPointLight(Lights[i], V, P, N);
-		}
-		break;
-		case 2:
-		{
-			result = DoSpotLight(Lights[i], V, P, N);
-		}
-		break;
-		}
-		totalResult.Diffuse += result.Diffuse;
-		totalResult.Specular += result.Specular;
-	}
-
-	totalResult.Diffuse = saturate(totalResult.Diffuse);
-	totalResult.Specular = saturate(totalResult.Specular);
-
-	return totalResult;
-}
-
 float4 ps_main(V2F input) : SV_TARGET
 {
 	//DirectionalLight dL;
@@ -89,7 +48,7 @@ float4 ps_main(V2F input) : SV_TARGET
 	//float3 pLight1dir = normalize(input.worldPos - pL.position);
 	//float3 dirToCam = normalize(camPos - input.worldPos);
 
-	LightingResult lit = ComputeLighting(input.position, normalize(input.normal));
+	LightingResult lit = ComputeLighting(input.position, normalize(input.normal), EyePosition, Lights);
 
 	//Lighting lightOut = calcDirectionalLight(dL, input.normal, 1.0f) /*+ calcDirectionalLight(dL2, input.normal, 1.0f) + calcDirectionalLight(dL3, input.normal, 1.0f) + calcDirectionalLight(dL4, input.normal, 1.0f)*/;
 	//Lighting pLight = calcPointLight(pL, input.normal, pLight1dir, dirToCam);

@@ -174,7 +174,7 @@ void RenderingSystem::UpdateLightProperties(const DirectX::XMFLOAT4 & fe, const 
 {
 	lightProperties.UpdateData(&fe, offsetof(LightProperties, EyePosition), sizeof(fe));
 	lightProperties.UpdateData(&fa, offsetof(LightProperties, GlobalAmbient), sizeof(fa));
-	lightProperties.UpdateData(l, offsetof(LightProperties, Lights[MAX_LIGHTS]), sizeof(*l) * n);
+	lightProperties.UpdateData(l, offsetof(LightProperties, Lights), sizeof(*l) * n);
 }
 
 // --------------------------------------------------------
