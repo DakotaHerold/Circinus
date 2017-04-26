@@ -7,6 +7,7 @@
 #include "RigidBody.h"
 #include "Renderable.h"
 #include "ScriptComponent.h"
+#include "Lighting.h"
 #include <map>
 #include "ComponentPool.h"
 

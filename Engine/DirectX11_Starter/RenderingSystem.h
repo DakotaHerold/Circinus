@@ -13,6 +13,7 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "Material.h"
+#include "Lights.h"
 
 #pragma region Include GUI
 
@@ -107,6 +108,8 @@ private:
 
 	void UpdateCameraPosition(const DirectX::XMFLOAT3& f);
 
+	void UpdateLightProperties(const DirectX::XMFLOAT4 & fe, const DirectX::XMFLOAT4 & fa, const Light* l, const int & n);
+
 private:
 
 	struct BuiltinFrameCB
@@ -123,6 +126,7 @@ private:
 	};*/
 
 	ConstantBuffer			builtinFrameCB;
+	ConstantBuffer			lightProperties;
 	//BuiltinInstanceCB		builtinInstanceCB;
 
 	std::unordered_map<std::string, ConstantBuffer*> preBoundCBs;

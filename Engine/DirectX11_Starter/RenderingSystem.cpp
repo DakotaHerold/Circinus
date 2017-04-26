@@ -139,6 +139,11 @@ bool RenderingSystem::InitPreBoundConstantBuffers()
 
 	preBoundCBs.insert(std::pair<std::string, ConstantBuffer*>("FrameConstants", &builtinFrameCB));
 
+	if (!lightProperties.Init(device, sizeof(LightProperties)))
+		return false;
+
+	preBoundCBs.insert(std::pair<std::string, ConstantBuffer*>("LightProperties", &lightProperties));
+
 	return true;
 }
 
@@ -163,6 +168,13 @@ void RenderingSystem::UpdateProjectionMatrix(const DirectX::XMFLOAT4X4 & m)
 void RenderingSystem::UpdateCameraPosition(const DirectX::XMFLOAT3 & f)
 {
 	builtinFrameCB.UpdateData(&f, offsetof(BuiltinFrameCB, camPos), sizeof(f));
+}
+
+void RenderingSystem::UpdateLightProperties(const DirectX::XMFLOAT4 & fe, const DirectX::XMFLOAT4 & fa, const Light * l, const int & n)
+{
+	lightProperties.UpdateData(&fe, offsetof(LightProperties, EyePosition), sizeof(fe));
+	lightProperties.UpdateData(&fa, offsetof(LightProperties, GlobalAmbient), sizeof(fa));
+	lightProperties.UpdateData(l, offsetof(LightProperties, Lights[MAX_LIGHTS]), sizeof(*l) * n);
 }
 
 // --------------------------------------------------------
@@ -337,6 +349,20 @@ void RenderingSystem::DrawScene(DebugCam* cam, SceneGraph* scene)
 	auto& frustum =	cam->getFrustum();
 
 	//std::vector<Renderable*>& renderables = ComponentManager::current->renderables;
+
+	// Update lights for scene here
+	Light lights[MAX_LIGHTS];	// Maybe not initializing all to zero???? Check later
+	ResultComponents<Lighting> l = ComponentManager::current->GetAllComponent<Lighting>();
+	for (size_t j = 0; j < l.size; j++) {
+		Lighting* i = &l.components[j];
+
+		lights[j] = i->GetLight();
+	}
+
+	XMFLOAT4 globalAmbient = XMFLOAT4(0.2f, 0.2f, 0.2f, 0.2f);
+	XMFLOAT4 eyePos = XMFLOAT4(cam->getPosition().x, cam->getPosition().y, cam->getPosition().z, 1);
+
+	UpdateLightProperties(eyePos, globalAmbient, lights, MAX_LIGHTS);
 
 	ResultComponents<Renderable> r = ComponentManager::current->GetAllComponent<Renderable>();
 

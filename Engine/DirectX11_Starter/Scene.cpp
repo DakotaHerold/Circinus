@@ -3,6 +3,7 @@
 #include "RenderingSystem.h"
 #include "Entity.h"
 #include "ComponentPool.h"
+#include "Lights.h"
 
 void Scene::Enter()
 {
@@ -32,6 +33,9 @@ void Scene::Enter()
 
 	t2->SetParent(t);
 	t2->SetLocalPosition(2.0f, 0.0f, 0.0f);
+
+	light = new Entity();
+	light->AddComponent<Lighting>(XMFLOAT4(0, 0, 0, 0), XMFLOAT4(0, 0, 0, 0), XMFLOAT4(1, 0, 0, 1), LightType::PointLight, 1);
 
 	//Script 
 	//RigidBody* r = new enti->AddComponent<RigidBody>(t, r->BoundingBox);
