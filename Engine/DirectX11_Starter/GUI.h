@@ -7,6 +7,7 @@
 
 #include <Windows.h>
 #include "NativeWindow.h"
+#include "ComponentManager.h"
 
 class GUI
 {
