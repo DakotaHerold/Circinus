@@ -13,9 +13,10 @@ class GUI
 
 private:
 
-	bool running = true;
-
 	static GUI Instance;
+
+	bool DebugDisplayFlag = false;
+	bool HierarchyDisplayFlag = false;
 
 	GUI();
 
@@ -30,9 +31,9 @@ public:
 
 	void Init(HWND hwnd, ID3D11Device* device, ID3D11DeviceContext* device_context);
 	void Draw();
-	bool Update(int _windowWidth, int _windowHeight);
+	void Update(int _windowWidth, int _windowHeight, bool * _running);
 	void End();
-	void AddMenuBar();
+	void AddMenuBar(bool * _running);
 	void ShowExampleMenuFile();
 
 	~GUI(); // Fix the Destructor. Search for Singletons in C++

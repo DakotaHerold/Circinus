@@ -63,9 +63,7 @@ int Engine::Run()
 		
 		// native window event processiing
 		nativeWindow->ProcessEvent();
-		if (!(GUI::instance().Update(nativeWindow->GetWindowWidth(), nativeWindow->GetWindowHeight()))) {
-			running = false;
-		}
+		(GUI::instance().Update(nativeWindow->GetWindowWidth(), nativeWindow->GetWindowHeight(), &running));
 		nativeWindow->CalculateFrameStats(totalTime);
 		if (nativeWindow->WindowIsClosed())
 		{
