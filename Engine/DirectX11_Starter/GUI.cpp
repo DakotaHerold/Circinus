@@ -1,5 +1,7 @@
 #include "GUI.h"
-
+#include "Engine.h"
+#include "Scene.h"
+#include "Entity.h"
 
 
 GUI::GUI()
@@ -72,6 +74,17 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 				ImGui::Text("Rigidbody");
 
 				ImGui::TreePop();
+			}
+
+			vector<Entity *> curSceneEntities = Engine::instance()->GetCurScene()->GetAllEntities();
+
+			for (std::vector<Entity *>::iterator it = curSceneEntities.begin(); it != curSceneEntities.end(); ++it) {
+				
+				if (ImGui::TreeNode((*it)->GetName().c_str())) {
+					ImGui::Text("Yay");
+					ImGui::TreePop();
+				}
+				
 			}
 
 			ImGui::End();
