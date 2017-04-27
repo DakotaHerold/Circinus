@@ -20,7 +20,7 @@ class ScriptComponent :
 {
 public:
 	void Update() override; 
-	void Release() override; 
+	//void Release() override; 
 
 	ScriptComponent(string scriptFile, RigidBody* body);
 	~ScriptComponent();

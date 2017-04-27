@@ -23,51 +23,82 @@ void GUI::Draw()
 
 }
 
-void GUI::Update(int _windowWidth, int _windowHeight)
+void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 {
 
 	// Use this to Update the frames. I.e, create new stuff I guess.
-
-	// TODO: Remove this hardcoded value.
-	ImVec2 WindowPos = ImVec2(_windowWidth - 450, 0 + 20);
-	ImGui::SetNextWindowPos(WindowPos);
 	ImGui_ImplDX11_NewFrame();
-	{
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-	}
 
-
-	AddMenuBar();
+	AddMenuBar(_running);
 
 	// Debug Properties
-	ImGui::Begin("Mouse and Keyboard Status");
-	{
-		ImGui::Text("GUI %s Mouse Input ", (ImGui::GetIO().WantCaptureMouse) ? "wants" : "doesn't want");
-		ImGui::Text("GUI %s Keyboard Input ", (ImGui::GetIO().WantCaptureKeyboard ) ? "wants" : "doesn't want");
-		ImGui::Text("Mouse %s Down", ImGui::IsMouseDown(0) ? "" : "not");
+	if (DebugDisplayFlag) {
+		ImGui::Begin("Mouse and Keyboard Status", &DebugDisplayFlag);
+		{
+			ImGui::Text("GUI %s Mouse Input ", (ImGui::GetIO().WantCaptureMouse) ? "wants" : "doesn't want");
+			ImGui::Text("GUI %s Keyboard Input ", (ImGui::GetIO().WantCaptureKeyboard) ? "wants" : "doesn't want");
+			ImGui::Text("Mouse %s Down", ImGui::IsMouseDown(0) ? "" : "not");
+			ImGui::Text("Mouse %s Clicked", ImGui::IsMouseClicked ? "" : "not");
 
-		ImGui::End();
+			ImGui::End();
+		}
+	}
+
+	// Hierarchy Window
+	if (HierarchyDisplayFlag) {
+		ImGuiWindowFlags hwflag = 0;
+		hwflag |= ImGuiWindowFlags_NoMove;
+		hwflag |= ImGuiWindowFlags_NoSavedSettings;
+		hwflag |= ImGuiWindowFlags_NoResize;
+
+		ImVec2 hwPos = ImVec2(2 * _windowWidth / 3, 20);
+		ImVec2 hwSize = ImVec2(_windowWidth / 3, _windowHeight / 2);
+		ImGui::SetNextWindowPos(hwPos);
+		ImGui::SetNextWindowSize(hwSize);
+		ImGui::Begin("Hierarchy", &HierarchyDisplayFlag, hwflag);
+		{
+			ImGui::Text("Hierarchy");
+			ImGui::Separator();
+			if (ImGui::TreeNode("First Object")) {
+				// TODO:: Abstract the context menu thing. We would use that a lot.
+				if (ImGui::BeginPopupContextItem("First Object Context Menu")) {
+					ImGui::Button("Rename");
+					ImGui::Button("Duplicate");
+					ImGui::Separator();
+					ImGui::Button("Delete");
+					ImGui::EndPopup();
+				}
+				ImGui::Text("Mesh");
+				ImGui::Text("Rigidbody");
+
+				ImGui::TreePop();
+			}
+
+			ImGui::End();
+		}
 	}
 
 }
 
-void GUI::AddMenuBar() {
+void GUI::AddMenuBar(bool * _running) {
 
 	if (ImGui::BeginMainMenuBar())
 	{
-		if (ImGui::BeginMenu("File"))
-		{
-			ShowExampleMenuFile();
+		if (ImGui::BeginMenu("Engine")) {
+			ImGui::MenuItem("Preferences");
+			ImGui::Separator();
+			if (ImGui::MenuItem("Quit", "ALT+F4")) { *(_running) = false; }
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("Edit"))
+
+		if (ImGui::BeginMenu("Window"))
 		{
-			if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
-			if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
+			if (ImGui::MenuItem("Hierarchy")) { HierarchyDisplayFlag = true; }
 			ImGui::Separator();
-			if (ImGui::MenuItem("Cut", "CTRL+X")) {}
-			if (ImGui::MenuItem("Copy", "CTRL+C")) {}
-			if (ImGui::MenuItem("Paste", "CTRL+V")) {}
+			if (ImGui::MenuItem("Debug")) {
+				DebugDisplayFlag = true;
+			}
+			
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();

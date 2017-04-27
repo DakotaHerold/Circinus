@@ -105,7 +105,6 @@
     <ClCompile Include="DirectXGameCore.cpp" />
     <ClCompile Include="NativeWindow.cpp" />
     <ClCompile Include="Object.cpp" />
-    <ClCompile Include="PhysicsSystem.cpp" />
     <ClCompile Include="RenderingSystem.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="RigidBody.cpp" />
@@ -148,7 +147,6 @@
     <ClInclude Include="dxerr.h" />
     <ClInclude Include="DirectXGameCore.h" />
     <ClInclude Include="NativeWindow.h" />
-    <ClInclude Include="PhysicsSystem.h" />
     <ClInclude Include="Renderable.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="RenderingSystem.h" />
