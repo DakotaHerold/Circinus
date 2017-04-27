@@ -170,11 +170,12 @@ void RenderingSystem::UpdateCameraPosition(const DirectX::XMFLOAT3 & f)
 	builtinFrameCB.UpdateData(&f, offsetof(BuiltinFrameCB, camPos), sizeof(f));
 }
 
-void RenderingSystem::UpdateLightProperties(const DirectX::XMFLOAT4 & fe, const DirectX::XMFLOAT4 & fa, const Light * l, const int & n)
+void RenderingSystem::UpdateLightProperties(const DirectX::XMFLOAT4 & fe, const DirectX::XMFLOAT4 & fa, const Light * l, const int & n, const int & MAX_n)
 {
 	lightProperties.UpdateData(&fe, offsetof(LightProperties, EyePosition), sizeof(fe));
 	lightProperties.UpdateData(&fa, offsetof(LightProperties, GlobalAmbient), sizeof(fa));
-	lightProperties.UpdateData(l, offsetof(LightProperties, Lights), sizeof(*l) * n);
+	lightProperties.UpdateData(&n, offsetof(LightProperties, Count), sizeof(n));
+	lightProperties.UpdateData(l, offsetof(LightProperties, Lights), sizeof(*l) * MAX_n);
 }
 
 // --------------------------------------------------------
@@ -353,16 +354,24 @@ void RenderingSystem::DrawScene(DebugCam* cam, SceneGraph* scene)
 	// Update lights for scene here
 	Light lights[MAX_LIGHTS];	// Maybe not initializing all to zero???? Check later
 	ResultComponents<Lighting> l = ComponentManager::current->GetAllComponent<Lighting>();
+	bool hasAnyLightChanged = false;
 	for (size_t j = 0; j < l.size; j++) {
 		Lighting* i = &l.components[j];
 
 		lights[j] = i->GetLight();
+
+		if (i->WasModified())
+		{
+			hasAnyLightChanged = true;
+			i->Cleanse();
+		}
 	}
 
 	XMFLOAT4 globalAmbient = XMFLOAT4(0.2f, 0.2f, 0.2f, 0.2f);
 	XMFLOAT4 eyePos = XMFLOAT4(cam->getPosition().x, cam->getPosition().y, cam->getPosition().z, 1);
 
-	UpdateLightProperties(eyePos, globalAmbient, lights, MAX_LIGHTS);
+	if (hasAnyLightChanged)
+		UpdateLightProperties(eyePos, globalAmbient, lights, l.size, MAX_LIGHTS);
 
 	ResultComponents<Renderable> r = ComponentManager::current->GetAllComponent<Renderable>();
 

@@ -34,9 +34,9 @@ void Scene::Enter()
 	t2->SetParent(t);
 	t2->SetLocalPosition(2.0f, 0.0f, 0.0f);
 
-	light = new Entity();
-	Lighting* l = light->AddComponent<Lighting>(XMFLOAT4(0, 0, 0, 0), XMFLOAT4(0, 0, 0, 0), XMFLOAT4(1, 0, 0, 1), LightType::PointLight, 1);
-	Lighting* l2 = light->AddComponent<Lighting>(XMFLOAT4(0, 0, 0, 0), XMFLOAT4(0, -1, 0, 0), XMFLOAT4(1, 1, 1, 1), LightType::DirectionalLight, 1);
+	lights = new Entity();
+	Lighting* l = lights->AddComponent<Lighting>(XMFLOAT4(-5, 0, 0, 0), XMFLOAT4(0.7f, 0, 0, 1), LightType::PointLight, 1, 8);
+	Lighting* l2 = lights->AddComponent<Lighting>(XMFLOAT4(0, -1, 0, 0), XMFLOAT4(0, 0.5f, 0.5f, 1), LightType::DirectionalLight, 1);
 
 	//Script 
 	//RigidBody* r = new enti->AddComponent<RigidBody>(t, r->BoundingBox);
@@ -102,5 +102,6 @@ void Scene::Exit()
 	delete enti;
 	delete e;
 	delete componentManager;
+	delete lights;
 	//componentManager->Release();
 }

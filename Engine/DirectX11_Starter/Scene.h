@@ -37,5 +37,5 @@ private:
 	Material*		mat;
 	Entity*			enti;
 	Entity*			e;
-	Entity*			light;
+	Entity*			lights;
 };

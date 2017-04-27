@@ -1,7 +1,12 @@
+//Reference: https://www.3dgep.com/texturing-lighting-directx-11/
 // Light Structs 
 #ifndef _LIGHTS_HLSLI
 #define _LIGHTS_HLSLI
 #define MAX_LIGHTS 8
+#define DIRECTIONAL_LIGHT 0
+#define POINT_LIGHT 1
+#define SPOT_LIGHT 2
+
 struct Light
 {
 	float4      Position;               // 16 bytes
@@ -17,9 +22,22 @@ struct Light
 										//----------------------------------- (16 byte boundary)
 	int         LightType;              // 4 bytes
 	bool        Enabled;                // 4 bytes
-	int2        Padding;                // 8 bytes
+	int			SpecularAmount;			// 4 bytes
+	int         Padding;                // 4 bytes
 										//----------------------------------- (16 byte boundary)
 };  // Total:                           // 80 bytes (5 * 16 byte boundary)
+
+cbuffer LightProperties : register(b2)
+{
+	float4		EyePosition;            // 16 bytes
+										//----------------------------------- (16 byte boundary)
+	float4		GlobalAmbient;          // 16 bytes
+										//----------------------------------- (16 byte boundary)
+	int			Count;					// 4 bytes
+	int3		Padding;				// 12 bytes
+										//----------------------------------- (16 byte boundary)
+	Light		Lights[MAX_LIGHTS];     // 80 * 8 = 640 bytes
+};  // Total:                           // 688 bytes (43 * 16 byte boundary)
 
 float4 DoDiffuse(Light light, float3 L, float3 N)
 {
@@ -33,7 +51,7 @@ float4 DoSpecular(Light light, float3 V, float3 L, float3 N)
 	float3 H = normalize(L + V);
 	float NdotH = max(0, dot(N, H));
 
-	return light.Color * pow(NdotH, 128/*Material.SpecularPower*/);
+	return light.Color * pow(NdotH, pow(2, light.SpecularAmount));
 }
 
 float DoAttenuation(Light light, float d)
@@ -100,14 +118,15 @@ LightingResult DoSpotLight(Light light, float3 V, float4 P, float3 N)
 	return result;
 }
 
-LightingResult ComputeLighting(float4 P, float3 N, float4 EyePosition, Light Lights[MAX_LIGHTS])
+LightingResult ComputeLighting(float4 P, float3 N)
 {
+	// Direction to cam
 	float3 V = normalize(EyePosition - P).xyz;
 
 	LightingResult totalResult = { { 0, 0, 0, 0 },{ 0, 0, 0, 0 } };
 
 	[unroll]
-	for (int i = 0; i < MAX_LIGHTS; ++i)
+	for (int i = 0; i < Count; ++i)
 	{
 		LightingResult result = { { 0, 0, 0, 0 },{ 0, 0, 0, 0 } };
 
@@ -115,17 +134,17 @@ LightingResult ComputeLighting(float4 P, float3 N, float4 EyePosition, Light Lig
 
 		switch (Lights[i].LightType)
 		{
-		case 0:
+		case DIRECTIONAL_LIGHT:
 		{
 			result = DoDirectionalLight(Lights[i], V, P, N);
 		}
 		break;
-		case 1:
+		case POINT_LIGHT:
 		{
 			result = DoPointLight(Lights[i], V, P, N);
 		}
 		break;
-		case 2:
+		case SPOT_LIGHT:
 		{
 			result = DoSpotLight(Lights[i], V, P, N);
 		}
@@ -141,91 +160,3 @@ LightingResult ComputeLighting(float4 P, float3 N, float4 EyePosition, Light Lig
 	return totalResult;
 }
 #endif
-//
-//struct Lighting
-//{
-//	float4 Ambient;
-//	float4 Diffuse;
-//	float4 Specular;
-//};
-//
-//struct DirectionalLight
-//{
-//	float4 AmbientColor;
-//	float4 DiffuseColor;
-//	float3 Direction;
-//};
-//
-//struct PointLight
-//{
-//	float3 position;
-//	float4 diffuseColor;
-//	float  diffusePower;
-//	float4 specularColor;
-//	float  specularPower;
-//};
-//
-////struct SpecularLight
-////{
-////	float4 SpecularColor;
-////	float3 Direction;
-////	float SpecularStrength;
-////	float LightIntensity;
-////};
-//
-//// Helper Functions 
-//
-//// Directional Light 
-//Lighting calcDirectionalLight(DirectionalLight light, float3 normal, float strength)
-//{
-//	Lighting OUT;
-//	OUT.Ambient = float4(0, 0, 0, 0);
-//	OUT.Diffuse = float4(0, 0, 0, 0);
-//	OUT.Specular = float4(0, 0, 0, 0);
-//	// Direction of DirectionalLight 
-//	float3 dir = normalize(-light.Direction);
-//	// not sure if needed, normalize to be safe 
-//	normal = normalize(normal);
-//	float NdotL = saturate(dot(normal, dir));
-//	OUT.Diffuse = light.DiffuseColor * NdotL * strength;
-//	OUT.Ambient = light.AmbientColor;
-//	return OUT;
-//}
-//
-//Lighting calcPointLight(PointLight light, float3 normal, float3 dir, float3 dirToCamera)
-//{
-//	Lighting OUT;
-//	OUT.Ambient = float4(0, 0, 0, 0);
-//	OUT.Diffuse = float4(0, 0, 0, 0);
-//	OUT.Specular = float4(0, 0, 0, 0);
-//
-//	// not sure if needed, normalize to be safe 
-//	normal = normalize(normal);
-//	float NdotL = saturate(dot(normal, dir));
-//	OUT.Diffuse = NdotL * light.diffuseColor * light.diffusePower;
-//
-//	// Blinn-Phong lighting
-//	// Calculate “half-way” vector between the light vector
-//	// and view vector (direction from surface to camera)
-//	float3 h = normalize(dir + dirToCamera);
-//
-//	float NdotH = saturate(dot(normal, h));
-//	// Raise the ratio to a power equal to some
-//	float4 specAmt = pow(NdotH, pow(2, light.specularPower));
-//
-//	OUT.Specular = specAmt * light.specularColor;
-//	return OUT;
-//}
-//
-////float3 calcSpecularLight(SpecularLight light, float3 normal, float3 viewDir, float intensity, float strength)
-////{
-////	// Credit to http://www.rastertek.com/dx11tut10.html for reference material 
-////
-////	// not sure if needed, normalize to be safe 
-////	normal = normalize(normal);
-////	float3 dir = normalize(-light.Direction);
-////	// Assumes that strength will be greater than 0 
-////	float3 reflection = normalize(2 * intensity * normal - dir);
-////	float4 specular = pow(saturate(dot(reflection, viewDir)), strength);
-////	return specular.xyz * light.SpecularColor.xyz;
-////}

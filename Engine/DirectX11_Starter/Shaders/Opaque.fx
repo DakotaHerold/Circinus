@@ -1,5 +1,6 @@
 #include "ConstantBuffers.hlsli"
 #include "CommonStructs.hlsli"
+#include "Lights.hlsli"
 
 Texture2D		texDiffuse	: register(t0);
 
@@ -48,7 +49,7 @@ float4 ps_main(V2F input) : SV_TARGET
 	//float3 pLight1dir = normalize(input.worldPos - pL.position);
 	//float3 dirToCam = normalize(camPos - input.worldPos);
 
-	LightingResult lit = ComputeLighting(input.position, normalize(input.normal), EyePosition, Lights);
+	LightingResult lit = ComputeLighting(float4(input.worldPos, 1), normalize(input.normal));
 
 	//Lighting lightOut = calcDirectionalLight(dL, input.normal, 1.0f) /*+ calcDirectionalLight(dL2, input.normal, 1.0f) + calcDirectionalLight(dL3, input.normal, 1.0f) + calcDirectionalLight(dL4, input.normal, 1.0f)*/;
 	//Lighting pLight = calcPointLight(pL, input.normal, pLight1dir, dirToCam);
