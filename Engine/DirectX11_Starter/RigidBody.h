@@ -15,6 +15,7 @@ public:
 
 	#pragma region Getters and Setters
 	Transform* GetTransform() { return trans; }
+	DirectX::BoundingBox* GetBoudingBox() { return box; }
 	#pragma endregion 
 
 
