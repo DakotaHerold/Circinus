@@ -16,6 +16,7 @@ private:
 	static Engine* _instance;
 public:
 	inline static Engine* instance() { return _instance; }
+	inline Scene * GetCurScene() { return currentScene; }
 
 public:
 	Engine()
@@ -39,6 +40,8 @@ public:
 	bool Init();
 
 	int Run();
+
+
 
 private:
 

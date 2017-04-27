@@ -44,7 +44,7 @@ private :
 
 	//bool				HasComponent(TypeId componentTypeId) const;
 
-	string name;
+	string name = "No Name Yet";
 };
 
 template <typename T, typename... Args>
