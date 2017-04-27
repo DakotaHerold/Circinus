@@ -111,7 +111,7 @@ void Scene::Exit()
 	//componentManager->Release();
 }
 
-vector<Entity*> Scene::GetAllEntities()
+EntityVector Scene::GetAllEntities()
 {
 	return entities;
 }

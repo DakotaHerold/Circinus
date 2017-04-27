@@ -16,7 +16,8 @@ class Entity : public Object
 {
 public:
 	~Entity();
-	Entity(); 
+	Entity();
+	Entity(string name);
 
 public :
 

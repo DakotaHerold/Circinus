@@ -8,6 +8,12 @@ Entity::~Entity()
 
 Entity::Entity() {
 	// 
+	name = "Entity";
+}
+
+Entity::Entity(string name)
+{
+	this->name = name;
 }
 
 string Entity::GetName()

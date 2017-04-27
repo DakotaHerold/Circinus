@@ -26,6 +26,9 @@ void Transform::SetWorldPosition(float x, float y, float z)
 	worldPosition.x = x; 
 	worldPosition.y = y; 
 	worldPosition.z = z; 
+	//calculate the local position
+
+	//
 	dirty = true; 
 }
 
