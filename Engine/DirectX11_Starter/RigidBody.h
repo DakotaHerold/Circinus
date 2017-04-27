@@ -18,6 +18,7 @@ public:
 	DirectX::BoundingBox* GetBoudingBox() { return box; }
 	#pragma endregion 
 
+	bool CollisionCheck(RigidBody *otherRbody);
 
 private:
 	Transform* trans; 

@@ -82,6 +82,7 @@
   <ItemGroup>
     <ClCompile Include="AssimpLoader.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CollisionDetection.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentManager.cpp" />
     <ClCompile Include="ComponentPool.cpp" />
@@ -120,6 +121,7 @@
   <ItemGroup>
     <ClInclude Include="AssimpLoader.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CollisionDetection.h" />
     <ClInclude Include="ComponentPool.h" />
     <ClInclude Include="DebugCam.h" />
     <ClInclude Include="ConstantBuffer.h" />
