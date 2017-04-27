@@ -3,9 +3,12 @@
 #include "RenderingSystem.h"
 #include "Entity.h"
 #include "ComponentPool.h"
+#include "Lights.h"
 
 void Scene::Enter()
 {
+
+	// Testing hard code 
 	componentManager = new ComponentManager();
 	ComponentManager::current = componentManager;
 
@@ -22,16 +25,35 @@ void Scene::Enter()
 	DirectX::XMFLOAT4X4 matrix;
 	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixIdentity());
 
-	enti = new Entity();
+	// Main entity 
+	Entity* enti= new Entity();
 	Transform* t = enti->AddComponent<Transform>();
 	Renderable* r = enti->AddComponent<Renderable>(mesh, mat);
+	//RigidBody* rigid = enti->AddComponent<RigidBody>(t, r->BoundingBox()); 
+	AddEntity(enti);
 
-	e = new Entity();
+	// Collision check entity 
+	Entity* e1 = new Entity(); 
+	Transform* t1 = e1->AddComponent<Transform>(); 
+	t1->SetWorldPosition(10, 0, 0); 
+	Renderable* r1 = e1->AddComponent<Renderable>(mesh, mat);
+	//RigidBody* rb1 = e1->AddComponent <RigidBody>(t1, r1->BoundingBox());
+	//e1->AddComponent<ScriptComponent>("script2.lua", rb1);
+	AddEntity(e1);
+
+	// Child entity 
+	Entity* e = new Entity();
 	Transform* t2 = e->AddComponent<Transform>();
 	e->AddComponent<Renderable>(mesh, mat);
+	AddEntity(e);
+
 
 	t2->SetParent(t);
 	t2->SetLocalPosition(2.0f, 0.0f, 0.0f);
+
+	lights = new Entity();
+	Lighting* l = lights->AddComponent<Lighting>(XMFLOAT4(-5, 0, 0, 0), XMFLOAT4(0.7f, 0, 0, 1), LightType::PointLight, 1, 8);
+	Lighting* l2 = lights->AddComponent<Lighting>(XMFLOAT4(0, -1, 0, 0), XMFLOAT4(0, 0.5f, 0.5f, 1), LightType::DirectionalLight, 1);
 
 	//Script 
 	//RigidBody* r = new enti->AddComponent<RigidBody>(t, r->BoundingBox);
@@ -83,7 +105,7 @@ void Scene::Tick(float deltaTime, float totalTime)
 
 	rot += deltaTime * 1.0f;
 
-	auto* t = enti->GetComponent<Transform>();
+	auto* t = entities[0]->GetComponent<Transform>();
 	t->SetRotationEuler(0, rot, 0);
 
 	t = t->children[0];
@@ -94,8 +116,41 @@ void Scene::Tick(float deltaTime, float totalTime)
 
 void Scene::Exit()
 {
-	delete enti;
-	delete e;
+	for (Entity* e : entities) {
+		delete e;
+	}
+	entities.clear();
 	delete componentManager;
+	delete lights;
 	//componentManager->Release();
+}
+
+vector<Entity*> Scene::GetAllEntities()
+{
+	return entities;
+}
+
+void Scene::AddEntity(Entity * entity)
+{
+	entities.push_back(entity);
+}
+
+Entity * Scene::GetEntityByName(string name)
+{
+	for (Entity* e : entities) {
+		if (e->GetName() == name) {
+			return e;
+		}
+	}
+	return nullptr;
+}
+
+Entity * Scene::GetEntityByID(int id)
+{
+	for (Entity* e : entities) {
+		if (e->GetID() == id) {
+			return e;
+		}
+	}
+	return nullptr;
 }

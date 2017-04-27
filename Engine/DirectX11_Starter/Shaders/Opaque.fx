@@ -1,34 +1,6 @@
+#include "ConstantBuffers.hlsli"
+#include "CommonStructs.hlsli"
 #include "Lights.hlsli"
-
-struct Input
-{
-	float3 position		: POSITION;
-	float3 normal		: NORMAL;
-	float3 tangent		: TANGENT;
-	float2 uv			: TEXCOORD;
-};
-
-struct V2F
-{
-	float4 position		: SV_POSITION;
-	float3 normal		: NORMAL;
-	float3 worldPos		: POSITION;
-	float3 tangent		: TANGENT;
-	float2 uv			: TEXCOORD;
-};
-
-cbuffer InstanceConstants : register (b0)
-{
-	matrix	matWorld;
-	matrix	matWorld_IT;
-}
-
-cbuffer FrameConstants : register (b1)
-{
-	matrix	matView;
-	matrix	matProj;
-	float3	camPos;
-}
 
 Texture2D		texDiffuse	: register(t0);
 
@@ -62,25 +34,28 @@ V2F vs_main(Input input)
 
 float4 ps_main(V2F input) : SV_TARGET
 {
-	DirectionalLight dL;
-	dL.AmbientColor = float4(0.4f, 0.4f, 0.4f, 1.0f);
-	dL.DiffuseColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
-	dL.Direction = float3(0, -1.0f, 0);
+	//DirectionalLight dL;
+	//dL.AmbientColor = float4(0.4f, 0.4f, 0.4f, 1.0f);
+	//dL.DiffuseColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
+	//dL.Direction = float3(0, -1.0f, 0);
 
-	PointLight pL;
-	pL.position = float3(0, -0.5f, 0);
-	pL.diffuseColor = float4(1, 0, 0, 1);
-	pL.diffusePower = 1;
-	pL.specularColor = float4(1, 1, 1, 1);
-	pL.specularPower = 8;
+	//PointLight pL;
+	//pL.position = float3(0, 0, 0);
+	//pL.diffuseColor = float4(1, 0, 0, 1);
+	//pL.diffusePower = 1;
+	//pL.specularColor = float4(1, 1, 1, 1);
+	//pL.specularPower = 8;
 
-	float3 pLight1dir = normalize(input.worldPos - pL.position);
-	float3 dirToCam = normalize(camPos - input.worldPos);
+	//float3 pLight1dir = normalize(input.worldPos - pL.position);
+	//float3 dirToCam = normalize(camPos - input.worldPos);
 
-	Lighting lightOut = calcDirectionalLight(dL, input.normal, 1.0f) /*+ calcDirectionalLight(dL2, input.normal, 1.0f) + calcDirectionalLight(dL3, input.normal, 1.0f) + calcDirectionalLight(dL4, input.normal, 1.0f)*/;
-	Lighting pLight = calcPointLight(pL, input.normal, pLight1dir, dirToCam);
+	LightingResult lit = ComputeLighting(float4(input.worldPos, 1), normalize(input.normal));
+
+	//Lighting lightOut = calcDirectionalLight(dL, input.normal, 1.0f) /*+ calcDirectionalLight(dL2, input.normal, 1.0f) + calcDirectionalLight(dL3, input.normal, 1.0f) + calcDirectionalLight(dL4, input.normal, 1.0f)*/;
+	//Lighting pLight = calcPointLight(pL, input.normal, pLight1dir, dirToCam);
 	
-	return ((lightOut.Ambient + lightOut.Diffuse) + (pLight.Ambient + pLight.Diffuse)) * texDiffuse.Sample(sampBasic, input.uv) + (lightOut.Specular + pLight.Specular);
+	//return ((lightOut.Ambient + lightOut.Diffuse) + (pLight.Ambient + pLight.Diffuse)) * texDiffuse.Sample(sampBasic, input.uv) + (lightOut.Specular + pLight.Specular);
+	return (GlobalAmbient + lit.Diffuse) * texDiffuse.Sample(sampBasic, input.uv) + lit.Specular;
 }
 
 technique11

@@ -1,21 +1,5 @@
-struct VertexShaderInput
-{
-	float3 position		: POSITION;     // XYZ position
-	float3 normal		: NORMAL;
-	float2 uv			: TEXCOORD;
-};
-
-struct VertexToPixel
-{
-	float4 position		: SV_POSITION;	// XYZW position (System Value Position)
-	float3 uv			: TEXCOORD;
-};
-
-cbuffer FrameConstants : register (b1)
-{
-	matrix	matView;
-	matrix	matProj;
-}
+#include "ConstantBuffers.hlsli"
+#include "CommonStructs.hlsli"
 
 TextureCube skyMap : register(t0);
 SamplerState linearSampler
@@ -37,9 +21,9 @@ RasterizerState rs
 	CullMode = FRONT;
 };
 
-VertexToPixel vs_main(VertexShaderInput input)
+VertexToPixelSkyBox vs_main(VertexShaderInputSkyBox input)
 {
-	VertexToPixel output;
+	VertexToPixelSkyBox output;
 
 	matrix matV = matView;
 	matV._41 = 0;
@@ -54,7 +38,7 @@ VertexToPixel vs_main(VertexShaderInput input)
 	return output;
 }
 
-float4 ps_main(VertexToPixel input) : SV_TARGET
+float4 ps_main(VertexToPixelSkyBox input) : SV_TARGET
 {
 	return skyMap.Sample(linearSampler, input.uv);
 }

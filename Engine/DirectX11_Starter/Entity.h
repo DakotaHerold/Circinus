@@ -33,6 +33,8 @@ public :
 	template <typename T>
 	bool				HasComponent() const;
 
+	string GetName();
+
 private :
 	//void				AddComponent(Component* component, TypeId componentTypeId);
 
@@ -41,6 +43,8 @@ private :
 	//Component *			GetComponent(TypeId componentTypeId) const;
 
 	//bool				HasComponent(TypeId componentTypeId) const;
+
+	string name = "No Name Yet";
 };
 
 template <typename T, typename... Args>

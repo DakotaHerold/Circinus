@@ -6,7 +6,7 @@ typedef DebugCam Camera;
 #else
 #include "Camera.h"
 #endif
-
+#include <vector>
 #include "SceneGraph.h"
 #include "ComponentManager.h"
 class Entity;
@@ -29,12 +29,15 @@ public:
 	Camera* GetCamera() { return &cam; }
 	SceneGraph* GetSceneGraph() { return &sceneGraph; }
 	ComponentManager* componentManager;
-
+	vector<Entity*> GetAllEntities();
+	void AddEntity(Entity* entity);
+	Entity* GetEntityByName(string name);
+	Entity* GetEntityByID(int id);
 private:
 	Camera			cam;
 	SceneGraph		sceneGraph;
 
 	Material*		mat;
-	Entity*			enti;
-	Entity*			e;
+	vector<Entity*> entities;
+	Entity*			lights;
 };

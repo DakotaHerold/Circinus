@@ -29,7 +29,7 @@ private:
 	lua_State* L; 
 	RigidBody* rigidbody; 
 	// transform variables for lua
-	//float x, y, z; 
+	float x, y, z; 
 
 	// LUA TESTING VARIABLES/FUNCTIONS
 	int globalVar;

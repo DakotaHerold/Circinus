@@ -19,14 +19,13 @@ ScriptComponent::ScriptComponent(string scriptFile, RigidBody* body)
 
 
 
-	//getGlobalNamespace(L)
-	//	.beginNamespace("test")
-	//	.addVariable("var1", &globalVar)
-	//	.addVariable("x", &x)
-	//	.addVariable("y", &y)
-	//	.addVariable("z", &z)
+	getGlobalNamespace(L)
+		.beginNamespace("test")
+		.addVariable("x", &x)
+		.addVariable("y", &y)
+		.addVariable("z", &z)
 
-	//	.endNamespace();
+		.endNamespace();
 
 	cout << "Script Initialized" << endl; 
 	
@@ -51,7 +50,7 @@ void ScriptComponent::Update()
 		std::cerr && e.what();
 	}
 
-	//trans->SetPosition(x, y, z);
+	rigidbody->GetTransform()->SetWorldPosition(x, y, z);
 }
 
 ScriptComponent::~ScriptComponent()

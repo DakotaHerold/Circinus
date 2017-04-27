@@ -8871,7 +8871,6 @@ bool ImGui::BeginMenu(const char* label, bool enabled)
         PushStyleVar(ImGuiStyleVar_ItemSpacing, style.ItemSpacing * 2.0f);
         float w = label_size.x;
         pressed = Selectable(label, menu_is_open, ImGuiSelectableFlags_Menu | ImGuiSelectableFlags_DontClosePopups | (!enabled ? ImGuiSelectableFlags_Disabled : 0), ImVec2(w, 0.0f));
-		printf("%d\n", pressed);
         PopStyleVar();
         SameLine();
         window->DC.CursorPos.x += (float)(int)(style.ItemSpacing.x * 0.5f);
