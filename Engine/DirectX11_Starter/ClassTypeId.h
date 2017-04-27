@@ -39,9 +39,8 @@ public:
 		static const TypeId id = m_nextTypeId++;
 		return id;
 	}
-
+	
 private:
-
 	static TypeId m_nextTypeId;
 };
 
