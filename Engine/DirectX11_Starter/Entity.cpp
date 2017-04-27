@@ -10,6 +10,11 @@ Entity::Entity() {
 	// 
 }
 
+string Entity::GetName()
+{
+	return name;
+}
+
 //void Entity::AddComponent(Component* component, TypeId componentTypeId)
 //{
 //	//getWorld().m_entityAttributes.componentStorage.addComponent(*this, component, componentTypeId);

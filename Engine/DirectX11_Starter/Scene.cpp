@@ -23,13 +23,16 @@ void Scene::Enter()
 	DirectX::XMFLOAT4X4 matrix;
 	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixIdentity());
 
-	enti = new Entity();
+	Entity* enti= new Entity();
 	Transform* t = enti->AddComponent<Transform>();
 	Renderable* r = enti->AddComponent<Renderable>(mesh, mat);
 
-	e = new Entity();
+	AddEntity(enti);
+	Entity* e = new Entity();
 	Transform* t2 = e->AddComponent<Transform>();
 	e->AddComponent<Renderable>(mesh, mat);
+	AddEntity(e);
+
 
 	t2->SetParent(t);
 	t2->SetLocalPosition(2.0f, 0.0f, 0.0f);
@@ -88,7 +91,7 @@ void Scene::Tick(float deltaTime, float totalTime)
 
 	rot += deltaTime * 1.0f;
 
-	auto* t = enti->GetComponent<Transform>();
+	auto* t = entities[0]->GetComponent<Transform>();
 	t->SetRotationEuler(0, rot, 0);
 
 	t = t->children[0];
@@ -99,9 +102,41 @@ void Scene::Tick(float deltaTime, float totalTime)
 
 void Scene::Exit()
 {
-	delete enti;
-	delete e;
+	for (Entity* e : entities) {
+		delete e;
+	}
+	entities.clear();
 	delete componentManager;
 	delete lights;
 	//componentManager->Release();
+}
+
+vector<Entity*> Scene::GetAllEntities()
+{
+	return entities;
+}
+
+void Scene::AddEntity(Entity * entity)
+{
+	entities.push_back(entity);
+}
+
+Entity * Scene::GetEntityByName(string name)
+{
+	for (Entity* e : entities) {
+		if (e->GetName() == name) {
+			return e;
+		}
+	}
+	return nullptr;
+}
+
+Entity * Scene::GetEntityByID(int id)
+{
+	for (Entity* e : entities) {
+		if (e->GetID() == id) {
+			return e;
+		}
+	}
+	return nullptr;
 }
