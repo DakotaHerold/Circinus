@@ -8,20 +8,20 @@ class RigidBody :
 	public Component
 {
 public:
-	RigidBody(Transform* t, DirectX::BoundingBox* boxCollider);
+	RigidBody(Transform* t, const DirectX::BoundingBox* boxCollider);
 	~RigidBody();
 
 	void SetEntity(int id) override;
 
 	#pragma region Getters and Setters
 	Transform* GetTransform() { return trans; }
-	DirectX::BoundingBox* GetBoudingBox() { return box; }
+	const DirectX::BoundingBox* GetBoudingBox() { return box; }
 	#pragma endregion 
 
 	bool CollisionCheck(RigidBody *otherRbody);
 
 private:
 	Transform* trans; 
-	DirectX::BoundingBox* box; 
+	const DirectX::BoundingBox* box; 
 };
 

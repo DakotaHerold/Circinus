@@ -7,6 +7,8 @@
 
 void Scene::Enter()
 {
+
+	// Testing hard code 
 	componentManager = new ComponentManager();
 	ComponentManager::current = componentManager;
 
@@ -23,11 +25,23 @@ void Scene::Enter()
 	DirectX::XMFLOAT4X4 matrix;
 	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixIdentity());
 
+	// Main entity 
 	Entity* enti= new Entity();
 	Transform* t = enti->AddComponent<Transform>();
 	Renderable* r = enti->AddComponent<Renderable>(mesh, mat);
-
+	//RigidBody* rigid = enti->AddComponent<RigidBody>(t, r->BoundingBox()); 
 	AddEntity(enti);
+
+	// Collision check entity 
+	Entity* e1 = new Entity(); 
+	Transform* t1 = e1->AddComponent<Transform>(); 
+	t1->SetWorldPosition(10, 0, 0); 
+	Renderable* r1 = e1->AddComponent<Renderable>(mesh, mat);
+	//RigidBody* rb1 = e1->AddComponent <RigidBody>(t1, r1->BoundingBox());
+	//e1->AddComponent<ScriptComponent>("script2.lua", rb1);
+	AddEntity(e1);
+
+	// Child entity 
 	Entity* e = new Entity();
 	Transform* t2 = e->AddComponent<Transform>();
 	e->AddComponent<Renderable>(mesh, mat);
