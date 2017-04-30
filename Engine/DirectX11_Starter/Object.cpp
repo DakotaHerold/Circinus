@@ -1,6 +1,6 @@
 #include "Object.h"
 
-
+using namespace std;
 
 Object::Object()
 {
@@ -8,7 +8,6 @@ Object::Object()
 	nextID++;
 	allObjects.push_back(make_pair(id, this));
 }
-
 
 Object::~Object()
 {
@@ -20,12 +19,10 @@ Object::~Object()
 	}
 }
 
-
 int Object::GetID() const
 {
 	return id;
 }
-
 
 int Object::nextID = 0;
 vector<pair<int, Object*>> Object::allObjects;

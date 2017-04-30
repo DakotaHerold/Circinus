@@ -17,11 +17,6 @@ void Component::Update()
 
 }
 
-void Component::Release()
-{
-	this->~Component();
-}
-
 Entity* Component::GetEntity()
 {	
 	return (Object::GetObjectWithID<Entity>(gameEntityID));

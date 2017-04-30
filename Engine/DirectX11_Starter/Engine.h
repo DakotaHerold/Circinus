@@ -41,8 +41,6 @@ public:
 
 	int Run();
 
-
-
 private:
 
 	void Quit(int exitCode);

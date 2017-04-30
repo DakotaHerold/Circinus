@@ -33,7 +33,7 @@ public :
 	template <typename T>
 	bool				HasComponent() const;
 
-	string GetName();
+	std::string GetName();
 
 private :
 	//void				AddComponent(Component* component, TypeId componentTypeId);
@@ -44,7 +44,7 @@ private :
 
 	//bool				HasComponent(TypeId componentTypeId) const;
 
-	string name = "No Name Yet";
+	std::string name = "No Name Yet";
 };
 
 template <typename T, typename... Args>

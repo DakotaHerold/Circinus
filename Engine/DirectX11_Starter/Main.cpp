@@ -39,7 +39,6 @@
 #include <Windows.h>
 #include "Engine.h"
 
-
 void CreateConsoleWindow(int bufferLines, int bufferColumns, int windowLines, int windowColumns);
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPSTR cmdLine, int showCmd)

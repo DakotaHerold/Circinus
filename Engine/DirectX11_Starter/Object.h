@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 
-using namespace std;
 class Object
 {
 public:
@@ -13,9 +12,8 @@ public:
 private:
 	int id;
 	static int nextID;
-	static vector<pair<int, Object*>> allObjects;
+	static std::vector<std::pair<int, Object*>> allObjects;
 };
-
 
 template <class T>
 T* Object::GetObjectWithID(int id) {

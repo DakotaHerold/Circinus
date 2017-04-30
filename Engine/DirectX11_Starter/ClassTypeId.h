@@ -26,7 +26,6 @@
 #pragma once
 #include <cstddef>
 #include <map>
-#include <iostream>
 
 typedef std::size_t TypeId;
 

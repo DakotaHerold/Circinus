@@ -1,5 +1,6 @@
 #include "ScriptComponent.h"
 using namespace luabridge;
+using namespace std;
 
 ScriptComponent::ScriptComponent(string scriptFile, RigidBody* body)
 {

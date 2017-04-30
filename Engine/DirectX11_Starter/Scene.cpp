@@ -1,13 +1,15 @@
 #include "Scene.h"
-
 #include "RenderingSystem.h"
 #include "Entity.h"
 #include "ComponentPool.h"
 #include "Lights.h"
+#include "Lighting.h"
+#include "ClassTypeId.h"
+#include <iostream>
+#include <string.h>
 
 void Scene::Enter()
 {
-
 	// Testing hard code 
 	componentManager = new ComponentManager();
 	ComponentManager::current = componentManager;
@@ -47,13 +49,26 @@ void Scene::Enter()
 	e->AddComponent<Renderable>(mesh, mat);
 	AddEntity(e);
 
-
 	t2->SetParent(t);
 	t2->SetLocalPosition(2.0f, 0.0f, 0.0f);
 
 	lights = new Entity();
 	Lighting* l = lights->AddComponent<Lighting>(XMFLOAT4(-5, 0, 0, 0), XMFLOAT4(0.7f, 0, 0, 1), LightType::PointLight, 1, 8);
 	Lighting* l2 = lights->AddComponent<Lighting>(XMFLOAT4(0, -1, 0, 0), XMFLOAT4(0, 0.5f, 0.5f, 1), LightType::DirectionalLight, 1);
+
+	// Sravan
+	// Get all components of an entity with id 
+	/*for (auto i : componentManager->GetAllComponents(lights->GetID())) {
+		// get component name by component type
+		std::cout << ComponentTypeName(i.first) << std::endl;
+
+		// if you need specific data of the component, you need to manually add those kind of shitty code because c++ has no reflection
+		// maybe there are some good solutions I don't know
+		if (strcmp(ComponentTypeName(i.first), "class Lighting") == 0) {
+			cout << "Find Lighting!" << std::endl;;
+			Lighting* t = componentManager->GetComponent<Lighting>(lights->GetID(), *i.second);
+		}
+	}*/
 
 	//Script 
 	//RigidBody* r = new enti->AddComponent<RigidBody>(t, r->BoundingBox);
