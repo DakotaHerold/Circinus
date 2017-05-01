@@ -79,7 +79,7 @@ int Engine::Run()
 
 		// TODO
 		//Transform System
-		transformSystem->update(deltaTime, currentScene->componentManager->GetAllComponent<Transform>());
+		transformSystem->update(deltaTime, currentScene->componentManager->GetAllComponents<Transform>());
 
 		// scripting system
 		// TODO
@@ -118,11 +118,9 @@ void Engine::CleanUp()
 	currentScene->Exit();
 	delete currentScene;
 
-
-
 	delete renderingSystem;
 	delete transformSystem;
-	delete physicsSystem;
+	//delete physicsSystem;
 	delete nativeWindow;
 }
 

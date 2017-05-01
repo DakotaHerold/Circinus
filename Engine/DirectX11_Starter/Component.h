@@ -17,8 +17,6 @@ public:
 
 	virtual void				Update();
 
-	virtual void				Release();
-
 	virtual void				SetEntity(int id);
 	Entity*						GetEntity();
 	int							GetEntityID();
@@ -35,6 +33,11 @@ template <typename T>
 TypeId ComponentTypeId()
 {
 	return ClassTypeId<Component>::GetTypeId<T>();
+}
+
+static char * ComponentTypeName(TypeId id)
+{
+	return ClassTypeId<Component>::GetTypeName(id);
 }
 
 

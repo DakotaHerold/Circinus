@@ -1,6 +1,8 @@
 #include "Entity.h"
 #include "ComponentManager.h"
 
+using namespace std;
+
 Entity::~Entity()
 {
 	//delete components

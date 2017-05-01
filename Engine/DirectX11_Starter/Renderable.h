@@ -23,7 +23,7 @@ public:
 	void SetMaterial(Material* mat) { material = mat; }
 	Material* GetMaterial() { return material; }
 
-	const DirectX::BoundingBox& BoundingBox() const { return bounds; }
+	DirectX::BoundingBox& BoundingBox() { return bounds; }
 
 private:
 	friend class RenderingSystem;

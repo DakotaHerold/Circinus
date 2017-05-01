@@ -22,6 +22,7 @@ typedef DebugCam Camera;
 #include <sstream>
 #include "ComponentManager.h"
 #include "Transform.h"
+#include "Lighting.h"
 
 namespace
 {
@@ -353,7 +354,7 @@ void RenderingSystem::DrawScene(DebugCam* cam, SceneGraph* scene)
 
 	// Update lights for scene here
 	Light lights[MAX_LIGHTS];	// Maybe not initializing all to zero???? Check later
-	ResultComponents<Lighting> l = ComponentManager::current->GetAllComponent<Lighting>();
+	ResultComponents<Lighting> l = ComponentManager::current->GetAllComponents<Lighting>();
 	bool hasAnyLightChanged = false;
 	for (size_t j = 0; j < l.size; j++) {
 		Lighting* i = &l.components[j];
@@ -373,7 +374,7 @@ void RenderingSystem::DrawScene(DebugCam* cam, SceneGraph* scene)
 	if (hasAnyLightChanged)
 		UpdateLightProperties(eyePos, globalAmbient, lights, l.size, MAX_LIGHTS);
 
-	ResultComponents<Renderable> r = ComponentManager::current->GetAllComponent<Renderable>();
+	ResultComponents<Renderable> r = ComponentManager::current->GetAllComponents<Renderable>();
 
 	for (size_t j = 0; j < r.size; j++) {
 		Renderable* i = &r.components[j];

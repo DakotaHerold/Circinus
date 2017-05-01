@@ -4,10 +4,6 @@
 #include <utility>
 #include "Entity.h"
 #include "Transform.h"
-#include "RigidBody.h"
-#include "Renderable.h"
-#include "ScriptComponent.h"
-#include "Lighting.h"
 #include <map>
 #include "ComponentPool.h"
 
@@ -21,7 +17,6 @@ class ComponentManager
 public:
 	ComponentManager();
 	~ComponentManager();
-	//void AddComponent(int entityID, Component* component, TypeId componentTypeId);
 
 	template <typename T, typename... Args>
 	T* AddComponent(int entityID, Args&&... args);
@@ -34,16 +29,14 @@ public:
 	T* GetComponent(int entityID);
 
 	template <typename T>
-	ResultComponents<T> GetAllComponent();
+	T* GetComponent(int entityID, typePoolIndex index);
+
+	template <typename T>
+	ResultComponents<T> GetAllComponents();
+
+	std::vector<std::pair<TypeId, typePoolIndex *>> GetAllComponents(int entityID);
 
 	//bool HasComponent(int entityID, TypeId componentTypeId) const;
-	
-	//std::vector<Transform*> transfromComponents;
-	//std::vector<RigidBody*> rigidBodyComponents;
-	//std::vector<Renderable*> renderables;
-	//std::vector<ScriptComponent*> scriptComponents;
-	
-	//void Release();
 
 	Transform* root;
 	static ComponentManager* current;	
@@ -56,7 +49,7 @@ private:
 
 	static const int poolInitialSize = 100;
 	static const int poolResizeAmount = 50;
-};
+};	
 
 template <typename T, typename... Args>
 inline T* ComponentManager::AddComponent(int entityID, Args && ...args)
@@ -90,7 +83,19 @@ inline T* ComponentManager::AddComponent(int entityID, Args && ...args)
 template<typename T>
 inline bool ComponentManager::RemoveComponent(int entityID)
 {
-	return false;
+	std::vector<typePoolIndex *> indices = entityComponentsMap[entityID][ComponentTypeId<T>()];
+
+	if (indices.size() == 0) {
+#if defined(DEBUG) || defined(_DEBUG)
+		throw "No that component";
+#endif
+		return false;
+	}
+	else {
+		ComponentPool<T>* pool = reinterpret_cast<ComponentPool<T>*>(ComponentPoolsMap[ComponentTypeId<T>()]);
+		pool->ReturnComponent(pool->GetComponent(index));
+		indices.pop_back();
+	}
 }
 
 template<typename T>
@@ -99,18 +104,25 @@ inline T * ComponentManager::GetComponent(int entityID)
 	std::vector<typePoolIndex *> indices = entityComponentsMap[entityID][ComponentTypeId<T>()];
 
 	if (indices.size() == 0) {
-		// For debug
+#if defined(DEBUG) || defined(_DEBUG)
 		throw "No that component";
+#endif
 		return nullptr;
 	}
 	else {
-		ComponentPool<T>* pool = reinterpret_cast<ComponentPool<T>*>(ComponentPoolsMap[ComponentTypeId<T>()]);
-		return pool->GetComponent(*indices.front());
+		return GetComponent<T>(entityID, *(indices.front()));
 	}
 }
 
 template<typename T>
-inline ResultComponents<T> ComponentManager::GetAllComponent()
+inline T * ComponentManager::GetComponent(int entityID, typePoolIndex index)
+{
+	ComponentPool<T>* pool = reinterpret_cast<ComponentPool<T>*>(ComponentPoolsMap[ComponentTypeId<T>()]);
+	return pool->GetComponent(index);
+}
+
+template<typename T>
+inline ResultComponents<T> ComponentManager::GetAllComponents()
 {
 	ComponentPool<T>* pool;
 	auto it = ComponentPoolsMap.find(ComponentTypeId<T>());
