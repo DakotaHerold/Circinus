@@ -174,11 +174,11 @@
     <ClCompile Include="ImGui\imgui_impl_dx11.cpp">
       <Filter>ImGUI Dependencies</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentPool.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Lighting.cpp">
       <Filter>Source Files\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionDetection.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -316,6 +316,9 @@
     </ClInclude>
     <ClInclude Include="Lighting.h">
       <Filter>Header Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionDetection.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

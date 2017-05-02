@@ -12,9 +12,6 @@ extern "C" {
 #include <LuaBridge.h>
 #include <iostream>
 
-
-using namespace std;
-
 class ScriptComponent :
 	public Component
 {
@@ -22,14 +19,14 @@ public:
 	void Update() override; 
 	//void Release() override; 
 
-	ScriptComponent(string scriptFile, RigidBody* body);
+	ScriptComponent(std::string scriptFile, RigidBody* body);
 	~ScriptComponent();
 
 private: 
 	lua_State* L; 
 	RigidBody* rigidbody; 
 	// transform variables for lua
-	//float x, y, z; 
+	float x, y, z; 
 
 	// LUA TESTING VARIABLES/FUNCTIONS
 	int globalVar;

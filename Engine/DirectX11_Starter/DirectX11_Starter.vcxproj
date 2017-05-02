@@ -85,7 +85,6 @@
     <ClCompile Include="CollisionDetection.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentManager.cpp" />
-    <ClCompile Include="ComponentPool.cpp" />
     <ClCompile Include="DebugCam.cpp" />
     <ClCompile Include="ConstantBuffer.cpp" />
     <ClCompile Include="Engine.cpp" />

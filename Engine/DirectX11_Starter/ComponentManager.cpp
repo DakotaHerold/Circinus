@@ -1,6 +1,11 @@
 #include "ComponentManager.h"
 #include "Scene.h"
 
+using namespace std;
+
+ComponentManager* ComponentManager::current;
+//ComponentManager* ComponentManager::current = new ComponentManager();
+
 ComponentManager::ComponentManager()
 {
 	root = new Transform();
@@ -13,6 +18,19 @@ ComponentManager::~ComponentManager()
 	for (auto i : ComponentPoolsMap) {
 		delete i.second;
 	}
+}
+
+vector<pair<TypeId, typePoolIndex *>> ComponentManager::GetAllComponents(int entityID)
+{
+	vector<pair<TypeId, typePoolIndex*>> result;
+
+	for (auto p : entityComponentsMap[entityID]) {
+		for (typePoolIndex *i : p.second) {
+			result.push_back(make_pair(p.first, i));
+		}
+	}
+
+	return result;
 }
 
 //void ComponentManager::AddComponent(int entityID, Component* component, TypeId componentTypeId)
@@ -169,7 +187,3 @@ ComponentManager::~ComponentManager()
 //
 //	this->~ComponentManager();
 //}
-
-
-
-ComponentManager* ComponentManager::current;
