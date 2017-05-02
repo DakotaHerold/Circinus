@@ -7,6 +7,7 @@
 #include "ClassTypeId.h"
 #include <iostream>
 #include <string.h>
+#include "RigidBody.h"
 
 void Scene::Enter()
 {
@@ -31,7 +32,7 @@ void Scene::Enter()
 	Entity* enti= new Entity();
 	Transform* t = enti->AddComponent<Transform>();
 	Renderable* r = enti->AddComponent<Renderable>(mesh, mat);
-	//RigidBody* rigid = enti->AddComponent<RigidBody>(t, r->BoundingBox()); 
+	RigidBody* rigid = enti->AddComponent<RigidBody>(t, &(r->BoundingBox())); 
 	AddEntity(enti);
 
 	// Collision check entity 
@@ -39,7 +40,7 @@ void Scene::Enter()
 	Transform* t1 = e1->AddComponent<Transform>(); 
 	t1->SetWorldPosition(10, 0, 0); 
 	Renderable* r1 = e1->AddComponent<Renderable>(mesh, mat);
-	//RigidBody* rb1 = e1->AddComponent <RigidBody>(t1, r1->BoundingBox());
+	RigidBody* rb1 = e1->AddComponent <RigidBody>(t1, &(r1->BoundingBox()));
 	//e1->AddComponent<ScriptComponent>("script2.lua", rb1);
 	AddEntity(e1);
 
