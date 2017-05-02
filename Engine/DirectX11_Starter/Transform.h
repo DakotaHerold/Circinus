@@ -53,10 +53,13 @@ private:
 	DirectX::XMFLOAT3		worldRotation;//world
 	DirectX::XMFLOAT3		worldScale;//world
 
+	DirectX::XMFLOAT4X4		worldToLocalMatrix;
+
 	DirectX::XMFLOAT4X4		matLocal;
 	DirectX::XMFLOAT4X4		matWorld;
 	DirectX::XMFLOAT4X4		matParent;
 	
 private:
 	// TODO allocator for transforms;
+	
 };

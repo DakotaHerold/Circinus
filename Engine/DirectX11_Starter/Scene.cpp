@@ -137,7 +137,6 @@ void Scene::Exit()
 	entities.clear();
 	delete componentManager;
 	delete lights;
-	//componentManager->Release();
 }
 
 EntityVector Scene::GetAllEntities()
