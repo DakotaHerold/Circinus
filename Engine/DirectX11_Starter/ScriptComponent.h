@@ -23,7 +23,10 @@ public:
 	~ScriptComponent();
 
 private: 
+	// LuaBridge Attributes
 	lua_State* L; 
+	//LuaRef initFunc;// , updateFunc, releaseFunc;
+
 	RigidBody* rigidbody; 
 	// transform variables for lua
 	float x, y, z; 

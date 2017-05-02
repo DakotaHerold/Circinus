@@ -30,8 +30,9 @@ ScriptComponent::ScriptComponent(string scriptFile, RigidBody* body)
 
 	cout << "Script Initialized" << endl; 
 	
+	 
+	LuaRef initFunc = getGlobal(L, "Initialize");
 	// Call script init
-	LuaRef  initFunc = getGlobal(L, "Initialize");
 	try {
 		initFunc();
 	}
@@ -43,7 +44,7 @@ ScriptComponent::ScriptComponent(string scriptFile, RigidBody* body)
 void ScriptComponent::Update()
 {
 	// Call Lua Update if one exists 
-	LuaRef  updateFunc = getGlobal(L, "Update");
+	LuaRef updateFunc = getGlobal(L, "Update");
 	try {
 		updateFunc();
 	}
@@ -51,7 +52,7 @@ void ScriptComponent::Update()
 		std::cerr && e.what();
 	}
 
-	rigidbody->GetTransform()->SetWorldPosition(x, y, z);
+	//rigidbody->GetTransform()->SetWorldPosition(x, y, z);
 }
 
 ScriptComponent::~ScriptComponent()
@@ -63,5 +64,6 @@ ScriptComponent::~ScriptComponent()
 	catch (LuaException const& e) {
 		std::cerr && e.what();
 	}
+	releaseFunc = Nil(); 
 	lua_close(L);
 }

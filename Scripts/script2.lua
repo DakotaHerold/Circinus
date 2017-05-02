@@ -6,6 +6,6 @@ function Update()
 	test.x = test.x + 0.1
 end
 
-function Release()
+function Release() 
 end
 
