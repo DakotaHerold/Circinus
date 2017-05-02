@@ -6,6 +6,7 @@
 #include "Component.h"
 #include "Object.h"
 #include <utility>
+#include <string>
 
 using namespace DirectX;
 class ComponentManager;
@@ -17,7 +18,7 @@ class Entity : public Object
 public:
 	~Entity();
 	Entity();
-	Entity(string name);
+	Entity(std::string name);
 
 public :
 
