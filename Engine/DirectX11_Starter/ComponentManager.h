@@ -6,6 +6,8 @@
 #include "Transform.h"
 #include <map>
 #include "ComponentPool.h"
+#include "RigidBody.h"
+#include "ScriptComponent.h"
 
 typedef std::map<TypeId, std::vector<typePoolIndex *>> ComponentsMap;
 typedef std::map<eidType, ComponentsMap> EntityComponentsMap;

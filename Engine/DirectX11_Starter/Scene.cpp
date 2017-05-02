@@ -21,37 +21,45 @@ void Scene::Enter()
 
 	Shader* shader = renderer.CreateShader(L"Assets/ShaderObjs/Opaque.cso");
 	Texture* tex = renderer.CreateTexture(L"Assets/Textures/rust.jpg");
+	Texture* tex1 = renderer.CreateTexture(L"Assets/Textures/water.jpg");
 
 	mat = renderer.CreateMaterial(shader);
 	mat->SetTexture("texDiffuse", tex);
+
+	
 
 	DirectX::XMFLOAT4X4 matrix;
 	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixIdentity());
 
 	// Main entity 
-	Entity* enti= new Entity();
-	Transform* t = enti->AddComponent<Transform>();
-	Renderable* r = enti->AddComponent<Renderable>(mesh, mat);
-	RigidBody* rigid = enti->AddComponent<RigidBody>(t, &(r->BoundingBox())); 
-	AddEntity(enti);
+	Entity* main = new Entity();
+	Transform* mainT = main->AddComponent<Transform>();
+	Renderable* mainR = main->AddComponent<Renderable>(mesh, mat);
+	RigidBody* mainRb = main->AddComponent<RigidBody>(mainT, &(mainR->BoundingBox()));
+	AddEntity(main);
+
+	mat = renderer.CreateMaterial(shader);
+	mat->SetTexture("texDiffuse", tex1);
 
 	// Collision check entity 
 	Entity* e1 = new Entity(); 
 	Transform* t1 = e1->AddComponent<Transform>(); 
-	t1->SetWorldPosition(10, 0, 0); 
+	
+	t1->SetLocalPosition(5, 0, 0); 
 	Renderable* r1 = e1->AddComponent<Renderable>(mesh, mat);
 	RigidBody* rb1 = e1->AddComponent <RigidBody>(t1, &(r1->BoundingBox()));
-	//e1->AddComponent<ScriptComponent>("script2.lua", rb1);
+	e1->AddComponent<ScriptComponent>("script2.lua", rb1);
 	AddEntity(e1);
 
-	// Child entity 
-	Entity* e = new Entity();
-	Transform* t2 = e->AddComponent<Transform>();
-	e->AddComponent<Renderable>(mesh, mat);
-	AddEntity(e);
+	////Child entity 
+	//Entity* e2 = new Entity();
+	//Transform* t2 = e2->AddComponent<Transform>();
+	//Renderable* r2 = e2->AddComponent<Renderable>(mesh, mat);
+	//RigidBody* rb2 = e2->AddComponent<RigidBody>(t2, &(r2->BoundingBox()));
+	//AddEntity(e2);
 
-	t2->SetParent(t);
-	t2->SetLocalPosition(2.0f, 0.0f, 0.0f);
+	//t2->SetParent(t1);
+	//t2->SetLocalPosition(1.0f, 0.0f, 0.0f);
 
 	lights = new Entity();
 	Lighting* l = lights->AddComponent<Lighting>(XMFLOAT4(-5, 0, 0, 0), XMFLOAT4(0.7f, 0, 0, 1), LightType::PointLight, 1, 8);
@@ -124,8 +132,15 @@ void Scene::Tick(float deltaTime, float totalTime)
 	auto* t = entities[0]->GetComponent<Transform>();
 	t->SetRotationEuler(0, rot, 0);
 
-	t = t->children[0];
-	t->SetRotationEuler(rot * 10.0f, 0,  0);
+	auto* t1 = entities[1]->GetComponent<Transform>();
+
+	t1->SetLocalPosition(t1->GetLocalPosition()->x - 0.001f, 0, 0);
+	t1->SetRotationEuler(rot, 0,  0);
+
+	auto* r = entities[0]->GetComponent<RigidBody>();
+	auto* r1 = entities[1]->GetComponent<RigidBody>();
+	cout << r->CollisionCheck(r1) << endl;
+
 
 	//enti->GetComponent<ScriptComponent>()->Update(); 
 }

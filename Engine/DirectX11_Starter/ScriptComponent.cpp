@@ -52,7 +52,7 @@ void ScriptComponent::Update()
 		std::cerr && e.what();
 	}
 
-	//rigidbody->GetTransform()->SetWorldPosition(x, y, z);
+	rigidbody->GetTransform()->SetLocalPosition(x, y, z);
 }
 
 ScriptComponent::~ScriptComponent()
