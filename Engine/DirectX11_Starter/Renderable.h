@@ -3,7 +3,6 @@
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
 #include "Component.h"
-#include "ComponentPool.h"
 
 class Transform;
 class Mesh;

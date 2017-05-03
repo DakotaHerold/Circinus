@@ -311,13 +311,13 @@
     <ClInclude Include="StackAllocator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentPool.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Lighting.h">
       <Filter>Header Files\Component</Filter>
     </ClInclude>
     <ClInclude Include="CollisionDetection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectPool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

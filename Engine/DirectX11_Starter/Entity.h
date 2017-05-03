@@ -1,6 +1,5 @@
 #pragma once
 
-#include <d3d11.h>
 #include "Mesh.h"
 #include "Material.h"
 #include "Component.h"
@@ -36,14 +35,6 @@ public :
 	std::string GetName();
 
 private :
-	//void				AddComponent(Component* component, TypeId componentTypeId);
-
-	//bool				RemoveComponent(TypeId componentTypeId);
-
-	//Component *			GetComponent(TypeId componentTypeId) const;
-
-	//bool				HasComponent(TypeId componentTypeId) const;
-
 	std::string name = "No Name Yet";
 };
 
@@ -54,12 +45,12 @@ T* Entity::AddComponent(Args&&... args)
 	return ComponentManager::current->AddComponent<T>(GetID(), std::forward<Args>(args)...);
 }
 
-//template <typename T>
-//bool Entity::RemoveComponent()
-//{
-//	static_assert(std::is_base_of<Component, T>(), "T is not a component, cannot remove T from entity");
-//	return RemoveComponent(ComponentTypeId<T>());
-//}
+template <typename T>
+bool Entity::RemoveComponent()
+{
+	static_assert(std::is_base_of<Component, T>(), "T is not a component, cannot remove T from entity");
+	return ComponentManager::current->RemoveComponent<T>(GetID());
+}
 
 template <typename T>
 T* Entity::GetComponent()

@@ -121,7 +121,7 @@
     <ClInclude Include="AssimpLoader.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CollisionDetection.h" />
-    <ClInclude Include="ComponentPool.h" />
+    <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="DebugCam.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="Engine.h" />

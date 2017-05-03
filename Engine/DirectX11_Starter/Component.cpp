@@ -8,8 +8,7 @@ Component::Component()
 
 Component::~Component()
 {
-	if(poolIndex)
-		delete poolIndex;
+
 }
 
 void Component::Update()

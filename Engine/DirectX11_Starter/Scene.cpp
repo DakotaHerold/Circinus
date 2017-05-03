@@ -1,7 +1,6 @@
 #include "Scene.h"
 #include "RenderingSystem.h"
 #include "Entity.h"
-#include "ComponentPool.h"
 #include "Lights.h"
 #include "Lighting.h"
 #include "ClassTypeId.h"
@@ -135,9 +134,10 @@ void Scene::Exit()
 		delete e;
 	}
 	entities.clear();
-	delete componentManager;
 	delete lights;
-	//componentManager->Release();
+
+	// all entities should be deleted before deleting component manager
+	delete componentManager;
 }
 
 vector<Entity*> Scene::GetAllEntities()
