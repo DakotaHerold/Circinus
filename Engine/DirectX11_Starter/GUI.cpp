@@ -81,7 +81,13 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 			for (std::vector<Entity *>::iterator it = curSceneEntities.begin(); it != curSceneEntities.end(); ++it) {
 				
 				if (ImGui::TreeNode((*it)->GetName().c_str())) {
-					ImGui::Text("Yay");
+					ComponentManager * cm = ComponentManager::current;
+					vector<pair<TypeId, ObjectPoolIndex *>> Components;
+					Components = cm->GetAllComponents((*it)->GetID());
+					for (vector<pair<TypeId, ObjectPoolIndex *>>::iterator that = Components.begin(); that != Components.end(); ++that) {
+						ImGui::Text(ComponentTypeName(that->first));
+					}
+
 					ImGui::TreePop();
 				}
 				
