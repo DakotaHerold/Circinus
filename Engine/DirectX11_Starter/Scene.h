@@ -12,6 +12,8 @@ typedef DebugCam Camera;
 class Entity;
 class Material;
 
+typedef vector<Entity*> EntityVector;
+
 // 
 //		NOTE:
 //		This is just a hardcoded stub class, for debug
@@ -29,7 +31,7 @@ public:
 	Camera* GetCamera() { return &cam; }
 	SceneGraph* GetSceneGraph() { return &sceneGraph; }
 	ComponentManager* componentManager;
-	vector<Entity*> GetAllEntities();
+	EntityVector GetAllEntities();
 	void AddEntity(Entity* entity);
 	Entity* GetEntityByName(string name);
 	Entity* GetEntityByID(int id);

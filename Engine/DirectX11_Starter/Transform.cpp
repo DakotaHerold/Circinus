@@ -19,14 +19,58 @@ Transform::Transform()
 
 Transform::~Transform()
 {
+
 }
 
 void Transform::SetWorldPosition(float x, float y, float z)
 {
-	worldPosition.x = x; 
-	worldPosition.y = y; 
-	worldPosition.z = z; 
-	dirty = true; 
+	worldPosition.x = x;
+	worldPosition.y = y;
+	worldPosition.z = z;
+
+	XMMATRIX world = XMMatrixMultiply(
+		XMMatrixMultiply(
+			XMMatrixScaling(localScale.x, localScale.y, localScale.z),
+			XMMatrixRotationRollPitchYaw(localRotation.x, localRotation.y, localRotation.z)
+		),
+		XMMatrixTranslation(worldPosition.x, worldPosition.y, worldPosition.z)
+	);
+	XMMATRIX local = XMMatrixMultiply(
+		world,
+		XMMatrixInverse(nullptr,
+			XMMatrixTranspose(
+				XMLoadFloat4x4(parent->GetWorldMatrix())
+			)
+		)
+	);
+
+	XMStoreFloat4x4(
+		&matLocal,
+		XMMatrixTranspose(local)
+	);
+
+	SetLocalPosition(matLocal._14, matLocal._24, matLocal._34);
+	
+	//XMStoreFloat4x4(
+	//	&matWorld,
+	//	XMMatrixTranspose(m)
+	//);
+	//XMMATRIX w = XMMatrixMultiply(
+	//	m,		
+	//	XMMatrixInverse(nullptr, XMLoadFloat4x4(&worldToLocalMatrix))
+	//);
+	//XMStoreFloat4x4(
+	//	&matLocal,
+	//	XMMatrixTranspose(w)
+	//);
+	//SetLocalPosition(matLocal._14, matLocal._24, matLocal._34);
+
+
+
+
+	//world * parent-1 =localmat
+	//localmat._14=x localmat._24=y
+	dirty = true;
 }
 
 void Transform::SetLocalPosition(float x, float y, float z)
@@ -143,7 +187,6 @@ void Transform::UpdateMatrix()
 				XMLoadFloat4x4(parent->GetWorldMatrix())
 			)
 		);
-
 		XMStoreFloat4x4(
 			&matWorld,
 			XMMatrixTranspose(w)
@@ -153,7 +196,9 @@ void Transform::UpdateMatrix()
 	{
 		matWorld = matLocal;
 	}
-
+	worldPosition.x = matWorld._14;
+	worldPosition.y = matWorld._24;
+	worldPosition.z = matWorld._34;
 	dirty = false;
 }
 
