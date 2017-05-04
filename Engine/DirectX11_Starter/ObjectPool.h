@@ -98,7 +98,6 @@ ObjectPool<T>::~ObjectPool()
 	for (int i = 0; i < m_count; i++) {
 		// http://stackoverflow.com/questions/2995099/malloc-and-constructors
 		// http://en.cppreference.com/w/cpp/language/new
-		//reinterpret_cast<T *>(m_objects + i)->~T();
 		m_objects[i].~T();
 
 		//delete (m_objects + i);

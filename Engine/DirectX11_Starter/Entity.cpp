@@ -3,13 +3,13 @@
 
 using namespace std;
 
+Entity::Entity() {
+
+}
+
 Entity::~Entity()
 {
 	ComponentManager::current->RemoveAllComponents(GetID());
-}
-
-Entity::Entity() {
-	// 
 }
 
 string Entity::GetName()

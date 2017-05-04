@@ -29,8 +29,8 @@ public :
 	template <typename T>
 	T*					GetComponent();
 
-	template <typename T>
-	bool				HasComponent() const;
+	//template <typename T>
+	//bool				HasComponent() const;
 
 	std::string GetName();
 
