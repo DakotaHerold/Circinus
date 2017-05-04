@@ -17,15 +17,6 @@ public:
 	static ParticleSystem* instance() { return _instance; }
 
 public:
-	ParticleSystem()
-		:
-		device(nullptr),
-		context(nullptr),
-		particleVS(nullptr),
-		particlePS(nullptr),
-		particleCS(nullptr),
-		particleEmitterCS(nullptr)
-	{}
 
 	bool Init(ID3D11Device* device, ID3D11DeviceContext* context);
 
@@ -59,6 +50,7 @@ private:
 
 	ID3D11SamplerState*				sampler;
 	ID3D11BlendState*				blendState;
+	ID3D11RasterizerState*			rasterizerState;
 	ID3D11DepthStencilState*		depthStencilState;
 
 	typedef std::unordered_map<std::wstring, uint32_t> map_t;

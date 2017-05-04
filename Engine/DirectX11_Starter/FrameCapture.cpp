@@ -13,6 +13,13 @@ FrameCapture* FrameCapture::instance()
 	return _instance;
 }
 
+void FrameCapture::CleanUp()
+{
+	FrameCapture* ptr = instance();
+	ptr->Release();
+	delete ptr;
+}
+
 void FrameCapture::BeginCapture()
 {
 #if defined(_DEBUG)

@@ -1,5 +1,5 @@
-#include "Particle.h"
-#include "Emitter.h"
+#include "../Particle.h"
+#include "../Emitter.h"
 #include "Noise.hlsli"
 
 RWStructuredBuffer<Particle> particles : register(u0);

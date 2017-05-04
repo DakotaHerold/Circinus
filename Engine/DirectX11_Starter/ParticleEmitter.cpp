@@ -10,6 +10,9 @@ ParticleEmitter::ParticleEmitter(const std::wstring & particleTexture)
 	emitterIdx(0)
 {
 	ps = ParticleSystem::instance();
+	if (nullptr == ps)
+		return;
+
 	ps->CreateParticleEmitter(particleTexture, this);
 
 	auto& pool = ps->pools[poolIdx];
@@ -24,8 +27,11 @@ ParticleEmitter::ParticleEmitter(const std::wstring & particleTexture)
 	emitter.totalTime = 0.0f;
 }
 
-void ParticleEmitter::SetParameters(DirectX::XMFLOAT3 & position, DirectX::XMFLOAT3 & velocity, float lifeTime, float emitRate)
+void ParticleEmitter::SetCBParameters(DirectX::XMFLOAT3 & position, DirectX::XMFLOAT3 & velocity, float lifeTime, float emitRate)
 {
+	if (nullptr == ps)
+		return;
+
 	auto& pool = ps->pools[poolIdx];
 	auto& emitter = pool.emitters[emitterIdx];
 	

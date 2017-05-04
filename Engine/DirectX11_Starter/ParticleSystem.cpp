@@ -16,19 +16,19 @@ bool ParticleSystem::Init(ID3D11Device* device, ID3D11DeviceContext* context)
 	HRESULT hr = S_OK;
 
 	particleInitCS = new SimpleComputeShader(device, context);
-	assert(particleInitCS->LoadShaderFile(L"Assets/Shaders/ParticleInitCS.cso"));
+	assert(particleInitCS->LoadShaderFile(L"Assets/ShaderObjs/ParticleInitCS.cso"));
 
 	particleCS = new SimpleComputeShader(device, context);
-	assert(particleCS->LoadShaderFile(L"Assets/Shaders/ParticleCS.cso"));
+	assert(particleCS->LoadShaderFile(L"Assets/ShaderObjs/ParticleCS.cso"));
 
 	particleEmitterCS = new SimpleComputeShader(device, context);
-	assert(particleEmitterCS->LoadShaderFile(L"Assets/Shaders/ParticleEmitterCS.cso"));
+	assert(particleEmitterCS->LoadShaderFile(L"Assets/ShaderObjs/ParticleEmitterCS.cso"));
 
 	particleVS = new SimpleVertexShader(device, context);
-	assert(particleVS->LoadShaderFile(L"Assets/Shaders/ParticleVS.cso"));
+	assert(particleVS->LoadShaderFile(L"Assets/ShaderObjs/ParticleVS.cso"));
 
 	particlePS = new SimplePixelShader(device, context);
-	assert(particlePS->LoadShaderFile(L"Assets/Shaders/ParticlePS.cso"));
+	assert(particlePS->LoadShaderFile(L"Assets/ShaderObjs/ParticlePS.cso"));
 
 	{
 		CD3D11_BUFFER_DESC indicesDesc(
@@ -86,6 +86,10 @@ bool ParticleSystem::Init(ID3D11Device* device, ID3D11DeviceContext* context)
 		hr = device->CreateBlendState(&blendDesc, &blendState);
 		assert(hr == S_OK);
 
+		CD3D11_RASTERIZER_DESC rasterDesc(D3D11_DEFAULT);
+		hr = device->CreateRasterizerState(&rasterDesc, &rasterizerState);
+		assert(hr == S_OK);
+
 		CD3D11_DEPTH_STENCIL_DESC depthStencilDesc(D3D11_DEFAULT);
 		depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 		hr = device->CreateDepthStencilState(&depthStencilDesc, &depthStencilState);
@@ -96,6 +100,8 @@ bool ParticleSystem::Init(ID3D11Device* device, ID3D11DeviceContext* context)
 	this->context = context;
 
 	_instance = this;
+
+	//FrameCapture::instance()->SetFramesToCapture(20);
 
 	return true;
 }
@@ -196,6 +202,7 @@ bool ParticleSystem::Draw(const DirectX::XMFLOAT4X4& matView, const DirectX::XMF
 		context->IASetIndexBuffer(bufQuadIndices, DXGI_FORMAT_R32_UINT, 0);
 
 		context->OMSetBlendState(blendState, nullptr, 0xffffffff);
+		context->RSSetState(rasterizerState);
 		context->OMSetDepthStencilState(depthStencilState, 0);
 
 		particleVS->SetShader();
@@ -252,7 +259,13 @@ void ParticleSystem::CleanUp()
 
 	bufQuadIndices->Release();
 	bufIndirectDrawArgs->Release();
+
 	sampler->Release();
+	blendState->Release();
+	rasterizerState->Release();
+	depthStencilState->Release();
+
+	FrameCapture::CleanUp();
 }
 
 bool ParticleSystem::CreateParticleEmitter(const std::wstring& particleTexture, ParticleEmitter* emitterComponent)

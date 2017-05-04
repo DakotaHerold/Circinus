@@ -1,4 +1,4 @@
-#include "Particle.h"
+#include "../Particle.h"
 
 RWStructuredBuffer<Particle> particles : register(u0);
 RWStructuredBuffer<uint> deadList : register(u1);

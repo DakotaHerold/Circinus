@@ -7,6 +7,8 @@ class FrameCapture
 public:
 	static FrameCapture* instance();
 
+	static void CleanUp();
+
 	void BeginCapture();
 
 	void EndCapture();

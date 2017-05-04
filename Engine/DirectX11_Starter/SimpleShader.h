@@ -1,5 +1,6 @@
 #pragma once
 #pragma comment(lib, "dxguid.lib")
+#pragma comment(lib, "d3dcompiler.lib")
 
 #include <d3d11.h>
 #include <d3dcompiler.h>
@@ -32,6 +33,7 @@ struct SimpleConstantBuffer
 	unsigned int BindIndex;
 	ID3D11Buffer* ConstantBuffer;
 	unsigned char* LocalDataBuffer;
+	std::vector<SimpleShaderVariable> Variables;
 };
 
 // --------------------------------------------------------
@@ -69,8 +71,9 @@ public:
 	bool IsShaderValid() { return shaderValid; }
 
 	// Activating the shader and copying data
-	void SetShader(bool copyData = true);
+	void SetShader();
 	void CopyAllBufferData();
+	void CopyBufferData(unsigned int index);
 	void CopyBufferData(std::string bufferName);
 
 	// Sets arbitrary shader data
@@ -93,11 +96,11 @@ public:
 
 	// Getting data about variables and resources
 	const SimpleShaderVariable* GetVariableInfo(std::string name);
-
+	
 	const SimpleSRV* GetShaderResourceViewInfo(std::string name);
 	const SimpleSRV* GetShaderResourceViewInfo(unsigned int index);
 	unsigned int GetShaderResourceViewCount() { return textureTable.size(); }
-
+	
 	const SimpleSampler* GetSamplerInfo(std::string name);
 	const SimpleSampler* GetSamplerInfo(unsigned int index);
 	unsigned int GetSamplerCount() { return samplerTable.size(); }
@@ -107,17 +110,20 @@ public:
 	unsigned int GetBufferSize(unsigned int index);
 	const SimpleConstantBuffer* GetBufferInfo(std::string name);
 	const SimpleConstantBuffer* GetBufferInfo(unsigned int index);
-
+	
+	// Misc getters
+	ID3DBlob* GetShaderBlob() { return shaderBlob; }
 
 protected:
-
+	
 	bool shaderValid;
+	ID3DBlob* shaderBlob;
 	ID3D11Device* device;
 	ID3D11DeviceContext* deviceContext;
 
 	// Resource counts
 	unsigned int constantBufferCount;
-
+	
 	// Maps for variables and buffers
 	SimpleConstantBuffer*		constantBuffers; // For index-based lookup
 	std::vector<SimpleSRV*>		shaderResourceViews;
@@ -129,7 +135,7 @@ protected:
 
 	// Pure virtual functions for dealing with shader types
 	virtual bool CreateShader(ID3DBlob* shaderBlob) = 0;
-	virtual void SetShaderAndCB() = 0;
+	virtual void SetShaderAndCBs() = 0;
 
 	virtual void CleanUp();
 
@@ -145,19 +151,21 @@ class SimpleVertexShader : public ISimpleShader
 {
 public:
 	SimpleVertexShader(ID3D11Device* device, ID3D11DeviceContext* context);
-	SimpleVertexShader(ID3D11Device* device, ID3D11DeviceContext* context, ID3D11InputLayout* inputLayout);
+	SimpleVertexShader(ID3D11Device* device, ID3D11DeviceContext* context, ID3D11InputLayout* inputLayout, bool perInstanceCompatible);
 	~SimpleVertexShader();
 	ID3D11VertexShader* GetDirectXShader() { return shader; }
 	ID3D11InputLayout* GetInputLayout() { return inputLayout; }
+	bool GetPerInstanceCompatible() { return perInstanceCompatible; }
 
 	bool SetShaderResourceView(std::string name, ID3D11ShaderResourceView* srv);
 	bool SetSamplerState(std::string name, ID3D11SamplerState* samplerState);
 
 protected:
+	bool perInstanceCompatible;
 	ID3D11InputLayout* inputLayout;
 	ID3D11VertexShader* shader;
 	bool CreateShader(ID3DBlob* shaderBlob);
-	void SetShaderAndCB();
+	void SetShaderAndCBs();
 	void CleanUp();
 };
 
@@ -178,7 +186,7 @@ public:
 protected:
 	ID3D11PixelShader* shader;
 	bool CreateShader(ID3DBlob* shaderBlob);
-	void SetShaderAndCB();
+	void SetShaderAndCBs();
 	void CleanUp();
 };
 
@@ -198,7 +206,7 @@ public:
 protected:
 	ID3D11DomainShader* shader;
 	bool CreateShader(ID3DBlob* shaderBlob);
-	void SetShaderAndCB();
+	void SetShaderAndCBs();
 	void CleanUp();
 };
 
@@ -218,7 +226,7 @@ public:
 protected:
 	ID3D11HullShader* shader;
 	bool CreateShader(ID3DBlob* shaderBlob);
-	void SetShaderAndCB();
+	void SetShaderAndCBs();
 	void CleanUp();
 };
 
@@ -250,7 +258,7 @@ protected:
 
 	bool CreateShader(ID3DBlob* shaderBlob);
 	bool CreateShaderWithStreamOut(ID3DBlob* shaderBlob);
-	void SetShaderAndCB();
+	void SetShaderAndCBs();
 	void CleanUp();
 
 	// Helpers
@@ -287,6 +295,6 @@ protected:
 	unsigned int threadsTotal;
 
 	bool CreateShader(ID3DBlob* shaderBlob);
-	void SetShaderAndCB();
+	void SetShaderAndCBs();
 	void CleanUp();
 };

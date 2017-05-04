@@ -105,6 +105,7 @@ RenderingSystem::~RenderingSystem(void)
 	// Release the device context and finally the device itself
 	ReleaseMacro(deviceContext);
 	ReleaseMacro(device);
+
 }
 #pragma endregion
 
@@ -329,8 +330,31 @@ void RenderingSystem::Update(float deltaTime, float totalTime)
 {
 	// TODO gathering particle emitters to update
 	// and update the position and velocity by transform of that entity
-	ComponentManager::current->GetAllComponents<ParticleEmitter>();
-	
+	auto emitters = ComponentManager::current->GetAllComponents<ParticleEmitter>();
+
+	for (size_t i = 0; i < emitters.size; ++i)
+	{
+		ParticleEmitter& e = emitters.components[i];
+		Transform* t = e.GetEntity()->GetComponent<Transform>();
+
+		DirectX::XMMATRIX worldMat = DirectX::XMMatrixTranspose(
+			DirectX::XMLoadFloat4x4(t->GetWorldMatrix()));
+
+		DirectX::XMMATRIX worldMat_it = DirectX::XMMatrixTranspose(
+			DirectX::XMMatrixInverse(nullptr, worldMat));
+
+		DirectX::XMFLOAT3 worldVel;
+		DirectX::XMStoreFloat3(&worldVel,
+			DirectX::XMVector3Transform(
+				DirectX::XMLoadFloat3(&(e.velocity)),
+				worldMat_it
+			)
+		);
+
+		DirectX::XMFLOAT3 pos = { 2.0f, 0.0f, 0.0f };
+		e.SetCBParameters(pos/**(t->GetWorldPosition())*/, worldVel, e.lifeTime, e.emitRate);
+	}
+
 	particleSystem->Update(deltaTime, totalTime);
 }
 #pragma endregion
@@ -366,7 +390,7 @@ void RenderingSystem::DrawScene(DebugCam* cam, SceneGraph* scene)
 		deviceContext->DrawIndexed(i->mesh->indexCount, 0, 0);
 	}*/
 
-	auto& frustum =	cam->getFrustum();
+	auto& frustum = cam->getFrustum();
 
 	//std::vector<Renderable*>& renderables = ComponentManager::current->renderables;
 
@@ -399,14 +423,14 @@ void RenderingSystem::DrawScene(DebugCam* cam, SceneGraph* scene)
 
 		Transform* t = i->GetEntity()->GetComponent<Transform>();
 		auto* m = t->GetWorldMatrix();
-		
+
 		DirectX::XMMATRIX worldMat = DirectX::XMMatrixTranspose(
 			DirectX::XMLoadFloat4x4(m)
 		);
 
 		DirectX::BoundingBox bounds;
 		i->GetMesh()->GetBounds().Transform(bounds, worldMat);
-		
+
 		if (!frustum.Intersects(bounds))
 			continue;
 
@@ -450,6 +474,10 @@ void RenderingSystem::DrawScene(DebugCam* cam, SceneGraph* scene)
 			deviceContext->DrawIndexed(skybox->mesh->indexCount, 0, 0);
 		}
 	}
+
+	// opaque stuff goes before this, and transparent stuff goes after this
+
+	particleSystem->Draw(cam->getViewMatrix(), cam->getProjectionMatrix());
 
 	GUI::instance().Draw();
 
