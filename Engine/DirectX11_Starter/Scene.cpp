@@ -74,9 +74,9 @@ void Scene::Enter()
 
 	emitEntityTrans->SetLocalPosition(2.0f, 0.0f, 0.0f);
 
-	emitter->SetInitialVelocity(0.0f, 1.0f, 0.0f);
-	emitter->SetLifeTime(2.0f);
-	emitter->SetEmitRate(20);
+	emitter->SetInitialVelocity(0.0f, 0.3f, 0.0f);
+	emitter->SetLifeTime(5.0f);
+	emitter->SetEmitRate(5);
 
 	// Sravan
 	// Get all components of an entity with id 
