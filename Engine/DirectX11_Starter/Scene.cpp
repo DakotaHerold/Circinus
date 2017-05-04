@@ -46,10 +46,14 @@ void Scene::Enter()
 	Entity* e1 = new Entity();
 	Transform* t1 = e1->AddComponent<Transform>();
 
-	t1->SetLocalPosition(5, 0, 0);
+	t1->SetLocalPosition(2, 0, 0);
 	Renderable* r1 = e1->AddComponent<Renderable>(mesh, mat);
 	RigidBody* rb1 = e1->AddComponent <RigidBody>(t1, &(r1->BoundingBox()));
 	e1->AddComponent<ScriptComponent>("script2.lua", rb1);
+
+	//
+	t1->SetParent(mainT);
+	//
 	AddEntity(e1);
 
 	////Child entity 
@@ -143,12 +147,10 @@ void Scene::Tick(float deltaTime, float totalTime)
 	rot += deltaTime * 1.0f;
 
 	auto* t = entities[0]->GetComponent<Transform>();
-	t->SetRotationEuler(0, rot, 0);
-
 	auto* t1 = entities[1]->GetComponent<Transform>();
 
-	t1->SetLocalPosition(t1->GetLocalPosition()->x - 0.001f, 0, 0);
-	t1->SetRotationEuler(rot, 0, 0);
+	t->SetWorldPosition(t->GetWorldPosition()->x + 0.5f*deltaTime, 0, 0);
+	t1->SetRotationEuler(0, rot, 0);
 
 	auto* r = entities[0]->GetComponent<RigidBody>();
 	auto* r1 = entities[1]->GetComponent<RigidBody>();
