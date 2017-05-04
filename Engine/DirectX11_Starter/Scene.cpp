@@ -133,8 +133,11 @@ void Scene::Tick(float deltaTime, float totalTime)
 	t->SetRotationEuler(0, rot, 0);
 
 	auto* t1 = entities[1]->GetComponent<Transform>();
-
-	t1->SetLocalPosition(t1->GetLocalPosition()->x - 0.001f, 0, 0);
+	t1->SetParent(t);
+	
+	t->SetWorldPosition(t->GetWorldPosition()->x + 0.5f*deltaTime, 0, 0);
+	t1->SetLocalPosition(t1->GetLocalPosition()->x - 0.5f*deltaTime, 0, 0);
+	std::cout << t1->GetWorldPosition()->x << std::endl;
 	t1->SetRotationEuler(rot, 0,  0);
 
 	auto* r = entities[0]->GetComponent<RigidBody>();
