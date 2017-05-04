@@ -77,10 +77,12 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 			}
 
 			vector<Entity *> curSceneEntities = Engine::instance()->GetCurScene()->GetAllEntities();
+			int counter = 0;
 
 			for (std::vector<Entity *>::iterator it = curSceneEntities.begin(); it != curSceneEntities.end(); ++it) {
-				
-				if (ImGui::TreeNode((*it)->GetName().c_str())) {
+				++counter;
+				const char * tempString = (*it)->GetName().c_str();
+				if (ImGui::TreeNode(tempString + char(counter))) {
 					ComponentManager * cm = ComponentManager::current;
 					vector<pair<TypeId, ObjectPoolIndex *>> Components;
 					Components = cm->GetAllComponents((*it)->GetID());
