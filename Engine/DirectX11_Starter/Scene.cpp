@@ -8,6 +8,7 @@
 #include <string.h>
 #include "RigidBody.h"
 #include "ScriptComponent.h"
+#include "ParticleEmitter.h"
 
 void Scene::Enter()
 {
@@ -26,7 +27,7 @@ void Scene::Enter()
 	mat = renderer.CreateMaterial(shader);
 	mat->SetTexture("texDiffuse", tex);
 
-	
+
 
 	DirectX::XMFLOAT4X4 matrix;
 	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixIdentity());
@@ -42,10 +43,10 @@ void Scene::Enter()
 	mat->SetTexture("texDiffuse", tex1);
 
 	// Collision check entity 
-	Entity* e1 = new Entity(); 
-	Transform* t1 = e1->AddComponent<Transform>(); 
-	
-	t1->SetLocalPosition(5, 0, 0); 
+	Entity* e1 = new Entity();
+	Transform* t1 = e1->AddComponent<Transform>();
+
+	t1->SetLocalPosition(5, 0, 0);
 	Renderable* r1 = e1->AddComponent<Renderable>(mesh, mat);
 	RigidBody* rb1 = e1->AddComponent <RigidBody>(t1, &(r1->BoundingBox()));
 	e1->AddComponent<ScriptComponent>("script2.lua", rb1);
@@ -64,6 +65,18 @@ void Scene::Enter()
 	lights = new Entity();
 	Lighting* l = lights->AddComponent<Lighting>(XMFLOAT4(-5, 0, 0, 0), XMFLOAT4(0.7f, 0, 0, 1), LightType::PointLight, 1, 8);
 	Lighting* l2 = lights->AddComponent<Lighting>(XMFLOAT4(0, -1, 0, 0), XMFLOAT4(0, 0.5f, 0.5f, 1), LightType::DirectionalLight, 1);
+
+	// Particle Emitters;
+	Entity* emitEntity = new Entity();
+	Transform* emitEntityTrans = emitEntity->AddComponent<Transform>();
+	ParticleEmitter* emitter = emitEntity->AddComponent<ParticleEmitter>(L"Assets/Textures/smoke.png");
+	AddEntity(emitEntity);
+
+	emitEntityTrans->SetLocalPosition(2.0f, 0.0f, 0.0f);
+
+	emitter->SetInitialVelocity(0.0f, 1.0f, 0.0f);
+	emitter->SetLifeTime(2.0f);
+	emitter->SetEmitRate(20);
 
 	// Sravan
 	// Get all components of an entity with id 
@@ -133,12 +146,9 @@ void Scene::Tick(float deltaTime, float totalTime)
 	t->SetRotationEuler(0, rot, 0);
 
 	auto* t1 = entities[1]->GetComponent<Transform>();
-	t1->SetParent(t);
-	
-	t->SetWorldPosition(t->GetWorldPosition()->x + 0.5f*deltaTime, 0, 0);
-	t1->SetLocalPosition(t1->GetLocalPosition()->x - 0.5f*deltaTime, 0, 0);
-	std::cout << t1->GetWorldPosition()->x << std::endl;
-	t1->SetRotationEuler(rot, 0,  0);
+
+	t1->SetLocalPosition(t1->GetLocalPosition()->x - 0.001f, 0, 0);
+	t1->SetRotationEuler(rot, 0, 0);
 
 	auto* r = entities[0]->GetComponent<RigidBody>();
 	auto* r1 = entities[1]->GetComponent<RigidBody>();

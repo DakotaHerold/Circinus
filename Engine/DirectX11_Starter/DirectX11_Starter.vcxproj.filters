@@ -70,6 +70,12 @@
     <Filter Include="ImGUI Dependencies">
       <UniqueIdentifier>{bc0fea48-0e2c-4490-9c97-9899a7424546}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Rendering\ParticleSystem">
+      <UniqueIdentifier>{4056dc8c-66a1-45cd-bb5a-1926eecfdad6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Rendering\ParticleSystem">
+      <UniqueIdentifier>{51ebbeee-238d-40ac-be8a-78288aea3c65}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -179,6 +185,18 @@
     </ClCompile>
     <ClCompile Include="CollisionDetection.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleEmitter.cpp">
+      <Filter>Source Files\Rendering\ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticlePool.cpp">
+      <Filter>Source Files\Rendering\ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Source Files\Rendering\ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameCapture.cpp">
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -320,6 +338,27 @@
     <ClInclude Include="ObjectPool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Emitter.h">
+      <Filter>Header Files\Rendering\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Header Files\Rendering\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleEmitter.h">
+      <Filter>Header Files\Rendering\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticlePool.h">
+      <Filter>Header Files\Rendering\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleShaderCommon.h">
+      <Filter>Header Files\Rendering\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>Header Files\Rendering\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameCapture.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\PixelShader.hlsl">
@@ -346,6 +385,21 @@
     <FxCompile Include="Shaders\Skybox.fx">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="Shaders\ParticleCS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\ParticleEmitterCS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\ParticleInitCS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\ParticlePS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\ParticleVS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -363,6 +417,9 @@
     </None>
     <None Include="..\..\Scripts\script2.lua">
       <Filter>Scripts</Filter>
+    </None>
+    <None Include="Shaders\Noise.hlsli">
+      <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>
