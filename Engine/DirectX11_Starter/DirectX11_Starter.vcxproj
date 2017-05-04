@@ -90,6 +90,7 @@
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityManager.cpp" />
+    <ClCompile Include="FrameCapture.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
@@ -105,6 +106,9 @@
     <ClCompile Include="DirectXGameCore.cpp" />
     <ClCompile Include="NativeWindow.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="ParticleEmitter.cpp" />
+    <ClCompile Include="ParticlePool.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="RenderingSystem.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="RigidBody.cpp" />
@@ -121,6 +125,8 @@
     <ClInclude Include="AssimpLoader.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CollisionDetection.h" />
+    <ClInclude Include="Emitter.h" />
+    <ClInclude Include="FrameCapture.h" />
     <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="DebugCam.h" />
     <ClInclude Include="ConstantBuffer.h" />
@@ -148,6 +154,11 @@
     <ClInclude Include="dxerr.h" />
     <ClInclude Include="DirectXGameCore.h" />
     <ClInclude Include="NativeWindow.h" />
+    <ClInclude Include="Particle.h" />
+    <ClInclude Include="ParticleEmitter.h" />
+    <ClInclude Include="ParticlePool.h" />
+    <ClInclude Include="ParticleShaderCommon.h" />
+    <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Renderable.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="RenderingSystem.h" />
@@ -190,6 +201,11 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </FxCompile>
+    <FxCompile Include="Shaders\ParticleCS.hlsl" />
+    <FxCompile Include="Shaders\ParticleEmitterCS.hlsl" />
+    <FxCompile Include="Shaders\ParticleInitCS.hlsl" />
+    <FxCompile Include="Shaders\ParticlePS.hlsl" />
+    <FxCompile Include="Shaders\ParticleVS.hlsl" />
     <FxCompile Include="Shaders\PixelShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
@@ -247,6 +263,7 @@
     <None Include="Shaders\Lights.hlsli">
       <FileType>Document</FileType>
     </None>
+    <None Include="Shaders\Noise.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

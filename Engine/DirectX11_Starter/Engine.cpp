@@ -89,6 +89,9 @@ int Engine::Run()
 		// this should be done by SceneManager
 		currentScene->Tick(deltaTime, totalTime);
 
+		// particle system update
+		renderingSystem->Update(deltaTime, totalTime);
+
 		// rendering System
 		// TODO
 		renderingSystem->DrawScene(currentScene->GetCamera(), currentScene->GetSceneGraph());

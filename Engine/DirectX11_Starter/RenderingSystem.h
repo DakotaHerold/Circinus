@@ -56,6 +56,7 @@
 
 class NativeWindow;
 class SceneGraph;
+class ParticleSystem;
 
 #if defined(_DEBUG)
 class DebugCam;
@@ -79,6 +80,8 @@ public:
 	bool Init(NativeWindow* win);
 
 	void OnResize(int windowWidth, int windowHeight);
+
+	void Update(float deltaTime, float totalTime);
 
 	void DrawScene(DebugCam* cam, SceneGraph* scene);
 
@@ -145,6 +148,8 @@ private:
 	D3D11_VIEWPORT            viewport;
 	D3D_DRIVER_TYPE           driverType;
 	D3D_FEATURE_LEVEL         featureLevel;
+
+	ParticleSystem*           particleSystem;
 
 	// The window's aspect ratio, used mostly for your projection matrix
 	float aspectRatio;

@@ -10,6 +10,7 @@
 // -------------------------------------------------------------
 
 #include "RenderingSystem.h"
+#include "ParticleSystem.h"
 #include "NativeWindow.h"
 #include "SceneGraph.h"
 #if defined(_DEBUG)
@@ -67,6 +68,9 @@ RenderingSystem::RenderingSystem()
 // --------------------------------------------------------
 RenderingSystem::~RenderingSystem(void)
 {
+	particleSystem->CleanUp();
+	delete particleSystem;
+
 	for (auto i = preBoundCBs.begin(); i != preBoundCBs.end(); ++i)
 	{
 		i->second->CleanUp();
@@ -127,6 +131,12 @@ bool RenderingSystem::Init(NativeWindow* win)
 	}
 
 	_instance = this;
+
+	particleSystem = new ParticleSystem();
+	if (!particleSystem->Init(device, deviceContext))
+	{
+		return false;
+	}
 
 	// Everything was set up properly
 	return true;
@@ -314,6 +324,14 @@ void RenderingSystem::OnResize(int windowWidth, int windowHeight)
 	// Recalculate the aspect ratio, since it probably changed
 	aspectRatio = (float)windowWidth / windowHeight;
 	aspectRatioChanged = true;
+}
+void RenderingSystem::Update(float deltaTime, float totalTime)
+{
+	// TODO gathering particle emitters to update
+	// and update the position and velocity by transform of that entity
+	ComponentManager::current->GetAllComponents<ParticleEmitter>();
+	
+	particleSystem->Update(deltaTime, totalTime);
 }
 #pragma endregion
 
