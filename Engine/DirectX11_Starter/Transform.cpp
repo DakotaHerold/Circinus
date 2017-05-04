@@ -51,25 +51,6 @@ void Transform::SetWorldPosition(float x, float y, float z)
 
 	SetLocalPosition(matLocal._14, matLocal._24, matLocal._34);
 	
-	//XMStoreFloat4x4(
-	//	&matWorld,
-	//	XMMatrixTranspose(m)
-	//);
-	//XMMATRIX w = XMMatrixMultiply(
-	//	m,		
-	//	XMMatrixInverse(nullptr, XMLoadFloat4x4(&worldToLocalMatrix))
-	//);
-	//XMStoreFloat4x4(
-	//	&matLocal,
-	//	XMMatrixTranspose(w)
-	//);
-	//SetLocalPosition(matLocal._14, matLocal._24, matLocal._34);
-
-
-
-
-	//world * parent-1 =localmat
-	//localmat._14=x localmat._24=y
 	dirty = true;
 }
 
