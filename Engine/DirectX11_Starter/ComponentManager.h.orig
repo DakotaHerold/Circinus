@@ -5,7 +5,16 @@
 #include "Entity.h"
 #include "Transform.h"
 #include <map>
+<<<<<<< HEAD
 #include "ObjectPool.h"
+=======
+#include "ComponentPool.h"
+#include "RigidBody.h"
+#include "ScriptComponent.h"
+
+typedef std::map<TypeId, std::vector<typePoolIndex *>> ComponentsMap;
+typedef std::map<eidType, ComponentsMap> EntityComponentsMap;
+>>>>>>> e40a7b1749e61892070c1d264d2d25d9dc1d6c4f
 
 class Scene;
 
