@@ -9,6 +9,7 @@
 #include "RigidBody.h"
 #include "ScriptComponent.h"
 #include "ParticleEmitter.h"
+#include "BoundRenderer.h"
 
 void Scene::Enter()
 {
@@ -158,6 +159,21 @@ void Scene::Tick(float deltaTime, float totalTime)
 
 
 	//enti->GetComponent<ScriptComponent>()->Update(); 
+
+	{
+		DirectX::BoundingSphere sphere(DirectX::XMFLOAT3(0, 0, 0), 2);
+		BoundRenderer::instance()->Draw(sphere);
+
+		DirectX::BoundingBox aabb(
+			DirectX::XMFLOAT3(0, 0, 0),
+			DirectX::XMFLOAT3(1, 1, 1));
+		DirectX::BoundingOrientedBox box;
+		DirectX::BoundingOrientedBox::CreateFromBoundingBox(box, aabb);
+		box.Transform(box, 1,
+			DirectX::XMQuaternionRotationRollPitchYaw(0, rot, 0)
+			, DirectX::XMVectorSet(0, 0, 0, 0));
+		BoundRenderer::instance()->Draw(box);
+	}
 }
 
 void Scene::Exit()
