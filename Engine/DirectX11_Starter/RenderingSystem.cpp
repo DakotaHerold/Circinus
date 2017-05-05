@@ -359,11 +359,11 @@ void RenderingSystem::Update(float deltaTime, float totalTime)
 			)
 		);
 
-		DirectX::XMFLOAT3 pos = { 2.0f, 0.0f, 0.0f };
-		e.SetCBParameters(pos/**(t->GetWorldPosition())*/, worldVel, e.lifeTime, e.emitRate);
+		//DirectX::XMFLOAT3 pos = { 2.0f, 0.0f, 0.0f };
+		e.SetCBParameters(*(t->GetWorldPosition()), worldVel, e.lifeTime, e.emitRate);
 	}
 
-	//particleSystem->Update(deltaTime, totalTime);
+	particleSystem->Update(deltaTime, totalTime);
 }
 #pragma endregion
 
