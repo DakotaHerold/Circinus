@@ -37,7 +37,7 @@ V2F main(uint vid : SV_VertexID, uint iid : SV_InstanceID)
 	output.position = mul(pos, projection);
 	output.texcoord.xy = uv;
 
-	output.texcoord.w = 1 - (particles[pid].position.w / particles[pid].velocity.w);
+	output.texcoord.w = 1 - pow((2 * particles[pid].position.w / particles[pid].velocity.w) - 1, 2);
 
 	return output;
 }
