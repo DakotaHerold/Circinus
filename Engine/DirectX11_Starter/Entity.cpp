@@ -12,6 +12,11 @@ Entity::~Entity()
 	ComponentManager::current->RemoveAllComponents(GetID());
 }
 
+bool Entity::RemoveComponent(TypeId typeID)
+{
+	return ComponentManager::current->RemoveComponent(GetID(), typeID);
+}
+
 string Entity::GetName()
 {
 	return name;

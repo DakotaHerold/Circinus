@@ -23,16 +23,10 @@ public:
 	
 	// TODO: const function
 	template <typename T>
-	T* GetComponent(int entityID);
+	T* GetComponent(int entityID, ObjectPoolIndex *index = nullptr);
 
-	template <typename T>
-	T* GetComponent(int entityID, ObjectPoolIndex *index);
-
-	template <typename T>
-	bool RemoveComponent(int entityID);
-
-	template <typename T>
-	bool RemoveComponent(int entityID, ObjectPoolIndex *index);
+	//template <typename T>
+	//bool RemoveComponent(int entityID, ObjectPoolIndex *index = nullptr);
 
 	//bool HasComponent(int entityID, TypeId componentTypeId) const;
 
@@ -41,7 +35,7 @@ public:
 
 	std::vector<std::pair<TypeId, ObjectPoolIndex *>> GetAllComponents(int entityID);
 
-	bool RemoveComponentWithIndex(int entityID, TypeId typeID, ObjectPoolIndex *index = nullptr);
+	bool RemoveComponent(int entityID, TypeId typeID, ObjectPoolIndex *index = nullptr);
 
 	void RemoveAllComponents(int entityID);
 
@@ -59,7 +53,8 @@ private:
 
 	ObjectPoolBase* GetComponentPool(TypeId typeID);
 
-	int getObjectIndex(eidType entityID, TypeId typeID, ObjectPoolIndex *index = nullptr, bool deleteIndex = false);
+	int GetObjectPoolIndex(eidType entityID, TypeId typeID, bool deleteIndex = false);
+	bool CheckObjectPoolIndex(eidType entityID, TypeId typeID, ObjectPoolIndex * index, bool deleteIndex = false);
 };
 
 template<typename T>
@@ -93,28 +88,25 @@ inline T* ComponentManager::AddComponent(int entityID, Args && ...args)
 }
 
 template<typename T>
-inline T * ComponentManager::GetComponent(int entityID)
-{
-	return GetComponent<T>(entityID, getObjectIndex(entityID, ComponentTypeId<T>()));
-}
-
-template<typename T>
 inline T * ComponentManager::GetComponent(int entityID, ObjectPoolIndex* index)
 {
-	return GetComponentPool<T>()->Get(*index);
+	if (index == nullptr) {
+		return GetComponentPool<T>()->Get(GetObjectPoolIndex(entityID, ComponentTypeId<T>()));
+	}
+	else {
+		if (!CheckObjectPoolIndex(entityID, ComponentTypeId<T>(), index)) {
+			return nullptr;
+		}
+
+		return GetComponentPool<T>()->Get(*index);
+	}
 }
 
-template<typename T>
-inline bool ComponentManager::RemoveComponent(int entityID)
-{
-	return RemoveComponentWithIndex(entityID, ComponentTypeId<T>());
-}
-
-template<typename T>
-inline bool ComponentManager::RemoveComponent(int entityID, ObjectPoolIndex* index)
-{
-	return RemoveComponentWithIndex(entityID, ComponentTypeId<T>(), index);
-}
+//template<typename T>
+//inline bool ComponentManager::RemoveComponent(int entityID, ObjectPoolIndex* index)
+//{
+//	return RemoveComponent(entityID, ComponentTypeId<T>(), index);
+//}
 
 template<typename T>
 inline ResultComponents<T> ComponentManager::GetAllComponents()

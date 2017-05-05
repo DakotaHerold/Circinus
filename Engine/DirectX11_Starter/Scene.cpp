@@ -26,8 +26,6 @@ void Scene::Enter()
 	mat = renderer.CreateMaterial(shader);
 	mat->SetTexture("texDiffuse", tex);
 
-	
-
 	DirectX::XMFLOAT4X4 matrix;
 	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixIdentity());
 
@@ -63,7 +61,7 @@ void Scene::Enter()
 
 	lights = new Entity();
 	Lighting* l = lights->AddComponent<Lighting>(XMFLOAT4(-5, 0, 0, 0), XMFLOAT4(0.7f, 0, 0, 1), LightType::PointLight, 1, 8);
-	Lighting* l2 = lights->AddComponent<Lighting>(XMFLOAT4(0, -1, 0, 0), XMFLOAT4(0, 0.5f, 0.5f, 1), LightType::DirectionalLight, 1);
+	//Lighting* l2 = lights->AddComponent<Lighting>(XMFLOAT4(0, -1, 0, 0), XMFLOAT4(0, 0.5f, 0.5f, 1), LightType::DirectionalLight, 1);
 
 	// Sravan
 	// Get all components of an entity with id 
@@ -151,6 +149,7 @@ void Scene::Exit()
 		delete e;
 	}
 	entities.clear();
+
 	delete lights;
 
 	// all entities should be deleted before deleting component manager

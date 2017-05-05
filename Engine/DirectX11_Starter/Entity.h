@@ -25,6 +25,8 @@ public :
 	template <typename T>
 	bool				RemoveComponent();
 
+	bool RemoveComponent(TypeId typeID);
+
 	// TODO: const
 	template <typename T>
 	T*					GetComponent();
@@ -49,7 +51,7 @@ template <typename T>
 bool Entity::RemoveComponent()
 {
 	static_assert(std::is_base_of<Component, T>(), "T is not a component, cannot remove T from entity");
-	return ComponentManager::current->RemoveComponent<T>(GetID());
+	return RemoveComponent(ComponentTypeId<T>());
 }
 
 template <typename T>
