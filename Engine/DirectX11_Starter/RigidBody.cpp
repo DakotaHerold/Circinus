@@ -54,6 +54,8 @@ bool RigidBody::BoxCollisionCheck(RigidBody * otherRbody)
 	otherRbody->obb->Center.y = pos2->y;
 	otherRbody->obb->Center.z = pos2->z;
 
+	//BoundRenderer::instance()->Draw(*obb);
+	//BoundRenderer::instance()->Draw(*otherRbody->obb);
 
 	return obb->Intersects(*(otherRbody->obb));
 }

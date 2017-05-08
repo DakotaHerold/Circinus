@@ -48,7 +48,7 @@ void Scene::Enter()
 	t1->SetLocalPosition(2, 0, 0);
 	Renderable* r1 = e1->AddComponent<Renderable>(mesh, mat);
 	RigidBody* rb1 = e1->AddComponent <RigidBody>(t1, &(r1->BoundingBox()));
-	e1->AddComponent<ScriptComponent>("script2.lua", rb1);
+	//e1->AddComponent<ScriptComponent>("script2.lua", rb1);
 
 	//
 	t1->SetParent(mainT);
@@ -118,6 +118,35 @@ void Scene::Enter()
 
 	//component manager
 
+
+	// OctTree Initialization --------------------------------------
+	//Point* point = new Point(0, 0, 17.5f, 1);
+	int pointCount = 5; 
+	Point ** points = new Point*[pointCount]; 
+	points[0] = new Point(0.0f, 0.0f, 20.0f, 1);
+	points[1] = new Point(0.0f, 0.0f, 15.0f, 2);
+	points[2] = new Point(2.0f, 0.0f, 23.0f, 3);
+	points[3] = new Point(3.0f, -4.0f, 15.0f, 4);
+	points[4] = new Point(3.0f, -3.9f, 15.0f, 5);
+	//points[4] = new Point(0.0f, 0.0f, 20.0f, 5);
+
+
+
+	DirectX::BoundingBox aabb(
+		DirectX::XMFLOAT3(0, 0, 20),
+		DirectX::XMFLOAT3(5, 5, 5));
+	DirectX::BoundingOrientedBox::CreateFromBoundingBox(box, aabb);
+	box.Transform(box, 1,
+		DirectX::XMQuaternionRotationRollPitchYaw(0, 0, 0)
+		, DirectX::XMVectorSet(0, 0, 0, 0));
+	
+	oct = new Octree(); 
+	oct->build(points, pointCount, 1, 100, box, 0); 
+	for (int i = 0; i < pointCount; i++)
+	{
+		delete[] points[i];
+	}
+	delete[] points; 
 }
 
 void Scene::Tick(float deltaTime, float totalTime)
@@ -148,30 +177,34 @@ void Scene::Tick(float deltaTime, float totalTime)
 	auto* t = entities[0]->GetComponent<Transform>();
 	auto* t1 = entities[1]->GetComponent<Transform>();
 
-	t->SetWorldPosition(t->GetWorldPosition()->x + 0.5f*deltaTime, 0, 0);
+	//t->SetWorldPosition(t->GetWorldPosition()->x + 0.5f*deltaTime, 0, 0);
 	t1->SetRotationEuler(0, rot, 0);
 
 	auto* r = entities[0]->GetComponent<RigidBody>();
 	auto* r1 = entities[1]->GetComponent<RigidBody>();
-	//cout << r->CollisionCheck(r1) << endl;
+	//cout << r->BoxCollisionCheck(r1) << endl;
 
 
 	//enti->GetComponent<ScriptComponent>()->Update(); 
 
-	{
-		DirectX::BoundingSphere sphere(DirectX::XMFLOAT3(0, 0, 0), 2);
-		BoundRenderer::instance()->Draw(sphere);
+	// BOX DEBUG RENDERING
+	//{
+	//	DirectX::BoundingSphere sphere(DirectX::XMFLOAT3(0, 0, 0), 2);
+	//	BoundRenderer::instance()->Draw(sphere);
 
-		DirectX::BoundingBox aabb(
-			DirectX::XMFLOAT3(0, 0, 0),
-			DirectX::XMFLOAT3(1, 1, 1));
-		DirectX::BoundingOrientedBox box;
-		DirectX::BoundingOrientedBox::CreateFromBoundingBox(box, aabb);
-		box.Transform(box, 1,
-			DirectX::XMQuaternionRotationRollPitchYaw(0, rot, 0)
-			, DirectX::XMVectorSet(0, 0, 0, 0));
-		BoundRenderer::instance()->Draw(box);
-	}
+	//	DirectX::BoundingBox aabb(
+	//		DirectX::XMFLOAT3(0, 0, 0),
+	//		DirectX::XMFLOAT3(1, 1, 1));
+	//	DirectX::BoundingOrientedBox box;
+	//	DirectX::BoundingOrientedBox::CreateFromBoundingBox(box, aabb);
+	//	box.Transform(box, 1,
+	//		DirectX::XMQuaternionRotationRollPitchYaw(0, rot, 0)
+	//		, DirectX::XMVectorSet(0, 0, 0, 0));
+	//	BoundRenderer::instance()->Draw(box);
+	//}
+	//box.Extents.x += 0.001f;
+	//BoundRenderer::instance()->Draw(box);
+	oct->Update(); 
 }
 
 void Scene::Exit()
@@ -182,6 +215,8 @@ void Scene::Exit()
 	entities.clear();
 
 	delete lights;
+
+	delete oct;
 
 	// all entities should be deleted before deleting component manager
 	delete componentManager;

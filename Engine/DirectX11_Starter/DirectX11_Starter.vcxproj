@@ -108,6 +108,7 @@
     <ClCompile Include="DirectXGameCore.cpp" />
     <ClCompile Include="NativeWindow.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="OctTree.cpp" />
     <ClCompile Include="ParticleEmitter.cpp" />
     <ClCompile Include="ParticlePool.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="dxerr.h" />
     <ClInclude Include="DirectXGameCore.h" />
     <ClInclude Include="NativeWindow.h" />
+    <ClInclude Include="OctTree.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleEmitter.h" />
     <ClInclude Include="ParticlePool.h" />

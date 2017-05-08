@@ -8,6 +8,7 @@ typedef DebugCam Camera;
 #endif
 #include <vector>
 #include "SceneGraph.h"
+#include "OctTree.h"
 #include "ComponentManager.h"
 class Entity;
 class Material;
@@ -42,4 +43,6 @@ private:
 	Material*		mat;
 	vector<Entity*> entities;
 	Entity*			lights;
+	DirectX::BoundingOrientedBox box; 
+	Octree* oct; 
 };

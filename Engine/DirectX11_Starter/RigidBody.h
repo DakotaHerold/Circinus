@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "Transform.h"
+#include "BoundRenderer.h"
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
 

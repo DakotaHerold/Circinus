@@ -1,91 +1,92 @@
-#pragma once
+#include <stdio.h>
+#include <string.h>
+#include <iostream>
+#include <DirectXMath.h>
+#include <DirectXCollision.h>
+#include "BoundRenderer.h"
 
-#include "CollisionDetection.h"
-#include "RigidBody.h"
-#include "ComponentManager.h"
-#include "Transform.h"
-#include <vector>
+// COTD Entry submitted by Paul Nettle [midnight@FluidStudios.com]
+// Corresponds with an Ask MidNight response (http://www.flipcode.com/askmid/)
 
-using namespace DirectX;
+// -----------------------------------------------------------------------------
+// This defines a callback for traversal
+// -----------------------------------------------------------------------------
+class   Octree;
+typedef bool(*callback)(const Octree &o, void *data);
 
-class OctTree
+// -----------------------------------------------------------------------------
+// This defines a point class (it's incomplete, but the data elements are there)
+// -----------------------------------------------------------------------------
+class   Point
 {
 public:
-	OctTree(BoundingBox region);
-	OctTree();
-	BoundingBox m_region;
-	std::vector<Transform*> m_objects = ComponentManager::current->root->children;
-	/// <summary>
-	/// These are items which we're waiting to insert into the datastructure. 
-	/// We want to accrue as many objects in here as possible before we inject them into the tree. This is slightly more cache friendly.
-	/// </summary>
-	//Queue<T> m_pendingInsertion = new Queue<T>();
+	Point(float xParam, float yParam, float zParam, int nParam)
+	{
+		x = xParam;
+		y = yParam;
+		z = zParam;
+		n = nParam; 
+	}
+	float          x, y, z;        // Position
+	unsigned int      n;              // User's unique identifier
+	unsigned int    code;           // Used during octree generation
 
-	/// <summary>
-	/// These are all of the possible child octants for this node in the tree.
-	/// </summary>
-	OctTree* m_childNode[8];
+	// Insert typical operators, such as *, +, -, etc.
+	Point operator*(const DirectX::XMFLOAT3 vec) 
+	{
+		Point p(x,y,z,n); 
+		p.code = code; 
+		p.x *= vec.x; 
+		p.y *= vec.y; 
+		p.z *= vec.z;
+		return p; 
+	}
+};
 
-	/// <summary>
-	/// This is a bitmask indicating which child nodes are actively being used.
-	/// It adds slightly more complexity, but is faster for performance since there is only one comparison instead of 8.
-	/// </summary>
-	byte m_activeNodes = 0;
+// -----------------------------------------------------------------------------
+// This defines a cubic bounding volume (center, radius)
+// -----------------------------------------------------------------------------
 
-	/// <summary>
-	/// The minumum size for enclosing region is a 1x1x1 cube.
-	/// </summary>
-	const int MIN_SIZE = 1;
+//typedef struct
+//{
+//	Point           center;         // Center of a cubic bounding volume
+//	double          radius;         // Radius of a cubic bounding volume
+//} Bounds;
 
-	/// <summary>
-	/// this is how many frames we'll wait before deleting an empty tree branch. Note that this is not a constant. The maximum lifespan doubles
-	/// every time a node is reused, until it hits a hard coded constant of 64
-	/// </summary>
-	int m_maxLifespan = 8;          //
-	int m_curLife = -1;             //this is how much time we have left
+// -----------------------------------------------------------------------------
+// The octree class -- almost real code!
+// -----------------------------------------------------------------------------
 
-									/// <summary>
-									/// A reference to the parent node is sometimes required. If we are a node and we realize that we no longer have items contained within ourselves,
-									/// we need to let our parent know that we're empty so that it can delete us.
-									/// </summary>
-	OctTree* _parent;
+class   Octree
+{
+public:
+	// Construction/Destruction
 
-	bool m_treeReady = false;       //the tree has a few objects which need to be inserted before it is complete
-	bool m_treeBuilt = false;       //there is no pre-existing tree yet.
+	Octree();
+	virtual                         ~Octree();
 
+	// Accessors
 
-										   /*Note: we want to avoid allocating memory for as long as possible since there can be lots of nodes.*/
-										   /// <summary>
-										   /// Creates an oct tree which encloses the given region and contains the provided objects.
-										   /// </summary>
-										   /// <param name="region">The bounding region for the oct tree.</param>
-										   /// <param name="objList">The list of objects contained within the bounding region</param>
-	void Update(float gameTime);
-	void Add<T>(List<T> ItemList) where T : Physical;
-	void Add<T>(T Item) where T: Physical;
-	void Remove<T>(T Item) where T : Physical;
-	List<IntersectionRecord> AllIntersections(Ray intersectionRay);
-	IntersectionRecord NearestIntersection(Ray intersectionRay, Physical.PhysicalType type = Physical.PhysicalType.ALL);
-	List<IntersectionRecord> AllIntersections(Ray intersectionRay, Physical.PhysicalType type = Physical.PhysicalType.ALL);
-	List<IntersectionRecord> AllIntersections(BoundingFrustum region, Physical.PhysicalType type = Physical.PhysicalType.ALL);
+	inline  const   Point * const * points() const { return _points; }
+	inline  const   unsigned int    pointCount() const { return _pointCount; }
 
+	// Implementation
+	virtual const   bool            build(Point **points,
+		const unsigned int count,
+		const unsigned int threshold,
+		const unsigned int maximumDepth,
+		const DirectX::BoundingOrientedBox &bounds,
+		const unsigned int currentDepth = 0);
+	//static  const   Bounds          calcCubicBounds(const Point * const * points,
+	//	const unsigned int count);
+	virtual const   bool            traverse(callback proc, void *data) const;
+	virtual void Update(); 
 
-private:
-	OctTree(BoundingBox region, std::vector<Transform*> m_objects);
-	void Insert<T>(T Item) where T : Physical;
-	void BuildTree();
-	OctTree CreateNode(BoundingBox region, List<Physical> objList);
-	OctTree CreateNode(BoundingBox region, Physical Item);
-	void UpdateTree();
-	void FindEnclosingBox();
-	void FindEnclosingCube();
-	List<IntersectionRecord> GetIntersection(BoundingFrustum frustum, Physical.PhysicalType type = Physical.PhysicalType.ALL);
-	List<IntersectionRecord> GetIntersection(Ray intersectRay, Physical.PhysicalType type = Physical.PhysicalType.ALL);
-	List<IntersectionRecord> GetIntersection(List<Physical> parentObjs, Physical.PhysicalType type = Physical.PhysicalType.ALL);
-	bool IsRoot;
-	bool HasChildren;
-	bool IsEmpty;
-
-
-	//void Render(PrimitiveBatch pb); render the tree
+protected:
+	Octree                  *_child[8];
+	unsigned int            _pointCount;
+	Point                   **_points;
+	Point                   _center;
+	DirectX::BoundingOrientedBox box; 
+	float                  _radius;
 };
