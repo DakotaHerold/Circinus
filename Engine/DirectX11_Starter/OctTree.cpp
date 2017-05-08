@@ -39,10 +39,9 @@ const   bool    Octree::build(Point **points,
 	//          can set the maximumDepth depth to 0 if we want a tree with
 	//          no depth.
 
-	if (count <= threshold || currentDepth >= maximumDepth)
+	if (count <= threshold -1 || currentDepth >= maximumDepth)
 	{
 		// Just store the points in the node, making it a leaf
-
 		_pointCount = count;
 		_points = new Point *[count];
 		memcpy(_points, points, sizeof(Point *) * count);
@@ -78,7 +77,7 @@ const   bool    Octree::build(Point **points,
 		// information handy.
 
 		//childPointCounts[p.code]++;
-		childPointCounts[p.code] = i; 
+		childPointCounts[p.code] += 1; 
 	}
 
 	// Recursively call build() for each of the 8 children
@@ -89,7 +88,7 @@ const   bool    Octree::build(Point **points,
 		if (childPointCounts[i] == -1) continue;
 
 		// Allocate the child
-		_child[i] = new Octree();
+		_child[i] = new Octree;
 
 		// Allocate a list of points that were coded JUST for this child
 		// only
@@ -276,17 +275,17 @@ void Octree::Update()
 	BoundRenderer::instance()->Draw(box);
 
 	// Render points as small boxes 
-	for (unsigned int i = 0; i < pointCount(); i++) {
-		DirectX::BoundingBox aabb(
-			DirectX::XMFLOAT3(points()[i]->x, points()[i]->y, points()[i]->z),
-			DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f));
-		DirectX::BoundingOrientedBox pointBox;
-		DirectX::BoundingOrientedBox::CreateFromBoundingBox(pointBox, aabb);
-		pointBox.Transform(pointBox, 1,
-			DirectX::XMQuaternionRotationRollPitchYaw(0, 0, 0)
-			, DirectX::XMVectorSet(0, 0, 0, 0));
-		BoundRenderer::instance()->Draw(pointBox);
-	}
+	//for (unsigned int i = 0; i < pointCount(); i++) {
+	//	DirectX::BoundingBox aabb(
+	//		DirectX::XMFLOAT3(points()[i]->x, points()[i]->y, points()[i]->z),
+	//		DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f));
+	//	DirectX::BoundingOrientedBox pointBox;
+	//	DirectX::BoundingOrientedBox::CreateFromBoundingBox(pointBox, aabb);
+	//	pointBox.Transform(pointBox, 1,
+	//		DirectX::XMQuaternionRotationRollPitchYaw(0, 0, 0)
+	//		, DirectX::XMVectorSet(0, 0, 0, 0));
+	//	BoundRenderer::instance()->Draw(pointBox);
+	//}
 
 	// Repeat for all children 
 	for (Octree* tree : _child)
