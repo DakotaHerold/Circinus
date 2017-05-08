@@ -51,7 +51,7 @@ const   bool    Octree::build(Point **points,
 
 	// We'll need this (see comment further down in this source)
 	// Initialize all values to -1
-	unsigned int    childPointCounts[8] = { -1 };
+	unsigned int    childPointCounts[8] = { -1, -1, -1, -1, -1, -1, -1,-1 };
 
 	// Classify each point to a child node
 	for (unsigned int i = 0; i < count; i++)
@@ -119,6 +119,7 @@ const   bool    Octree::build(Point **points,
 			// Remove duplicates from newList
 			// ...
 			// Keep track of the new count in 'newCount'
+			newCount++;
 		}
 
 		// Generate a new bounding volume -- We do this with a touch of
@@ -168,7 +169,7 @@ const   bool    Octree::build(Point **points,
 		_child[i]->build(newList, newCount, threshold, maximumDepth,
 			newBounds, currentDepth + 1);
 
-		// Clean up
+		// Clean up -- FIX ME
 		//for (int i = 0; i < childPointCounts[i]; i++)
 		//{
 		//	delete[] newList[i];
@@ -183,7 +184,6 @@ const   bool    Octree::build(Point **points,
 // -----------------------------------------------------------------------------
 // Determine the [cubic] bounding volume for a set of points
 // -----------------------------------------------------------------------------
-
 //const Bounds Octree::calcCubicBounds(const Point * const * points,
 //	const unsigned int count)
 //{
@@ -263,17 +263,17 @@ void Octree::Update()
 	BoundRenderer::instance()->Draw(box);
 
 	// Render points as small boxes 
-	//for (unsigned int i = 0; i < pointCount(); i++) {
-	//	DirectX::BoundingBox aabb(
-	//		DirectX::XMFLOAT3(_points[i]->x, _points[i]->y, _points[i]->z),
-	//		DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f));
-	//	DirectX::BoundingOrientedBox pointBox;
-	//	DirectX::BoundingOrientedBox::CreateFromBoundingBox(pointBox, aabb);
-	//	pointBox.Transform(pointBox, 1,
-	//		DirectX::XMQuaternionRotationRollPitchYaw(0, 0, 0)
-	//		, DirectX::XMVectorSet(0, 0, 0, 0));
-	//	BoundRenderer::instance()->Draw(pointBox);
-	//}
+	for (unsigned int i = 0; i < pointCount(); i++) {
+		DirectX::BoundingBox aabb(
+			DirectX::XMFLOAT3(points()[i]->x, points()[i]->y, points()[i]->z),
+			DirectX::XMFLOAT3(0.1f, 0.1f, 0.1f));
+		DirectX::BoundingOrientedBox pointBox;
+		DirectX::BoundingOrientedBox::CreateFromBoundingBox(pointBox, aabb);
+		pointBox.Transform(pointBox, 1,
+			DirectX::XMQuaternionRotationRollPitchYaw(0, 0, 0)
+			, DirectX::XMVectorSet(0, 0, 0, 0));
+		BoundRenderer::instance()->Draw(pointBox);
+	}
 
 	// Repeat for all children 
 	for (Octree* tree : _child)
