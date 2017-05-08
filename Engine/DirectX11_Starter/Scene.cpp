@@ -121,14 +121,14 @@ void Scene::Enter()
 
 	// OctTree Initialization --------------------------------------
 	//Point* point = new Point(0, 0, 17.5f, 1);
-	int pointCount = 5; 
+	int pointCount = 3; 
 	Point ** points = new Point*[pointCount]; 
-	points[0] = new Point(0.0f, 0.0f, 20.0f, 1);
-	points[1] = new Point(0.0f, 0.0f, 15.0f, 2);
-	points[2] = new Point(2.0f, 0.0f, 23.0f, 3);
-	points[3] = new Point(3.0f, -4.0f, 15.0f, 4);
-	points[4] = new Point(3.0f, -3.9f, 15.0f, 5);
-	//points[4] = new Point(0.0f, 0.0f, 20.0f, 5);
+	//points[0] = new Point(0.0f, 0.0f, 20.0f, 0);
+	//points[1] = new Point(0.0f, 0.0f, 15.0f, 1);
+	//points[2] = new Point(2.0f, 0.0f, 23.0f, 2);
+	points[0] = new Point(3.0f, -4.0f, 15.0f, 1);
+	points[1] = new Point(3.0f, 3.9f, 15.0f, 2);
+	points[2] = new Point(3.0f, 3.5f, 15.0f, 3);
 
 
 
