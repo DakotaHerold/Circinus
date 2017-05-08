@@ -51,11 +51,12 @@ const   bool    Octree::build(Point **points,
 
 	// We'll need this (see comment further down in this source)
 	// Initialize all values to -1
-	unsigned int    childPointCounts[8] = { -1, -1, -1, -1, -1, -1, -1,-1 };
+	int    childPointCounts[8] = { -1, -1, -1, -1, -1, -1, -1,-1 };
 
 	// Classify each point to a child node
 	for (unsigned int i = 0; i < count; i++)
 	{
+
 		// Current point
 		Point   &p = *points[i];
 
@@ -119,7 +120,19 @@ const   bool    Octree::build(Point **points,
 			// Remove duplicates from newList
 			// ...
 			// Keep track of the new count in 'newCount'
-			newCount++;
+
+			if (points[j]->n == newList[j]->n)
+			{
+				//newList[j]--; 
+			}
+			
+			newCount++;	
+			/*if (points[j]->n == j)
+			{
+				*newList = points[j];
+				newList--;
+				newCount--;
+			}*/
 		}
 
 		// Generate a new bounding volume -- We do this with a touch of

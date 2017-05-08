@@ -129,7 +129,7 @@ void Scene::Enter()
 	points[0] = new Point(3.0f, -4.0f, 15.0f, 1);
 	points[1] = new Point(3.0f, 3.9f, 15.0f, 2);
 	points[2] = new Point(3.0f, 3.5f, 15.0f, 3);
-
+	//points[3] = new Point(0.0f, 0.0f, 20.0f, 4);
 
 
 	DirectX::BoundingBox aabb(
@@ -141,7 +141,7 @@ void Scene::Enter()
 		, DirectX::XMVectorSet(0, 0, 0, 0));
 	
 	oct = new Octree(); 
-	oct->build(points, pointCount, 1, 100, box, 0); 
+	oct->build(points, pointCount, 1, 3, box, 0); 
 	for (int i = 0; i < pointCount; i++)
 	{
 		delete[] points[i];
