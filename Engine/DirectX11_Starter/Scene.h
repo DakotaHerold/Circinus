@@ -43,6 +43,10 @@ private:
 	Material*		mat;
 	vector<Entity*> entities;
 	Entity*			lights;
+
+	// OctTree
 	DirectX::BoundingOrientedBox box; 
 	Octree* oct; 
+	int pointCount; 
+	Point ** points; 
 };
