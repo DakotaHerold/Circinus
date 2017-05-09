@@ -74,19 +74,6 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 				}
 			}
 
-			entCounter = 0;
-
-			for (std::vector<Entity *>::iterator it = curSceneEntities.begin(); it != curSceneEntities.end(); ++it) {
-				++entCounter;
-				if (ImGui::TreeNode(((*it)->GetName() + " (" + std::to_string(entCounter) + ")").c_str())) {
-					ComponentManager * cm = ComponentManager::current;
-
-
-					ImGui::TreePop();
-				}
-				
-			}
-
 			ImGui::End();
 		}
 	}
