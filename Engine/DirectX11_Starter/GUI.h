@@ -20,6 +20,8 @@ private:
 	bool HierarchyDisplayFlag = false;
 	bool ComponentDisplayFlag = false;
 
+	ComponentManager * cm = ComponentManager::current;
+
 	Entity * selectedEntity = nullptr; // This is a dummy variable. I did not want to allocate and deallocate this every frame.
 
 	GUI();
