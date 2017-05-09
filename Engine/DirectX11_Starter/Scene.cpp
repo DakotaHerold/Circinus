@@ -170,7 +170,7 @@ void Scene::Tick(float deltaTime, float totalTime)
 		box.Transform(box, 1,
 			DirectX::XMQuaternionRotationRollPitchYaw(0, rot, 0)
 			, DirectX::XMVectorSet(0, 0, 0, 0));
-		BoundRenderer::instance()->Draw(box);
+		BoundRenderer::instance()->Draw(box, BoundRenderer::red);
 	}
 }
 

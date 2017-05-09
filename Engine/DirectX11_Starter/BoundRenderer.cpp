@@ -8,6 +8,9 @@ using namespace DirectX;
 
 BoundRenderer* BoundRenderer::_instance = nullptr;
 
+const XMFLOAT3 BoundRenderer::white = XMFLOAT3(1, 1, 1);
+const XMFLOAT3 BoundRenderer::red = XMFLOAT3(1, 0, 0);
+
 void BoundRenderer::Reset()
 {
 	HRESULT hr = S_OK;
@@ -18,7 +21,7 @@ void BoundRenderer::Reset()
 	hr = context->Map(indexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &ibRes);
 	assert(S_OK == hr);
 
-	pVertices = reinterpret_cast<XMFLOAT3*>(vbRes.pData);
+	pVertices = reinterpret_cast<Vertex*>(vbRes.pData);
 	pIndices = reinterpret_cast<uint16_t*>(ibRes.pData);
 
 	curVertex = 0;
@@ -39,7 +42,7 @@ void BoundRenderer::Render(const DirectX::XMFLOAT4X4& matView, const DirectX::XM
 	context->UpdateSubresource(constantBuffer, 0, nullptr, matrices, 0, 0);
 
 	ID3D11Buffer* vbs[] = { vertexBuffer };
-	UINT stride[] = { sizeof(float) * 3 };
+	UINT stride[] = { sizeof(Vertex) };
 	UINT offset[] = { 0 };
 
 	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
@@ -57,50 +60,50 @@ void BoundRenderer::Render(const DirectX::XMFLOAT4X4& matView, const DirectX::XM
 	Reset();
 }
 
-void BoundRenderer::Draw(const BoundingBox & bound)
+void BoundRenderer::Draw(const BoundingBox & bound, const DirectX::XMFLOAT3& color)
 {
 	XMMATRIX matWorld = XMMatrixScaling(bound.Extents.x, bound.Extents.y, bound.Extents.z);
 	XMVECTOR position = XMLoadFloat3(&bound.Center);
 	matWorld.r[3] = XMVectorSelect(matWorld.r[3], position, g_XMSelect1110);
 
-	AddCube(matWorld);
+	AddCube(matWorld, color);
 }
 
-void BoundRenderer::Draw(const BoundingFrustum & bound)
+void BoundRenderer::Draw(const BoundingFrustum & bound, const DirectX::XMFLOAT3& color)
 {
 	XMFLOAT3 corners[BoundingFrustum::CORNER_COUNT];
 	bound.GetCorners(corners);
 
-	AddIndex(AddVertex(corners[0]));
-	AddIndex(AddVertex(corners[1]));
-	AddIndex(AddVertex(corners[1]));
-	AddIndex(AddVertex(corners[2]));
-	AddIndex(AddVertex(corners[2]));
-	AddIndex(AddVertex(corners[3]));
-	AddIndex(AddVertex(corners[3]));
-	AddIndex(AddVertex(corners[0]));
+	AddIndex(AddVertex(corners[0], color));
+	AddIndex(AddVertex(corners[1], color));
+	AddIndex(AddVertex(corners[1], color));
+	AddIndex(AddVertex(corners[2], color));
+	AddIndex(AddVertex(corners[2], color));
+	AddIndex(AddVertex(corners[3], color));
+	AddIndex(AddVertex(corners[3], color));
+	AddIndex(AddVertex(corners[0], color));
 
-	AddIndex(AddVertex(corners[0]));
-	AddIndex(AddVertex(corners[4]));
-	AddIndex(AddVertex(corners[1]));
-	AddIndex(AddVertex(corners[5]));
-	AddIndex(AddVertex(corners[2]));
-	AddIndex(AddVertex(corners[6]));
-	AddIndex(AddVertex(corners[3]));
-	AddIndex(AddVertex(corners[7]));
+	AddIndex(AddVertex(corners[0], color));
+	AddIndex(AddVertex(corners[4], color));
+	AddIndex(AddVertex(corners[1], color));
+	AddIndex(AddVertex(corners[5], color));
+	AddIndex(AddVertex(corners[2], color));
+	AddIndex(AddVertex(corners[6], color));
+	AddIndex(AddVertex(corners[3], color));
+	AddIndex(AddVertex(corners[7], color));
 
-	AddIndex(AddVertex(corners[4]));
-	AddIndex(AddVertex(corners[5]));
-	AddIndex(AddVertex(corners[5]));
-	AddIndex(AddVertex(corners[6]));
-	AddIndex(AddVertex(corners[6]));
-	AddIndex(AddVertex(corners[7]));
-	AddIndex(AddVertex(corners[7]));
-	AddIndex(AddVertex(corners[4]));
+	AddIndex(AddVertex(corners[4], color));
+	AddIndex(AddVertex(corners[5], color));
+	AddIndex(AddVertex(corners[5], color));
+	AddIndex(AddVertex(corners[6], color));
+	AddIndex(AddVertex(corners[6], color));
+	AddIndex(AddVertex(corners[7], color));
+	AddIndex(AddVertex(corners[7], color));
+	AddIndex(AddVertex(corners[4], color));
 
 }
 
-void BoundRenderer::Draw(const BoundingOrientedBox & bound)
+void BoundRenderer::Draw(const BoundingOrientedBox & bound, const DirectX::XMFLOAT3& color)
 {
 	XMMATRIX matWorld = XMMatrixRotationQuaternion(XMLoadFloat4(&bound.Orientation));
 	XMMATRIX matScale = XMMatrixScaling(bound.Extents.x, bound.Extents.y, bound.Extents.z);
@@ -108,10 +111,10 @@ void BoundRenderer::Draw(const BoundingOrientedBox & bound)
 	XMVECTOR position = XMLoadFloat3(&bound.Center);
 	matWorld.r[3] = XMVectorSelect(matWorld.r[3], position, g_XMSelect1110);
 
-	AddCube(matWorld);
+	AddCube(matWorld, color);
 }
 
-void BoundRenderer::Draw(const BoundingSphere & bound)
+void BoundRenderer::Draw(const BoundingSphere & bound, const DirectX::XMFLOAT3& color)
 {
 	XMVECTOR origin = XMLoadFloat3(&bound.Center);
 
@@ -121,12 +124,12 @@ void BoundRenderer::Draw(const BoundingSphere & bound)
 	XMVECTOR yaxis = g_XMIdentityR1 * radius;
 	XMVECTOR zaxis = g_XMIdentityR2 * radius;
 
-	AddRing(origin, xaxis, zaxis);
-	AddRing(origin, xaxis, yaxis);
-	AddRing(origin, yaxis, zaxis);
+	AddRing(origin, xaxis, zaxis, color);
+	AddRing(origin, xaxis, yaxis, color);
+	AddRing(origin, yaxis, zaxis, color);
 }
 
-void BoundRenderer::AddCube(DirectX::CXMMATRIX & matWorld)
+void BoundRenderer::AddCube(DirectX::CXMMATRIX & matWorld, const DirectX::XMFLOAT3& color)
 {
 	static const XMVECTORF32 s_verts[8] =
 	{
@@ -159,7 +162,8 @@ void BoundRenderer::AddCube(DirectX::CXMMATRIX & matWorld)
 	for (size_t i = 0; i < 8; ++i)
 	{
 		XMVECTOR v = XMVector3Transform(s_verts[i], matWorld);
-		XMStoreFloat3(&pVertices[curVertex + i], v);
+		XMStoreFloat3(&pVertices[curVertex + i].position, v);
+		pVertices[curVertex + i].color = color;
 	}
 
 	for (size_t i = 0; i < 24; i++)
@@ -171,7 +175,7 @@ void BoundRenderer::AddCube(DirectX::CXMMATRIX & matWorld)
 	curIndex += 24;
 }
 
-void BoundRenderer::AddRing(FXMVECTOR origin, FXMVECTOR majorAxis, FXMVECTOR minorAxis)
+void BoundRenderer::AddRing(FXMVECTOR origin, FXMVECTOR majorAxis, FXMVECTOR minorAxis, const DirectX::XMFLOAT3& color)
 {
 	static const size_t c_ringSegments = 32;
 
@@ -205,7 +209,7 @@ void BoundRenderer::AddRing(FXMVECTOR origin, FXMVECTOR majorAxis, FXMVECTOR min
 
 	for (uint32_t i = 0; i < c_ringSegments; i++)
 	{
-		pVertices[curVertex + i] = verts[i];
+		pVertices[curVertex + i] = Vertex{ verts[i], color };
 		pIndices[curIndex + i * 2] = curVertex + i;
 		pIndices[curIndex + i * 2 + 1] = curVertex + (i + 1) % c_ringSegments;
 	}
@@ -224,7 +228,7 @@ void BoundRenderer::Init(ID3D11Device * device, ID3D11DeviceContext * context)
 	this->device = device;
 	this->context = context;
 
-	CD3D11_BUFFER_DESC vbDesc(maxVertices * sizeof(XMFLOAT3), D3D11_BIND_VERTEX_BUFFER,
+	CD3D11_BUFFER_DESC vbDesc(maxVertices * sizeof(Vertex), D3D11_BIND_VERTEX_BUFFER,
 		D3D11_USAGE_DYNAMIC, D3D11_CPU_ACCESS_WRITE);
 	CD3D11_BUFFER_DESC ibDesc(maxIndices * sizeof(uint16_t), D3D11_BIND_INDEX_BUFFER,
 		D3D11_USAGE_DYNAMIC, D3D11_CPU_ACCESS_WRITE);
@@ -254,9 +258,10 @@ void BoundRenderer::Init(ID3D11Device * device, ID3D11DeviceContext * context)
 
 		D3D11_INPUT_ELEMENT_DESC elems[] =
 		{
-			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, sizeof(XMFLOAT3), D3D11_INPUT_PER_VERTEX_DATA, 0 }
 		};
-		hr = device->CreateInputLayout(elems, 1, shdrDesc.pBytecode, shdrDesc.BytecodeLength, &inputLayout);
+		hr = device->CreateInputLayout(elems, 2, shdrDesc.pBytecode, shdrDesc.BytecodeLength, &inputLayout);
 		assert(S_OK == hr);
 	}
 
