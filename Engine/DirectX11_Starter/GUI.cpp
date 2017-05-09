@@ -15,7 +15,6 @@ void GUI::Init(HWND hwnd, ID3D11Device* device, ID3D11DeviceContext* device_cont
 	if (!ImGui_ImplDX11_Init(hwnd, device, device_context)) {
 		MessageBox(hwnd, L"ImGUI Init Failed", L"Warning", 0);
 	}
-	cm = ComponentManager::current;
 
 }
 
@@ -28,6 +27,7 @@ void GUI::Draw()
 
 void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 {
+	cm = ComponentManager::current;
 
 	// Use this to Update the frames. I.e, create new stuff I guess.
 	ImGui_ImplDX11_NewFrame();
