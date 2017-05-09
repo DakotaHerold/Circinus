@@ -20,7 +20,7 @@ public:
 
 	bool SphereCollisionCheck(RigidBody *otherRbody);
 	bool BoxCollisionCheck(RigidBody *otherRbody);
-
+	void Orbiting(RigidBody * orbitee);
 
 private:
 	Transform* trans; 

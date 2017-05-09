@@ -7,6 +7,8 @@ RigidBody::RigidBody(Transform* t, const DirectX::BoundingBox* boxCollider)
 	trans = t; 
 	obb = new BoundingOrientedBox(); 
 	DirectX::BoundingOrientedBox::CreateFromBoundingBox(*obb, *boxCollider);
+
+	XMFLOAT3* velocity = new XMFLOAT3(0, 0, 0);
 }
 
 
@@ -56,4 +58,19 @@ bool RigidBody::BoxCollisionCheck(RigidBody * otherRbody)
 
 
 	return obb->Intersects(*(otherRbody->obb));
+}
+
+void RigidBody::Orbiting(RigidBody * orbitee)
+{
+	XMFLOAT3* orbiterPos = trans->GetLocalPosition();
+	obb->Center.x = orbiterPos->x;
+	obb->Center.x = orbiterPos->y;
+	obb->Center.x = orbiterPos->z;
+
+	XMFLOAT3* orbiteePos = orbitee->trans->GetLocalPosition();
+	orbitee->obb->Center.x = orbiteePos->x;
+	orbitee->obb->Center.y = orbiteePos->y;
+	orbitee->obb->Center.z = orbiteePos->z;
+
+
 }
