@@ -77,17 +77,32 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 			}
 
 			vector<Entity *> curSceneEntities = Engine::instance()->GetCurScene()->GetAllEntities();
-			int counter = 0;
+			int entCounter = 0;
+			int compCounter = 0;
 
 			for (std::vector<Entity *>::iterator it = curSceneEntities.begin(); it != curSceneEntities.end(); ++it) {
-				++counter;
-				const char * tempString = (*it)->GetName().c_str();
-				if (ImGui::TreeNode(tempString + char(counter))) {
+				++entCounter;
+				if (ImGui::TreeNode(((*it)->GetName() + " (" + std::to_string(entCounter) + ")").c_str())) {
 					ComponentManager * cm = ComponentManager::current;
 					vector<pair<TypeId, ObjectPoolIndex *>> Components;
 					Components = cm->GetAllComponents((*it)->GetID());
 					for (vector<pair<TypeId, ObjectPoolIndex *>>::iterator that = Components.begin(); that != Components.end(); ++that) {
-						ImGui::Text(ComponentTypeName(that->first));
+						++compCounter;
+						//std::string tempString = (ComponentTypeName(that->first)) + std::to_string(entCounter) + "-" + std::to_string(compCounter);
+						ImGui::Text(((ComponentTypeName(that->first)) + std::string(" (") + std::to_string(entCounter) + "-" + std::to_string(compCounter) + std::string(")")).c_str());
+						{
+							if (ImGui::BeginPopupContextItem(((ComponentTypeName(that->first)) + std::string(" (") + std::to_string(entCounter) + "-" + std::to_string(compCounter) + std::string(") Popup")).c_str())) {
+								if (ImGui::Button("Rename")) {
+									// Popup something here.
+								}
+								ImGui::Button("Duplicate");
+								ImGui::Separator();
+								if (ImGui::Button("Delete")) {
+									// Popup yes/no?
+								}
+								ImGui::EndPopup();
+							}
+						}
 					}
 
 					ImGui::TreePop();

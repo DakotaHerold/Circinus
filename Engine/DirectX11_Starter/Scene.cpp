@@ -9,6 +9,7 @@
 #include "RigidBody.h"
 #include "ScriptComponent.h"
 #include "ParticleEmitter.h"
+#include "BoundRenderer.h"
 
 void Scene::Enter()
 {
@@ -26,8 +27,6 @@ void Scene::Enter()
 
 	mat = renderer.CreateMaterial(shader);
 	mat->SetTexture("texDiffuse", tex);
-
-
 
 	DirectX::XMFLOAT4X4 matrix;
 	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixIdentity());
@@ -78,9 +77,9 @@ void Scene::Enter()
 
 	emitEntityTrans->SetLocalPosition(2.0f, 0.0f, 0.0f);
 
-	emitter->SetInitialVelocity(0.0f, 1.0f, 0.0f);
-	emitter->SetLifeTime(2.0f);
-	emitter->SetEmitRate(20);
+	emitter->SetInitialVelocity(0.0f, 0.3f, 0.0f);
+	emitter->SetLifeTime(5.0f);
+	emitter->SetEmitRate(5);
 
 	// Sravan
 	// Get all components of an entity with id 
@@ -158,6 +157,21 @@ void Scene::Tick(float deltaTime, float totalTime)
 
 
 	//enti->GetComponent<ScriptComponent>()->Update(); 
+
+	{
+		DirectX::BoundingSphere sphere(DirectX::XMFLOAT3(0, 0, 0), 2);
+		BoundRenderer::instance()->Draw(sphere);
+
+		DirectX::BoundingBox aabb(
+			DirectX::XMFLOAT3(0, 0, 0),
+			DirectX::XMFLOAT3(1, 1, 1));
+		DirectX::BoundingOrientedBox box;
+		DirectX::BoundingOrientedBox::CreateFromBoundingBox(box, aabb);
+		box.Transform(box, 1,
+			DirectX::XMQuaternionRotationRollPitchYaw(0, rot, 0)
+			, DirectX::XMVectorSet(0, 0, 0, 0));
+		BoundRenderer::instance()->Draw(box);
+	}
 }
 
 void Scene::Exit()
@@ -166,6 +180,7 @@ void Scene::Exit()
 		delete e;
 	}
 	entities.clear();
+
 	delete lights;
 
 	// all entities should be deleted before deleting component manager

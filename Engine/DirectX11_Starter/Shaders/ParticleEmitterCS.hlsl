@@ -19,5 +19,8 @@ void main(uint3 DTid : SV_DispatchThreadID)
 		particles[pid].position.xz += (randomFloat.xz % 10) / 100;
 
 		particles[pid].velocity = velocity;
+
+		float3 randomFloat2 = curlNoise3D(particles[pid].velocity.xyz, totalTime);
+		particles[pid].velocity.xyz += (randomFloat2.xyz % 10) / 100;
 	}
 }

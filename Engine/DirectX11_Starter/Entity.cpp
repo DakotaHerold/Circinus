@@ -3,19 +3,26 @@
 
 using namespace std;
 
+Entity::Entity() 
+	: name("Entity")
+{
+
+}
+
+Entity::Entity(string name)
+	: name(name)
+{
+
+}
+
 Entity::~Entity()
 {
 	ComponentManager::current->RemoveAllComponents(GetID());
 }
 
-Entity::Entity() {
-	// 
-	name = "Entity";
-}
-
-Entity::Entity(string name)
+bool Entity::RemoveComponent(TypeId typeID)
 {
-	this->name = name;
+	return ComponentManager::current->RemoveComponent(GetID(), typeID);
 }
 
 string Entity::GetName()

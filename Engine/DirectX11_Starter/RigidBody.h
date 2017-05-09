@@ -15,13 +15,16 @@ public:
 
 	#pragma region Getters and Setters
 	Transform* GetTransform() { return trans; }
-	const DirectX::BoundingBox* GetBoudingBox() { return box; }
+	//DirectX::BoundingOrientedBox* GetBoudingBox() { return obb; }
 	#pragma endregion 
 
-	bool CollisionCheck(RigidBody *otherRbody);
+	bool SphereCollisionCheck(RigidBody *otherRbody);
+	bool BoxCollisionCheck(RigidBody *otherRbody);
+
 
 private:
 	Transform* trans; 
-	const DirectX::BoundingBox* box; 
+	//const DirectX::BoundingBox* box; 
+	DirectX::BoundingOrientedBox* obb; 
 };
 

@@ -23,16 +23,10 @@ public:
 	
 	// TODO: const function
 	template <typename T>
-	T* GetComponent(int entityID);
+	T* GetComponent(int entityID, ObjectPoolIndex *index = nullptr);
 
-	template <typename T>
-	T* GetComponent(int entityID, ObjectPoolIndex index);
-
-	template <typename T>
-	bool RemoveComponent(int entityID);
-
-	template <typename T>
-	void RemoveComponent(int entityID, ObjectPoolIndex index);
+	//template <typename T>
+	//bool RemoveComponent(int entityID, ObjectPoolIndex *index = nullptr);
 
 	//bool HasComponent(int entityID, TypeId componentTypeId) const;
 
@@ -41,10 +35,12 @@ public:
 
 	std::vector<std::pair<TypeId, ObjectPoolIndex *>> GetAllComponents(int entityID);
 
+	bool RemoveComponent(int entityID, TypeId typeID, ObjectPoolIndex *index = nullptr);
+
 	void RemoveAllComponents(int entityID);
 
-	Transform* root;
-	static ComponentManager* current;	
+	Transform *root;
+	static ComponentManager *current;	
 
 private:
 	Scene* curScene;
@@ -54,6 +50,11 @@ private:
 
 	template<typename T>
 	ObjectPool<T>* GetComponentPool();
+
+	ObjectPoolBase* GetComponentPool(TypeId typeID);
+
+	int GetObjectPoolIndex(eidType entityID, TypeId typeID, bool deleteIndex = false);
+	bool CheckObjectPoolIndex(eidType entityID, TypeId typeID, ObjectPoolIndex * index, bool deleteIndex = false);
 };
 
 template<typename T>
@@ -61,15 +62,15 @@ inline ObjectPool<T>* ComponentManager::GetComponentPool()
 {
 	auto it = ComponentPoolsMap.find(ComponentTypeId<T>());
 
-	// there's no such element in the map
-	if (it == ComponentPoolsMap.end()) {
-		ObjectPool<T> *pool = new ObjectPool<T>();
+	ObjectPool<T> *pool = reinterpret_cast<ObjectPool<T>*>(GetComponentPool(ComponentTypeId<T>()));
+
+	// make a pool
+	if (pool == nullptr) {
+		pool = new ObjectPool<T>();
 		ComponentPoolsMap[ComponentTypeId<T>()] = pool;
-		return pool;
 	}
-	else {
-		return reinterpret_cast<ObjectPool<T>*>(it->second);
-	}
+	
+	return pool;
 }
 
 template <typename T, typename... Args>
@@ -87,50 +88,25 @@ inline T* ComponentManager::AddComponent(int entityID, Args && ...args)
 }
 
 template<typename T>
-inline T * ComponentManager::GetComponent(int entityID)
+inline T * ComponentManager::GetComponent(int entityID, ObjectPoolIndex* index)
 {
-	std::vector<ObjectPoolIndex *> indices = entityComponentsMap[entityID][ComponentTypeId<T>()];
-
-	if (indices.size() == 0) {
-#if defined(DEBUG) || defined(_DEBUG)
-		throw "No that component";
-#endif
-		return nullptr;
+	if (index == nullptr) {
+		return GetComponentPool<T>()->Get(GetObjectPoolIndex(entityID, ComponentTypeId<T>()));
 	}
 	else {
-		return GetComponent<T>(entityID, *(indices.back()));
+		if (!CheckObjectPoolIndex(entityID, ComponentTypeId<T>(), index)) {
+			return nullptr;
+		}
+
+		return GetComponentPool<T>()->Get(*index);
 	}
 }
 
-template<typename T>
-inline T * ComponentManager::GetComponent(int entityID, ObjectPoolIndex index)
-{
-	return GetComponentPool<T>()->Get(index);
-}
-
-template<typename T>
-inline bool ComponentManager::RemoveComponent(int entityID)
-{
-	std::vector<ObjectPoolIndex *> indices = entityComponentsMap[entityID][ComponentTypeId<T>()];
-
-	if (indices.size() == 0) {
-#if defined(DEBUG) || defined(_DEBUG)
-		throw "No that component";
-#endif
-		return false;
-	}
-	else {
-		RemoveComponent<T>(entityID, *(indices.back()));
-		indices.pop_back();
-		return true;
-	}
-}
-
-template<typename T>
-inline void ComponentManager::RemoveComponent(int entityID, ObjectPoolIndex index)
-{
-	GetComponentPool<T>()->Return(index);
-}
+//template<typename T>
+//inline bool ComponentManager::RemoveComponent(int entityID, ObjectPoolIndex* index)
+//{
+//	return RemoveComponent(entityID, ComponentTypeId<T>(), index);
+//}
 
 template<typename T>
 inline ResultComponents<T> ComponentManager::GetAllComponents()

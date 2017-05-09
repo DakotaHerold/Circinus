@@ -83,6 +83,11 @@ bool ParticleSystem::Init(ID3D11Device* device, ID3D11DeviceContext* context)
 		blendDesc.RenderTarget[0].BlendEnable = TRUE;
 		blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
 		blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+		blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+		blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+		blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
+		blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+		blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 		hr = device->CreateBlendState(&blendDesc, &blendState);
 		assert(hr == S_OK);
 
@@ -192,6 +197,7 @@ void ParticleSystem::Update(float deltaTime, float totalTime)
 
 bool ParticleSystem::Draw(const DirectX::XMFLOAT4X4& matView, const DirectX::XMFLOAT4X4& matProj)
 {
+	context->OMSetBlendState(blendState, 0, 0xFFFFFFFF);
 	if (totalEmitCount > 0)
 		FrameCapture::instance()->BeginCapture();
 

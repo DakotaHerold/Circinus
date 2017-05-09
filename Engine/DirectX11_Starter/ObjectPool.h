@@ -5,7 +5,7 @@
 #include <new>
 #include <assert.h>
 
-typedef int ObjectPoolIndex;
+typedef unsigned int ObjectPoolIndex;
 
 static const int ObjectPoolInitialLength = 100;
 static const int ObjectPoolResizeAmount = 50;
@@ -19,14 +19,14 @@ public:
 	Poolable() {};
 
 	virtual ~Poolable() {
-		if (poolIndex)
-			delete poolIndex;
+		//if (poolIndex)
+		//	delete poolIndex;
 	};
 
-	ObjectPoolIndex*	getPoolIndex() { return poolIndex; }
+	ObjectPoolIndex* getPoolIndex() { return poolIndex; }
 
 private:
-	ObjectPoolIndex*	poolIndex = nullptr;
+	ObjectPoolIndex* poolIndex = nullptr;
 };
 
 class ObjectPoolBase
@@ -78,8 +78,10 @@ ObjectPool<T>::ObjectPool(int length, int resizeAmount, bool isResizeAllowed)
 {
 	static_assert(std::is_base_of<Poolable, T>(), "T is not a poolable object, cannot make a ObjectPool for it.");
 
-	if (m_isResizeAllowed)
-		assert(resizeAmount != 0);
+	if (m_isResizeAllowed) {
+		if(resizeAmount == 0)
+			throw "Please provide a valid resize amount.";
+	}
 	
 	m_objects = reinterpret_cast<T *>(malloc(m_size * length));
 
@@ -93,12 +95,9 @@ ObjectPool<T>::ObjectPool(int length, int resizeAmount, bool isResizeAllowed)
 template<typename T>
 ObjectPool<T>::~ObjectPool()
 {
-	assert(m_objects != nullptr);
-
 	for (int i = 0; i < m_count; i++) {
 		// http://stackoverflow.com/questions/2995099/malloc-and-constructors
 		// http://en.cppreference.com/w/cpp/language/new
-		//reinterpret_cast<T *>(m_objects + i)->~T();
 		m_objects[i].~T();
 
 		//delete (m_objects + i);
@@ -145,7 +144,7 @@ inline T * ObjectPool<T>::Add(Args && ...args)
 
 	T* result = new (m_objects + m_count) T(std::forward<Args>(args)...);
 	// TODO: Get from global allocator
-	result->poolIndex = new int(m_count++);
+	result->poolIndex = new ObjectPoolIndex(m_count++);
 
 	return result;
 }
@@ -153,21 +152,31 @@ inline T * ObjectPool<T>::Add(Args && ...args)
 template<typename T>
 inline T * ObjectPool<T>::Get(ObjectPoolIndex index)
 {
-	assert(index < m_length);
+	if (index >= m_count) {
+		throw "index out of count!";
+	}
 	return m_objects + index;
 }
 
 template<typename T>
 inline void ObjectPool<T>::Return(ObjectPoolIndex index)
 {
-	assert(index < m_count);
+	if (index >= m_count) {
+		throw "index out of count!";
+	}
 
 	--m_count;
 
-	memcpy(m_objects + index, m_objects + m_count, m_size);
-	*(m_objects[index].poolIndex) = index;
+	delete m_objects[index].poolIndex;
+	m_objects[index].~T();
 
-	m_objects[m_count].~T();
+	if (index != m_count) {
+		memcpy(m_objects + index, m_objects + m_count, m_size);
+		*(m_objects[index].poolIndex) = index;
+
+		// FIXME: Should I erase memory??
+		memset(m_objects + m_count, 0, m_size);
+	}
 }
 
 template<typename T>

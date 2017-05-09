@@ -11,6 +11,7 @@
 
 #include "RenderingSystem.h"
 #include "ParticleSystem.h"
+#include "BoundRenderer.h"
 #include "NativeWindow.h"
 #include "SceneGraph.h"
 #if defined(_DEBUG)
@@ -68,6 +69,9 @@ RenderingSystem::RenderingSystem()
 // --------------------------------------------------------
 RenderingSystem::~RenderingSystem(void)
 {
+	boundRenderer->CleanUp();
+	delete boundRenderer;
+
 	particleSystem->CleanUp();
 	delete particleSystem;
 
@@ -138,6 +142,9 @@ bool RenderingSystem::Init(NativeWindow* win)
 	{
 		return false;
 	}
+
+	boundRenderer = new BoundRenderer();
+	boundRenderer->Init(device, deviceContext);
 
 	// Everything was set up properly
 	return true;
@@ -326,6 +333,7 @@ void RenderingSystem::OnResize(int windowWidth, int windowHeight)
 	aspectRatio = (float)windowWidth / windowHeight;
 	aspectRatioChanged = true;
 }
+
 void RenderingSystem::Update(float deltaTime, float totalTime)
 {
 	// TODO gathering particle emitters to update
@@ -351,8 +359,8 @@ void RenderingSystem::Update(float deltaTime, float totalTime)
 			)
 		);
 
-		DirectX::XMFLOAT3 pos = { 2.0f, 0.0f, 0.0f };
-		e.SetCBParameters(pos/**(t->GetWorldPosition())*/, worldVel, e.lifeTime, e.emitRate);
+		//DirectX::XMFLOAT3 pos = { 2.0f, 0.0f, 0.0f };
+		e.SetCBParameters(*(t->GetWorldPosition()), worldVel, e.lifeTime, e.emitRate);
 	}
 
 	particleSystem->Update(deltaTime, totalTime);
@@ -478,6 +486,8 @@ void RenderingSystem::DrawScene(DebugCam* cam, SceneGraph* scene)
 	// opaque stuff goes before this, and transparent stuff goes after this
 
 	particleSystem->Draw(cam->getViewMatrix(), cam->getProjectionMatrix());
+
+	boundRenderer->Render(cam->getViewMatrix(), cam->getProjectionMatrix());
 
 	GUI::instance().Draw();
 

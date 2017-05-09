@@ -18,7 +18,7 @@ cbuffer CameraConstants : register(b0)
 struct V2F
 {
 	float4 position : SV_POSITION;
-	float2 texcoord : TEXCOORD0;
+	float4 texcoord : TEXCOORD0;
 };
 
 V2F main(uint vid : SV_VertexID, uint iid : SV_InstanceID)
@@ -35,7 +35,9 @@ V2F main(uint vid : SV_VertexID, uint iid : SV_InstanceID)
 	pos.xy += (uv - 0.5) * 1;
 
 	output.position = mul(pos, projection);
-	output.texcoord = uv;
+	output.texcoord.xy = uv;
+
+	output.texcoord.w = 1 - pow((2 * particles[pid].position.w / particles[pid].velocity.w) - 1, 2);
 
 	return output;
 }
