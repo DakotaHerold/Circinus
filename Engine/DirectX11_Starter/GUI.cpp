@@ -99,6 +99,7 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 								ImGui::Separator();
 								if (ImGui::Button("Delete")) {
 									// Popup yes/no?
+									cm->RemoveComponent((*it)->GetID(), that->first);
 								}
 								ImGui::EndPopup();
 							}
