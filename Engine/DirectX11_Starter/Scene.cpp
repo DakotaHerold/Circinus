@@ -121,7 +121,7 @@ void Scene::Enter()
 
 	// OctTree Initialization --------------------------------------
 	//Point* point = new Point(0, 0, 17.5f, 1);
-	pointCount = 6;
+	pointCount = 7;
 	points = new Point*[pointCount]; 
 	points[0] = new Point(-1.0f, 0.0f, 20.0f, 0);
 	points[1] = new Point(0.0f, 0.0f, 15.0f, 1);
@@ -129,7 +129,8 @@ void Scene::Enter()
 	points[3] = new Point(3.0f, -4.0f, 15.0f, 3);
 	points[4] = new Point(3.0f, 3.9f, 15.0f, 4);
 	points[5] = new Point(3.0f, 3.5f, 15.0f, 5);
-	points[3] = new Point(0.0f, 0.0f, 20.0f, 4);
+	points[6] = new Point(0.0f, 0.0f, 20.0f, 4);
+
 
 
 	DirectX::BoundingBox aabb(
@@ -142,11 +143,7 @@ void Scene::Enter()
 	
 	oct = new Octree(); 
 	oct->build(points, pointCount, 1, 10, box, 0);
-	//for (int i = 0; i < pointCount; i++)
-	//{
-	//	delete[] points[i];
-	//}
-	//delete[] points; 
+
 }
 
 void Scene::Tick(float deltaTime, float totalTime)
@@ -204,11 +201,11 @@ void Scene::Tick(float deltaTime, float totalTime)
 	//}
 	//box.Extents.x += 0.001f;
 	//BoundRenderer::instance()->Draw(box);
-	points[0]->y += 0.0001f; 
-	points[0]->x += 0.0001f;
+	//points[0]->y += 0.0001f; 
+	//points[0]->x += 0.0001f;
 
 	//oct->build(points, pointCount, 1, 10, box, 0);
-	oct->Update(); 
+	//oct->Update(); 
 }
 
 void Scene::Exit()
@@ -221,6 +218,13 @@ void Scene::Exit()
 	delete lights;
 
 	delete oct;
+
+	for (int i = 0; i < pointCount; i++)
+	{
+		delete[] points[i];
+	}
+	delete[] points;
+
 
 	// all entities should be deleted before deleting component manager
 	delete componentManager;

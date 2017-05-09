@@ -92,7 +92,6 @@ const   bool    Octree::build(Point **points,
 
 		// Allocate a list of points that were coded JUST for this child
 		// only
-		//std::cout << childPointCounts[i] << std::endl;
 		Point   **newList = new Point *[childPointCounts[i]];
 
 		// Go through the input list of points and copy over the points
@@ -119,11 +118,6 @@ const   bool    Octree::build(Point **points,
 			// Remove duplicates from newList
 			// ...
 			// Keep track of the new count in 'newCount'
-
-			if (points[j]->n == newList[j]->n)
-			{
-				//newList[j]--; 
-			}
 			
 			newCount++;	
 			/*if (points[j]->n == j)
@@ -178,17 +172,17 @@ const   bool    Octree::build(Point **points,
 
 
 		// Recurse
-		_child[i]->build(newList, newCount, threshold, maximumDepth,
-			newBounds, currentDepth + 1);
+		//_child[i]->build(newList, newCount, threshold, maximumDepth,
+		//	newBounds, currentDepth + 1);
 
 		// Clean up -- FIX ME
-		//for (int j = 0; j < childPointCounts[i]; j++)
-		//{
-		//	delete [] newList[j];
-		//}
-		//delete [] newList;
-		
-		
+		for (int j = 0; j < childPointCounts[i]; j++)
+		{
+			//delete[] newList[j];
+			newList[j] = nullptr; 
+		}
+		delete [] newList;
+		//delete newList;
 	}
 
 	return true;
