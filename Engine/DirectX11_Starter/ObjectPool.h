@@ -18,10 +18,7 @@ class Poolable {
 public:
 	Poolable() {};
 
-	virtual ~Poolable() {
-		//if (poolIndex)
-		//	delete poolIndex;
-	};
+	virtual ~Poolable() {};
 
 	ObjectPoolIndex* getPoolIndex() { return poolIndex; }
 
