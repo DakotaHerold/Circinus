@@ -30,6 +30,8 @@ public:
 	void Draw(const DirectX::BoundingOrientedBox& bound, const DirectX::XMFLOAT3& color = white);
 	void Draw(const DirectX::BoundingSphere& bound, const DirectX::XMFLOAT3& color = white);
 	
+	void DrawCoordinate(const DirectX::XMFLOAT4X4& viewMatrix, const DirectX::XMFLOAT3 viewSpacePos);
+
 private:
 	inline uint32_t AddVertex(const DirectX::XMFLOAT3& vert, const DirectX::XMFLOAT3& color) { pVertices[curVertex] = Vertex{ vert, color }; return (curVertex++); }
 	inline uint32_t AddIndex(uint32_t index) { pIndices[curIndex] = index; return (curIndex++); }

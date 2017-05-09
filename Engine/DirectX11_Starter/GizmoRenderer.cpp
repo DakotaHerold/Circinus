@@ -131,6 +131,16 @@ void GizmoRenderer::Draw(const BoundingSphere & bound, const DirectX::XMFLOAT3& 
 	AddRing(origin, yaxis, zaxis, color);
 }
 
+void GizmoRenderer::DrawCoordinate(const DirectX::XMFLOAT4X4 & viewMatrix, const DirectX::XMFLOAT3 viewSpacePos)
+{
+	XMMATRIX viewMat, viewMat_Inv;
+	viewMat = XMLoadFloat4x4(&viewMatrix);
+	viewMat_Inv = XMMatrixInverse(nullptr, viewMat);
+
+	XMVECTOR origin = XMVector4Transform(XMLoadFloat3(&viewSpacePos), viewMat_Inv);
+
+}
+
 void GizmoRenderer::AddCube(DirectX::CXMMATRIX & matWorld, const DirectX::XMFLOAT3& color)
 {
 	static const XMVECTORF32 s_verts[8] =
