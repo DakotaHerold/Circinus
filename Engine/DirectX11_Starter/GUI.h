@@ -18,6 +18,9 @@ private:
 
 	bool DebugDisplayFlag = false;
 	bool HierarchyDisplayFlag = false;
+	bool ComponentDisplayFlag = false;
+
+	Entity * selectedEntity = nullptr; // This is a dummy variable. I did not want to allocate and deallocate this every frame.
 
 	GUI();
 
