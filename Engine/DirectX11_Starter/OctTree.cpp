@@ -120,12 +120,6 @@ const   bool    Octree::build(Point **points,
 			// Keep track of the new count in 'newCount'
 			
 			newCount++;	
-			/*if (points[j]->n == j)
-			{
-				*newList = points[j];
-				newList--;
-				newCount--;
-			}*/
 		}
 
 		// Generate a new bounding volume -- We do this with a touch of
