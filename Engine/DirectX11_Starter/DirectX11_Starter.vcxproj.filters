@@ -198,7 +198,7 @@
     <ClCompile Include="FrameCapture.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="BoundRenderer.cpp">
+    <ClCompile Include="GizmoRenderer.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
@@ -362,7 +362,7 @@
     <ClInclude Include="FrameCapture.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="BoundRenderer.h">
+    <ClInclude Include="GizmoRenderer.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
   </ItemGroup>
@@ -406,7 +406,7 @@
     <FxCompile Include="Shaders\ParticleVS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\BoundRenderer.fx">
+    <FxCompile Include="Shaders\GizmoRenderer.fx">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>

@@ -11,7 +11,7 @@
 
 #include "RenderingSystem.h"
 #include "ParticleSystem.h"
-#include "BoundRenderer.h"
+#include "GizmoRenderer.h"
 #include "NativeWindow.h"
 #include "SceneGraph.h"
 #if defined(_DEBUG)
@@ -71,8 +71,8 @@ RenderingSystem::RenderingSystem()
 // --------------------------------------------------------
 RenderingSystem::~RenderingSystem(void)
 {
-	boundRenderer->CleanUp();
-	delete boundRenderer;
+	gizmoRenderer->CleanUp();
+	delete gizmoRenderer;
 
 	particleSystem->CleanUp();
 	delete particleSystem;
@@ -145,8 +145,8 @@ bool RenderingSystem::Init(NativeWindow* win)
 		return false;
 	}
 
-	boundRenderer = new BoundRenderer();
-	boundRenderer->Init(device, deviceContext);
+	gizmoRenderer = new GizmoRenderer();
+	gizmoRenderer->Init(device, deviceContext);
 
 	// Everything was set up properly
 	return true;
@@ -492,7 +492,7 @@ void RenderingSystem::DrawScene(DebugCam* cam, SceneGraph* scene)
 	particleSystem->Draw(cam->getViewMatrix(), cam->getProjectionMatrix());
 #endif
 
-	boundRenderer->Render(cam->getViewMatrix(), cam->getProjectionMatrix());
+	gizmoRenderer->Render(cam->getViewMatrix(), cam->getProjectionMatrix());
 
 	GUI::instance().Draw();
 

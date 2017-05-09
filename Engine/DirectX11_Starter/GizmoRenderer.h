@@ -8,16 +8,18 @@ struct ID3D11Buffer;
 struct ID3DX11Effect;
 struct ID3D11InputLayout;
 
-class BoundRenderer
+class GizmoRenderer
 {
 private:
-	static BoundRenderer* _instance;
+	static GizmoRenderer* _instance;
 
 public:
-	static BoundRenderer* instance() { return _instance; }
+	static GizmoRenderer* instance() { return _instance; }
 
 	static const DirectX::XMFLOAT3 white;
 	static const DirectX::XMFLOAT3 red;
+	static const DirectX::XMFLOAT3 green;
+	static const DirectX::XMFLOAT3 blue;
 
 public:
 	void Reset();

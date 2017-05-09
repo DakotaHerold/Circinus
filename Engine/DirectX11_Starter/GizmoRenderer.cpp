@@ -1,4 +1,4 @@
-#include "BoundRenderer.h"
+#include "GizmoRenderer.h"
 
 #include <PrimitiveBatch.h>
 #include <d3dx11effect.h>
@@ -6,12 +6,14 @@
 using namespace DirectX;
 
 
-BoundRenderer* BoundRenderer::_instance = nullptr;
+GizmoRenderer* GizmoRenderer::_instance = nullptr;
 
-const XMFLOAT3 BoundRenderer::white = XMFLOAT3(1, 1, 1);
-const XMFLOAT3 BoundRenderer::red = XMFLOAT3(1, 0, 0);
+const XMFLOAT3 GizmoRenderer::white = XMFLOAT3(1, 1, 1);
+const XMFLOAT3 GizmoRenderer::red = XMFLOAT3(1, 0, 0);
+const XMFLOAT3 GizmoRenderer::green = XMFLOAT3(0, 1, 0);
+const XMFLOAT3 GizmoRenderer::blue = XMFLOAT3(0, 0, 1);
 
-void BoundRenderer::Reset()
+void GizmoRenderer::Reset()
 {
 	HRESULT hr = S_OK;
 	D3D11_MAPPED_SUBRESOURCE vbRes, ibRes;
@@ -28,7 +30,7 @@ void BoundRenderer::Reset()
 	curIndex = 0;
 }
 
-void BoundRenderer::Render(const DirectX::XMFLOAT4X4& matView, const DirectX::XMFLOAT4X4& matProj)
+void GizmoRenderer::Render(const DirectX::XMFLOAT4X4& matView, const DirectX::XMFLOAT4X4& matProj)
 {
 	if (0 == curIndex || 0 == curVertex) return;
 	assert(nullptr != pVertices || nullptr != pIndices);
@@ -60,7 +62,7 @@ void BoundRenderer::Render(const DirectX::XMFLOAT4X4& matView, const DirectX::XM
 	Reset();
 }
 
-void BoundRenderer::Draw(const BoundingBox & bound, const DirectX::XMFLOAT3& color)
+void GizmoRenderer::Draw(const BoundingBox & bound, const DirectX::XMFLOAT3& color)
 {
 	XMMATRIX matWorld = XMMatrixScaling(bound.Extents.x, bound.Extents.y, bound.Extents.z);
 	XMVECTOR position = XMLoadFloat3(&bound.Center);
@@ -69,7 +71,7 @@ void BoundRenderer::Draw(const BoundingBox & bound, const DirectX::XMFLOAT3& col
 	AddCube(matWorld, color);
 }
 
-void BoundRenderer::Draw(const BoundingFrustum & bound, const DirectX::XMFLOAT3& color)
+void GizmoRenderer::Draw(const BoundingFrustum & bound, const DirectX::XMFLOAT3& color)
 {
 	XMFLOAT3 corners[BoundingFrustum::CORNER_COUNT];
 	bound.GetCorners(corners);
@@ -103,7 +105,7 @@ void BoundRenderer::Draw(const BoundingFrustum & bound, const DirectX::XMFLOAT3&
 
 }
 
-void BoundRenderer::Draw(const BoundingOrientedBox & bound, const DirectX::XMFLOAT3& color)
+void GizmoRenderer::Draw(const BoundingOrientedBox & bound, const DirectX::XMFLOAT3& color)
 {
 	XMMATRIX matWorld = XMMatrixRotationQuaternion(XMLoadFloat4(&bound.Orientation));
 	XMMATRIX matScale = XMMatrixScaling(bound.Extents.x, bound.Extents.y, bound.Extents.z);
@@ -114,7 +116,7 @@ void BoundRenderer::Draw(const BoundingOrientedBox & bound, const DirectX::XMFLO
 	AddCube(matWorld, color);
 }
 
-void BoundRenderer::Draw(const BoundingSphere & bound, const DirectX::XMFLOAT3& color)
+void GizmoRenderer::Draw(const BoundingSphere & bound, const DirectX::XMFLOAT3& color)
 {
 	XMVECTOR origin = XMLoadFloat3(&bound.Center);
 
@@ -129,7 +131,7 @@ void BoundRenderer::Draw(const BoundingSphere & bound, const DirectX::XMFLOAT3& 
 	AddRing(origin, yaxis, zaxis, color);
 }
 
-void BoundRenderer::AddCube(DirectX::CXMMATRIX & matWorld, const DirectX::XMFLOAT3& color)
+void GizmoRenderer::AddCube(DirectX::CXMMATRIX & matWorld, const DirectX::XMFLOAT3& color)
 {
 	static const XMVECTORF32 s_verts[8] =
 	{
@@ -175,7 +177,7 @@ void BoundRenderer::AddCube(DirectX::CXMMATRIX & matWorld, const DirectX::XMFLOA
 	curIndex += 24;
 }
 
-void BoundRenderer::AddRing(FXMVECTOR origin, FXMVECTOR majorAxis, FXMVECTOR minorAxis, const DirectX::XMFLOAT3& color)
+void GizmoRenderer::AddRing(FXMVECTOR origin, FXMVECTOR majorAxis, FXMVECTOR minorAxis, const DirectX::XMFLOAT3& color)
 {
 	static const size_t c_ringSegments = 32;
 
@@ -218,7 +220,7 @@ void BoundRenderer::AddRing(FXMVECTOR origin, FXMVECTOR majorAxis, FXMVECTOR min
 	curIndex += c_ringSegments * 2;
 }
 
-void BoundRenderer::Init(ID3D11Device * device, ID3D11DeviceContext * context)
+void GizmoRenderer::Init(ID3D11Device * device, ID3D11DeviceContext * context)
 {
 	assert(nullptr == _instance);
 
@@ -244,7 +246,7 @@ void BoundRenderer::Init(ID3D11Device * device, ID3D11DeviceContext * context)
 	hr = device->CreateBuffer(&cbDesc, nullptr, &constantBuffer);
 	assert(S_OK == hr);
 
-	hr = D3DX11CreateEffectFromFile(L"Assets/ShaderObjs/BoundRenderer.cso", 0, device, &effect);
+	hr = D3DX11CreateEffectFromFile(L"Assets/ShaderObjs/GizmoRenderer.cso", 0, device, &effect);
 	assert(S_OK == hr);
 
 	{
@@ -270,7 +272,7 @@ void BoundRenderer::Init(ID3D11Device * device, ID3D11DeviceContext * context)
 	_instance = this;
 }
 
-void BoundRenderer::CleanUp()
+void GizmoRenderer::CleanUp()
 {
 	if (nullptr != pVertices)
 	{
