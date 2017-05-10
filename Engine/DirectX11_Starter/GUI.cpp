@@ -16,6 +16,18 @@ void GUI::Init(HWND hwnd, ID3D11Device* device, ID3D11DeviceContext* device_cont
 		MessageBox(hwnd, L"ImGUI Init Failed", L"Warning", 0);
 	}
 
+	// Window Flag Constants
+
+	// Hierarchy Window Flags.
+	_hwFlag |= ImGuiWindowFlags_NoMove;
+	_hwFlag |= ImGuiWindowFlags_NoSavedSettings;
+	_hwFlag |= ImGuiWindowFlags_NoResize;
+
+	// Component Window Flags.
+	_cwFlag |= ImGuiWindowFlags_NoMove;
+	_cwFlag |= ImGuiWindowFlags_NoSavedSettings;
+	_cwFlag |= ImGuiWindowFlags_NoResize;
+
 }
 
 void GUI::Draw()
@@ -27,6 +39,7 @@ void GUI::Draw()
 
 void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 {
+	cm = ComponentManager::current;
 
 	// Use this to Update the frames. I.e, create new stuff I guess.
 	ImGui_ImplDX11_NewFrame();
@@ -46,70 +59,71 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 		}
 	}
 
+	// Temp Variable to hold the selection thing.
+	bool _somthingSelected = false;
+
 	// Hierarchy Window
 	if (HierarchyDisplayFlag) {
-		ImGuiWindowFlags hwflag = 0;
-		hwflag |= ImGuiWindowFlags_NoMove;
-		hwflag |= ImGuiWindowFlags_NoSavedSettings;
-		hwflag |= ImGuiWindowFlags_NoResize;
 
+		// TODO: Can probably move these to Init Function.
 		ImVec2 hwPos = ImVec2(2 * _windowWidth / 3, 20);
 		ImVec2 hwSize = ImVec2(_windowWidth / 3, _windowHeight / 2);
 		ImGui::SetNextWindowPos(hwPos);
 		ImGui::SetNextWindowSize(hwSize);
-		ImGui::Begin("Hierarchy", &HierarchyDisplayFlag, hwflag);
+		ImGui::Begin("Hierarchy", &HierarchyDisplayFlag, _hwFlag);
 		{
 			ImGui::Text("Hierarchy");
 			ImGui::Separator();
-			if (ImGui::TreeNode("First Object")) {
-				// TODO:: Abstract the context menu thing. We would use that a lot.
-				if (ImGui::BeginPopupContextItem("First Object Context Menu")) {
-					ImGui::Button("Rename");
-					ImGui::Button("Duplicate");
-					ImGui::Separator();
-					ImGui::Button("Delete");
-					ImGui::EndPopup();
-				}
-				ImGui::Text("Mesh");
-				ImGui::Text("Rigidbody");
-
-				ImGui::TreePop();
-			}
 
 			vector<Entity *> curSceneEntities = Engine::instance()->GetCurScene()->GetAllEntities();
 			int entCounter = 0;
-			int compCounter = 0;
 
 			for (std::vector<Entity *>::iterator it = curSceneEntities.begin(); it != curSceneEntities.end(); ++it) {
 				++entCounter;
-				if (ImGui::TreeNode(((*it)->GetName() + " (" + std::to_string(entCounter) + ")").c_str())) {
-					ComponentManager * cm = ComponentManager::current;
-					vector<pair<TypeId, ObjectPoolIndex *>> Components;
-					Components = cm->GetAllComponents((*it)->GetID());
-					for (vector<pair<TypeId, ObjectPoolIndex *>>::iterator that = Components.begin(); that != Components.end(); ++that) {
-						++compCounter;
-						//std::string tempString = (ComponentTypeName(that->first)) + std::to_string(entCounter) + "-" + std::to_string(compCounter);
-						ImGui::Text(((ComponentTypeName(that->first)) + std::string(" (") + std::to_string(entCounter) + "-" + std::to_string(compCounter) + std::string(")")).c_str());
-						{
-							if (ImGui::BeginPopupContextItem(((ComponentTypeName(that->first)) + std::string(" (") + std::to_string(entCounter) + "-" + std::to_string(compCounter) + std::string(") Popup")).c_str())) {
-								if (ImGui::Button("Rename")) {
-									// Popup something here.
-								}
-								ImGui::Button("Duplicate");
-								ImGui::Separator();
-								if (ImGui::Button("Delete")) {
-									// Popup yes/no?
-								}
-								ImGui::EndPopup();
-							}
-						}
-					}
-
-					ImGui::TreePop();
+				if (ImGui::Selectable(((*it)->GetName() + " (" + std::to_string(entCounter) + ")").c_str())) {
+					selectedEntity = *it;
+					ComponentDisplayFlag = true;
+					_somthingSelected = true;
 				}
-				
 			}
 
+			ImGui::End();
+		}
+	}
+
+	// Component Window
+	if (nullptr != selectedEntity && ComponentDisplayFlag) {
+
+		// TODO: Can probably move these to Init Function.
+		ImVec2 cwPos = ImVec2(2 * _windowWidth / 3,  _windowHeight/2 + 20);
+		ImVec2 cwSize = ImVec2(_windowWidth / 3, _windowHeight / 2 - 20);
+		ImGui::SetNextWindowPos(cwPos);
+		ImGui::SetNextWindowSize(cwSize);
+
+		ImGui::Begin("Component", &ComponentDisplayFlag, _cwFlag);
+		{
+			int compCounter = 0;
+			vector<pair<TypeId, ObjectPoolIndex *>> Components;
+			Components = cm->GetAllComponents((selectedEntity)->GetID());
+			for (vector<pair<TypeId, ObjectPoolIndex *>>::iterator that = Components.begin(); that != Components.end(); ++that) {
+				++compCounter;
+				//std::string tempString = (ComponentTypeName(that->first)) + std::to_string(entCounter) + "-" + std::to_string(compCounter);
+				ImGui::Text(((ComponentTypeName(that->first)) + std::string(" (") + /* std::to_string(entCounter) + */ "-" + std::to_string(compCounter) + std::string(")")).c_str());
+				{
+					if (ImGui::BeginPopupContextItem(((ComponentTypeName(that->first)) + std::string(" (") /* + std::to_string(entCounter) */ + "-" + std::to_string(compCounter) + std::string(") Popup")).c_str())) {
+						if (ImGui::Button("Rename")) {
+							// Popup something here.
+						}
+						ImGui::Button("Duplicate");
+						ImGui::Separator();
+						if (ImGui::Button("Delete")) {
+							// Popup yes/no?
+							cm->RemoveComponent((selectedEntity)->GetID(), that->first);
+						}
+						ImGui::EndPopup();
+					}
+				}
+			}
 			ImGui::End();
 		}
 	}

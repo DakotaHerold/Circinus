@@ -18,6 +18,16 @@ private:
 
 	bool DebugDisplayFlag = false;
 	bool HierarchyDisplayFlag = false;
+	bool ComponentDisplayFlag = false;
+
+
+	// Window Flag Constants
+	ImGuiWindowFlags _cwFlag = 0;
+	ImGuiWindowFlags _hwFlag = 0;
+
+	ComponentManager * cm = ComponentManager::current;
+
+	Entity * selectedEntity = nullptr; // This is a dummy variable. I did not want to allocate and deallocate this every frame.
 
 	GUI();
 
