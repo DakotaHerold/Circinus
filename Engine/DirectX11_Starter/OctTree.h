@@ -26,10 +26,12 @@ public:
 		y = yParam;
 		z = zParam;
 		n = nParam; 
+		dirty = false; 
 	}
 	float          x, y, z;        // Position
 	unsigned int      n;              // User's unique identifier
 	unsigned int    code;           // Used during octree generation
+	bool dirty; 
 
 	// Insert typical operators, such as *, +, -, etc.
 	Point operator*(const DirectX::XMFLOAT3 vec) 
@@ -40,6 +42,14 @@ public:
 		p.y *= vec.y; 
 		p.z *= vec.z;
 		return p; 
+	}
+
+	void Move(float xParam, float yParam, float zParam)
+	{
+		x += xParam; 
+		y += yParam; 
+		z += zParam;
+		dirty = true; 
 	}
 };
 
@@ -88,5 +98,4 @@ protected:
 	Point                   **_points;
 	Point                   _center;
 	DirectX::BoundingOrientedBox box; 
-	float                  _radius;
 };

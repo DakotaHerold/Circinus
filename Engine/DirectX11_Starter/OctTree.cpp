@@ -3,7 +3,7 @@
 // Construction -- Just "nullify" the class
 // -----------------------------------------------------------------------------
 Octree::Octree()
-	: _pointCount(0), _points(NULL), _center(0.0f, 0.0f, 0.0f, 0), _radius(0.0f)
+	: _pointCount(0), _points(NULL), _center(0.0f, 0.0f, 0.0f, 0)
 {
 	memset(_child, 0, sizeof(_child));
 }
@@ -246,18 +246,15 @@ const bool Octree::traverse(callback proc, void *data) const
 {
 	// Call the callback for this node (if the callback returns false, then
 	// stop traversing.
-
 	if (!proc(*this, data)) return false;
 
 	// If I'm a node, recursively traverse my children
-
 	if (!_pointCount)
 	{
 		for (unsigned int i = 0; i < 8; i++)
 		{
 			// We store incomplete trees (i.e. we're not guaranteed
 			// that a node has all 8 children)
-
 			if (!_child[i]) continue;
 
 			if (!_child[i]->traverse(proc, data)) return false;
