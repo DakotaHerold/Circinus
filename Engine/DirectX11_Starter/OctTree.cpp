@@ -14,12 +14,19 @@ Octree::Octree()
 Octree::~Octree()
 {
 	delete[] _points;
+
+	// Delete all child OctTrees 
+	for (int i = 0; i < 8; i++)
+	{
+		delete _child[i];
+	}
 }
 
 // -----------------------------------------------------------------------------
 // Build the octree
 // -----------------------------------------------------------------------------
-const   bool    Octree::build(Point **points,
+const   bool    Octree::build(
+	Point **points,
 	const unsigned int count,
 	const unsigned int threshold,
 	const unsigned int maximumDepth,
@@ -80,6 +87,7 @@ const   bool    Octree::build(Point **points,
 		childPointCounts[p.code] += 1; 
 	}
 
+	//Point   **newList; 
 	// Recursively call build() for each of the 8 children
 	for (int i = 0; i < 8; i++)
 	{
@@ -92,7 +100,7 @@ const   bool    Octree::build(Point **points,
 
 		// Allocate a list of points that were coded JUST for this child
 		// only
-		Point   **newList = new Point *[childPointCounts[i]];
+		Point   **newList = new Point *[childPointCounts[i] + 1];
 
 		// Go through the input list of points and copy over the points
 		// that were coded for this child
@@ -166,18 +174,19 @@ const   bool    Octree::build(Point **points,
 
 
 		// Recurse
-		//_child[i]->build(newList, newCount, threshold, maximumDepth,
-		//	newBounds, currentDepth + 1);
+		_child[i]->build(newList, newCount, threshold, maximumDepth,
+			newBounds, currentDepth + 1);
 
-		// Clean up -- FIX ME
-		for (int j = 0; j < childPointCounts[i]; j++)
-		{
-			//delete[] newList[j];
-			newList[j] = nullptr; 
-		}
+		// Clean up pointers 
+		//for (int j = 0; j < childPointCounts[i]; j++)
+		//{
+		//	newList[j] = nullptr; 
+		//	//delete[] newList[j];
+		//}
 		delete [] newList;
-		//delete newList;
+		
 	}
+	
 
 	return true;
 }
