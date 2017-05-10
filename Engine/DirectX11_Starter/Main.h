@@ -5,13 +5,19 @@
 #include <mutex>
 #include "DirectXGameCore.h"
 #include "SimpleShader.h"
+#include "Texture.h"
+#include "Material.h"
 #include "Mesh.h"
 #include "Entity.h"
 #include "Camera.h"
+#include "DebugCam.h"
 #include "Lights.h"
-#include "InputManager.h";
+#include "InputManager.h"
 #include "vld.h"
-
+#include "DDSTextureLoader.h"
+#include "TestCom.h"
+#include "ScriptComponent.h"
+#include "ComponentManager.h"
 
 // Include run-time memory checking in debug builds, so 
 // we can be notified of memory leaks
@@ -39,6 +45,7 @@ public:
 	void OnMouseDown(WPARAM btnState, int x, int y);
 	void OnMouseUp(WPARAM btnState, int x, int y);
 	void OnMouseMove(WPARAM btnState, int x, int y);
+	void OnMouseWheel(float wheelDelta, int x, int y);
 
 private:
 	// Initialization for our "game" demo - Feel free to
@@ -48,17 +55,32 @@ private:
 	void CreateGeometry();
 	void CreateMatrices();
 
+	//DirectX related Buffers (for SkyBox)
+	ID3D11RasterizerState* rasterizerState;
+	ID3D11DepthStencilState* depthStencilState;
+
+	//Sampler
+	ID3D11SamplerState* sampler;
+
+	//SkyBox
+	ID3D11ShaderResourceView* skyBox;
+
 	//Meshes
+	Mesh* skyMesh;
 	Mesh* meshOne;
 
 	//Entities 
+	Entity* skyObject;
 	int MAX_ENTITIES = 100; 
 	Entity* entities[100]; 
+	Entity* testEnt;
 
 	//Camera
 	Camera* cam; 
+	DebugCam* debugCam;
 
 	//Material 
+	Material* skyMaterial;
 	Material* material; 
 
 	//Lights
@@ -69,7 +91,7 @@ private:
 
 	//Misc
 	bool leftmouseHeld; 
-	bool middlemouseHeld;
+	bool middleMouseHeld;
 	bool rightmouseHeld;
 
 	// Deferred Rendering
@@ -83,6 +105,11 @@ private:
 	// Wrappers for DirectX shaders to provide simplified functionality
 	SimpleVertexShader* vertexShader;
 	SimplePixelShader* pixelShader;
+	SimpleVertexShader* skyVertShader;
+	SimplePixelShader* skyPixShader;
+
+	Texture texDiffuse;
+	ID3D11SamplerState*	sampBasic;
 
 	// The matrices to go from model space to screen space
 	DirectX::XMFLOAT4X4 worldMatrix;

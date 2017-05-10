@@ -3,6 +3,7 @@
 #include <DirectXMath.h>
 #include "Vertex.h"
 #include "DirectXGameCore.h"
+#include "InputManager.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <d3d11.h>
@@ -27,7 +28,8 @@ public:
 	void moveForward(float displacement); 
 	void moveVertically(float displacement); 
 	void strafe(float displacement); 
-	void turn(float dx, float dy);
+	void turnWithMouse(float dx, float dy);
+	void turnWithController(float dx, float dy);
 	float restrictAngle(float angle); 
 
 	// Getters and Setters 
@@ -55,6 +57,8 @@ private:
 	XMFLOAT3 direction; 
 	float pitch; 
 	float yaw; 
-	
+	float cameraMoveSpeed; 
+	float mouseSensitivityBuffer; 
+	float controllerSensitivityBuffer; 
 };
 
