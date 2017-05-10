@@ -16,6 +16,18 @@ void GUI::Init(HWND hwnd, ID3D11Device* device, ID3D11DeviceContext* device_cont
 		MessageBox(hwnd, L"ImGUI Init Failed", L"Warning", 0);
 	}
 
+	// Window Flag Constants
+
+	// Hierarchy Window Flags.
+	_hwFlag |= ImGuiWindowFlags_NoMove;
+	_hwFlag |= ImGuiWindowFlags_NoSavedSettings;
+	_hwFlag |= ImGuiWindowFlags_NoResize;
+
+	// Component Window Flags.
+	_cwFlag |= ImGuiWindowFlags_NoMove;
+	_cwFlag |= ImGuiWindowFlags_NoSavedSettings;
+	_cwFlag |= ImGuiWindowFlags_NoResize;
+
 }
 
 void GUI::Draw()
@@ -47,18 +59,18 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 		}
 	}
 
+	// Temp Variable to hold the selection thing.
+	bool _somthingSelected = false;
+
 	// Hierarchy Window
 	if (HierarchyDisplayFlag) {
-		ImGuiWindowFlags hwflag = 0;
-		hwflag |= ImGuiWindowFlags_NoMove;
-		hwflag |= ImGuiWindowFlags_NoSavedSettings;
-		hwflag |= ImGuiWindowFlags_NoResize;
 
+		// TODO: Can probably move these to Init Function.
 		ImVec2 hwPos = ImVec2(2 * _windowWidth / 3, 20);
 		ImVec2 hwSize = ImVec2(_windowWidth / 3, _windowHeight / 2);
 		ImGui::SetNextWindowPos(hwPos);
 		ImGui::SetNextWindowSize(hwSize);
-		ImGui::Begin("Hierarchy", &HierarchyDisplayFlag, hwflag);
+		ImGui::Begin("Hierarchy", &HierarchyDisplayFlag, _hwFlag);
 		{
 			ImGui::Text("Hierarchy");
 			ImGui::Separator();
@@ -66,12 +78,12 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 			vector<Entity *> curSceneEntities = Engine::instance()->GetCurScene()->GetAllEntities();
 			int entCounter = 0;
 
-
 			for (std::vector<Entity *>::iterator it = curSceneEntities.begin(); it != curSceneEntities.end(); ++it) {
 				++entCounter;
 				if (ImGui::Selectable(((*it)->GetName() + " (" + std::to_string(entCounter) + ")").c_str())) {
 					selectedEntity = *it;
 					ComponentDisplayFlag = true;
+					_somthingSelected = true;
 				}
 			}
 
@@ -80,17 +92,15 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 	}
 
 	// Component Window
-	if (nullptr != selectedEntity) {
-		ImGuiWindowFlags cwflag = 0;
-		cwflag |= ImGuiWindowFlags_NoMove;
-		cwflag |= ImGuiWindowFlags_NoSavedSettings;
-		cwflag |= ImGuiWindowFlags_NoResize;
+	if (nullptr != selectedEntity && ComponentDisplayFlag) {
 
+		// TODO: Can probably move these to Init Function.
 		ImVec2 cwPos = ImVec2(2 * _windowWidth / 3,  _windowHeight/2 + 20);
-		ImVec2 cwSize = ImVec2(_windowWidth / 3, _windowHeight / 2);
+		ImVec2 cwSize = ImVec2(_windowWidth / 3, _windowHeight / 2 - 20);
 		ImGui::SetNextWindowPos(cwPos);
 		ImGui::SetNextWindowSize(cwSize);
-		ImGui::Begin("Component", &ComponentDisplayFlag, cwflag);
+
+		ImGui::Begin("Component", &ComponentDisplayFlag, _cwFlag);
 		{
 			int compCounter = 0;
 			vector<pair<TypeId, ObjectPoolIndex *>> Components;
