@@ -201,7 +201,6 @@ const   bool    Octree::build(
 		
 	}
 	
-
 	return true;
 }
 
@@ -296,29 +295,32 @@ void Octree::Update()
 		BoundRenderer::instance()->Draw(pointBox);
 	}
 
-	//checkRebuild(); 
-
-	// Repeat for all children 
-	for (Octree* tree : _child)
+	if (checkRebuild())
 	{
-		if (tree != nullptr)
+		// Repeat for all children 
+		for (Octree* tree : _child)
 		{
-			tree->Update();
+			if (tree != nullptr)
+			{
+				tree->Update();
+			}
 		}
 	}
 }
 
-void Octree::checkRebuild()
+bool Octree::checkRebuild()
 {
 	// Rebuild if necessary and recurse until there's no longer a need to rebuild 
- 
+	
+	bool rebuildParent = false; 
+	bool rebuildFull = false; 
 	// First check that there are points 
 	if (pointCount() > 0)
 	{
 		// Iterate throughe all the points 
 		for (unsigned int i = 0; i < pointCount(); i++)
 		{
-			if (points()[i]->dirty && points()[i] != nullptr)
+			if (points()[i]->dirty)
 			{
 				// 1. First check if point is still contained in the current node
 
@@ -335,49 +337,72 @@ void Octree::checkRebuild()
 				else if (_parent->_box.Contains(pos))
 				{
 					// Rebuild the parent's tree down 
-
-					// Get number of points going through each child 
-					int newPointCount = 0; 
-					for (Octree* child : _parent->_child)
-					{
-						if (child != nullptr)
-						{
-							for (int j = 0; j < child->pointCount(); j++)
-							{
-								newPointCount++;
-							}
-						}
-					}
-					// Make array list of newPoint Size 
-					Point   **newList = new Point *[newPointCount + 1];
-					Point **ptr = newList;
-					// Go through each child and add each point to new list of points 
-					for (Octree* child : _parent->_child)
-					{
-						if (child != nullptr)
-						{
-							for (int j = 0; j < child->pointCount(); j++)
-							{
-								*ptr = child->points()[j];
-								ptr++;
-							}
-						}
-					}
-
-					
-					_parent->build(newList, newPointCount, _parent->treeThreshold, _parent->treeMaxDepth, _parent->_box, _parent->_parent, _parent->currDepth); 
-					delete[] newList;
-					delete this; 
+					rebuildParent = true; 
+					break; 
 				}
 				else
 				{
-					// Need to keep going up parent nodes until points are found to rebuild 
-					_parent->checkRebuild(); 
+					rebuildFull = true; 
+					break; 
 				}
 			}
 		}
 	}
 	
-	
+	if (rebuildParent)
+	{
+		// Get number of points going through each child 
+		int newPointCount = 0;
+		for (Octree* child : _parent->_child)
+		{
+			if (child != nullptr)
+			{
+				for (int j = 0; j < child->pointCount(); j++)
+				{
+					newPointCount++;
+				}
+			}
+		}
+		// Make array list of newPoint Size 
+		Point   **newList = new Point *[newPointCount + 1];
+		Point **ptr = newList;
+		// Go through each child and add each point to new list of points 
+		for (Octree* child : _parent->_child)
+		{
+			if (child != nullptr)
+			{
+				for (int j = 0; j < child->pointCount(); j++)
+				{
+					*ptr = child->points()[j];
+					ptr++;
+				}
+			}
+		}
+
+		Octree* par = _parent;
+		for (int i = 0; i < 8; i++)
+		{
+			par->_child[i] = nullptr;
+		}
+		par->build(newList, newPointCount, _parent->treeThreshold, _parent->treeMaxDepth, _parent->_box, par->_parent, _parent->currDepth);
+		delete[] newList;
+		delete this;
+	}
+	else if (rebuildFull)
+	{
+		Octree* par = _parent;
+		for (int i = 0; i < 8; i++)
+		{
+			par->_child[i] = nullptr;
+		}
+		// Need to keep going up parent nodes until points are found to rebuild 
+		par->checkRebuild();
+		delete this; 
+	}
+	else
+	{
+		return true; 
+	}
+	return false; 
 }
 

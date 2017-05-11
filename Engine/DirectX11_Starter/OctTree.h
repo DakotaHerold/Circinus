@@ -93,7 +93,7 @@ public:
 	//	const unsigned int count);
 	virtual const   bool            traverse(callback proc, void *data) const;
 	virtual void Update(); 
-	virtual void checkRebuild(); 
+	virtual bool checkRebuild(); 
 
 protected:
 	Octree*					_parent; 
