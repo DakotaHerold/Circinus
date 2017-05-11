@@ -413,9 +413,10 @@ bool Octree::checkRebuild()
 	}
 	else
 	{
+		// No need to rebuild. Return true 
 		return true; 
 	}
-
+	// Rebuilding. Do not update children in update. 
 	return false; 
 }
 
