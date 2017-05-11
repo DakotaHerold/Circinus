@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Config.h"
+
 #include <Windows.h>
 #include <string>
 #include <vector>
@@ -15,11 +17,13 @@
 #include "Material.h"
 #include "Lights.h"
 
+#ifdef EDITOR_BUILD
 #pragma region Include GUI
 
 #include "GUI.h"
 
 #pragma endregion
+#endif
 
 // --------------------------------------------------------
 // Convenience macro for releasing COM objects.
@@ -151,7 +155,10 @@ private:
 	D3D_FEATURE_LEVEL         featureLevel;
 
 	ParticleSystem*           particleSystem;
+
+#ifdef EDITOR_BUILD
 	GizmoRenderer*            gizmoRenderer;
+#endif
 
 	// The window's aspect ratio, used mostly for your projection matrix
 	float aspectRatio;

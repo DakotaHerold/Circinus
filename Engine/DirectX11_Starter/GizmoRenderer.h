@@ -1,4 +1,7 @@
 #pragma once
+#include "Config.h"
+
+#ifdef EDITOR_BUILD
 
 #include <DirectXCollision.h>
 
@@ -95,3 +98,5 @@ private:
 	Vertex*					pVertices;
 	uint16_t*				pIndices;
 };
+
+#endif

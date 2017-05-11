@@ -1,5 +1,7 @@
 #include "GizmoRenderer.h"
 
+#ifdef EDITOR_BUILD
+
 #include <algorithm>
 #include <PrimitiveBatch.h>
 #include <d3dx11effect.h>
@@ -358,3 +360,5 @@ void GizmoRenderer::CleanUp()
 	indexBuffer->Release();
 	constantBuffer->Release();
 }
+
+#endif

@@ -9,9 +9,10 @@
 //  You should not need to edit this class at all.
 // -------------------------------------------------------------
 
+#include "Config.h"
+
 #include "RenderingSystem.h"
 #include "ParticleSystem.h"
-#include "GizmoRenderer.h"
 #include "NativeWindow.h"
 #include "SceneGraph.h"
 #if defined(_DEBUG)
@@ -25,6 +26,11 @@ typedef DebugCam Camera;
 #include "ComponentManager.h"
 #include "Transform.h"
 #include "Lighting.h"
+
+#ifdef EDITOR_BUILD
+#include "GizmoRenderer.h"
+#include "Editor.h"
+#endif
 
 //#define DISABLE_PARTICLE_SYSTEM
 
@@ -71,8 +77,10 @@ RenderingSystem::RenderingSystem()
 // --------------------------------------------------------
 RenderingSystem::~RenderingSystem(void)
 {
+#ifdef EDITOR_BUILD
 	gizmoRenderer->CleanUp();
 	delete gizmoRenderer;
+#endif
 
 	particleSystem->CleanUp();
 	delete particleSystem;
@@ -145,8 +153,10 @@ bool RenderingSystem::Init(NativeWindow* win)
 		return false;
 	}
 
+#ifdef EDITOR_BUILD
 	gizmoRenderer = new GizmoRenderer();
 	gizmoRenderer->Init(device, deviceContext);
+#endif
 
 	// Everything was set up properly
 	return true;
@@ -265,8 +275,10 @@ bool RenderingSystem::InitDirect3D(void* wndHandle)
 	GetClientRect(hwnd, &rect);
 	OnResize(rect.right, rect.bottom);
 
+#ifdef EDITOR_BUILD
 	// Initialize the GUI
 	GUI::instance().Init(hwnd, device, deviceContext);
+#endif
 
 	return true;
 }
@@ -492,6 +504,8 @@ void RenderingSystem::DrawScene(Camera* cam, SceneGraph* scene)
 	particleSystem->Draw(cam->getViewMatrix(), cam->getProjectionMatrix());
 #endif
 
+
+#ifdef EDITOR_BUILD
 	gizmoRenderer->DrawGrid(
 		DirectX::XMFLOAT3{ 10, 0, 0 },
 		DirectX::XMFLOAT3{ 0, 0, 10 },
@@ -504,6 +518,7 @@ void RenderingSystem::DrawScene(Camera* cam, SceneGraph* scene)
 	gizmoRenderer->Render(cam->getViewMatrix(), cam->getProjectionMatrix());
 
 	GUI::instance().Draw();
+#endif
 
 	swapChain->Present(0, 0);
 }
