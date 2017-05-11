@@ -28,6 +28,9 @@ void GUI::Init(HWND hwnd, ID3D11Device* device, ID3D11DeviceContext* device_cont
 	_cwFlag |= ImGuiWindowFlags_NoSavedSettings;
 	_cwFlag |= ImGuiWindowFlags_NoResize;
 
+	// Component Details Window Flags.
+	_cdwFlag |= ImGuiWindowFlags_NoSavedSettings;
+
 }
 
 void GUI::Draw()
@@ -61,6 +64,7 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 
 	// Temp Variable to hold the selection thing.
 	bool _somthingSelected = false;
+	bool _someComponentSelected = false;
 
 	// Hierarchy Window
 	if (HierarchyDisplayFlag) {
@@ -108,7 +112,11 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 			for (vector<pair<TypeId, ObjectPoolIndex *>>::iterator that = Components.begin(); that != Components.end(); ++that) {
 				++compCounter;
 				//std::string tempString = (ComponentTypeName(that->first)) + std::to_string(entCounter) + "-" + std::to_string(compCounter);
-				ImGui::Text(((ComponentTypeName(that->first)) + std::string(" (") + /* std::to_string(entCounter) + */ "-" + std::to_string(compCounter) + std::string(")")).c_str());
+				if (ImGui::Selectable(((ComponentTypeName(that->first)) + std::string(" (") + /* std::to_string(entCounter) + */ "-" + std::to_string(compCounter) + std::string(")")).c_str())) {
+					// We need to select the Component here.
+					selectedComponentIndex = that->second;
+					ComponentDisplayDetailsFlag = true;
+				}
 				{
 					if (ImGui::BeginPopupContextItem(((ComponentTypeName(that->first)) + std::string(" (") /* + std::to_string(entCounter) */ + "-" + std::to_string(compCounter) + std::string(") Popup")).c_str())) {
 						if (ImGui::Button("Rename")) {
@@ -124,6 +132,20 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 					}
 				}
 			}
+			ImGui::End();
+		}
+	}
+
+	// Component Details Window
+	if (nullptr != selectedComponentIndex && ComponentDisplayDetailsFlag) {
+		// TODO: Can probably move these to Init Function.
+		// ImVec2 cwPos = ImVec2(30, _windowHeight / 2 + 20);
+		ImVec2 cwSize = ImVec2(_windowWidth / 3, _windowHeight / 2 - 20);
+		// ImGui::SetNextWindowPos(cwPos);
+		ImGui::SetNextWindowSize(cwSize);
+		ImGui::Begin("Component Details", &ComponentDisplayDetailsFlag, _cdwFlag);
+		{
+			ImGui::Text("Wololo");
 			ImGui::End();
 		}
 	}
@@ -149,6 +171,17 @@ void GUI::AddMenuBar(bool * _running) {
 				DebugDisplayFlag = true;
 			}
 			
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Entity"))
+		{
+			if (ImGui::BeginMenu("Add"))
+			{
+				// TODO: Add functionality.
+				// What should I add?
+				ImGui::EndMenu();
+			}
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();
