@@ -139,10 +139,6 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 	// Component Details Window
 	if (nullptr != selectedComponentIndex && ComponentDisplayDetailsFlag) {
 		// TODO: Can probably move these to Init Function.
-		// ImVec2 cwPos = ImVec2(30, _windowHeight / 2 + 20);
-		// ImVec2 cwSize = ImVec2(_windowWidth / 3, _windowHeight / 2 - 20);
-		// ImGui::SetNextWindowPos(cwPos);
-		// ImGui::SetNextWindowSize(cwSize);
 		ImGui::Begin("Component Details", &ComponentDisplayDetailsFlag, _cdwFlag);
 		{
 			ImGui::Text("Wololo");
