@@ -373,7 +373,7 @@ void RenderingSystem::Update(float deltaTime, float totalTime)
 
 #pragma region Draw
 
-void RenderingSystem::DrawScene(DebugCam* cam, SceneGraph* scene)
+void RenderingSystem::DrawScene(Camera* cam, SceneGraph* scene)
 {
 	if (aspectRatioChanged)
 	{
