@@ -20,9 +20,11 @@ public:
 
 	bool SphereCollisionCheck(RigidBody *otherRbody);
 	bool BoxCollisionCheck(RigidBody *otherRbody);
+	void Update();
 
 private:
 	Transform* trans; 
-	DirectX::BoundingOrientedBox* obb; 
+	DirectX::BoundingOrientedBox* obb;
+	DirectX::XMFLOAT3* velocity;
 };
 

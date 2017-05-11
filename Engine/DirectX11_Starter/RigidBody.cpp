@@ -7,12 +7,19 @@ RigidBody::RigidBody(Transform* t, const DirectX::BoundingBox* boxCollider)
 	trans = t; 
 	obb = new BoundingOrientedBox(); 
 	DirectX::BoundingOrientedBox::CreateFromBoundingBox(*obb, *boxCollider);
+	velocity = new DirectX::XMFLOAT3(0, 0, 0);
 }
 
 
 RigidBody::~RigidBody()
 {
 	delete obb; 
+	delete velocity;
+}
+
+void RigidBody::Update()
+{
+
 }
 
 void RigidBody::SetEntity(int id)
