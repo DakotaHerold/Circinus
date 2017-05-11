@@ -82,6 +82,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AssimpLoader.cpp" />
+    <ClCompile Include="Editor.cpp" />
     <ClCompile Include="GizmoRenderer.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CollisionDetection.cpp" />
@@ -125,6 +126,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssimpLoader.h" />
+    <ClInclude Include="Config.h" />
+    <ClInclude Include="Editor.h" />
     <ClInclude Include="GizmoRenderer.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CollisionDetection.h" />
