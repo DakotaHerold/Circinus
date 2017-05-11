@@ -146,7 +146,6 @@ const   bool    Octree::build(
 			// Remove duplicates from newList
 			// ...
 			// Keep track of the new count in 'newCount'
-			
 			newCount++;	
 		}
 
@@ -319,7 +318,8 @@ bool Octree::checkRebuild()
 {
 	// Rebuild if necessary and recurse until there's no longer a need to rebuild 
 	Octree* targetParent = nullptr; 
-	bool rebuildTree = false;  
+	bool rebuildTree = false; 
+	bool outsideBounds = false; 
 	// First check that there are points 
 	if (pointCount() > 0)
 	{
@@ -340,12 +340,14 @@ bool Octree::checkRebuild()
 					// Nothing needs to happen as the point is still in this node 
 					continue;
 				}
-				else if (_parent->_box.Contains(pos))
+
+
+				if (_parent->_box.Contains(pos))
 				{
 					// Rebuild the parent's tree down 
-					targetParent = _parent; 
-					rebuildTree = true; 
-					break; 
+					targetParent = _parent;
+					rebuildTree = true;
+					break;
 				}
 				else
 				{
@@ -361,7 +363,16 @@ bool Octree::checkRebuild()
 						par = par->_parent;
 					}
 					targetParent = par;
-					if (targetParent != nullptr)
+					if (!(targetParent->_box.Contains(pos)) && targetParent->_parent == nullptr)
+					{
+						// point is outside of game area.
+						//outsideBounds = true; 
+						rebuildTree = true; 
+						//_pointCount -= 1; 
+
+						//return true; 
+					}
+					if (targetParent != nullptr && targetParent->_parent != nullptr)
 					{		
 						rebuildTree = true;
 					}
@@ -407,7 +418,10 @@ bool Octree::checkRebuild()
 			//par->_child[i] = nullptr;
 			//delete par->_child[i];
 		}
-		par->build(newList, newPointCount, par->treeThreshold, par->treeMaxDepth, par->_box, par->_parent, par->currDepth);
+		if (!outsideBounds)
+		{
+			par->build(newList, newPointCount, par->treeThreshold, par->treeMaxDepth, par->_box, par->_parent, par->currDepth);
+		}
 		delete[] newList;
 		//delete this;
 	}

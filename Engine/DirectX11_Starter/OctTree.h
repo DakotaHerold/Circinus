@@ -7,6 +7,7 @@
 
 // COTD Entry submitted by Paul Nettle [midnight@FluidStudios.com]
 // Corresponds with an Ask MidNight response (http://www.flipcode.com/askmid/)
+// Modified structure by Dakota Herold 
 
 // -----------------------------------------------------------------------------
 // This defines a callback for traversal
