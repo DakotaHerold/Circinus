@@ -77,8 +77,8 @@ public:
 
 	// Accessors
 
-	inline  const   Point * const * points() const { return _points; }
-	inline  const   unsigned int    pointCount() const { return _pointCount; }
+	inline   Point * const * points() const { return _points; }
+	inline   unsigned int    pointCount() const { return _pointCount; }
 
 	// Implementation
 	virtual const   bool            build(Point **points,
@@ -86,16 +86,25 @@ public:
 		const unsigned int threshold,
 		const unsigned int maximumDepth,
 		const DirectX::BoundingOrientedBox &bounds,
-		const unsigned int currentDepth = 0);
+		Octree* parentTree,
+		const unsigned int currentDepth = 0
+		);
 	//static  const   Bounds          calcCubicBounds(const Point * const * points,
 	//	const unsigned int count);
 	virtual const   bool            traverse(callback proc, void *data) const;
 	virtual void Update(); 
+	virtual void checkRebuild(); 
 
 protected:
+	Octree*					_parent; 
 	Octree                  *_child[8];
 	unsigned int            _pointCount;
+	//unsigned int			_prevPointCount; 
 	Point                   **_points;
 	Point                   _center;
-	DirectX::BoundingOrientedBox box; 
+	DirectX::BoundingOrientedBox _box; 
+	bool					isLeaf; 
+	int						currDepth; 
+	int						treeThreshold;
+	int						treeMaxDepth; 
 };

@@ -3,7 +3,7 @@
 // Construction -- Just "nullify" the class
 // -----------------------------------------------------------------------------
 Octree::Octree()
-	: _pointCount(0), _points(NULL), _center(0.0f, 0.0f, 0.0f, 0)
+	: _pointCount(0), _points(NULL), _center(0.0f, 0.0f, 0.0f, 0), _parent(NULL)
 {
 	memset(_child, 0, sizeof(_child));
 }
@@ -31,10 +31,18 @@ const   bool    Octree::build(
 	const unsigned int threshold,
 	const unsigned int maximumDepth,
 	const DirectX::BoundingOrientedBox &bounds,
+	Octree* parentTree,
 	const unsigned int currentDepth)
 {
 	// Store bounding volume for visualization purposes
-	box = bounds; 
+	_box = bounds; 
+
+	// Store the parent tree. If null, current tree is a leaf 
+	_parent = parentTree;
+	// Cache additional values 
+	currDepth = currentDepth; 
+	treeThreshold = threshold; 
+	treeMaxDepth = maximumDepth;
 
 	// You know you're a leaf when...
 	//
@@ -52,7 +60,12 @@ const   bool    Octree::build(
 		_pointCount = count;
 		_points = new Point *[count];
 		memcpy(_points, points, sizeof(Point *) * count);
+		isLeaf = true; 
 		return true;
+	}
+	else
+	{
+		isLeaf = false; 
 	}
 
 	// We'll need this (see comment further down in this source)
@@ -174,8 +187,9 @@ const   bool    Octree::build(
 
 
 		// Recurse
+		currDepth += 1; 
 		_child[i]->build(newList, newCount, threshold, maximumDepth,
-			newBounds, currentDepth + 1);
+			newBounds, this, currDepth);
 
 		// Clean up pointers 
 		//for (int j = 0; j < childPointCounts[i]; j++)
@@ -267,7 +281,7 @@ const bool Octree::traverse(callback proc, void *data) const
 void Octree::Update()
 {
 	// Render box itself 
-	BoundRenderer::instance()->Draw(box);
+	BoundRenderer::instance()->Draw(_box);
 
 	// Render points as small boxes 
 	for (unsigned int i = 0; i < pointCount(); i++) {
@@ -282,6 +296,8 @@ void Octree::Update()
 		BoundRenderer::instance()->Draw(pointBox);
 	}
 
+	//checkRebuild(); 
+
 	// Repeat for all children 
 	for (Octree* tree : _child)
 	{
@@ -290,5 +306,78 @@ void Octree::Update()
 			tree->Update();
 		}
 	}
+}
+
+void Octree::checkRebuild()
+{
+	// Rebuild if necessary and recurse until there's no longer a need to rebuild 
+ 
+	// First check that there are points 
+	if (pointCount() > 0)
+	{
+		// Iterate throughe all the points 
+		for (unsigned int i = 0; i < pointCount(); i++)
+		{
+			if (points()[i]->dirty && points()[i] != nullptr)
+			{
+				// 1. First check if point is still contained in the current node
+
+				// Current point
+				const Point   &p = *points()[i];
+				// Point position in DirectX coords
+				DirectX::XMVECTOR pos = DirectX::XMVectorSet(p.x, p.y, p.z, 1); 
+
+				if (_box.Contains(pos))
+				{
+					// Nothing needs to happen as the point is still in this node 
+					continue;
+				}
+				else if (_parent->_box.Contains(pos))
+				{
+					// Rebuild the parent's tree down 
+
+					// Get number of points going through each child 
+					int newPointCount = 0; 
+					for (Octree* child : _parent->_child)
+					{
+						if (child != nullptr)
+						{
+							for (int j = 0; j < child->pointCount(); j++)
+							{
+								newPointCount++;
+							}
+						}
+					}
+					// Make array list of newPoint Size 
+					Point   **newList = new Point *[newPointCount + 1];
+					Point **ptr = newList;
+					// Go through each child and add each point to new list of points 
+					for (Octree* child : _parent->_child)
+					{
+						if (child != nullptr)
+						{
+							for (int j = 0; j < child->pointCount(); j++)
+							{
+								*ptr = child->points()[j];
+								ptr++;
+							}
+						}
+					}
+
+					
+					_parent->build(newList, newPointCount, _parent->treeThreshold, _parent->treeMaxDepth, _parent->_box, _parent->_parent, _parent->currDepth); 
+					delete[] newList;
+					delete this; 
+				}
+				else
+				{
+					// Need to keep going up parent nodes until points are found to rebuild 
+					_parent->checkRebuild(); 
+				}
+			}
+		}
+	}
+	
+	
 }
 

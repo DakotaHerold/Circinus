@@ -204,6 +204,7 @@ void Scene::Tick(float deltaTime, float totalTime)
 	//points[0]->y += 0.0001f; 
 	//points[0]->x += 0.0001f;
 
+	points[0]->Move(0, 0, -0.0001f);
 	//oct->build(points, pointCount, 1, 10, box, 0);
 	oct->Update(); 
 }
