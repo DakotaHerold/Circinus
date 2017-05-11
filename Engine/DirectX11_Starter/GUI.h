@@ -30,7 +30,8 @@ private:
 	ComponentManager * cm = ComponentManager::current;
 
 	Entity * selectedEntity = nullptr; // This is a dummy variable. I did not want to allocate and deallocate this every frame.
-	ObjectPoolIndex * selectedComponentIndex = nullptr; // This is just a variable to hold which component is selected.
+	TypeId selectedComponentID; // This is just a variable to hold which component is selected.
+	ObjectPoolIndex * selectedCompIndex;
 
 	GUI();
 

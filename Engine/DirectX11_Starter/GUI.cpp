@@ -114,7 +114,8 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 				//std::string tempString = (ComponentTypeName(that->first)) + std::to_string(entCounter) + "-" + std::to_string(compCounter);
 				if (ImGui::Selectable(((ComponentTypeName(that->first)) + std::string(" (") + /* std::to_string(entCounter) + */ "-" + std::to_string(compCounter) + std::string(")")).c_str())) {
 					// We need to select the Component here.
-					selectedComponentIndex = that->second;
+					selectedComponentID = that->first;
+					selectedCompIndex = that->second;
 					ComponentDisplayDetailsFlag = true;
 				}
 				{
@@ -137,7 +138,7 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 	}
 
 	// Component Details Window
-	if (nullptr != selectedComponentIndex && ComponentDisplayDetailsFlag) {
+	if (NULL != selectedComponentID && ComponentDisplayDetailsFlag) {
 		// TODO: Can probably move these to Init Function.
 		// ImVec2 cwPos = ImVec2(30, _windowHeight / 2 + 20);
 		ImVec2 cwSize = ImVec2(_windowWidth / 3, _windowHeight / 2 - 20);
@@ -145,7 +146,16 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 		ImGui::SetNextWindowSize(cwSize);
 		ImGui::Begin("Component Details", &ComponentDisplayDetailsFlag, _cdwFlag);
 		{
-			ImGui::Text("Wololo");
+			if ( 0 == std::strcmp(ComponentTypeName(selectedComponentID), "class ScriptComponent") )
+			{
+				//ImGui::Text( GetComponent(selectedEntity, selectedCompIndex))
+				// TODO:: ERROR -- FIX IT
+				cm->GetComponent((selectedEntity)->GetID(), selectedComponentID, selectedCompIndex);
+			}
+			else {
+				std::cout << "?" << ComponentTypeName(selectedComponentID) << "?" << std::endl;
+				std::cout << "#" << std::strcmp(ComponentTypeName(selectedComponentID), "class ScriptComponent") << "#" << std::endl;
+			}
 			ImGui::End();
 		}
 	}
