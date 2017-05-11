@@ -11,7 +11,7 @@
 
 #include "RenderingSystem.h"
 #include "ParticleSystem.h"
-#include "BoundRenderer.h"
+#include "GizmoRenderer.h"
 #include "NativeWindow.h"
 #include "SceneGraph.h"
 #if defined(_DEBUG)
@@ -25,6 +25,8 @@ typedef DebugCam Camera;
 #include "ComponentManager.h"
 #include "Transform.h"
 #include "Lighting.h"
+
+//#define DISABLE_PARTICLE_SYSTEM
 
 namespace
 {
@@ -69,8 +71,8 @@ RenderingSystem::RenderingSystem()
 // --------------------------------------------------------
 RenderingSystem::~RenderingSystem(void)
 {
-	boundRenderer->CleanUp();
-	delete boundRenderer;
+	gizmoRenderer->CleanUp();
+	delete gizmoRenderer;
 
 	particleSystem->CleanUp();
 	delete particleSystem;
@@ -143,8 +145,8 @@ bool RenderingSystem::Init(NativeWindow* win)
 		return false;
 	}
 
-	boundRenderer = new BoundRenderer();
-	boundRenderer->Init(device, deviceContext);
+	gizmoRenderer = new GizmoRenderer();
+	gizmoRenderer->Init(device, deviceContext);
 
 	// Everything was set up properly
 	return true;
@@ -338,6 +340,7 @@ void RenderingSystem::Update(float deltaTime, float totalTime)
 {
 	// TODO gathering particle emitters to update
 	// and update the position and velocity by transform of that entity
+#if !defined(DISABLE_PARTICLE_SYSTEM)
 	auto emitters = ComponentManager::current->GetAllComponents<ParticleEmitter>();
 
 	for (size_t i = 0; i < emitters.size; ++i)
@@ -364,6 +367,7 @@ void RenderingSystem::Update(float deltaTime, float totalTime)
 	}
 
 	particleSystem->Update(deltaTime, totalTime);
+#endif
 }
 #pragma endregion
 
@@ -484,10 +488,11 @@ void RenderingSystem::DrawScene(DebugCam* cam, SceneGraph* scene)
 	}
 
 	// opaque stuff goes before this, and transparent stuff goes after this
-
+#if !defined(DISABLE_PARTICLE_SYSTEM)
 	particleSystem->Draw(cam->getViewMatrix(), cam->getProjectionMatrix());
+#endif
 
-	boundRenderer->Render(cam->getViewMatrix(), cam->getProjectionMatrix());
+	gizmoRenderer->Render(cam->getViewMatrix(), cam->getProjectionMatrix());
 
 	GUI::instance().Draw();
 

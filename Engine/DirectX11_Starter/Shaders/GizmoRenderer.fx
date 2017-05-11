@@ -1,4 +1,16 @@
 
+struct Input
+{
+	float3	pos	: POSITION;
+	float3	col	: COLOR;
+};
+
+struct V2F
+{
+	float4	pos	: SV_POSITION;
+	float3	col : COLOR;
+};
+
 cbuffer CameraConstants : register (b0)
 {
 	matrix	matView;
@@ -9,15 +21,17 @@ BlendState defaultBS;
 RasterizerState defaultRS;
 DepthStencilState defaultDS;
 
-float4 vs_main(float3 pos : POSITION) : SV_POSITION
+V2F vs_main(Input input)
 {
-	float4 outPos = mul(mul(float4(pos, 1), matView), matProj);
-	return outPos;
+	V2F output;
+	output.pos = mul(mul(float4(input.pos, 1), matView), matProj);
+	output.col = input.col;
+	return output;
 }
 
-float4 ps_main() : SV_TARGET
+float4 ps_main(V2F input) : SV_TARGET
 {
-	return float4(1, 1, 1, 1);
+	return float4(input.col, 1);
 }
 
 technique11

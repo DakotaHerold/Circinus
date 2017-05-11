@@ -57,7 +57,7 @@
 class NativeWindow;
 class SceneGraph;
 class ParticleSystem;
-class BoundRenderer;
+class GizmoRenderer;
 
 #if defined(_DEBUG)
 class DebugCam;
@@ -151,7 +151,7 @@ private:
 	D3D_FEATURE_LEVEL         featureLevel;
 
 	ParticleSystem*           particleSystem;
-	BoundRenderer*            boundRenderer;
+	GizmoRenderer*            gizmoRenderer;
 
 	// The window's aspect ratio, used mostly for your projection matrix
 	float aspectRatio;

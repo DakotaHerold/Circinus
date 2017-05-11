@@ -9,7 +9,7 @@
 #include "RigidBody.h"
 #include "ScriptComponent.h"
 #include "ParticleEmitter.h"
-#include "BoundRenderer.h"
+#include "GizmoRenderer.h"
 
 void Scene::Enter()
 {
@@ -160,7 +160,7 @@ void Scene::Tick(float deltaTime, float totalTime)
 
 	{
 		DirectX::BoundingSphere sphere(DirectX::XMFLOAT3(0, 0, 0), 2);
-		BoundRenderer::instance()->Draw(sphere);
+		GizmoRenderer::instance()->Draw(sphere);
 
 		DirectX::BoundingBox aabb(
 			DirectX::XMFLOAT3(0, 0, 0),
@@ -170,7 +170,7 @@ void Scene::Tick(float deltaTime, float totalTime)
 		box.Transform(box, 1,
 			DirectX::XMQuaternionRotationRollPitchYaw(0, rot, 0)
 			, DirectX::XMVectorSet(0, 0, 0, 0));
-		BoundRenderer::instance()->Draw(box);
+		GizmoRenderer::instance()->Draw(box, GizmoRenderer::red);
 	}
 }
 

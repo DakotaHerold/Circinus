@@ -25,7 +25,7 @@ vector<pair<TypeId, ObjectPoolIndex *>> ComponentManager::GetAllComponents(int e
 {
 	vector<pair<TypeId, ObjectPoolIndex*>> result;
 
-	for (auto p : entityComponentsMap[entityID]) {
+	for (auto &p : entityComponentsMap[entityID]) {
 		for (ObjectPoolIndex *i : p.second) {
 			result.push_back(make_pair(p.first, i));
 		}
@@ -51,7 +51,7 @@ bool ComponentManager::RemoveComponent(int entityID, TypeId typeID, ObjectPoolIn
 
 void ComponentManager::RemoveAllComponents(int entityID)
 {
-	for (auto p : entityComponentsMap[entityID]) {
+	for (auto &p : entityComponentsMap[entityID]) {
 		for (ObjectPoolIndex *i : p.second) {
 			GetComponentPool(p.first)->Return(*i);
 		}
@@ -75,7 +75,7 @@ ObjectPoolBase * ComponentManager::GetComponentPool(TypeId typeID)
 
 int ComponentManager::GetObjectPoolIndex(eidType entityID, TypeId typeID, bool deleteIndex)
 {
-	std::vector<ObjectPoolIndex *> indices = entityComponentsMap[entityID][typeID];
+	std::vector<ObjectPoolIndex *> &indices = entityComponentsMap[entityID][typeID];
 
 	if (indices.size() == 0) {
 #if defined(DEBUG) || defined(_DEBUG)
@@ -95,7 +95,7 @@ int ComponentManager::GetObjectPoolIndex(eidType entityID, TypeId typeID, bool d
 bool ComponentManager::CheckObjectPoolIndex(eidType entityID, TypeId typeID, ObjectPoolIndex *index, bool deleteIndex) {
 	int result = -1;
 
-	std::vector<ObjectPoolIndex *> indices = entityComponentsMap[entityID][typeID];
+	std::vector<ObjectPoolIndex *> &indices = entityComponentsMap[entityID][typeID];
 	
 	auto it = std::remove_if(indices.begin(), indices.end(),
 		[index](const ObjectPoolIndex *i) {
