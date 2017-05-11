@@ -7,8 +7,8 @@
 
 typedef unsigned int ObjectPoolIndex;
 
-static const int ObjectPoolInitialLength = 100;
-static const int ObjectPoolResizeAmount = 50;
+static const ObjectPoolIndex ObjectPoolInitialLength = 100;
+static const ObjectPoolIndex ObjectPoolResizeAmount = 50;
 
 class Poolable {
 
@@ -38,7 +38,7 @@ public:
 template <typename T>
 struct ResultComponents {
 	T* components;
-	int size;
+	unsigned int size;
 };
 
 template <typename T>
@@ -48,8 +48,8 @@ public:
 	ObjectPool(int length = ObjectPoolInitialLength, int resizeAmount = ObjectPoolResizeAmount, bool isResizeAllowed = ObjectPoolResizeAmount == 0 ? false : true);
 	~ObjectPool();
 
-	int GetCount();
-	int GetValidCount();
+	ObjectPoolIndex GetCount();
+	ObjectPoolIndex GetValidCount();
 
 	template <class... Args>
 	T* Add(Args&& ...args);
@@ -59,14 +59,14 @@ public:
 	ResultComponents<T> GetAllComponents();
 
 private:
-	int		m_size;					// object size
+	ObjectPoolIndex		m_size;					// object size
 
-	int		m_length;
-	int		m_resizeAmount;
-	bool	m_isResizeAllowed;
+	ObjectPoolIndex		m_length;
+	ObjectPoolIndex		m_resizeAmount;
+	bool				m_isResizeAllowed;
 
-	T*		m_objects;
-	int		m_count;
+	T*					m_objects;
+	ObjectPoolIndex		m_count;
 };
 
 template<typename T>
@@ -92,7 +92,7 @@ ObjectPool<T>::ObjectPool(int length, int resizeAmount, bool isResizeAllowed)
 template<typename T>
 ObjectPool<T>::~ObjectPool()
 {
-	for (int i = 0; i < m_count; i++) {
+	for (ObjectPoolIndex i = 0; i < m_count; i++) {
 		// http://stackoverflow.com/questions/2995099/malloc-and-constructors
 		// http://en.cppreference.com/w/cpp/language/new
 		m_objects[i].~T();
@@ -104,13 +104,13 @@ ObjectPool<T>::~ObjectPool()
 }
 
 template<typename T>
-inline int ObjectPool<T>::GetCount()
+inline ObjectPoolIndex ObjectPool<T>::GetCount()
 {
 	return m_count;
 }
 
 template<typename T>
-inline int ObjectPool<T>::GetValidCount()
+inline ObjectPoolIndex ObjectPool<T>::GetValidCount()
 {
 	return m_length - m_count;
 }
