@@ -36,7 +36,6 @@ private:
 	Entity * selectedEntity = nullptr; // This is a dummy variable. I did not want to allocate and deallocate this every frame.
 	TypeId selectedComponentID; // This is just a variable to hold which component is selected.
 	ObjectPoolIndex * selectedCompIndex;
-
 	std::vector<Entity *> benchmarkEntities;
 
 	GUI();

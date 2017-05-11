@@ -155,7 +155,6 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 			{
 				//ImGui::Text( GetComponent(selectedEntity, selectedCompIndex))
 				// TODO:: ERROR -- FIX IT
-				// cm->GetComponent((selectedEntity)->GetID(), selectedComponentID, selectedCompIndex);
 			}
 			else {
 				std::cout << "?" << ComponentTypeName(selectedComponentID) << "?" << std::endl;
