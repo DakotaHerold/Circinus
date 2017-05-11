@@ -139,6 +139,10 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 	// Component Details Window
 	if (nullptr != selectedComponentIndex && ComponentDisplayDetailsFlag) {
 		// TODO: Can probably move these to Init Function.
+		// ImVec2 cwPos = ImVec2(30, _windowHeight / 2 + 20);
+		ImVec2 cwSize = ImVec2(_windowWidth / 3, _windowHeight / 2 - 20);
+		// ImGui::SetNextWindowPos(cwPos);
+		ImGui::SetNextWindowSize(cwSize);
 		ImGui::Begin("Component Details", &ComponentDisplayDetailsFlag, _cdwFlag);
 		{
 			ImGui::Text("Wololo");
@@ -163,7 +167,7 @@ void GUI::AddMenuBar(bool * _running) {
 		{
 			if (ImGui::MenuItem("Hierarchy")) { HierarchyDisplayFlag = true; }
 			ImGui::Separator();
-			if (ImGui::MenuItem("Engine UI Debug")) {
+			if (ImGui::MenuItem("Debug")) {
 				DebugDisplayFlag = true;
 			}
 			
@@ -172,29 +176,14 @@ void GUI::AddMenuBar(bool * _running) {
 
 		if (ImGui::BeginMenu("Entity"))
 		{
-			if (ImGui::BeginMenu("Create Entity"))
+			if (ImGui::BeginMenu("Add"))
 			{
 				// TODO: Add functionality.
 				// What should I add?
-				if (ImGui::MenuItem("Empty")) {}
-				if ( ImGui::MenuItem("Cube")) {}
 				ImGui::EndMenu();
 			}
-
-			if (ImGui::BeginMenu("Add Component")) {
-				if ( ImGui::MenuItem("Rigidbody") ) {}
-				ImGui::EndMenu();
-			}
-
 			ImGui::EndMenu();
 		}
-
-		if (ImGui::BeginMenu("Project"))
-		{
-			if (ImGui::MenuItem("Build Project")) {}
-			ImGui::EndMenu();
-		}
-
 		ImGui::EndMainMenuBar();
 	}
 

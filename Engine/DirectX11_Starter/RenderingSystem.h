@@ -84,7 +84,7 @@ public:
 
 	void Update(float deltaTime, float totalTime);
 
-	void DrawScene(DebugCam* cam, SceneGraph* scene);
+	void DrawScene(Camera* cam, SceneGraph* scene);
 
 public:
 	Mesh* CreateMesh(const char* filename);
