@@ -19,15 +19,18 @@ private:
 	bool DebugDisplayFlag = false;
 	bool HierarchyDisplayFlag = false;
 	bool ComponentDisplayFlag = false;
+	bool ComponentDisplayDetailsFlag = false;
 
 
 	// Window Flag Constants
 	ImGuiWindowFlags _cwFlag = 0;
 	ImGuiWindowFlags _hwFlag = 0;
+	ImGuiWindowFlags _cdwFlag = 0;
 
 	ComponentManager * cm = ComponentManager::current;
 
 	Entity * selectedEntity = nullptr; // This is a dummy variable. I did not want to allocate and deallocate this every frame.
+	ObjectPoolIndex * selectedComponentIndex = nullptr; // This is just a variable to hold which component is selected.
 
 	GUI();
 
