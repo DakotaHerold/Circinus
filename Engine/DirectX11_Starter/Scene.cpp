@@ -158,7 +158,7 @@ void Scene::Tick(float deltaTime, float totalTime)
 
 	//enti->GetComponent<ScriptComponent>()->Update(); 
 
-	{
+	/*{
 		DirectX::BoundingSphere sphere(DirectX::XMFLOAT3(0, 0, 0), 2);
 		GizmoRenderer::instance()->Draw(sphere);
 
@@ -171,7 +171,7 @@ void Scene::Tick(float deltaTime, float totalTime)
 			DirectX::XMQuaternionRotationRollPitchYaw(0, rot, 0)
 			, DirectX::XMVectorSet(0, 0, 0, 0));
 		GizmoRenderer::instance()->Draw(box, GizmoRenderer::red);
-	}
+	}*/
 }
 
 void Scene::Exit()
