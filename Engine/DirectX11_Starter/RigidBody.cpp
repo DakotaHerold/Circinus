@@ -28,7 +28,7 @@ bool RigidBody::SphereCollisionCheck(RigidBody *otherRbody)
 	const BoundingOrientedBox &box1 = *(obb);
 	BoundingSphere sphere1;
 	BoundingSphere::CreateFromBoundingBox(sphere1, box1);
-	XMFLOAT3 rBody1Position = *(trans->GetLocalPosition());
+	XMFLOAT3 rBody1Position = *(trans->GetWorldPosition());
 	sphere1.Center.x += rBody1Position.x;
 	sphere1.Center.y += rBody1Position.y;
 	sphere1.Center.z += rBody1Position.z;
@@ -36,7 +36,7 @@ bool RigidBody::SphereCollisionCheck(RigidBody *otherRbody)
 	const BoundingOrientedBox &box2 = *(otherRbody->obb);
 	BoundingSphere sphere2;
 	BoundingSphere::CreateFromBoundingBox(sphere2, box2);
-	XMFLOAT3 rBody2Position = *(otherRbody->GetTransform()->GetLocalPosition());
+	XMFLOAT3 rBody2Position = *(otherRbody->GetTransform()->GetWorldPosition());
 	sphere2.Center.x += rBody2Position.x;
 	sphere2.Center.y += rBody2Position.y;
 	sphere2.Center.z += rBody2Position.z;
@@ -46,12 +46,12 @@ bool RigidBody::SphereCollisionCheck(RigidBody *otherRbody)
 
 bool RigidBody::BoxCollisionCheck(RigidBody * otherRbody)
 {
-	XMFLOAT3* pos1 = trans->GetLocalPosition();
+	XMFLOAT3* pos1 = trans->GetWorldPosition();
 	obb->Center.x = pos1->x;
 	obb->Center.x = pos1->y;
 	obb->Center.x = pos1->z;
 
-	XMFLOAT3* pos2 = otherRbody->trans->GetLocalPosition();
+	XMFLOAT3* pos2 = otherRbody->trans->GetWorldPosition();
 	otherRbody->obb->Center.x = pos2->x;
 	otherRbody->obb->Center.y = pos2->y;
 	otherRbody->obb->Center.z = pos2->z;
@@ -77,17 +77,29 @@ void RigidBody::Seek(RigidBody * otherBody, float speed)
 	int xDirection = 0;
 	int yDirection = 0;
 
-	printf("%f\n", abs(otherTransform->GetWorldPosition()->x - trans->GetWorldPosition()->x) > 1.0f);
-
-	if (abs(otherTransform->GetWorldPosition()->x - trans->GetWorldPosition()->x) > 1.0f)
+	if (abs(otherTransform->GetWorldPosition()->x - trans->GetWorldPosition()->x) > 0.5f)
 	{
 		if (otherTransform->GetWorldPosition()->x > trans->GetWorldPosition()->x)
 			xDirection = 1;
 		else if (otherTransform->GetWorldPosition()->x < trans->GetWorldPosition()->x)
 			xDirection = -1;
 
+
+
 		trans->SetWorldPosition(trans->GetWorldPosition()->x + (xDirection * speed),
 			trans->GetWorldPosition()->y,
+			trans->GetWorldPosition()->z);
+	}
+
+	if (abs(otherTransform->GetWorldPosition()->y - trans->GetWorldPosition()->y) > 0.5f)
+	{
+		if (otherTransform->GetWorldPosition()->y > trans->GetWorldPosition()->y)
+			yDirection = 1;
+		else if (otherTransform->GetWorldPosition()->y < trans->GetWorldPosition()->y)
+			yDirection = -1;
+
+		trans->SetWorldPosition(trans->GetWorldPosition()->x,
+			trans->GetWorldPosition()->y + (yDirection * speed),
 			trans->GetWorldPosition()->z);
 	}
 }
