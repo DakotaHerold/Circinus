@@ -21,8 +21,11 @@ public:
 	bool SphereCollisionCheck(RigidBody *otherRbody);
 	bool BoxCollisionCheck(RigidBody *otherRbody);
 
+	void Orbit(RigidBody *otherBody, float radius, float speed, float deltaTime);
+
 private:
 	Transform* trans; 
 	DirectX::BoundingOrientedBox* obb; 
+	DirectX::XMFLOAT3 velocity;
+	float mass;
 };
-

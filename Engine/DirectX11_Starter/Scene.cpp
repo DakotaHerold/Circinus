@@ -36,6 +36,7 @@ void Scene::Enter()
 	Transform* mainT = main->AddComponent<Transform>();
 	Renderable* mainR = main->AddComponent<Renderable>(mesh, mat);
 	RigidBody* mainRb = main->AddComponent<RigidBody>(mainT, &(mainR->BoundingBox()));
+	mainT->SetLocalPosition(1, 0, 0);
 	AddEntity(main);
 
 	mat = renderer.CreateMaterial(shader);
@@ -45,13 +46,12 @@ void Scene::Enter()
 	Entity* e1 = new Entity();
 	Transform* t1 = e1->AddComponent<Transform>();
 
-	t1->SetLocalPosition(2, 0, 0);
+	t1->SetLocalPosition(5, 0, 0);
 	Renderable* r1 = e1->AddComponent<Renderable>(mesh, mat);
 	RigidBody* rb1 = e1->AddComponent <RigidBody>(t1, &(r1->BoundingBox()));
-	e1->AddComponent<ScriptComponent>("script2.lua", rb1);
 
 	//
-	t1->SetParent(mainT);
+	//t1->SetParent(mainT);
 	//
 	AddEntity(e1);
 
@@ -149,13 +149,14 @@ void Scene::Tick(float deltaTime, float totalTime)
 	auto* t1 = entities[1]->GetComponent<Transform>();
 
 	t->SetWorldPosition(t->GetWorldPosition()->x + 0.5f*deltaTime, 0, 0);
-	t1->SetRotationEuler(0, rot, 0);
+	//t1->SetRotationEuler(0, rot, 0);
 
 	auto* r = entities[0]->GetComponent<RigidBody>();
 	auto* r1 = entities[1]->GetComponent<RigidBody>();
 	//cout << r->CollisionCheck(r1) << endl;
 
-
+	r1->Orbit(r, 2.0f, 50.0f, totalTime);
+	
 	//enti->GetComponent<ScriptComponent>()->Update(); 
 
 	{
