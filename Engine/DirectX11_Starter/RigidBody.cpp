@@ -69,3 +69,25 @@ void RigidBody::Orbit(RigidBody * otherBody, float radius, float speed, float to
 
 	trans->SetWorldPosition(xPosition, yPosition, trans->GetWorldPosition()->z);
 }
+
+void RigidBody::Seek(RigidBody * otherBody, float speed)
+{
+	Transform* otherTransform = otherBody->trans;
+
+	int xDirection = 0;
+	int yDirection = 0;
+
+	printf("%f\n", abs(otherTransform->GetWorldPosition()->x - trans->GetWorldPosition()->x) > 1.0f);
+
+	if (abs(otherTransform->GetWorldPosition()->x - trans->GetWorldPosition()->x) > 1.0f)
+	{
+		if (otherTransform->GetWorldPosition()->x > trans->GetWorldPosition()->x)
+			xDirection = 1;
+		else if (otherTransform->GetWorldPosition()->x < trans->GetWorldPosition()->x)
+			xDirection = -1;
+
+		trans->SetWorldPosition(trans->GetWorldPosition()->x + (xDirection * speed),
+			trans->GetWorldPosition()->y,
+			trans->GetWorldPosition()->z);
+	}
+}

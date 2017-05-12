@@ -22,6 +22,7 @@ public:
 	bool BoxCollisionCheck(RigidBody *otherRbody);
 
 	void Orbit(RigidBody *otherBody, float radius, float speed, float deltaTime);
+	void Seek(RigidBody *otherBody, float speed);
 
 private:
 	Transform* trans; 

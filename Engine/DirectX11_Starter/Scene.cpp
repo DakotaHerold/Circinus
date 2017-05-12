@@ -46,7 +46,7 @@ void Scene::Enter()
 	Entity* e1 = new Entity();
 	Transform* t1 = e1->AddComponent<Transform>();
 
-	t1->SetLocalPosition(5, 0, 0);
+	t1->SetLocalPosition(7, 0, 0);
 	Renderable* r1 = e1->AddComponent<Renderable>(mesh, mat);
 	RigidBody* rb1 = e1->AddComponent <RigidBody>(t1, &(r1->BoundingBox()));
 
@@ -155,8 +155,8 @@ void Scene::Tick(float deltaTime, float totalTime)
 	auto* r1 = entities[1]->GetComponent<RigidBody>();
 	//cout << r->CollisionCheck(r1) << endl;
 
-	r1->Orbit(r, 2.0f, 50.0f, totalTime);
-	
+	//r1->Orbit(r, 2.0f, 50.0f, totalTime);
+	r->Seek(r1, 2.0f);
 	//enti->GetComponent<ScriptComponent>()->Update(); 
 
 	{
