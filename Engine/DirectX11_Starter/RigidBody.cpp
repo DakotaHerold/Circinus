@@ -46,12 +46,20 @@ bool RigidBody::SphereCollisionCheck(RigidBody *otherRbody)
 
 bool RigidBody::BoxCollisionCheck(RigidBody * otherRbody)
 {
+<<<<<<< HEAD
 	XMFLOAT3* pos1 = trans->GetWorldPosition();
+=======
+	XMFLOAT3* pos1 = trans->GetLocalPosition();
+>>>>>>> 053c06233619a047e7c1f9d368e26f1b709e0176
 	obb->Center.x = pos1->x;
 	obb->Center.x = pos1->y;
 	obb->Center.x = pos1->z;
 
+<<<<<<< HEAD
 	XMFLOAT3* pos2 = otherRbody->trans->GetWorldPosition();
+=======
+	XMFLOAT3* pos2 = otherRbody->trans->GetLocalPosition();
+>>>>>>> 053c06233619a047e7c1f9d368e26f1b709e0176
 	otherRbody->obb->Center.x = pos2->x;
 	otherRbody->obb->Center.y = pos2->y;
 	otherRbody->obb->Center.z = pos2->z;
@@ -77,19 +85,29 @@ void RigidBody::Seek(RigidBody * otherBody, float speed)
 	int xDirection = 0;
 	int yDirection = 0;
 
+<<<<<<< HEAD
 	if (abs(otherTransform->GetWorldPosition()->x - trans->GetWorldPosition()->x) > 0.5f)
+=======
+	printf("%f\n", abs(otherTransform->GetWorldPosition()->x - trans->GetWorldPosition()->x) > 1.0f);
+
+	if (abs(otherTransform->GetWorldPosition()->x - trans->GetWorldPosition()->x) > 1.0f)
+>>>>>>> 053c06233619a047e7c1f9d368e26f1b709e0176
 	{
 		if (otherTransform->GetWorldPosition()->x > trans->GetWorldPosition()->x)
 			xDirection = 1;
 		else if (otherTransform->GetWorldPosition()->x < trans->GetWorldPosition()->x)
 			xDirection = -1;
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 053c06233619a047e7c1f9d368e26f1b709e0176
 		trans->SetWorldPosition(trans->GetWorldPosition()->x + (xDirection * speed),
 			trans->GetWorldPosition()->y,
 			trans->GetWorldPosition()->z);
 	}
+<<<<<<< HEAD
 
 	if (abs(otherTransform->GetWorldPosition()->y - trans->GetWorldPosition()->y) > 0.5f)
 	{
@@ -102,4 +120,6 @@ void RigidBody::Seek(RigidBody * otherBody, float speed)
 			trans->GetWorldPosition()->y + (yDirection * speed),
 			trans->GetWorldPosition()->z);
 	}
+=======
+>>>>>>> 053c06233619a047e7c1f9d368e26f1b709e0176
 }
