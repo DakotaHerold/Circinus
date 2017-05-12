@@ -36,11 +36,9 @@ void Scene::Enter()
 	Transform* mainT = main->AddComponent<Transform>();
 	Renderable* mainR = main->AddComponent<Renderable>(mesh, mat);
 	RigidBody* mainRb = main->AddComponent<RigidBody>(mainT, &(mainR->BoundingBox()));
-<<<<<<< HEAD
+
 	mainT->SetWorldPosition(1, 0, 0);
-=======
-	mainT->SetLocalPosition(1, 0, 0);
->>>>>>> 053c06233619a047e7c1f9d368e26f1b709e0176
+
 	AddEntity(main);
 
 	mat = renderer.CreateMaterial(shader);
@@ -50,17 +48,11 @@ void Scene::Enter()
 	Entity* e1 = new Entity();
 	Transform* t1 = e1->AddComponent<Transform>();
 
-<<<<<<< HEAD
 	t1->SetWorldPosition(10, 10, 0);
-=======
-	t1->SetLocalPosition(7, 0, 0);
->>>>>>> 053c06233619a047e7c1f9d368e26f1b709e0176
+
 	Renderable* r1 = e1->AddComponent<Renderable>(mesh, mat);
 	RigidBody* rb1 = e1->AddComponent <RigidBody>(t1, &(r1->BoundingBox()));
 
-	//
-	//t1->SetParent(mainT);
-	//
 	AddEntity(e1);
 
 	////Child entity 
@@ -156,11 +148,8 @@ void Scene::Tick(float deltaTime, float totalTime)
 	auto* t = entities[0]->GetComponent<Transform>();
 	auto* t1 = entities[1]->GetComponent<Transform>();
 
-<<<<<<< HEAD
 	t1->SetWorldPosition(t1->GetWorldPosition()->x + 0.5f*deltaTime, t1->GetWorldPosition()->y - 0.5f*deltaTime, 0);
-=======
-	t->SetWorldPosition(t->GetWorldPosition()->x + 0.5f*deltaTime, 0, 0);
->>>>>>> 053c06233619a047e7c1f9d368e26f1b709e0176
+
 	//t1->SetRotationEuler(0, rot, 0);
 
 	auto* r = entities[0]->GetComponent<RigidBody>();
@@ -168,11 +157,9 @@ void Scene::Tick(float deltaTime, float totalTime)
 	//cout << r->CollisionCheck(r1) << endl;
 
 	//r1->Orbit(r, 2.0f, 50.0f, totalTime);
-<<<<<<< HEAD
+
 	r->Seek(r1, 0.001f);
-=======
-	r->Seek(r1, 2.0f);
->>>>>>> 053c06233619a047e7c1f9d368e26f1b709e0176
+
 	//enti->GetComponent<ScriptComponent>()->Update(); 
 
 	{
