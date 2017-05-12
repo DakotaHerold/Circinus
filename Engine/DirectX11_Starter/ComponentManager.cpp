@@ -10,6 +10,7 @@ ComponentManager* ComponentManager::current;
 ComponentManager::ComponentManager()
 {
 	root = new Transform();
+	root->UpdateTransform();
 }
 
 ComponentManager::~ComponentManager()
