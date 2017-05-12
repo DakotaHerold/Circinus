@@ -4,15 +4,17 @@ using namespace DirectX;
 
 RigidBody::RigidBody(Transform* t, const DirectX::BoundingBox* boxCollider)
 {
-	trans = t; 
-	obb = new BoundingOrientedBox(); 
+	trans = t;
+	obb = new BoundingOrientedBox();
 	DirectX::BoundingOrientedBox::CreateFromBoundingBox(*obb, *boxCollider);
+
+	mass = 1.0f;
 }
 
 
 RigidBody::~RigidBody()
 {
-	delete obb; 
+	delete obb;
 }
 
 void RigidBody::SetEntity(int id)
@@ -44,15 +46,26 @@ bool RigidBody::SphereCollisionCheck(RigidBody *otherRbody)
 
 bool RigidBody::BoxCollisionCheck(RigidBody * otherRbody)
 {
-	XMFLOAT3* pos1 = trans->GetLocalPosition(); 
+	XMFLOAT3* pos1 = trans->GetLocalPosition();
 	obb->Center.x = pos1->x;
-	obb->Center.x = pos1->y; 
+	obb->Center.x = pos1->y;
 	obb->Center.x = pos1->z;
 
-	XMFLOAT3* pos2 = otherRbody->trans->GetLocalPosition(); 
-	otherRbody->obb->Center.x = pos2->x; 
+	XMFLOAT3* pos2 = otherRbody->trans->GetLocalPosition();
+	otherRbody->obb->Center.x = pos2->x;
 	otherRbody->obb->Center.y = pos2->y;
 	otherRbody->obb->Center.z = pos2->z;
 
 	return obb->Intersects(*(otherRbody->obb));
+}
+
+void RigidBody::Orbit(RigidBody * otherBody, float radius, float speed, float totalTime)
+{
+	float angle = (int)totalTime % 360;
+	angle = (angle * speed * 3.14) / 180.0f;
+
+	float xPosition = (cos(angle) * radius) + otherBody->trans->GetWorldPosition()->x;
+	float yPosition = (sin(angle) * radius) + otherBody->trans->GetWorldPosition()->y;
+
+	trans->SetWorldPosition(xPosition, yPosition, trans->GetWorldPosition()->z);
 }
