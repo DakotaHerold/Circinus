@@ -22,7 +22,7 @@
 #include "Transform.h"
 #include "Lighting.h"
 
-#ifdef EDITOR_BUILD
+#ifdef HAS_EDITOR
 #include "GizmoRenderer.h"
 #include "Editor.h"
 #endif
@@ -72,7 +72,7 @@ RenderingSystem::RenderingSystem()
 // --------------------------------------------------------
 RenderingSystem::~RenderingSystem(void)
 {
-#ifdef EDITOR_BUILD
+#ifdef HAS_EDITOR
 	gizmoRenderer->CleanUp();
 	delete gizmoRenderer;
 #endif
@@ -148,7 +148,7 @@ bool RenderingSystem::Init(NativeWindow* win)
 		return false;
 	}
 
-#ifdef EDITOR_BUILD
+#ifdef HAS_EDITOR
 	gizmoRenderer = new GizmoRenderer();
 	gizmoRenderer->Init(device, deviceContext);
 #endif
@@ -270,7 +270,7 @@ bool RenderingSystem::InitDirect3D(void* wndHandle)
 	GetClientRect(hwnd, &rect);
 	OnResize(rect.right, rect.bottom);
 
-#ifdef EDITOR_BUILD
+#ifdef HAS_GUI
 	// Initialize the GUI
 	GUI::instance().Init(hwnd, device, deviceContext);
 #endif
@@ -497,9 +497,10 @@ void RenderingSystem::DrawScene(Camera* cam, SceneGraph* scene)
 #endif
 
 
-#ifdef EDITOR_BUILD
+#ifdef HAS_EDITOR
 	gizmoRenderer->Render(cam->getViewMatrix(), cam->getProjectionMatrix());
-
+#endif
+#ifdef HAS_GUI
 	GUI::instance().Draw();
 #endif
 

@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine", "DirectX11_Starter
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		BenchmarkDebug|Win32 = BenchmarkDebug|Win32
+		BenchmarkDebug|x64 = BenchmarkDebug|x64
 		Debug|Win32 = Debug|Win32
 		Debug|x64 = Debug|x64
 		Release|Win32 = Release|Win32
@@ -17,6 +19,9 @@ Global
 		RuntimeRelease|x64 = RuntimeRelease|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FEB50FC0-912F-45AC-B79A-03B08704F107}.BenchmarkDebug|Win32.ActiveCfg = BenchmarkDebug|Win32
+		{FEB50FC0-912F-45AC-B79A-03B08704F107}.BenchmarkDebug|Win32.Build.0 = BenchmarkDebug|Win32
+		{FEB50FC0-912F-45AC-B79A-03B08704F107}.BenchmarkDebug|x64.ActiveCfg = BenchmarkDebug|Win32
 		{FEB50FC0-912F-45AC-B79A-03B08704F107}.Debug|Win32.ActiveCfg = Debug|Win32
 		{FEB50FC0-912F-45AC-B79A-03B08704F107}.Debug|Win32.Build.0 = Debug|Win32
 		{FEB50FC0-912F-45AC-B79A-03B08704F107}.Debug|x64.ActiveCfg = Debug|Win32

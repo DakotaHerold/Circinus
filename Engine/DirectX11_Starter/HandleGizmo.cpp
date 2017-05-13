@@ -1,6 +1,6 @@
 #include "HandleGizmo.h"
 
-#ifdef EDITOR_BUILD
+#ifdef HAS_EDITOR
 
 #include "ComponentManager.h"
 #include "InputManager.h"

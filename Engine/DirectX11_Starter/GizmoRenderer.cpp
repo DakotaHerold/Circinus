@@ -1,6 +1,6 @@
 #include "GizmoRenderer.h"
 
-#ifdef EDITOR_BUILD
+#ifdef HAS_EDITOR
 
 #include <algorithm>
 #include <PrimitiveBatch.h>

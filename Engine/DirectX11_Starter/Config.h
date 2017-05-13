@@ -1,7 +1,5 @@
 #pragma once
 
-//#define RUNTIME_BUILD
-
 #if !defined(RUNTIME_BUILD) && !defined(BENCHMARK_BUILD)
 #define EDITOR_BUILD
 #endif

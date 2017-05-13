@@ -6,7 +6,7 @@
 #include "Scene.h"
 #include "Entity.h"
 
-#ifdef EDITOR_BUILD
+#ifdef HAS_EDITOR
 #include "Editor.h"
 #endif
 
@@ -44,7 +44,7 @@ bool Engine::Init()
 	inputManager = &InputManager::instance();
 	inputManager->SetWindowHandle(nativeWindow->GetWindowHandle());
 
-#ifdef EDITOR_BUILD
+#ifdef HAS_EDITOR
 	Editor* editor = new Editor();
 	editor->Init(); // singleton initilized, it's ok to leave the pointer
 #endif
@@ -98,7 +98,7 @@ int Engine::Run()
 		// TODO
 
 		
-#ifdef EDITOR_BUILD
+#ifdef HAS_EDITOR
 		Editor::instance()->Update(deltaTime, totalTime);
 #else
 		// TODO !
@@ -111,7 +111,7 @@ int Engine::Run()
 		renderingSystem->Update(deltaTime, totalTime);
 
 		// rendering System
-#ifdef EDITOR_BUILD
+#ifdef HAS_EDITOR
 		renderingSystem->DrawScene(Editor::instance()->GetEditorCamera(), currentScene->GetSceneGraph());
 #else
 		renderingSystem->DrawScene(currentScene->GetCamera(), currentScene->GetSceneGraph());
@@ -144,7 +144,7 @@ void Engine::CleanUp()
 	currentScene->Exit();
 	delete currentScene;
 
-#ifdef EDITOR_BUILD
+#ifdef HAS_EDITOR
 	Editor::instance()->CleanUp();
 #endif
 
