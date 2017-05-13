@@ -10,6 +10,7 @@ ComponentManager* ComponentManager::current;
 ComponentManager::ComponentManager()
 {
 	root = new Transform();
+	root->UpdateTransform();
 }
 
 ComponentManager::~ComponentManager()
@@ -60,6 +61,8 @@ void ComponentManager::RemoveAllComponents(int entityID)
 		p.second.clear();
 	}
 }
+
+
 
 ObjectPoolBase * ComponentManager::GetComponentPool(TypeId typeID)
 {

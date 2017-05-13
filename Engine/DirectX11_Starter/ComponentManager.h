@@ -42,6 +42,8 @@ public:
 	Transform *root;
 	static ComponentManager *current;	
 
+
+
 private:
 	Scene* curScene;
 
