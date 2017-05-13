@@ -97,13 +97,14 @@ int Engine::Run()
 		// scripting system
 		// TODO
 
+		
+#ifdef EDITOR_BUILD
+		Editor::instance()->Update(deltaTime, totalTime);
+#else
 		// TODO !
 		// hardcoded debug code, 
 		// this should be done by SceneManager
 		currentScene->Tick(deltaTime, totalTime);
-
-#ifdef EDITOR_BUILD
-		Editor::instance()->Update(deltaTime, totalTime);
 #endif
 
 		// particle system update

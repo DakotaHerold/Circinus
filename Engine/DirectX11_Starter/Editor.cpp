@@ -29,7 +29,7 @@ void Editor::Update(float deltaTime, float totalTime)
 
 	{
 		float x = input.GetMouseMoveX();
-		if (input.GetLeftMouseHeld())	// Left button is down
+		if (input.GetMiddleMouseHeld())	// Left button is down
 		{
 			cam.moveSideways(input.GetMouseMoveX() *0.005f);
 			cam.moveVertical(input.GetMouseMoveY() * 0.005f);
@@ -43,25 +43,9 @@ void Editor::Update(float deltaTime, float totalTime)
 		cam.moveAlongDirection(input.GetMouseWheelDelta() * 0.01f);
 	}
 
-	// handle gizmos
-	if (nullptr != selectedEntity)
-	{
-		auto r = selectedEntity->GetComponent<Renderable>();
-		auto t = selectedEntity->GetComponent<Transform>();
+	XMVECTOR mouseRayStart, mouseRayDirection;
 
-		XMMATRIX worldMat = XMMatrixTranspose(
-			XMLoadFloat4x4(t->GetWorldMatrix())
-		);
-
-		BoundingOrientedBox box;
-		BoundingOrientedBox::CreateFromBoundingBox(box, r->GetMesh()->GetBounds());
-		box.Transform(box, worldMat);
-
-		GizmoRenderer::instance()->Draw(box, GizmoRenderer::green);
-	}
-
-	// mouse picking
-	if (input.GetLeftMouseDown())
+	// get mouse ray
 	{
 		const auto& frustum = cam.getFrustum();
 
@@ -87,9 +71,32 @@ void Editor::Update(float deltaTime, float totalTime)
 		mousePos = XMVector3TransformCoord(mousePos, matVP_Inv)
 			- XMVectorSet(0, 0, 0, 1);
 
-		XMVECTOR cameraPos = XMLoadFloat3(&cam.getPosition());
-		XMVECTOR dir = XMVector3Normalize(mousePos - cameraPos);
+		mouseRayStart = XMLoadFloat3(&cam.getPosition());
+		mouseRayDirection = XMVector3Normalize(mousePos - mouseRayStart);
+	}
 
+	// handle gizmos
+	if (nullptr != selectedEntity)
+	{
+		auto r = selectedEntity->GetComponent<Renderable>();
+		auto t = selectedEntity->GetComponent<Transform>();
+
+		XMMATRIX worldMat = XMMatrixTranspose(
+			XMLoadFloat4x4(t->GetWorldMatrix())
+		);
+
+		BoundingOrientedBox box;
+		BoundingOrientedBox::CreateFromBoundingBox(box, r->GetMesh()->GetBounds());
+		box.Transform(box, worldMat);
+
+		GizmoRenderer::instance()->Draw(box, GizmoRenderer::green);
+
+		handle.Update(selectedEntity, deltaTime, totalTime);
+	}
+
+	// mouse picking
+	if (input.GetLeftMouseDown())
+	{
 		float minDist = FLT_MAX;
 		Renderable* selectedObj = nullptr;
 
@@ -108,7 +115,7 @@ void Editor::Update(float deltaTime, float totalTime)
 			bounds.Transform(bounds, worldMat);
 
 			float dist = FLT_MAX;
-			if (bounds.Intersects(cameraPos, dir, dist))
+			if (bounds.Intersects(mouseRayStart, mouseRayDirection, dist))
 			{
 				if (dist < minDist)
 				{

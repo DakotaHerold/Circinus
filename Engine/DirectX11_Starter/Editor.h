@@ -5,6 +5,7 @@
 #ifdef EDITOR_BUILD
 
 #include "Camera.h"
+#include "HandleGizmo.h"
 
 class Entity;
 
@@ -28,6 +29,7 @@ public:
 
 private:
 	Camera		cam;
+	HandleGizmo	handle;
 	Entity*		selectedEntity;
 };
 

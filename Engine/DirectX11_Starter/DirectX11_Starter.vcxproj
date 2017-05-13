@@ -95,6 +95,7 @@
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="FrameCapture.cpp" />
     <ClCompile Include="GUI.cpp" />
+    <ClCompile Include="HandleGizmo.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
     <ClCompile Include="ImGui\imgui_demo.cpp" />
@@ -133,6 +134,7 @@
     <ClInclude Include="CollisionDetection.h" />
     <ClInclude Include="Emitter.h" />
     <ClInclude Include="FrameCapture.h" />
+    <ClInclude Include="HandleGizmo.h" />
     <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="DebugCam.h" />
     <ClInclude Include="ConstantBuffer.h" />
