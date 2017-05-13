@@ -10,7 +10,7 @@ ScriptComponent::ScriptComponent(string scriptFile, RigidBody* body)
 	L = luaL_newstate();
 
 	// Get script name and convert to C string 
-	string fileName = "Scripts/" + scriptFile;
+	fileName = "Scripts/" + scriptFile;
 	luaL_dofile(L, fileName.c_str());
 	luaL_openlibs(L);
 	lua_pcall(L, 0, 0, 0);
