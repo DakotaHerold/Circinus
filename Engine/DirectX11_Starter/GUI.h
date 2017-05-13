@@ -1,4 +1,7 @@
 #pragma once
+#include "Config.h"
+
+#ifdef EDITOR_BUILD
 
 #pragma region Import ImGUI
 //#include "ImGui\imgui_impl_dx11.cpp"
@@ -59,3 +62,4 @@ public:
 
 };
 
+#endif

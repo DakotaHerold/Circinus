@@ -1,4 +1,7 @@
 #include "GUI.h"
+
+#ifdef EDITOR_BUILD
+
 #include "Engine.h"
 #include "Editor.h"
 #include "Scene.h"
@@ -318,3 +321,5 @@ GUI::~GUI()
 {
 
 }
+
+#endif
