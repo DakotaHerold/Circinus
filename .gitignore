@@ -291,3 +291,6 @@ __pycache__/
 
 # ImGUI Config File
 imgui.ini
+
+RuntimeRelease
+RuntimeDebug
