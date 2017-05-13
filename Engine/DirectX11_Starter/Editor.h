@@ -2,7 +2,7 @@
 
 #include "Config.h"
 
-#ifdef EDITOR_BUILD
+#ifdef HAS_EDITOR
 
 #include "Camera.h"
 #include "HandleGizmo.h"

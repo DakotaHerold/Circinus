@@ -1,6 +1,6 @@
 #include "GUI.h"
 
-#ifdef EDITOR_BUILD
+#ifdef HAS_GUI
 
 #include "Engine.h"
 #include "Editor.h"
@@ -200,6 +200,7 @@ void GUI::AddMenuBar(bool * _running) {
 			ImGui::EndMenu();
 		}
 
+#ifdef HAS_EDITOR
 		if (ImGui::BeginMenu("Run"))
 		{
 			if (ImGui::MenuItem("Run")) {
@@ -211,6 +212,7 @@ void GUI::AddMenuBar(bool * _running) {
 			}
 			ImGui::EndMenu();
 		}
+#endif
 
 		if (ImGui::BeginMenu("Benchmarks")) {
 			if (ImGui::MenuItem("Add 1000 Objects")) {

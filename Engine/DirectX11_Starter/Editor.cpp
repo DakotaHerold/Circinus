@@ -1,6 +1,6 @@
 #include "Editor.h"
 
-#ifdef EDITOR_BUILD
+#ifdef HAS_EDITOR
 
 #include <string>
 #include <Windows.h>

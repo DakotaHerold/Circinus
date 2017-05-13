@@ -17,7 +17,7 @@
 #include "Material.h"
 #include "Lights.h"
 
-#ifdef EDITOR_BUILD
+#ifdef HAS_GUI
 #pragma region Include GUI
 
 #include "GUI.h"
@@ -155,7 +155,7 @@ private:
 
 	ParticleSystem*           particleSystem;
 
-#ifdef EDITOR_BUILD
+#ifdef HAS_EDITOR
 	GizmoRenderer*            gizmoRenderer;
 #endif
 

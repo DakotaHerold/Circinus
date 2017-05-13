@@ -1,7 +1,7 @@
 #pragma once
 #include "Config.h"
 
-#ifdef EDITOR_BUILD
+#ifdef HAS_EDITOR
 
 #include "PrimitiveRenderer.h"
 

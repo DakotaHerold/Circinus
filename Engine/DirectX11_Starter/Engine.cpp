@@ -73,7 +73,7 @@ int Engine::Run()
 		// native window event processiing
 		nativeWindow->ProcessEvent();
 
-#ifdef EDITOR_BUILD
+#ifdef HAS_GUI
 		(GUI::instance().Update(nativeWindow->GetWindowWidth(), nativeWindow->GetWindowHeight(), &running));
 #endif
 
@@ -122,7 +122,7 @@ int Engine::Run()
 	}
 
 	// GUI Cleanup
-#ifdef EDITOR_BUILD
+#ifdef HAS_GUI
 	GUI::instance().End();
 #endif
 
