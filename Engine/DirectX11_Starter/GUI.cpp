@@ -3,7 +3,8 @@
 #include "Editor.h"
 #include "Scene.h"
 #include "Entity.h"
-
+#include <math.h>
+#include "RenderingSystem.h"
 
 GUI::GUI()
 {
@@ -210,10 +211,39 @@ void GUI::AddMenuBar(bool * _running) {
 
 		if (ImGui::BeginMenu("Benchmarks")) {
 			if (ImGui::MenuItem("Add 1000 Objects")) {
-				// Nick, your stuff goes here
+				int count = 200;
+				float range = 4.0;
+				float start = -range / 2;
+
+				int row_column = sqrt(count);
+				float offset = range / (row_column - 1);
+
+				RenderingSystem& renderer = *RenderingSystem::instance();
+
+				Mesh* mesh = renderer.CreateMesh("Assets/Models/cube.fbx");
+				Shader* shader = renderer.CreateShader(L"Assets/ShaderObjs/Opaque.cso");
+				Texture* tex = renderer.CreateTexture(L"Assets/Textures/rust.jpg");
+				Material *mat = renderer.CreateMaterial(shader);
+				mat->SetTexture("texDiffuse", tex);
+
+				for (int i = 0; i < row_column; i++) {
+					for (int j = 0; j < row_column; j++) {
+						Entity* e = new Entity();
+						Transform* t = e->AddComponent<Transform>();
+						t->SetLocalPosition(start + offset * j, start + offset * i, 0);
+
+						Renderable* r = e->AddComponent<Renderable>(mesh, mat);
+
+						Engine::instance()->GetCurScene()->AddEntity(e);
+					}	
+		/*			
+					RigidBody* rb1 = e1->AddComponent <RigidBody>(t1, &(r1->BoundingBox()));*/
+					//e1->AddComponent<ScriptComponent>("script2.lua", rb1);
+				}
+
 			}
 			if (ImGui::MenuItem("Add 2000 Objects")) {
-				// Nick, Another Button.
+				
 			}
 			ImGui::EndMenu();
 		}
