@@ -9,7 +9,6 @@
 // For the DirectX Math library
 using namespace DirectX;
 
-using namespace DirectX;
 class Camera
 {
 private:

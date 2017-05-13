@@ -62,13 +62,7 @@ class NativeWindow;
 class SceneGraph;
 class ParticleSystem;
 class GizmoRenderer;
-
-#if defined(_DEBUG)
-class DebugCam;
-typedef DebugCam Camera;
-#else
 class Camera;
-#endif
 
 class RenderingSystem
 {
@@ -89,6 +83,11 @@ public:
 	void Update(float deltaTime, float totalTime);
 
 	void DrawScene(Camera* cam, SceneGraph* scene);
+
+public:
+
+	int GetWindowWidth() const { return windowWidth; }
+	int GetWindowHeight() const { return windowHeight; }
 
 public:
 	Mesh* CreateMesh(const char* filename);

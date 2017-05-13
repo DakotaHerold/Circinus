@@ -6,6 +6,10 @@
 #include "Scene.h"
 #include "Entity.h"
 
+#ifdef EDITOR_BUILD
+#include "Editor.h"
+#endif
+
 using std::vector;
 
 Engine* Engine::_instance = nullptr;
@@ -40,6 +44,11 @@ bool Engine::Init()
 	inputManager = &InputManager::instance();
 	inputManager->SetWindowHandle(nativeWindow->GetWindowHandle());
 
+#ifdef EDITOR_BUILD
+	Editor* editor = new Editor();
+	editor->Init(); // singleton initilized, it's ok to leave the pointer
+#endif
+
 	// TODO !
 	// hardcoded debug code, 
 	// scene loading should be in scripts or config file
@@ -63,7 +72,11 @@ int Engine::Run()
 		
 		// native window event processiing
 		nativeWindow->ProcessEvent();
+
+#ifdef EDITOR_BUILD
 		(GUI::instance().Update(nativeWindow->GetWindowWidth(), nativeWindow->GetWindowHeight(), &running));
+#endif
+
 		nativeWindow->CalculateFrameStats(totalTime);
 		if (nativeWindow->WindowIsClosed())
 		{
@@ -89,19 +102,28 @@ int Engine::Run()
 		// this should be done by SceneManager
 		currentScene->Tick(deltaTime, totalTime);
 
+#ifdef EDITOR_BUILD
+		Editor::instance()->Update(deltaTime, totalTime);
+#endif
+
 		// particle system update
 		renderingSystem->Update(deltaTime, totalTime);
 
 		// rendering System
-		// TODO
+#ifdef EDITOR_BUILD
+		renderingSystem->DrawScene(Editor::instance()->GetEditorCamera(), currentScene->GetSceneGraph());
+#else
 		renderingSystem->DrawScene(currentScene->GetCamera(), currentScene->GetSceneGraph());
+#endif
 
 		// TODO
 		//physicsSystem->update(deltaTime, currentScene->componentManager->rigidBodyComponents);
 	}
 
 	// GUI Cleanup
+#ifdef EDITOR_BUILD
 	GUI::instance().End();
+#endif
 
 	CleanUp();
 
@@ -120,6 +142,10 @@ void Engine::CleanUp()
 	// this should be done by SceneManager
 	currentScene->Exit();
 	delete currentScene;
+
+#ifdef EDITOR_BUILD
+	Editor::instance()->CleanUp();
+#endif
 
 	delete renderingSystem;
 	delete transformSystem;

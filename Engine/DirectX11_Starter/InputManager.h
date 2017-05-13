@@ -50,6 +50,12 @@ public:
 	bool GetLeftMouseHeld() { return leftMouseHeld; }
 	bool GetRightMouseHeld() { return rightMouseHeld; }
 	bool GetMiddleMouseHeld() { return middleMouseHeld; }
+	bool GetLeftMouseDown() { return leftMouseDown; }
+	bool GetRightMouseDown() { return rightMouseDown; }
+	bool GetMiddleMouseDown() { return middleMouseDown; }
+	bool GetLeftMouseUp() { return leftMouseUp; }
+	bool GetRightMouseUp() { return rightMouseUp; }
+	bool GetMiddleMouseUp() { return middleMouseUp; }
 	bool GetMovingForward() { return movingForward; }
 	bool GetMovingBackward() { return movingBackward; }
 	bool GetMovingLeft() { return movingLeft; }
@@ -113,6 +119,12 @@ private:
 	bool leftMouseHeld;
 	bool middleMouseHeld;
 	bool rightMouseHeld;
+	bool leftMouseDown;
+	bool middleMouseDown;
+	bool rightMouseDown;
+	bool leftMouseUp;
+	bool middleMouseUp;
+	bool rightMouseUp;
 	float mousePosX;
 	float mousePosY;
 	float mouseMoveX; 

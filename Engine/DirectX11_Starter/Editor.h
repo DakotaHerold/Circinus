@@ -4,19 +4,31 @@
 
 #ifdef EDITOR_BUILD
 
-#include "DebugCam.h"
+#include "Camera.h"
+
+class Entity;
 
 class Editor
 {
-public:
-	static Editor* instance();
+private:
+	static Editor* _instance;
 
 public:
+	static Editor* instance() { return _instance; }
+
+public:
+
+	void Init();
 
 	void Update(float deltaTime, float totalTime);
 
+	void CleanUp();
+
+	Camera* GetEditorCamera() { return &cam; }
+
 private:
-	DebugCam		cam;
+	Camera		cam;
+	Entity*		selectedEntity;
 };
 
 #endif

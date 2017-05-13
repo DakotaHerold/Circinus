@@ -1,14 +1,10 @@
 #pragma once
 
-#if defined(_DEBUG)
-#include "DebugCam.h"
-typedef DebugCam Camera;
-#else
-#include "Camera.h"
-#endif
 #include <vector>
 #include "SceneGraph.h"
 #include "ComponentManager.h"
+#include "Camera.h"
+
 class Entity;
 class Material;
 

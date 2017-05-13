@@ -11,18 +11,13 @@
 
 #include "Config.h"
 
+#include <WindowsX.h>
+#include <sstream>
 #include "RenderingSystem.h"
 #include "ParticleSystem.h"
 #include "NativeWindow.h"
 #include "SceneGraph.h"
-#if defined(_DEBUG)
-#include "DebugCam.h"
-typedef DebugCam Camera;
-#else
 #include "Camera.h"
-#endif
-#include <WindowsX.h>
-#include <sstream>
 #include "ComponentManager.h"
 #include "Transform.h"
 #include "Lighting.h"
@@ -292,6 +287,9 @@ bool RenderingSystem::InitDirect3D(void* wndHandle)
 // --------------------------------------------------------
 void RenderingSystem::OnResize(int windowWidth, int windowHeight)
 {
+	this->windowWidth = windowWidth;
+	this->windowHeight = windowHeight;
+
 	// Release any existing views, since we'll be destroying
 	// the corresponding buffers.
 	ReleaseMacro(renderTargetView);

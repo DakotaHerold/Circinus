@@ -71,7 +71,7 @@ void GizmoRenderer::Draw(const BoundingBox & bound, const DirectX::XMFLOAT3& col
 	XMVECTOR position = XMLoadFloat3(&bound.Center);
 	matWorld.r[3] = XMVectorSelect(matWorld.r[3], position, g_XMSelect1110);
 
-	AddCube(matWorld, color);
+	DrawCube(matWorld, color);
 }
 
 void GizmoRenderer::Draw(const BoundingFrustum & bound, const DirectX::XMFLOAT3& color)
@@ -116,7 +116,7 @@ void GizmoRenderer::Draw(const BoundingOrientedBox & bound, const DirectX::XMFLO
 	XMVECTOR position = XMLoadFloat3(&bound.Center);
 	matWorld.r[3] = XMVectorSelect(matWorld.r[3], position, g_XMSelect1110);
 
-	AddCube(matWorld, color);
+	DrawCube(matWorld, color);
 }
 
 void GizmoRenderer::Draw(const BoundingSphere & bound, const DirectX::XMFLOAT3& color)
@@ -129,9 +129,16 @@ void GizmoRenderer::Draw(const BoundingSphere & bound, const DirectX::XMFLOAT3& 
 	XMVECTOR yaxis = g_XMIdentityR1 * radius;
 	XMVECTOR zaxis = g_XMIdentityR2 * radius;
 
-	AddRing(origin, xaxis, zaxis, color);
-	AddRing(origin, xaxis, yaxis, color);
-	AddRing(origin, yaxis, zaxis, color);
+	DrawRing(origin, xaxis, zaxis, color);
+	DrawRing(origin, xaxis, yaxis, color);
+	DrawRing(origin, yaxis, zaxis, color);
+}
+
+void GizmoRenderer::DrawLine(const DirectX::XMFLOAT3 & p1, const DirectX::XMFLOAT3 & p2, const DirectX::XMFLOAT3 & color)
+{
+	XMVECTOR _p1 = XMLoadFloat3(&p1);
+	XMVECTOR _p2 = XMLoadFloat3(&p2);
+	DrawLine(_p1, _p2, color);
 }
 
 void GizmoRenderer::DrawCoordinate(const DirectX::XMFLOAT4X4& viewMatrix, const DirectX::XMFLOAT4X4& projMatrix, const DirectX::XMFLOAT3 clipSpacePos, float scale)
@@ -143,9 +150,9 @@ void GizmoRenderer::DrawCoordinate(const DirectX::XMFLOAT4X4& viewMatrix, const 
 
 	XMVECTOR origin = XMVector3TransformCoord(XMLoadFloat3(&clipSpacePos), matVP_Inv);
 	
-	AddLine(origin, origin + XMVectorSet(scale, 0, 0, 0), red);
-	AddLine(origin, origin + XMVectorSet(0, scale, 0, 0), green);
-	AddLine(origin, origin + XMVectorSet(0, 0, scale, 0), blue);
+	DrawLine(origin, origin + XMVectorSet(scale, 0, 0, 0), red);
+	DrawLine(origin, origin + XMVectorSet(0, scale, 0, 0), green);
+	DrawLine(origin, origin + XMVectorSet(0, 0, scale, 0), blue);
 }
 
 void GizmoRenderer::DrawGrid(const DirectX::XMFLOAT3 & xAxis, const DirectX::XMFLOAT3 & yAxis, const DirectX::XMFLOAT3 & origin, uint32_t xdivs, uint32_t ydivs, const DirectX::XMFLOAT3 & color)
@@ -153,10 +160,10 @@ void GizmoRenderer::DrawGrid(const DirectX::XMFLOAT3 & xAxis, const DirectX::XMF
 	XMVECTOR _xAxis = XMLoadFloat3(&xAxis);
 	XMVECTOR _yAxis = XMLoadFloat3(&yAxis);
 	XMVECTOR _origin = XMLoadFloat3(&origin);
-	AddGrid(_xAxis, _yAxis, _origin, xdivs, ydivs, color);
+	DrawGrid(_xAxis, _yAxis, _origin, xdivs, ydivs, color);
 }
 
-void GizmoRenderer::AddLine(DirectX::FXMVECTOR p1, DirectX::FXMVECTOR p2, const DirectX::XMFLOAT3& color)
+void GizmoRenderer::DrawLine(DirectX::FXMVECTOR p1, DirectX::FXMVECTOR p2, const DirectX::XMFLOAT3& color)
 {
 	XMStoreFloat3(&pVertices[curVertex].position, p1);
 	XMStoreFloat3(&pVertices[curVertex + 1].position, p2);
@@ -171,7 +178,7 @@ void GizmoRenderer::AddLine(DirectX::FXMVECTOR p1, DirectX::FXMVECTOR p2, const 
 	curIndex += 2;
 }
 
-void GizmoRenderer::AddCube(DirectX::CXMMATRIX & matWorld, const DirectX::XMFLOAT3& color)
+void GizmoRenderer::DrawCube(DirectX::CXMMATRIX & matWorld, const DirectX::XMFLOAT3& color)
 {
 	static const XMVECTORF32 s_verts[8] =
 	{
@@ -217,7 +224,7 @@ void GizmoRenderer::AddCube(DirectX::CXMMATRIX & matWorld, const DirectX::XMFLOA
 	curIndex += 24;
 }
 
-void GizmoRenderer::AddRing(FXMVECTOR origin, FXMVECTOR majorAxis, FXMVECTOR minorAxis, const DirectX::XMFLOAT3& color)
+void GizmoRenderer::DrawRing(FXMVECTOR origin, FXMVECTOR majorAxis, FXMVECTOR minorAxis, const DirectX::XMFLOAT3& color)
 {
 	static const size_t c_ringSegments = 32;
 
@@ -260,7 +267,7 @@ void GizmoRenderer::AddRing(FXMVECTOR origin, FXMVECTOR majorAxis, FXMVECTOR min
 	curIndex += c_ringSegments * 2;
 }
 
-void GizmoRenderer::AddGrid(DirectX::FXMVECTOR xAxis, DirectX::FXMVECTOR yAxis, DirectX::FXMVECTOR origin, uint32_t xdivs, uint32_t ydivs, const DirectX::XMFLOAT3 & color)
+void GizmoRenderer::DrawGrid(DirectX::FXMVECTOR xAxis, DirectX::FXMVECTOR yAxis, DirectX::FXMVECTOR origin, uint32_t xdivs, uint32_t ydivs, const DirectX::XMFLOAT3 & color)
 {
 	xdivs = std::max<uint32_t>(1u, xdivs);
 	ydivs = std::max<uint32_t>(1u, ydivs);
@@ -272,7 +279,7 @@ void GizmoRenderer::AddGrid(DirectX::FXMVECTOR xAxis, DirectX::FXMVECTOR yAxis, 
 		XMVECTOR scale = XMVectorScale(xAxis, percent);
 		scale = XMVectorAdd(scale, origin);
 
-		AddLine(
+		DrawLine(
 			XMVectorSubtract(scale, yAxis),
 			XMVectorAdd(scale, yAxis),
 			color);
@@ -285,7 +292,7 @@ void GizmoRenderer::AddGrid(DirectX::FXMVECTOR xAxis, DirectX::FXMVECTOR yAxis, 
 		XMVECTOR scale = XMVectorScale(yAxis, percent);
 		scale = XMVectorAdd(scale, origin);
 
-		AddLine(
+		DrawLine(
 			XMVectorSubtract(scale, xAxis),
 			XMVectorAdd(scale, xAxis),
 			color);

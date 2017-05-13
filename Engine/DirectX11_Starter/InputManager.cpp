@@ -90,6 +90,14 @@ void InputManager::UpdateInput(float deltaTime)
 		fireMissile = (GetKeyState(VK_LSHIFT) & 0x8000) ? true : false;
 
 		Mouse::State m = mouse->GetState();
+		leftMouseDown = !leftMouseHeld && m.leftButton;
+		middleMouseDown = !middleMouseHeld && m.middleButton;
+		rightMouseDown = !rightMouseHeld && m.rightButton;
+
+		leftMouseUp = leftMouseHeld && !m.leftButton;
+		middleMouseUp = middleMouseHeld && !m.middleButton;
+		rightMouseUp = rightMouseHeld && !m.rightButton;
+
 		leftMouseHeld = m.leftButton;
 		rightMouseHeld = m.rightButton;
 		middleMouseHeld = m.middleButton;

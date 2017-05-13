@@ -33,6 +33,17 @@ public:
 	void Draw(const DirectX::BoundingOrientedBox& bound, const DirectX::XMFLOAT3& color = white);
 	void Draw(const DirectX::BoundingSphere& bound, const DirectX::XMFLOAT3& color = white);
 	
+	void DrawLine(const DirectX::XMFLOAT3& p1, const DirectX::XMFLOAT3& p2, const DirectX::XMFLOAT3& color);
+	void DrawLine(DirectX::FXMVECTOR p1, DirectX::FXMVECTOR p2, const DirectX::XMFLOAT3& color);
+
+	void DrawCube(DirectX::CXMMATRIX& matWorld, const DirectX::XMFLOAT3& color);
+
+	void DrawRing(
+		DirectX::FXMVECTOR origin,
+		DirectX::FXMVECTOR majorAxis,
+		DirectX::FXMVECTOR minorAxis,
+		const DirectX::XMFLOAT3& color);
+
 	void DrawCoordinate(const DirectX::XMFLOAT4X4& viewMatrix, const DirectX::XMFLOAT4X4& projMatrix, const DirectX::XMFLOAT3 clipSpacePos, float scale = 1.0f);
 
 	void DrawGrid(
@@ -43,27 +54,18 @@ public:
 		uint32_t ydivs,
 		const DirectX::XMFLOAT3& color);
 
-private:
-	inline uint32_t AddVertex(const DirectX::XMFLOAT3& vert, const DirectX::XMFLOAT3& color) { pVertices[curVertex] = Vertex{ vert, color }; return (curVertex++); }
-	inline uint32_t AddIndex(uint32_t index) { pIndices[curIndex] = index; return (curIndex++); }
-
-	void AddLine(DirectX::FXMVECTOR p1, DirectX::FXMVECTOR p2, const DirectX::XMFLOAT3& color);
-
-	void AddCube(DirectX::CXMMATRIX& matWorld, const DirectX::XMFLOAT3& color);
-
-	void AddRing(
-		DirectX::FXMVECTOR origin,
-		DirectX::FXMVECTOR majorAxis,
-		DirectX::FXMVECTOR minorAxis,
-		const DirectX::XMFLOAT3& color);
-
-	void AddGrid(
+	void DrawGrid(
 		DirectX::FXMVECTOR xAxis,
 		DirectX::FXMVECTOR yAxis,
 		DirectX::FXMVECTOR origin,
 		uint32_t xdivs,
 		uint32_t ydivs,
 		const DirectX::XMFLOAT3& color);
+
+private:
+	inline uint32_t AddVertex(const DirectX::XMFLOAT3& vert, const DirectX::XMFLOAT3& color) { pVertices[curVertex] = Vertex{ vert, color }; return (curVertex++); }
+	inline uint32_t AddIndex(uint32_t index) { pIndices[curIndex] = index; return (curIndex++); }
+
 
 private:
 
