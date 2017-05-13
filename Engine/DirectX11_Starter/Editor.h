@@ -27,6 +27,15 @@ public:
 
 	Camera* GetEditorCamera() { return &cam; }
 
+public:
+
+	void SetSelectedEntity(Entity* entity) { selectedEntity = entity; }
+	Entity* GetSelectedEntity() { return selectedEntity; }
+
+	void Run();
+
+	void Build();
+
 private:
 	Camera		cam;
 	HandleGizmo	handle;

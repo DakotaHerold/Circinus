@@ -2,6 +2,9 @@
 
 #ifdef EDITOR_BUILD
 
+#include <string>
+#include <Windows.h>
+
 #include "RenderingSystem.h"
 #include "InputManager.h"
 #include "ComponentManager.h"
@@ -162,6 +165,60 @@ void Editor::CleanUp()
 	assert(nullptr != _instance);
 	delete _instance;
 	_instance = nullptr;
+}
+
+void Editor::Run()
+{
+#ifdef UNICODE
+	typedef wchar_t char_t;
+	typedef std::wstring str_t;
+	const char_t exeName[] = L"\\Engine.exe";
+#else
+	typedef char char_t;
+	typedef std::string str_t;
+	const char_t exeName[] = "\\Engine.exe";
+#endif
+
+
+	do
+	{
+		char_t* cCwd = nullptr;
+		uint32_t cwdLen = GetCurrentDirectory(0, nullptr);
+		cCwd = new char_t[cwdLen];
+		GetCurrentDirectory(cwdLen, cCwd);
+		str_t cwd(cCwd);
+		delete[] cCwd;
+		str_t path = cwd + exeName;
+		
+		STARTUPINFO si = {};
+		PROCESS_INFORMATION pi = {};
+		si.cb = sizeof(si);
+
+		BOOL ret = CreateProcess(
+			path.c_str(),
+			nullptr,
+			nullptr,
+			nullptr,
+			FALSE,
+			0,
+			nullptr,
+			nullptr,
+			&si,
+			&pi);
+			
+		assert(ret);
+
+		WaitForSingleObject(pi.hProcess, INFINITE);
+
+		CloseHandle(pi.hProcess);
+		CloseHandle(pi.hThread);
+
+	} while (0);
+
+}
+
+void Editor::Build()
+{
 }
 
 #endif

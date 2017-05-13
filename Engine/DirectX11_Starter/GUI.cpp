@@ -1,5 +1,6 @@
 #include "GUI.h"
 #include "Engine.h"
+#include "Editor.h"
 #include "Scene.h"
 #include "Entity.h"
 
@@ -191,6 +192,18 @@ void GUI::AddMenuBar(bool * _running) {
 				// TODO: Add functionality.
 				// What should I add?
 				ImGui::EndMenu();
+			}
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Run"))
+		{
+			if (ImGui::MenuItem("Run")) {
+				Editor::instance()->Run();
+			}
+
+			if (ImGui::MenuItem("Build (TODO)")) {
+				Editor::instance()->Build();
 			}
 			ImGui::EndMenu();
 		}
