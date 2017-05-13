@@ -27,6 +27,7 @@ void Editor::Update(float deltaTime, float totalTime)
 	// camera movement
 	cam.update(deltaTime);
 
+	if (!handle.IsMoving())
 	{
 		float x = input.GetMouseMoveX();
 		if (input.GetMiddleMouseHeld())	// Left button is down
@@ -34,7 +35,7 @@ void Editor::Update(float deltaTime, float totalTime)
 			cam.moveSideways(input.GetMouseMoveX() *0.005f);
 			cam.moveVertical(input.GetMouseMoveY() * 0.005f);
 		}
-		if (input.GetRightMouseHeld())	// Right button is down
+		if (input.GetLeftMouseHeld())	// Right button is down
 		{
 			cam.setRotationY(input.GetMouseMoveX());
 			cam.setRotationX(input.GetMouseMoveY());
@@ -43,20 +44,30 @@ void Editor::Update(float deltaTime, float totalTime)
 		cam.moveAlongDirection(input.GetMouseWheelDelta() * 0.01f);
 	}
 
-	XMVECTOR mouseRayStart, mouseRayDirection;
+	{
+		GizmoRenderer::opaque()->DrawGrid(
+			DirectX::XMFLOAT3{ 10, 0, 0 },
+			DirectX::XMFLOAT3{ 0, 0, 10 },
+			DirectX::XMFLOAT3{ 0, 0, 0 },
+			10, 10,
+			DirectX::XMFLOAT3{ 0.3f, 0.3f, 0.3f }
+		);
+		GizmoRenderer::opaque()->DrawCoordinate(cam.getViewMatrix(), cam.getProjectionMatrix(), XMFLOAT3{ -0.8f, -0.8f, 0.5f }, 0.01f);
+	}
+
+	XMVECTOR mouseRayStart, mouseRayDirection, mouseWorldDelta;
+	XMMATRIX matVP, matVP_Inv;
 
 	// get mouse ray
 	{
 		const auto& frustum = cam.getFrustum();
 
-		XMMATRIX matVP_Inv = XMMatrixTranspose(XMLoadFloat4x4(&cam.getViewMatrix()));
-		matVP_Inv = XMMatrixMultiply(
-			matVP_Inv,
+		matVP = XMMatrixTranspose(XMLoadFloat4x4(&cam.getViewMatrix()));
+		matVP = XMMatrixMultiply(
+			matVP,
 			XMMatrixTranspose(XMLoadFloat4x4(&cam.getProjectionMatrix()))
 		);
-		matVP_Inv = XMMatrixInverse(nullptr, matVP_Inv);
-
-		ResultComponents<Renderable> r = ComponentManager::current->GetAllComponents<Renderable>();
+		matVP_Inv = XMMatrixInverse(nullptr, matVP);
 
 		float mouseClipSpaceX = input.GetMousePositionX() / RenderingSystem::instance()->GetWindowWidth() * 2.0f - 1.0f;
 		float mouseClipSpaceY = -input.GetMousePositionY() / RenderingSystem::instance()->GetWindowHeight() * 2.0f + 1.0f;
@@ -73,6 +84,13 @@ void Editor::Update(float deltaTime, float totalTime)
 
 		mouseRayStart = XMLoadFloat3(&cam.getPosition());
 		mouseRayDirection = XMVector3Normalize(mousePos - mouseRayStart);
+
+		mouseWorldDelta = XMVectorSet(
+			input.GetMouseMoveX() * deltaTime,// / RenderingSystem::instance()->GetWindowWidth(),
+			-input.GetMouseMoveY() * deltaTime,// / RenderingSystem::instance()->GetWindowHeight(),
+			0,
+			0
+		);
 	}
 
 	// handle gizmos
@@ -89,16 +107,18 @@ void Editor::Update(float deltaTime, float totalTime)
 		BoundingOrientedBox::CreateFromBoundingBox(box, r->GetMesh()->GetBounds());
 		box.Transform(box, worldMat);
 
-		GizmoRenderer::instance()->Draw(box, GizmoRenderer::green);
-
-		handle.Update(selectedEntity, deltaTime, totalTime);
+		GizmoRenderer::opaque()->Draw(box, PrimitiveRenderer::green);	
 	}
 
+	handle.Update(selectedEntity, deltaTime, totalTime, mouseRayStart, mouseRayDirection, mouseWorldDelta, matVP);
+
 	// mouse picking
-	if (input.GetLeftMouseDown())
+	if (input.GetLeftMouseDown() && !handle.IsMoving())
 	{
 		float minDist = FLT_MAX;
 		Renderable* selectedObj = nullptr;
+
+		ResultComponents<Renderable> r = ComponentManager::current->GetAllComponents<Renderable>();
 
 		for (size_t j = 0; j < r.size; j++) {
 			Renderable* i = &r.components[j];

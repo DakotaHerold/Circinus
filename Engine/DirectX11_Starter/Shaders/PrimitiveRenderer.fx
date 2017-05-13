@@ -19,7 +19,18 @@ cbuffer CameraConstants : register (b0)
 
 BlendState defaultBS;
 RasterizerState defaultRS;
-DepthStencilState defaultDS;
+DepthStencilState defaultDS
+{
+	DepthEnable = FALSE;
+};
+DepthStencilState noWriteDS
+{
+	DepthWriteMask = 0;
+};
+DepthStencilState noDepthDS
+{
+	DepthEnable = FALSE;
+};
 
 V2F vs_main(Input input)
 {
@@ -40,7 +51,16 @@ technique11
 	{
 		SetBlendState(defaultBS, float4(0, 0, 0, 0), 0xffffffff);
 		SetRasterizerState(defaultRS);
-		SetDepthStencilState(defaultDS, 0);
+		SetDepthStencilState(noWriteDS, 0);
+		SetVertexShader(CompileShader(vs_5_0, vs_main()));
+		SetPixelShader(CompileShader(ps_5_0, ps_main()));
+	}
+
+	pass
+	{
+		SetBlendState(defaultBS, float4(0, 0, 0, 0), 0xffffffff);
+		SetRasterizerState(defaultRS);
+		SetDepthStencilState(noDepthDS, 0);
 		SetVertexShader(CompileShader(vs_5_0, vs_main()));
 		SetPixelShader(CompileShader(ps_5_0, ps_main()));
 	}

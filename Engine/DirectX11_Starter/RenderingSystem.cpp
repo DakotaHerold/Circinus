@@ -504,15 +504,6 @@ void RenderingSystem::DrawScene(Camera* cam, SceneGraph* scene)
 
 
 #ifdef EDITOR_BUILD
-	gizmoRenderer->DrawGrid(
-		DirectX::XMFLOAT3{ 10, 0, 0 },
-		DirectX::XMFLOAT3{ 0, 0, 10 },
-		DirectX::XMFLOAT3{ 0, 0, 0 },
-		10, 10,
-		DirectX::XMFLOAT3{ 0.3f, 0.3f, 0.3f }
-	);
-	gizmoRenderer->DrawCoordinate(cam->getViewMatrix(), cam->getProjectionMatrix(), XMFLOAT3{ -0.8f, -0.8f, 0.5f }, 0.01f);
-
 	gizmoRenderer->Render(cam->getViewMatrix(), cam->getProjectionMatrix());
 
 	GUI::instance().Draw();
