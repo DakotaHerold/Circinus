@@ -1,5 +1,7 @@
 #include "HandleGizmo.h"
 
+#ifdef EDITOR_BUILD
+
 #include "ComponentManager.h"
 #include "InputManager.h"
 #include "GizmoRenderer.h"
@@ -249,3 +251,5 @@ void _vectorcall HandleGizmo::DrawScalor(DirectX::XMVECTOR worldPos, DirectX::XM
 	gizmo->DrawLine(worldPos, worldPos + worldYDir, selY ? PrimitiveRenderer::yellow : PrimitiveRenderer::green);
 	gizmo->DrawLine(worldPos, worldPos + worldZDir, selZ ? PrimitiveRenderer::yellow : PrimitiveRenderer::blue);
 }
+
+#endif

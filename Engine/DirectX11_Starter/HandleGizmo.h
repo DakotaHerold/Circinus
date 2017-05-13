@@ -1,4 +1,7 @@
 #pragma once
+#include "Config.h"
+
+#ifdef EDITOR_BUILD
 
 #include <DirectXMath.h>
 
@@ -73,3 +76,5 @@ private:
 	bool					selZ;
 	Mode					mode;
 };
+
+#endif
