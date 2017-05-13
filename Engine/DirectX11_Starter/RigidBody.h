@@ -20,11 +20,13 @@ public:
 
 	bool SphereCollisionCheck(RigidBody *otherRbody);
 	bool BoxCollisionCheck(RigidBody *otherRbody);
+
 	void Update();
+	void SetVelocity(float x, float y, float z);
 
 private:
 	Transform* trans; 
 	DirectX::BoundingOrientedBox* obb;
-	DirectX::XMFLOAT3* velocity;
+	DirectX::XMFLOAT3 velocity; // This velocity will be a vector3 relate to world space instead of local space.
 };
 

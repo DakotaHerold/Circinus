@@ -3,23 +3,30 @@
 using namespace DirectX;
 
 RigidBody::RigidBody(Transform* t, const DirectX::BoundingBox* boxCollider)
+	:
+	velocity(0, 0, 0)
 {
 	trans = t; 
 	obb = new BoundingOrientedBox(); 
 	DirectX::BoundingOrientedBox::CreateFromBoundingBox(*obb, *boxCollider);
-	velocity = new DirectX::XMFLOAT3(0, 0, 0);
 }
 
 
 RigidBody::~RigidBody()
 {
-	delete obb; 
-	delete velocity;
+	delete obb;
 }
 
 void RigidBody::Update()
 {
+	trans->SetWorldPosition(trans->GetWorldPosition.x + velocity.x, trans->GetWorldPosition.y + velocity.y, trans->GetWorldPosition.z + velocity.z);
+}
 
+void RigidBody::SetVelocity(float x, float y, float z)
+{
+	velocity.x = x;
+	velocity.y = y;
+	velocity.z = z;
 }
 
 void RigidBody::SetEntity(int id)
