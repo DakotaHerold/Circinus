@@ -121,10 +121,7 @@ void Editor::Update(float deltaTime, float totalTime)
 		float minDist = FLT_MAX;
 		Renderable* selectedObj = nullptr;
 
-		ResultComponents<Renderable> r = ComponentManager::current->GetAllComponents<Renderable>();
-
-		for (size_t j = 0; j < r.size; j++) {
-			Renderable* i = &r.components[j];
+		for(Renderable *i : ComponentManager::current->GetAllComponents<Renderable>()) {
 
 			Transform* t = i->GetEntity()->GetComponent<Transform>();
 			auto* m = t->GetWorldMatrix();

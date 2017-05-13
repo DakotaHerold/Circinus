@@ -6,17 +6,12 @@ Object::Object()
 {
 	id = nextID;
 	nextID++;
-	allObjects.push_back(make_pair(id, this));
+	allObjects[id] = this;
 }
 
 Object::~Object()
 {
-	for (size_t i = 0; i < allObjects.size(); i++) {
-		if (allObjects[i].first == id) {
-			allObjects.erase(allObjects.begin() + i);
-			break;
-		}
-	}
+	allObjects[id] = nullptr;
 }
 
 int Object::GetID() const
@@ -25,4 +20,4 @@ int Object::GetID() const
 }
 
 int Object::nextID = 0;
-vector<pair<int, Object*>> Object::allObjects;
+map<int, Object*> Object::allObjects;

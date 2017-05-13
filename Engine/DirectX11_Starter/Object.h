@@ -1,5 +1,5 @@
 #pragma once
-#include <vector>
+#include <map>
 
 class Object
 {
@@ -12,18 +12,16 @@ public:
 private:
 	int id;
 	static int nextID;
-	static std::vector<std::pair<int, Object*>> allObjects;
+	static std::map<int, Object*> allObjects;
 };
 
 template <class T>
 T* Object::GetObjectWithID(int id) {
 
 	static_assert(std::is_base_of<Object, T>(), "T is not a object");
-	for (auto o : allObjects) {
-		if (o.first == id) {			
-			return dynamic_cast<T*>(o.second);
-		}
-	}
 
-	return nullptr;
+	if (id >= nextID)
+		throw "ID is invalid, too big!";
+
+	return dynamic_cast<T*>(allObjects[id]);
 }
