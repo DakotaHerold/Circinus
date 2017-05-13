@@ -150,7 +150,7 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 			{
 				//ImGui::Text( GetComponent(selectedEntity, selectedCompIndex))
 				// TODO:: ERROR -- FIX IT
-				cm->GetComponent((selectedEntity)->GetID(), selectedComponentID, selectedCompIndex);
+				// cm->GetComponent((selectedEntity)->GetID(), selectedComponentID, selectedCompIndex);
 			}
 			else {
 				std::cout << "?" << ComponentTypeName(selectedComponentID) << "?" << std::endl;
@@ -191,6 +191,16 @@ void GUI::AddMenuBar(bool * _running) {
 				// TODO: Add functionality.
 				// What should I add?
 				ImGui::EndMenu();
+			}
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Benchmarks")) {
+			if (ImGui::MenuItem("Add 1000 Objects")) {
+				// Nick, your stuff goes here
+			}
+			if (ImGui::MenuItem("Add 2000 Objects")) {
+				// Nick, Another Button.
 			}
 			ImGui::EndMenu();
 		}
