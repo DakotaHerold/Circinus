@@ -12,7 +12,7 @@ TransformSystem::~TransformSystem()
 {
 }
 
-void TransformSystem::update(float delta, ResultComponents<Transform> transforms)
+void TransformSystem::update(float delta, std::vector<Transform *> transforms)
 {
 	ComponentManager::current->root->UpdateTransform();
 }

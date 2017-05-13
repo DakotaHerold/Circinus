@@ -31,7 +31,7 @@ public:
 	//bool HasComponent(int entityID, TypeId componentTypeId) const;
 
 	template <typename T>
-	ResultComponents<T> GetAllComponents();
+	std::vector<T *> GetAllComponents();
 
 	std::vector<std::pair<TypeId, ObjectPoolIndex *>> GetAllComponents(int entityID);
 
@@ -109,7 +109,7 @@ inline T * ComponentManager::GetComponent(int entityID, ObjectPoolIndex* index)
 //}
 
 template<typename T>
-inline ResultComponents<T> ComponentManager::GetAllComponents()
+inline std::vector<T *> ComponentManager::GetAllComponents()
 {
 	return GetComponentPool<T>()->GetAllComponents();
 }

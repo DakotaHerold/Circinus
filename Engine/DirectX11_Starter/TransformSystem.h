@@ -10,6 +10,6 @@ public:
 	TransformSystem();
 	~TransformSystem();
 
-	void update(float delta, ResultComponents<Transform> transforms);
+	void update(float delta, std::vector<Transform *> transforms);
 };
 

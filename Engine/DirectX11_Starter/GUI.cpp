@@ -198,7 +198,7 @@ void GUI::AddMenuBar(bool * _running) {
 
 		if (ImGui::BeginMenu("Benchmarks")) {
 			if (ImGui::MenuItem("Add 1000 Objects")) {
-				int count = 100;
+				int count = 200;
 				float range = 4.0;
 				float start = -range / 2;
 
@@ -219,7 +219,7 @@ void GUI::AddMenuBar(bool * _running) {
 						Transform* t = e->AddComponent<Transform>();
 						t->SetLocalPosition(start + offset * j, start + offset * i, 0);
 
-						//Renderable* r = e->AddComponent<Renderable>(mesh, mat);
+						Renderable* r = e->AddComponent<Renderable>(mesh, mat);
 
 						Engine::instance()->GetCurScene()->AddEntity(e);
 					}	

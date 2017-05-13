@@ -343,10 +343,9 @@ void RenderingSystem::Update(float deltaTime, float totalTime)
 #if !defined(DISABLE_PARTICLE_SYSTEM)
 	auto emitters = ComponentManager::current->GetAllComponents<ParticleEmitter>();
 
-	for (size_t i = 0; i < emitters.size; ++i)
+	for (auto e : emitters)
 	{
-		ParticleEmitter& e = emitters.components[i];
-		Transform* t = e.GetEntity()->GetComponent<Transform>();
+		Transform* t = e->GetEntity()->GetComponent<Transform>();
 
 		DirectX::XMMATRIX worldMat = DirectX::XMMatrixTranspose(
 			DirectX::XMLoadFloat4x4(t->GetWorldMatrix()));
@@ -357,13 +356,13 @@ void RenderingSystem::Update(float deltaTime, float totalTime)
 		DirectX::XMFLOAT3 worldVel;
 		DirectX::XMStoreFloat3(&worldVel,
 			DirectX::XMVector3Transform(
-				DirectX::XMLoadFloat3(&(e.velocity)),
+				DirectX::XMLoadFloat3(&(e->velocity)),
 				worldMat_it
 			)
 		);
 
 		//DirectX::XMFLOAT3 pos = { 2.0f, 0.0f, 0.0f };
-		e.SetCBParameters(*(t->GetWorldPosition()), worldVel, e.lifeTime, e.emitRate);
+		e->SetCBParameters(*(t->GetWorldPosition()), worldVel, e->lifeTime, e->emitRate);
 	}
 
 	particleSystem->Update(deltaTime, totalTime);
@@ -408,11 +407,10 @@ void RenderingSystem::DrawScene(Camera* cam, SceneGraph* scene)
 
 	// Update lights for scene here
 	Light lights[MAX_LIGHTS];	// Maybe not initializing all to zero???? Check later
-	ResultComponents<Lighting> l = ComponentManager::current->GetAllComponents<Lighting>();
+	auto l = ComponentManager::current->GetAllComponents<Lighting>();
 	bool hasAnyLightChanged = false;
-	for (size_t j = 0; j < l.size; j++) {
-		Lighting* i = &l.components[j];
-
+	for (size_t j = 0; j < l.size(); j++) {
+		Lighting* i = l[j];
 		lights[j] = i->GetLight();
 
 		if (i->WasModified())
@@ -426,13 +424,9 @@ void RenderingSystem::DrawScene(Camera* cam, SceneGraph* scene)
 	XMFLOAT4 eyePos = XMFLOAT4(cam->getPosition().x, cam->getPosition().y, cam->getPosition().z, 1);
 
 	if (hasAnyLightChanged)
-		UpdateLightProperties(eyePos, globalAmbient, lights, l.size, MAX_LIGHTS);
+		UpdateLightProperties(eyePos, globalAmbient, lights, l.size(), MAX_LIGHTS);
 
-	ResultComponents<Renderable> r = ComponentManager::current->GetAllComponents<Renderable>();
-
-	for (size_t j = 0; j < r.size; j++) {
-		Renderable* i = &r.components[j];
-
+	for (Renderable* i : ComponentManager::current->GetAllComponents<Renderable>()) {
 		Transform* t = i->GetEntity()->GetComponent<Transform>();
 		auto* m = t->GetWorldMatrix();
 

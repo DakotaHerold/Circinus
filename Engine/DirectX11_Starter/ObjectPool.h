@@ -4,6 +4,8 @@
 #include <utility>
 #include <new>
 #include <assert.h>
+#include <map>
+#include <vector>
 
 typedef unsigned int ObjectPoolIndex;
 
@@ -35,11 +37,11 @@ public:
 	virtual void Return(ObjectPoolIndex index) = 0;
 };
 
-template <typename T>
-struct ResultComponents {
-	T* components;
-	unsigned int size;
-};
+//template <typename T>
+//struct ResultComponents {
+//	T* components;
+//	unsigned int size;
+//};
 
 template <typename T>
 class ObjectPool : public ObjectPoolBase
@@ -56,22 +58,28 @@ public:
 	T* Get(ObjectPoolIndex index);
 	void Return(ObjectPoolIndex index) override;
 
-	ResultComponents<T> GetAllComponents();
+	std::vector<T *> GetAllComponents();
 
 private:
+	void AllocMemory(ObjectPoolIndex size);
+	T* GetAddress(ObjectPoolIndex index);
+
 	ObjectPoolIndex		m_size;					// object size
 
 	ObjectPoolIndex		m_length;
 	ObjectPoolIndex		m_resizeAmount;
 	bool				m_isResizeAllowed;
 
-	T*					m_objects;
+	//T*					m_objects;
+	std::map<ObjectPoolIndex, T*>	m_objectsMap;
+	std::vector<T *> m_allObjects;
+
 	ObjectPoolIndex		m_count;
 };
 
 template<typename T>
 ObjectPool<T>::ObjectPool(int length, int resizeAmount, bool isResizeAllowed)
-	:m_size(sizeof(T)),	m_length(length), m_resizeAmount(resizeAmount), m_isResizeAllowed(isResizeAllowed)
+	:m_size(sizeof(T)),	m_length(0), m_resizeAmount(resizeAmount), m_isResizeAllowed(isResizeAllowed)
 {
 	static_assert(std::is_base_of<Poolable, T>(), "T is not a poolable object, cannot make a ObjectPool for it.");
 
@@ -80,27 +88,30 @@ ObjectPool<T>::ObjectPool(int length, int resizeAmount, bool isResizeAllowed)
 			throw "Please provide a valid resize amount.";
 	}
 	
-	m_objects = reinterpret_cast<T *>(malloc(m_size * length));
-
-	if (m_objects == nullptr) {
-		throw "alloc error!";
-	}
-
+	AllocMemory(length);
 	m_count = 0;
 }
 
 template<typename T>
 ObjectPool<T>::~ObjectPool()
 {
-	for (ObjectPoolIndex i = 0; i < m_count; i++) {
-		// http://stackoverflow.com/questions/2995099/malloc-and-constructors
-		// http://en.cppreference.com/w/cpp/language/new
-		m_objects[i].~T();
-
-		//delete (m_objects + i);
+	for (auto i : m_allObjects) {
+		i->~T();
 	}
 
-	free(m_objects);
+	for (auto rit = m_objectsMap.rbegin(); rit != m_objectsMap.rend(); ++rit) {
+		free(rit->second);
+	}
+
+	//for (ObjectPoolIndex i = 0; i < m_count; i++) {
+	//	// http://stackoverflow.com/questions/2995099/malloc-and-constructors
+	//	// http://en.cppreference.com/w/cpp/language/new
+	//	m_objects[i].~T();
+
+	//	//delete (m_objects + i);
+	//}
+	
+	//free(m_objects);
 }
 
 template<typename T>
@@ -127,21 +138,17 @@ inline T * ObjectPool<T>::Add(Args && ...args)
 			throw "limit exceeded length, and the pool was set to not resize.";
 		}
 
-		// Create a new array with some more slots and copy over the existing m_objects.
-		//T* newComponents = new T[m_length + m_resizeAmount];
-
-		m_length += m_resizeAmount;
-
-		m_objects = reinterpret_cast<T *>(realloc(m_objects, sizeof(T) * m_length));
-
-		if (m_objects == nullptr) {
-			throw "realloc error!";
-		}
+		AllocMemory(m_resizeAmount);
 	}
 
-	T* result = new (m_objects + m_count) T(std::forward<Args>(args)...);
+
+	T* addre = GetAddress(m_count);
+
+	T* result = new (GetAddress(m_count)) T(std::forward<Args>(args)...);
 	// TODO: Get from global allocator
 	result->poolIndex = new ObjectPoolIndex(m_count++);
+
+	m_allObjects.push_back(result);
 
 	return result;
 }
@@ -152,7 +159,7 @@ inline T * ObjectPool<T>::Get(ObjectPoolIndex index)
 	if (index >= m_count) {
 		throw "index out of count!";
 	}
-	return m_objects + index;
+	return GetAddress(index);
 }
 
 template<typename T>
@@ -164,20 +171,50 @@ inline void ObjectPool<T>::Return(ObjectPoolIndex index)
 
 	--m_count;
 
-	delete m_objects[index].poolIndex;
-	m_objects[index].~T();
+	T* del = GetAddress(index);
+
+	delete del->poolIndex;
+	del->~T();
 
 	if (index != m_count) {
-		memcpy(m_objects + index, m_objects + m_count, m_size);
-		*(m_objects[index].poolIndex) = index;
+		memcpy(del, GetAddress(m_count), m_size);
+		*(del->poolIndex) = index;
 
 		// FIXME: Should I erase memory??
-		memset(m_objects + m_count, 0, m_size);
+		memset(GetAddress(m_count), 0, m_size);
 	}
+
+	assert(m_allObjects.back() == GetAddress(m_count));
+	m_allObjects.pop_back();
 }
 
 template<typename T>
-inline ResultComponents<T> ObjectPool<T>::GetAllComponents()
+inline std::vector<T *> ObjectPool<T>::GetAllComponents()
 {
-	return {m_objects, m_count};
+	//return {m_objects, m_count};
+	return m_allObjects;
+}
+
+template<typename T>
+inline void ObjectPool<T>::AllocMemory(ObjectPoolIndex length)
+{
+	T *m_objects = reinterpret_cast<T *>(malloc(m_size * length));
+
+	if (m_objects == nullptr) {
+		throw "alloc error!";
+	}
+
+	m_objectsMap[m_length] = m_objects;
+
+	m_length += length;
+}
+
+template<typename T>
+inline T * ObjectPool<T>::GetAddress(ObjectPoolIndex index)
+{
+	for (auto rit = m_objectsMap.rbegin(); rit != m_objectsMap.rend(); ++rit) {
+		if (rit->first <= index) {
+			return rit->second + (index - rit->first);
+		}
+	}
 }
