@@ -22,6 +22,8 @@ typedef vector<Entity*> EntityVector;
 class Scene
 {
 public:
+	Scene();
+
 	void Enter();
 
 	void Tick(float deltaTime, float totalTime);
@@ -31,10 +33,15 @@ public:
 	Camera* GetCamera() { return &cam; }
 	SceneGraph* GetSceneGraph() { return &sceneGraph; }
 	ComponentManager* componentManager;
+	
+
 	EntityVector GetAllEntities();
 	void AddEntity(Entity* entity);
+	Entity* CreateEntity(string name);
+	bool DeleteEntityByName(string name);
 	Entity* GetEntityByName(string name);
 	Entity* GetEntityByID(int id);
+
 private:
 	Camera			cam;
 	SceneGraph		sceneGraph;

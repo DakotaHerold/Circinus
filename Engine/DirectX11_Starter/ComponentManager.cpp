@@ -62,6 +62,8 @@ void ComponentManager::RemoveAllComponents(int entityID)
 	}
 }
 
+
+
 ObjectPoolBase * ComponentManager::GetComponentPool(TypeId typeID)
 {
 	auto it = ComponentPoolsMap.find(typeID);

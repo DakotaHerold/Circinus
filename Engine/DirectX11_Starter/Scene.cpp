@@ -11,11 +11,16 @@
 #include "ParticleEmitter.h"
 #include "GizmoRenderer.h"
 
+Scene::Scene()
+{
+	componentManager = new ComponentManager();
+	ComponentManager::current = componentManager;
+}
+
 void Scene::Enter()
 {
 	// Testing hard code 
-	componentManager = new ComponentManager();
-	ComponentManager::current = componentManager;
+
 
 	RenderingSystem& renderer = *RenderingSystem::instance();
 
@@ -28,8 +33,8 @@ void Scene::Enter()
 	mat = renderer.CreateMaterial(shader);
 	mat->SetTexture("texDiffuse", tex);
 
-	DirectX::XMFLOAT4X4 matrix;
-	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixIdentity());
+	//DirectX::XMFLOAT4X4 matrix;
+	//DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixIdentity());
 
 	// Main entity 
 	Entity* main = new Entity();
@@ -195,6 +200,24 @@ vector<Entity*> Scene::GetAllEntities()
 void Scene::AddEntity(Entity * entity)
 {
 	entities.push_back(entity);
+}
+
+Entity * Scene::CreateEntity(string name)
+{
+	Entity* ent = new Entity(name);
+	AddEntity(ent);
+	return ent;
+}
+
+bool Scene::DeleteEntityByName(string name)
+{
+	for (size_t i = 0; i < entities.size(); i++) {
+		if (entities[i]->GetName() == name) {
+			entities.erase(entities.begin() + i);
+			return true;
+		}
+	}
+	return false;
 }
 
 Entity * Scene::GetEntityByName(string name)

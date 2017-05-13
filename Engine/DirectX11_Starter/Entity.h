@@ -38,6 +38,8 @@ public :
 
 	std::string GetName();
 
+	void ChangeName(std::string name);
+
 private :
 	std::string name = "No Name Yet";
 };
