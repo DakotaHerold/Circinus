@@ -37,6 +37,14 @@ public:
 	std::vector<Transform*> children;
 	void					UpdateTransform();
 
+	void					StartSerialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
+
+	virtual void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) {
+		//begin
+		//entity->serialize
+		//end
+	}
+
 private:
 	void					UpdateMatrix();
 

@@ -1,18 +1,24 @@
 #include "Entity.h"
 #include "ComponentManager.h"
-
+#include "Renderable.h"
 using namespace std;
 
 Entity::Entity() 
 	: name("Entity")
 {
-
+	AddComponent<Transform>();
 }
 
 Entity::Entity(string name)
 	: name(name)
 {
+	AddComponent<Transform>();
+}
 
+Entity::Entity(std::string name, Material * mat, Mesh * mesh)
+{
+	this->name = name;
+	AddComponent<Renderable>(mesh, mat);
 }
 
 Entity::~Entity()

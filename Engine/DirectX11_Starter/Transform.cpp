@@ -196,3 +196,12 @@ void Transform::UpdateTransform()
 		children[i]->UpdateTransform();
 	}
 }
+
+void Transform::StartSerialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
+{
+	Entity* entity = GetEntity();
+	entity->Serialize(writer);
+	for (Transform* t : children) {
+		t->StartSerialize(writer);
+	}
+}

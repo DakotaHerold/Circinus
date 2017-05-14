@@ -24,32 +24,32 @@ void Scene::Enter()
 
 	RenderingSystem& renderer = *RenderingSystem::instance();
 
-	Mesh* mesh = renderer.CreateMesh("Assets/Models/cube.fbx");
+	//Mesh* mesh = renderer.CreateMesh("Assets/Models/cube.fbx");
 
-	Shader* shader = renderer.CreateShader(L"Assets/ShaderObjs/Opaque.cso");
-	Texture* tex = renderer.CreateTexture(L"Assets/Textures/rust.jpg");
-	Texture* tex1 = renderer.CreateTexture(L"Assets/Textures/water.jpg");
+	//Shader* shader = renderer.CreateShader(L"Assets/ShaderObjs/Opaque.cso");
+	//Texture* tex = renderer.CreateTexture(L"Assets/Textures/rust.jpg");
+	//Texture* tex1 = renderer.CreateTexture(L"Assets/Textures/water.jpg");
 
-	mat = renderer.CreateMaterial(shader);
-	mat->SetTexture("texDiffuse", tex);
+	//mat = renderer.CreateMaterial(shader);
+	//mat->SetTexture("texDiffuse", tex);
 
 	//DirectX::XMFLOAT4X4 matrix;
 	//DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixIdentity());
-
+	Mesh* mesh = AddMesh("cube", "Assets/Models/cube.fbx");
+	mat = AddMaterial("mat1", L"Assets/ShaderObjs/Opaque.cso", "texDiffuse", L"Assets/Textures/rust.jpg");
 	// Main entity 
 	Entity* main = new Entity();
-	Transform* mainT = main->AddComponent<Transform>();
+	Transform* mainT = main->GetComponent<Transform>();
 	Renderable* mainR = main->AddComponent<Renderable>(mesh, mat);
 	RigidBody* mainRb = main->AddComponent<RigidBody>(mainT, &(mainR->BoundingBox()));
 	AddEntity(main);
 
-	mat = renderer.CreateMaterial(shader);
-	mat->SetTexture("texDiffuse", tex1);
+	mat = AddMaterial("mat2", L"Assets/ShaderObjs/Opaque.cso", "texDiffuse", L"Assets/Textures/water.jpg");
 
 	// Collision check entity 
 	Entity* e1 = new Entity();
-	Transform* t1 = e1->AddComponent<Transform>();
 
+	Transform* t1 = e1->GetComponent<Transform>();
 	t1->SetLocalPosition(2, 0, 0);
 	Renderable* r1 = e1->AddComponent<Renderable>(mesh, mat);
 	RigidBody* rb1 = e1->AddComponent <RigidBody>(t1, &(r1->BoundingBox()));
@@ -76,10 +76,10 @@ void Scene::Enter()
 
 	// Particle Emitters;
 	Entity* emitEntity = new Entity();
-	Transform* emitEntityTrans = emitEntity->AddComponent<Transform>();
+
 	ParticleEmitter* emitter = emitEntity->AddComponent<ParticleEmitter>(L"Assets/Textures/smoke.png");
 	AddEntity(emitEntity);
-
+	Transform* emitEntityTrans = emitEntity->GetComponent<Transform>();
 	emitEntityTrans->SetLocalPosition(2.0f, 0.0f, 0.0f);
 
 	emitter->SetInitialVelocity(0.0f, 0.3f, 0.0f);
@@ -209,6 +209,13 @@ Entity * Scene::CreateEntity(string name)
 	return ent;
 }
 
+Entity * Scene::CreateEntity(string name, Mesh * mesh, Material * material)
+{
+	Entity* ent = new Entity(name, material, mesh);
+	AddEntity(ent);
+	return nullptr;
+}
+
 bool Scene::DeleteEntityByName(string name)
 {
 	for (size_t i = 0; i < entities.size(); i++) {
@@ -237,5 +244,41 @@ Entity * Scene::GetEntityByID(int id)
 			return e;
 		}
 	}
+	return nullptr;
+}
+
+Mesh * Scene::AddMesh(string meshName, string file)
+{
+	RenderingSystem& renderer = *RenderingSystem::instance();
+	Mesh* mesh = renderer.CreateMesh(file.c_str());
+	if (mesh != nullptr) {
+		meshes.push_back(std::make_pair(meshName, mesh));
+	}	
+	return mesh;
+}
+
+Mesh * Scene::GetMesh(string name)
+{
+	for (auto i : meshes) {
+		if (i.first == name) {
+			return i.second;
+		}
+	}
+	return nullptr;
+}
+
+Material * Scene::AddMaterial(string materialName, const wchar_t * shaderFile, string textureName, const wchar_t * textureFile)
+{
+	RenderingSystem& renderer = *RenderingSystem::instance();
+	Shader* shader = renderer.CreateShader(shaderFile);
+	Texture* texture = renderer.CreateTexture(textureFile);
+	Material* material = renderer.CreateMaterial(shader);
+	material->SetTexture(materialName, texture);
+	materials.push_back(std::make_pair(materialName, material));
+	return material;
+}
+
+Material * Scene::GetMaterial(string name)
+{
 	return nullptr;
 }

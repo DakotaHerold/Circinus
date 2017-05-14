@@ -5,6 +5,7 @@
 #include "Component.h"
 #include "Object.h"
 #include <utility>
+#include <rapidjson\prettywriter.h>
 #include <string>
 
 using namespace DirectX;
@@ -18,6 +19,7 @@ public:
 	~Entity();
 	Entity();
 	Entity(std::string name);
+	Entity(std::string name, Material* mat, Mesh* mesh);
 
 public :
 
@@ -39,6 +41,14 @@ public :
 	std::string GetName();
 
 	void ChangeName(std::string name);
+
+	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) {
+		//name
+		writer.String("name");
+		writer.String(this->name.c_str());
+		//components
+		//getallcomponent
+	}
 
 private :
 	std::string name = "No Name Yet";

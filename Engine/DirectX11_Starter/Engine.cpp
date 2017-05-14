@@ -5,6 +5,7 @@
 #include "TransformSystem.h"
 #include "Scene.h"
 #include "Entity.h"
+#include "SceneManager.h"
 
 #ifdef HAS_EDITOR
 #include "Editor.h"
@@ -53,7 +54,7 @@ bool Engine::Init()
 	// hardcoded debug code, 
 	// scene loading should be in scripts or config file
 	// and should be done by SceneManager
-	currentScene = new Scene();
+	currentScene = SceneManager::CreateNewScene("scene");
 	currentScene->Enter();
 
 	return true;

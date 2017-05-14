@@ -1,6 +1,7 @@
 #pragma once
 #include "ClassTypeId.h"
 #include "Object.h"
+#include <rapidjson\prettywriter.h>
 #include <utility>
 #include "ObjectPool.h"
 
@@ -17,6 +18,10 @@ public:
 	virtual void				SetEntity(int id);
 	Entity*						GetEntity();
 	int							GetEntityID();
+
+	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) {
+		//
+	}
 
 private:
 	int							gameEntityID;
