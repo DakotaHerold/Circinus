@@ -24,7 +24,7 @@ $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerWorkingDirectory>$(SolutionDir)..\</LocalDebuggerWorkingDirectory>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RuntimRelease|Win32'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RuntimeRelease|Win32'">
     <LocalDebuggerEnvironment>PATH=$(PATH);$(ProjectDir)VisualLeakDetector\bin\Win32
 $(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>

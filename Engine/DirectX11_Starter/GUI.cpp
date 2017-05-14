@@ -207,7 +207,7 @@ void GUI::AddMenuBar(bool * _running) {
 				Editor::instance()->Run();
 			}
 
-			if (ImGui::MenuItem("Build (TODO)")) {
+			if (ImGui::MenuItem("Build")) {
 				Editor::instance()->Build();
 			}
 			ImGui::EndMenu();

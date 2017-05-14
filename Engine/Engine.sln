@@ -31,10 +31,9 @@ Global
 		{FEB50FC0-912F-45AC-B79A-03B08704F107}.RuntimeDebug|Win32.ActiveCfg = RuntimeDebug|Win32
 		{FEB50FC0-912F-45AC-B79A-03B08704F107}.RuntimeDebug|Win32.Build.0 = RuntimeDebug|Win32
 		{FEB50FC0-912F-45AC-B79A-03B08704F107}.RuntimeDebug|x64.ActiveCfg = RuntimeDebug|Win32
-		{FEB50FC0-912F-45AC-B79A-03B08704F107}.RuntimeRelease|Win32.ActiveCfg = RuntimRelease|Win32
-		{FEB50FC0-912F-45AC-B79A-03B08704F107}.RuntimeRelease|Win32.Build.0 = RuntimRelease|Win32
-		{FEB50FC0-912F-45AC-B79A-03B08704F107}.RuntimeRelease|x64.ActiveCfg = RuntimRelease|Win32
-		{FEB50FC0-912F-45AC-B79A-03B08704F107}.RuntimeRelease|x64.Build.0 = RuntimRelease|Win32
+		{FEB50FC0-912F-45AC-B79A-03B08704F107}.RuntimeRelease|Win32.ActiveCfg = RuntimeRelease|Win32
+		{FEB50FC0-912F-45AC-B79A-03B08704F107}.RuntimeRelease|Win32.Build.0 = RuntimeRelease|Win32
+		{FEB50FC0-912F-45AC-B79A-03B08704F107}.RuntimeRelease|x64.ActiveCfg = RuntimeRelease|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
