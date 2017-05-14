@@ -4,6 +4,17 @@
 
 #include <string>
 #include <Windows.h>
+#include <ShlObj.h>
+
+#ifdef UNICODE
+typedef wchar_t char_t;
+typedef std::wstring str_t;
+#define STR(x) L##x
+#else
+typedef char char_t;
+typedef std::string str_t;
+#define STR(X) x
+#endif
 
 #include "RenderingSystem.h"
 #include "InputManager.h"
@@ -11,6 +22,64 @@
 #include "Transform.h"
 #include "Renderable.h"
 #include "GizmoRenderer.h"
+
+namespace
+{
+
+	const char_t engineExeName[] = STR("\\Engine.exe");
+	const char_t dllsName[] = STR("\\*.dll");
+	const char_t assetFolderName[] = STR("\\Assets");
+
+	str_t SelectFolder()
+	{
+		char_t path[1024] = {};
+
+		BROWSEINFO bi = {};
+		bi.lpszTitle = STR("Output Folder");
+		bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
+
+		LPITEMIDLIST list = SHBrowseForFolder(&bi);
+		if (nullptr != list)
+		{
+			SHGetPathFromIDList(list, path);
+
+			IMalloc * imalloc = 0;
+			if (SUCCEEDED(SHGetMalloc(&imalloc)))
+			{
+				imalloc->Free(list);
+				imalloc->Release();
+			}
+
+			return path;
+		}
+
+		return STR("");
+	}
+
+	str_t GetWorkingDirectory()
+	{
+		char_t* cCwd = nullptr;
+		uint32_t cwdLen = GetCurrentDirectory(0, nullptr);
+		cCwd = new char_t[cwdLen];
+		GetCurrentDirectory(cwdLen, cCwd);
+		str_t cwd(cCwd);
+		delete[] cCwd;
+
+		return cwd;
+	}
+
+	void CopyFile(const str_t& from, const str_t& to)
+	{
+		str_t _from = from + STR('\0');
+		str_t _to = to + STR('\0');
+		SHFILEOPSTRUCT s = {};
+		s.wFunc = FO_COPY;
+		s.pFrom = _from.c_str();
+		s.pTo = _to.c_str();
+		s.fFlags = FOF_SILENT | FOF_NOCONFIRMMKDIR | FOF_NOCONFIRMATION | FOF_NOERRORUI | FOF_NO_UI;
+		assert(0 == SHFileOperation(&s));
+	}
+}
 
 Editor* Editor::_instance = nullptr;
 
@@ -166,26 +235,10 @@ void Editor::CleanUp()
 
 void Editor::Run()
 {
-#ifdef UNICODE
-	typedef wchar_t char_t;
-	typedef std::wstring str_t;
-	const char_t exeName[] = L"\\Engine.exe";
-#else
-	typedef char char_t;
-	typedef std::string str_t;
-	const char_t exeName[] = "\\Engine.exe";
-#endif
-
-
 	do
 	{
-		char_t* cCwd = nullptr;
-		uint32_t cwdLen = GetCurrentDirectory(0, nullptr);
-		cCwd = new char_t[cwdLen];
-		GetCurrentDirectory(cwdLen, cCwd);
-		str_t cwd(cCwd);
-		delete[] cCwd;
-		str_t path = cwd + exeName;
+		str_t cwd = GetWorkingDirectory();
+		str_t path = cwd + engineExeName;
 		
 		STARTUPINFO si = {};
 		PROCESS_INFORMATION pi = {};
@@ -216,6 +269,29 @@ void Editor::Run()
 
 void Editor::Build()
 {
+	str_t cwd = GetWorkingDirectory();
+	str_t path = SelectFolder();
+
+	if (path.length() <= 0)
+		return;
+
+	{
+		str_t from = cwd + assetFolderName + STR("\\*");
+		str_t to = path + assetFolderName;
+		CopyFile(from, to);
+	}
+
+	{
+		str_t from = cwd + dllsName;
+		str_t to = path;
+		CopyFile(from, to);
+	}
+
+	{
+		str_t from = cwd + engineExeName;
+		str_t to = path + engineExeName;
+		CopyFile(from, to);
+	}
 }
 
 #endif

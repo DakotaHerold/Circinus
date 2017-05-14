@@ -11,15 +11,18 @@
 using namespace DirectX;
 class ComponentManager;
 
+// FIXME:
+//typedef unsigned int eidType;
 typedef int eidType;
 
 class Entity : public Object
 {
 public:
-	~Entity();
 	Entity();
 	Entity(std::string name);
 	Entity(std::string name, Material* mat, Mesh* mesh);
+
+	~Entity();
 
 public :
 
@@ -35,11 +38,13 @@ public :
 	template <typename T>
 	T*					GetComponent();
 
+	std::vector<Component *>GetAllComponents();
+
 	//template <typename T>
 	//bool				HasComponent() const;
 
 	std::string GetName();
-
+	
 	void ChangeName(std::string name);
 
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) {

@@ -36,6 +36,11 @@ string Entity::GetName()
 	return name;
 }
 
+std::vector<Component*> Entity::GetAllComponents()
+{
+	return ComponentManager::current->GetAllComponents(GetID());
+}
+
 void Entity::ChangeName(std::string name)
 {
 	this->name = name;

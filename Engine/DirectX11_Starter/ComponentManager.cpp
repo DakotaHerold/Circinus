@@ -22,7 +22,22 @@ ComponentManager::~ComponentManager()
 	}
 }
 
-vector<pair<TypeId, ObjectPoolIndex *>> ComponentManager::GetAllComponents(int entityID)
+vector<Component*> ComponentManager::GetAllComponents(int entityID)
+{
+	vector<Component*> ret;
+
+	for (auto &p : entityComponentsMap[entityID]) {
+		ObjectPoolBase *pool = GetComponentPool(p.first);
+
+		for (ObjectPoolIndex *i : p.second) {
+			ret.push_back(reinterpret_cast<Component*>(pool->Get(*i)));
+		}
+	}
+
+	return ret;
+}
+
+vector<pair<TypeId, ObjectPoolIndex *>> ComponentManager::GetAllComponentsInfo(int entityID)
 {
 	vector<pair<TypeId, ObjectPoolIndex*>> result;
 
@@ -61,7 +76,6 @@ void ComponentManager::RemoveAllComponents(int entityID)
 		p.second.clear();
 	}
 }
-
 
 
 ObjectPoolBase * ComponentManager::GetComponentPool(TypeId typeID)
