@@ -8,6 +8,8 @@
 #include "Entity.h"
 #include <math.h>
 #include "RenderingSystem.h"
+#include "ScriptComponent.h"
+#include "TransformSystem.h"
 
 GUI::GUI()
 {
@@ -153,10 +155,11 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 		{
 			if ( 0 == std::strcmp(ComponentTypeName(selectedComponentID), "class ScriptComponent") )
 			{
-				//ImGui::Text( GetComponent(selectedEntity, selectedCompIndex))
-				// TODO:: ERROR -- FIX IT
-				// cm->GetComponent((selectedEntity)->GetID(), selectedComponentID, selectedCompIndex);
+				ImGui::Text((cm->GetComponent<ScriptComponent>((selectedEntity)->GetID(), selectedCompIndex)->GetScriptName()).c_str());
 			}
+			/*else if (0 == std::strcmp(ComponentTypeName(selectedComponentID), "class Transform")) {
+				ImGui::Text((cm->GetComponent<>((selectedEntity)->GetID(), selectedCompIndex)->GetScriptName()).c_str());
+			}*/
 			else {
 				std::cout << "?" << ComponentTypeName(selectedComponentID) << "?" << std::endl;
 				std::cout << "#" << std::strcmp(ComponentTypeName(selectedComponentID), "class ScriptComponent") << "#" << std::endl;
