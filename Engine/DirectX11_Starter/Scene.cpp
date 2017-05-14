@@ -68,7 +68,7 @@ void Scene::Enter()
 	Entity* target = new Entity();
 	Transform* targetT = target->AddComponent<Transform>();
 
-	targetT->SetLocalPosition(2, 0, 0);
+	targetT->SetLocalPosition(-2, 0, 0);
 	Renderable* targetR = target->AddComponent<Renderable>(mesh, mat);
 	RigidBody* targetRb = target->AddComponent <RigidBody>(targetT, &(targetR->BoundingBox()));
 	//target->AddComponent<ScriptComponent>("script2.lua", rb1);
