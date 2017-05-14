@@ -38,6 +38,10 @@ void GUI::Init(HWND hwnd, ID3D11Device* device, ID3D11DeviceContext* device_cont
 	// Component Details Window Flags.
 	_cdwFlag |= ImGuiWindowFlags_NoSavedSettings;
 
+	// Benchmarks Window Flags.
+	_cwFlag |= ImGuiWindowFlags_NoMove;
+	_cwFlag |= ImGuiWindowFlags_NoSavedSettings;
+
 }
 
 void GUI::Draw()
@@ -168,6 +172,60 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 		}
 	}
 
+	if (BenchmarkDisplayFlag) {
+		// TODO: Can probably move these to Init Function.
+		ImVec2 hwPos = ImVec2(30 , 50);
+		ImVec2 hwSize = ImVec2(_windowWidth / 3, _windowHeight / 3);
+		ImGui::SetNextWindowPos(hwPos, ImGuiSetCond_FirstUseEver);
+		ImGui::SetNextWindowSize(hwSize, ImGuiSetCond_FirstUseEver);
+		ImGui::Begin("Benchmarks.", &BenchmarkDisplayFlag, _bwFlag);
+		{
+			ImGui::Text("== Benchmarks ==");
+			ImGui::Separator();
+			ImGui::Text("Current Number of Entities: %d", Engine::instance()->GetCurScene()->GetAllEntities().size());
+			ImGui::Separator();
+			ImGui::InputInt("No. of Entities to Create", &numberOfEntitiesToCreate, 50, 200, 0);
+			if (ImGui::Button("Create Entities")) {
+				int count = numberOfEntitiesToCreate + 1; // + 1 to offset some bug in the code. ( < instead of <= I guess? )
+				float range = 4.0;
+				float start = -range / 2;
+
+				int row_column = sqrt(count);
+				float offset = range / (row_column - 1);
+
+				RenderingSystem& renderer = *RenderingSystem::instance();
+
+				Mesh* mesh = renderer.CreateMesh("Assets/Models/cube.fbx");
+				Shader* shader = renderer.CreateShader(L"Assets/ShaderObjs/Opaque.cso");
+				Texture* tex = renderer.CreateTexture(L"Assets/Textures/rust.jpg");
+				Material *mat = renderer.CreateMaterial(shader);
+				mat->SetTexture("texDiffuse", tex);
+
+				for (int i = 0; i < row_column; i++) {
+					for (int j = 0; j < row_column; j++) {
+						Entity* e = new Entity();
+						Transform* t = e->AddComponent<Transform>();
+						t->SetLocalPosition(start + offset * j, start + offset * i, 0);
+
+						Renderable* r = e->AddComponent<Renderable>(mesh, mat);
+
+						Engine::instance()->GetCurScene()->AddEntity(e);
+					}	
+		/*			
+					RigidBody* rb1 = e1->AddComponent <RigidBody>(t1, &(r1->BoundingBox()));*/
+					//e1->AddComponent<ScriptComponent>("script2.lua", rb1);
+				}
+			}
+			ImGui::Separator();
+			ImGui::InputInt("No. of Entities to Destroy", &numberOfEntitiesToCreate, 50, 200, 0);
+			if (ImGui::Button("Destroy Entities")) {
+				int count = numberOfEntitiesToCreate + 1; // + 1 to offset some bug in the code. ( < instead of <= I guess? )
+				// Insert Logic to destroy the Entities here.
+			}
+			ImGui::End();
+		}
+	}
+
 }
 
 void GUI::AddMenuBar(bool * _running) {
@@ -188,6 +246,7 @@ void GUI::AddMenuBar(bool * _running) {
 			if (ImGui::MenuItem("Debug")) {
 				DebugDisplayFlag = true;
 			}
+			if (ImGui::MenuItem("Benchmarks")) { BenchmarkDisplayFlag = true; }
 			
 			ImGui::EndMenu();
 		}
@@ -217,44 +276,44 @@ void GUI::AddMenuBar(bool * _running) {
 		}
 #endif
 
-		if (ImGui::BeginMenu("Benchmarks")) {
-			if (ImGui::MenuItem("Add 1000 Objects")) {
-				int count = 200;
-				float range = 4.0;
-				float start = -range / 2;
+		//if (ImGui::BeginMenu("Benchmarks")) {
+		//	if (ImGui::MenuItem("Add 1000 Objects")) {
+		//		int count = 200;
+		//		float range = 4.0;
+		//		float start = -range / 2;
 
-				int row_column = sqrt(count);
-				float offset = range / (row_column - 1);
+		//		int row_column = sqrt(count);
+		//		float offset = range / (row_column - 1);
 
-				RenderingSystem& renderer = *RenderingSystem::instance();
+		//		RenderingSystem& renderer = *RenderingSystem::instance();
 
-				Mesh* mesh = renderer.CreateMesh("Assets/Models/cube.fbx");
-				Shader* shader = renderer.CreateShader(L"Assets/ShaderObjs/Opaque.cso");
-				Texture* tex = renderer.CreateTexture(L"Assets/Textures/rust.jpg");
-				Material *mat = renderer.CreateMaterial(shader);
-				mat->SetTexture("texDiffuse", tex);
+		//		Mesh* mesh = renderer.CreateMesh("Assets/Models/cube.fbx");
+		//		Shader* shader = renderer.CreateShader(L"Assets/ShaderObjs/Opaque.cso");
+		//		Texture* tex = renderer.CreateTexture(L"Assets/Textures/rust.jpg");
+		//		Material *mat = renderer.CreateMaterial(shader);
+		//		mat->SetTexture("texDiffuse", tex);
 
-				for (int i = 0; i < row_column; i++) {
-					for (int j = 0; j < row_column; j++) {
-						Entity* e = new Entity();
-						Transform* t = e->AddComponent<Transform>();
-						t->SetLocalPosition(start + offset * j, start + offset * i, 0);
+		//		for (int i = 0; i < row_column; i++) {
+		//			for (int j = 0; j < row_column; j++) {
+		//				Entity* e = new Entity();
+		//				Transform* t = e->AddComponent<Transform>();
+		//				t->SetLocalPosition(start + offset * j, start + offset * i, 0);
 
-						Renderable* r = e->AddComponent<Renderable>(mesh, mat);
+		//				Renderable* r = e->AddComponent<Renderable>(mesh, mat);
 
-						Engine::instance()->GetCurScene()->AddEntity(e);
-					}	
-		/*			
-					RigidBody* rb1 = e1->AddComponent <RigidBody>(t1, &(r1->BoundingBox()));*/
-					//e1->AddComponent<ScriptComponent>("script2.lua", rb1);
-				}
+		//				Engine::instance()->GetCurScene()->AddEntity(e);
+		//			}	
+		///*			
+		//			RigidBody* rb1 = e1->AddComponent <RigidBody>(t1, &(r1->BoundingBox()));*/
+		//			//e1->AddComponent<ScriptComponent>("script2.lua", rb1);
+		//		}
 
-			}
-			if (ImGui::MenuItem("Add 2000 Objects")) {
-				
-			}
-			ImGui::EndMenu();
-		}
+		//	}
+		//	if (ImGui::MenuItem("Add 2000 Objects")) {
+		//		
+		//	}
+		//	ImGui::EndMenu();
+		//}
 		ImGui::EndMainMenuBar();
 	}
 

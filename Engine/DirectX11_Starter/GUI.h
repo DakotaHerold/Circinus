@@ -24,12 +24,16 @@ private:
 	bool HierarchyDisplayFlag = false;
 	bool ComponentDisplayFlag = false;
 	bool ComponentDisplayDetailsFlag = false;
+	bool BenchmarkDisplayFlag = false;
+
+	int numberOfEntitiesToCreate = 0;
 
 
 	// Window Flag Constants
 	ImGuiWindowFlags _cwFlag = 0;
 	ImGuiWindowFlags _hwFlag = 0;
 	ImGuiWindowFlags _cdwFlag = 0;
+	ImGuiWindowFlags _bwFlag = 0;
 
 	ComponentManager * cm = ComponentManager::current;
 
