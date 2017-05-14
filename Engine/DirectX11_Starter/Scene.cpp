@@ -21,7 +21,6 @@ void Scene::Enter()
 {
 	// Testing hard code 
 
-
 	RenderingSystem& renderer = *RenderingSystem::instance();
 
 	Mesh* mesh = renderer.CreateMesh("Assets/Models/cube.fbx");
@@ -86,20 +85,6 @@ void Scene::Enter()
 	emitter->SetLifeTime(5.0f);
 	emitter->SetEmitRate(5);
 
-	// Sravan
-	// Get all components of an entity with id 
-	/*for (auto i : componentManager->GetAllComponents(lights->GetID())) {
-		// get component name by component type
-		std::cout << ComponentTypeName(i.first) << std::endl;
-
-		// if you need specific data of the component, you need to manually add those kind of shitty code because c++ has no reflection
-		// maybe there are some good solutions I don't know
-		if (strcmp(ComponentTypeName(i.first), "class Lighting") == 0) {
-			cout << "Find Lighting!" << std::endl;;
-			Lighting* t = componentManager->GetComponent<Lighting>(lights->GetID(), *i.second);
-		}
-	}*/
-
 	//Script 
 	//RigidBody* r = new enti->AddComponent<RigidBody>(t, r->BoundingBox);
 	//enti->AddComponent<ScriptComponent>("script2.lua", ); 
@@ -120,9 +105,6 @@ void Scene::Enter()
 
 	cam.getViewMatrix();
 	cam.setProjectionMatrix(800.0f / 600.0f);
-
-	//component manager
-
 }
 
 void Scene::Tick(float deltaTime, float totalTime)

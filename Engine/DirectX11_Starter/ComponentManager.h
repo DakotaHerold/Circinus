@@ -31,9 +31,11 @@ public:
 	//bool HasComponent(int entityID, TypeId componentTypeId) const;
 
 	template <typename T>
-	std::vector<T *> GetAllComponents();
+	std::vector<T*> GetAllComponents();
 
-	std::vector<std::pair<TypeId, ObjectPoolIndex *>> GetAllComponents(int entityID);
+	std::vector<Component *> GetAllComponents(int entityID);
+
+	std::vector<std::pair<TypeId, ObjectPoolIndex *>> GetAllComponentsInfo(int entityID);
 
 	bool RemoveComponent(int entityID, TypeId typeID, ObjectPoolIndex *index = nullptr);
 
@@ -41,8 +43,6 @@ public:
 
 	Transform *root;
 	static ComponentManager *current;	
-
-
 
 private:
 	Scene* curScene;
@@ -85,7 +85,7 @@ inline T* ComponentManager::AddComponent(int entityID, Args && ...args)
 
 	// http://www.cplusplus.com/reference/map/map/operator[]/
 	entityComponentsMap[entityID][ComponentTypeId<T>()].push_back(component->getPoolIndex());
-	
+
 	return component;
 }
 
@@ -93,14 +93,14 @@ template<typename T>
 inline T * ComponentManager::GetComponent(int entityID, ObjectPoolIndex* index)
 {
 	if (index == nullptr) {
-		return GetComponentPool<T>()->Get(GetObjectPoolIndex(entityID, ComponentTypeId<T>()));
+		return reinterpret_cast<T*>(GetComponentPool<T>()->Get(GetObjectPoolIndex(entityID, ComponentTypeId<T>())));
 	}
 	else {
 		if (!CheckObjectPoolIndex(entityID, ComponentTypeId<T>(), index)) {
 			return nullptr;
 		}
 
-		return GetComponentPool<T>()->Get(*index);
+		return reinterpret_cast<T*>(GetComponentPool<T>()->Get(*index));
 	}
 }
 
@@ -111,7 +111,7 @@ inline T * ComponentManager::GetComponent(int entityID, ObjectPoolIndex* index)
 //}
 
 template<typename T>
-inline std::vector<T *> ComponentManager::GetAllComponents()
+inline std::vector<T*> ComponentManager::GetAllComponents()
 {
 	return GetComponentPool<T>()->GetAllComponents();
 }

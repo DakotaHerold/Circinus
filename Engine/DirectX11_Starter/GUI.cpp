@@ -113,7 +113,7 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 		{
 			int compCounter = 0;
 			vector<pair<TypeId, ObjectPoolIndex *>> Components;
-			Components = cm->GetAllComponents((selectedEntity)->GetID());
+			Components = cm->GetAllComponentsInfo((selectedEntity)->GetID());
 			for (vector<pair<TypeId, ObjectPoolIndex *>>::iterator that = Components.begin(); that != Components.end(); ++that) {
 				++compCounter;
 				//std::string tempString = (ComponentTypeName(that->first)) + std::to_string(entCounter) + "-" + std::to_string(compCounter);

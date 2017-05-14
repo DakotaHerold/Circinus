@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <map>
 #include <vector>
+#include <algorithm>
 
 typedef unsigned int ObjectPoolIndex;
 
@@ -19,7 +20,6 @@ class Poolable {
 
 public:
 	Poolable() {};
-
 	virtual ~Poolable() {};
 
 	ObjectPoolIndex* getPoolIndex() { return poolIndex; }
@@ -34,14 +34,9 @@ public:
 	ObjectPoolBase() {};
 	virtual ~ObjectPoolBase() {};
 
+	virtual void* Get(ObjectPoolIndex index) = 0;
 	virtual void Return(ObjectPoolIndex index) = 0;
 };
-
-//template <typename T>
-//struct ResultComponents {
-//	T* components;
-//	unsigned int size;
-//};
 
 template <typename T>
 class ObjectPool : public ObjectPoolBase
@@ -55,10 +50,10 @@ public:
 
 	template <class... Args>
 	T* Add(Args&& ...args);
-	T* Get(ObjectPoolIndex index);
+	void* Get(ObjectPoolIndex index) override;
 	void Return(ObjectPoolIndex index) override;
 
-	std::vector<T *> GetAllComponents();
+	std::vector<T*> GetAllComponents();
 
 private:
 	void AllocMemory(ObjectPoolIndex size);
@@ -70,9 +65,10 @@ private:
 	ObjectPoolIndex		m_resizeAmount;
 	bool				m_isResizeAllowed;
 
-	//T*					m_objects;
 	std::map<ObjectPoolIndex, T*>	m_objectsMap;
-	std::vector<T *> m_allObjects;
+	std::vector<T*> m_allObjects;
+
+	std::vector<T*> m_availableObjects;
 
 	ObjectPoolIndex		m_count;
 };
@@ -128,7 +124,7 @@ inline ObjectPoolIndex ObjectPool<T>::GetValidCount()
 
 template<typename T>
 template<typename ...Args>
-inline T * ObjectPool<T>::Add(Args && ...args)
+inline T* ObjectPool<T>::Add(Args && ...args)
 {
 	if (m_count == m_length)
 	{
@@ -141,25 +137,25 @@ inline T * ObjectPool<T>::Add(Args && ...args)
 		AllocMemory(m_resizeAmount);
 	}
 
-
-	T* addre = GetAddress(m_count);
-
 	T* result = new (GetAddress(m_count)) T(std::forward<Args>(args)...);
 	// TODO: Get from global allocator
 	result->poolIndex = new ObjectPoolIndex(m_count++);
 
 	m_allObjects.push_back(result);
+	m_availableObjects.push_back(result);
 
 	return result;
 }
 
 template<typename T>
-inline T * ObjectPool<T>::Get(ObjectPoolIndex index)
+inline void* ObjectPool<T>::Get(ObjectPoolIndex index)
 {
 	if (index >= m_count) {
 		throw "index out of count!";
 	}
-	return GetAddress(index);
+	//return GetAddress(index);
+
+	return reinterpret_cast<void*>(m_allObjects[index]);
 }
 
 template<typename T>
@@ -169,30 +165,35 @@ inline void ObjectPool<T>::Return(ObjectPoolIndex index)
 		throw "index out of count!";
 	}
 
-	--m_count;
+	// FIXME: Does not move memory to prevent possible pointer issue
+
+	//--m_count;
 
 	T* del = GetAddress(index);
 
 	delete del->poolIndex;
 	del->~T();
 
-	if (index != m_count) {
-		memcpy(del, GetAddress(m_count), m_size);
-		*(del->poolIndex) = index;
+	m_availableObjects.erase(std::remove(m_availableObjects.begin(), m_availableObjects.end(), del), m_availableObjects.end());
 
-		// FIXME: Should I erase memory??
-		memset(GetAddress(m_count), 0, m_size);
-	}
+	//if (index != m_count) {
+	//	memcpy(del, GetAddress(m_count), m_size);
+	//	*(del->poolIndex) = index;
 
-	assert(m_allObjects.back() == GetAddress(m_count));
-	m_allObjects.pop_back();
+	//	// FIXME: Should I erase memory??
+	//	memset(GetAddress(m_count), 0, m_size);
+	//}
+
+	//assert(m_allObjects.back() == GetAddress(m_count));
+	//m_allObjects.pop_back();
 }
 
 template<typename T>
-inline std::vector<T *> ObjectPool<T>::GetAllComponents()
+inline std::vector<T*> ObjectPool<T>::GetAllComponents()
 {
 	//return {m_objects, m_count};
-	return m_allObjects;
+	//return m_allObjects;
+	return m_availableObjects;
 }
 
 template<typename T>
@@ -209,12 +210,19 @@ inline void ObjectPool<T>::AllocMemory(ObjectPoolIndex length)
 	m_length += length;
 }
 
+// FIXME: Duplicated with Get()
 template<typename T>
 inline T * ObjectPool<T>::GetAddress(ObjectPoolIndex index)
 {
+	if (index < m_count)
+		return m_allObjects[index];
+
+	// TODO: change by next index
 	for (auto rit = m_objectsMap.rbegin(); rit != m_objectsMap.rend(); ++rit) {
 		if (rit->first <= index) {
 			return rit->second + (index - rit->first);
 		}
 	}
+
+	return nullptr;
 }
