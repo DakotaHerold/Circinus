@@ -196,7 +196,7 @@ void Scene::Tick(float deltaTime, float totalTime)
 		moveDir = -1;
 	}
 
-	t1->SetWorldPosition(t1->GetWorldPosition()->x, t1->GetWorldPosition()->y + 0.5f*deltaTime * moveDir, 0);
+	t1->SetWorldPosition(t1->GetWorldPosition()->x, t1->GetWorldPosition()->y + 0.5f*deltaTime * moveDir, t1->GetWorldPosition()->z + 0.5f*deltaTime * moveDir);
 
 	tR->FaceTo(t1R);
 	//t1->SetRotationEuler(0, rot, 0);

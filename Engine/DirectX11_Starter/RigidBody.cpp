@@ -34,52 +34,55 @@ void RigidBody::FaceTo(RigidBody* otherEntity)
 	DirectX::XMVECTOR thisPosVec = DirectX::XMLoadFloat3(trans->GetWorldPosition());
 	DirectX::XMVECTOR otherPosVec = DirectX::XMLoadFloat3(otherEntity->GetTransform()->GetWorldPosition());
 
-	//DirectX::XMVECTOR forwardVector = DirectX::XMVector3Normalize(otherPosVec - thisPosVec);
+	DirectX::XMVECTOR forwardVector = DirectX::XMVector3Normalize(otherPosVec - thisPosVec);
 
-	//DirectX::XMVECTOR upVector = DirectX::XMVectorSet(0, 1, 0, 0);
-	//DirectX::XMVECTOR tangentVector = DirectX::XMVector3Cross(upVector, forwardVector);
+	DirectX::XMVECTOR upVector = DirectX::XMVectorSet(0, 1, 0, 0);
+	DirectX::XMVECTOR tangentVector = DirectX::XMVector3Cross(upVector, forwardVector);
 
-	//if (DirectX::XMVectorGetX(DirectX::XMVector3Length(tangentVector)) < 0.001f) //check if forward is pointed at the same dir as up
-	//{
-	//	upVector = DirectX::XMVectorSet(1, 0, 0, 0);
-	//	tangentVector = DirectX::XMVector3Cross(upVector, forwardVector);
-	//}
+	if (DirectX::XMVectorGetX(DirectX::XMVector3Length(tangentVector)) < 0.001f) //check if forward is pointed at the same dir as up
+	{
+		upVector = DirectX::XMVectorSet(1, 0, 0, 0);
+		tangentVector = DirectX::XMVector3Cross(upVector, forwardVector);
+	}
 
-	//tangentVector = DirectX::XMVector3Normalize(tangentVector);
-	//upVector = DirectX::XMVector3Cross(forwardVector, tangentVector);
+	tangentVector = DirectX::XMVector3Normalize(tangentVector);
+	upVector = DirectX::XMVector3Cross(forwardVector, tangentVector);
 
-	//DirectX::XMFLOAT3 forwardF3(0, 0, 0);
-	//XMStoreFloat3(&forwardF3, forwardVector);
-	//DirectX::XMFLOAT3 upF3(0, 0, 0);
-	//XMStoreFloat3(&upF3, upVector);
-	//DirectX::XMFLOAT3 tangentF3(0, 0, 0);
-	//XMStoreFloat3(&tangentF3, tangentVector);
+	DirectX::XMFLOAT3 forwardF3(0, 0, 0);
+	XMStoreFloat3(&forwardF3, forwardVector);
+	DirectX::XMFLOAT3 upF3(0, 0, 0);
+	XMStoreFloat3(&upF3, upVector);
+	DirectX::XMFLOAT3 tangentF3(0, 0, 0);
+	XMStoreFloat3(&tangentF3, tangentVector);
 
-	///*DirectX::XMFLOAT3X3 newRotationMatrixF3X3(
-	//	forwardF3.x, upF3.x, tangentF3.x,
-	//	forwardF3.y, upF3.y, tangentF3.y,
-	//	forwardF3.z, upF3.z, tangentF3.z);*/
-	//DirectX::XMFLOAT3X3 newRotationMatrixF3X3(
-	//	tangentF3.x, tangentF3.y, tangentF3.z,
-	//	upF3.x, upF3.y, upF3.z,
-	//	forwardF3.x, forwardF3.y, forwardF3.z
-	//);
-	//DirectX::XMMATRIX newRotationMatrix = DirectX::XMMatrixTranspose(DirectX::XMLoadFloat3x3(&newRotationMatrixF3X3));
+	DirectX::XMFLOAT3X3 newRotationMatrixF3X3(
+		upF3.y, tangentF3.y, forwardF3.y,
+		upF3.x, tangentF3.x, forwardF3.x,
+		upF3.z, tangentF3.z, forwardF3.z);
+	/*DirectX::XMFLOAT3X3 newRotationMatrixF3X3(
+		tangentF3.x, tangentF3.y, tangentF3.z,
+		upF3.x, upF3.y, upF3.z,
+		forwardF3.x, forwardF3.y, forwardF3.z
+	);*/
+	DirectX::XMMATRIX newRotationMatrix = DirectX::XMMatrixTranspose(DirectX::XMLoadFloat3x3(&newRotationMatrixF3X3));
 
-	DirectX::XMMATRIX newRotationMatrix = DirectX::XMMatrixLookAtLH(thisPosVec, otherPosVec, DirectX::XMVectorSet(0, 1, 0, 0));
-
+	//DirectX::XMMATRIX newRotationMatrix = DirectX::XMMatrixLookAtRH(thisPosVec, otherPosVec, DirectX::XMVectorSet(0, 1, 0, 0));
 
 	/*newRotationMatrix = DirectX::XMMatrixTranspose(newRotationMatrix);
 	newRotationMatrix = DirectX::XMMatrixTranspose(newRotationMatrix);*/
-	DirectX::XMVECTOR dirVector = DirectX::XMQuaternionRotationMatrix(newRotationMatrix);
+	//DirectX::XMVECTOR dirVector = DirectX::XMQuaternionRotationMatrix(newRotationMatrix);
 
-	DirectX::XMFLOAT4 newRotationF4(0, 0, 0, 0);
-	DirectX::XMStoreFloat4(&newRotationF4, dirVector);
+	//DirectX::XMFLOAT4 newRotationF4(0, 0, 0, 0);
+	//DirectX::XMStoreFloat4(&newRotationF4, dirVector);
 	DirectX::XMFLOAT3 dirFloat(0, 0, 0);
 	//QuatToEuler(&newRotationF4, &dirFloat);
-	toEulerianAngle(&newRotationF4, &dirFloat);
+	//toEulerianAngle(&newRotationF4, &dirFloat);
 
 	//DirectX::XMStoreFloat3(&dirFloat, dirVector);
+
+	DirectX::XMFLOAT3X3 newRotation3X3(0, 0, 0, 0, 0, 0, 0, 0, 0);
+	DirectX::XMStoreFloat3x3(&newRotation3X3, newRotationMatrix);
+	dirFloat = rotate(&newRotation3X3);
 
 	trans->SetRotationEuler(dirFloat.x, dirFloat.y, dirFloat.z);
 }
@@ -97,50 +100,84 @@ void RigidBody::ProjectileShootAt(RigidBody* target, float speed) //Rotate this 
 	DirectX::XMStoreFloat3(&worldVelocity, worldVelocityVec);
 }
 
-DirectX::XMFLOAT4 RigidBody::LookAt(DirectX::XMVECTOR target, DirectX::XMVECTOR current, DirectX::XMVECTOR eye, DirectX::XMVECTOR up)
+DirectX::XMFLOAT3 RigidBody::rotate(DirectX::XMFLOAT3X3* m)
 {
-	// turn vectors into unit vectors 
-	DirectX::XMVECTOR n1 = DirectX::XMVector3Normalize(current - eye);
-	DirectX::XMVECTOR n2 = DirectX::XMVector3Normalize(target - eye);
-	DirectX::XMVECTOR d = DirectX::XMVector3Dot(n1, n2);
-	// if no noticable rotation is available return zero rotation
-	// this way we avoid Cross product artifacts 
-	if (DirectX::XMVectorGetX(d) > 0.9998f) return DirectX::XMFLOAT4(0, 0, 1, 0);
-	// in this case there are 2 lines on the same axis 
-	if (DirectX::XMVectorGetX(d) < -0.9998f) {
-		DirectX::XMVector3Rotate(n1, DirectX::XMQuaternionRotationRollPitchYaw(0.5f, 0, 0));
-		//n1 = n1(0.5f);
-		// there are an infinite number of normals 
-		// in this case. Anyone of these normals will be 
-		// a valid rotation (180 degrees). so rotate the curr axis by 0.5 radians this way we get one of these normals 
+	XMFLOAT3 newEulerAngles(0, 0, 0);
+	// Assuming the angles are in radians.
+	if (m->_21 > 0.998) // singularity at north pole
+	{ 
+		newEulerAngles.x = std::atan2(m->_13, m->_33);
+		newEulerAngles.y = DirectX::XM_PI / 2;
+		newEulerAngles.z = 0;
+		return newEulerAngles;
 	}
-	DirectX::XMVECTOR axis = n1;
-	axis = DirectX::XMVector3Cross(axis, n2);
-	DirectX::XMVECTOR pointToTarget = DirectX::XMVectorSet(1.0f + DirectX::XMVectorGetX(d), DirectX::XMVectorGetX(axis), DirectX::XMVectorGetY(axis), DirectX::XMVectorGetZ(axis));
-	pointToTarget.norm();
-	// now twist around the target vector, so that the 'up' vector points along the z axis
-	sfmatrix projectionMatrix = new sfmatrix();
-	double a = pointToTarget.x;
-	double b = pointToTarget.y;
-	double c = pointToTarget.z;
-	projectionMatrix.m00 = b*b + c*c;
-	projectionMatrix.m01 = -a*b;
-	projectionMatrix.m02 = -a*c;
-	projectionMatrix.m10 = -b*a;
-	projectionMatrix.m11 = a*a + c*c;
-	projectionMatrix.m12 = -b*c;
-	projectionMatrix.m20 = -c*a;
-	projectionMatrix.m21 = -c*b;
-	projectionMatrix.m22 = a*a + b*b;
-	sfvec3f upProjected = projectionMatrix.transform(up);
-	sfvec3f yaxisProjected = projectionMatrix.transform(new sfvec(0, 1, 0);
-	d = sfvec3f.dot(upProjected, yaxisProjected);
-	// so the axis of twist is n2 and the angle is arcos(d)
-	//convert this to quat as follows   
-	double s = Math.sqrt(1.0 - d*d);
-	sfquat twist = new sfquat(d, n2*s, n2*s, n2*s);
-	return sfquat.mul(pointToTarget, twist);
+
+	if (m->_21 < -0.998) // singularity at south pole
+	{ 
+		newEulerAngles.x = std::atan2(m->_13, m->_33);
+		newEulerAngles.y = -DirectX::XM_PI / 2;
+		newEulerAngles.z = 0;
+		return newEulerAngles;
+	}
+
+	newEulerAngles.x = std::atan2(-m->_31, m->_11);
+	newEulerAngles.y = std::atan2(-m->_23, m->_22);
+	newEulerAngles.z = std::asin(m->_21);
+
+	return newEulerAngles;
 }
+
+//
+//DirectX::XMFLOAT4 RigidBody::LookAt(DirectX::XMVECTOR target, DirectX::XMVECTOR current, DirectX::XMVECTOR eye, DirectX::XMVECTOR up)
+//{
+//	// turn vectors into unit vectors 
+//	DirectX::XMVECTOR n1 = DirectX::XMVector3Normalize(current - eye);
+//	DirectX::XMVECTOR n2 = DirectX::XMVector3Normalize(target - eye);
+//	DirectX::XMVECTOR d = DirectX::XMVector3Dot(n1, n2);
+//	// if no noticable rotation is available return zero rotation
+//	// this way we avoid Cross product artifacts 
+//	if (DirectX::XMVectorGetX(d) > 0.9998f) return DirectX::XMFLOAT4(0, 0, 1, 0);
+//	// in this case there are 2 lines on the same axis 
+//	if (DirectX::XMVectorGetX(d) < -0.9998f) {
+//		DirectX::XMVector3Rotate(n1, DirectX::XMQuaternionRotationRollPitchYaw(0.5f, 0, 0));
+//		//n1 = n1(0.5f);
+//		// there are an infinite number of normals 
+//		// in this case. Anyone of these normals will be 
+//		// a valid rotation (180 degrees). so rotate the curr axis by 0.5 radians this way we get one of these normals 
+//	}
+//	DirectX::XMVECTOR axis = n1;
+//	axis = DirectX::XMVector3Cross(axis, n2);
+//	DirectX::XMVECTOR pointToTarget = DirectX::XMVectorSet(1.0f + DirectX::XMVectorGetX(d), DirectX::XMVectorGetX(axis), DirectX::XMVectorGetY(axis), DirectX::XMVectorGetZ(axis));
+//	pointToTarget = DirectX::XMVector3Normalize(pointToTarget);
+//	// now twist around the target vector, so that the 'up' vector points along the z axis
+//	double a = DirectX::XMVectorGetX(pointToTarget);
+//	double b = DirectX::XMVectorGetY(pointToTarget);
+//	double c = DirectX::XMVectorGetZ(pointToTarget);
+//	DirectX::XMFLOAT3X3 newRotationMatrixF3X3(
+//		b*b + c*c, -a*b, -a*c,
+//		-b*a, a*a + c*c, -b*c,
+//		-c*a, -c*b, a*a + b*b);
+//	DirectX::XMMATRIX projectionMatrix = DirectX::XMLoadFloat3x3(&newRotationMatrixF3X3);
+//	/*projectionMatrix.m00 = b*b + c*c;
+//	projectionMatrix.m01 = -a*b;
+//	projectionMatrix.m02 = -a*c;
+//	projectionMatrix.m10 = -b*a;
+//	projectionMatrix.m11 = a*a + c*c;
+//	projectionMatrix.m12 = -b*c;
+//	projectionMatrix.m20 = -c*a;
+//	projectionMatrix.m21 = -c*b;
+//	projectionMatrix.m22 = a*a + b*b;*/
+//	//sfvec3f upProjected = projectionMatrix.transform(up);
+//	//sfvec3f yaxisProjected = projectionMatrix.transform(new sfvec(0, 1, 0);
+//	//d = sfvec3f.dot(upProjected, yaxisProjected);
+//	//// so the axis of twist is n2 and the angle is arcos(d)
+//	////convert this to quat as follows   
+//	//double s = Math.sqrt(1.0 - d*d);
+//	//DirectX::XMVECTOR twist = DirectX::XMVectorSet(d, n2*s, n2*s, n2*s);
+//	//return sfquat.mul(pointToTarget, twist);
+//	DirectX::XMFLOAT4 null;
+//	return null;
+//}
 
 void RigidBody::toEulerianAngle(DirectX::XMFLOAT4 *q, DirectX::XMFLOAT3 *euler)
 {
@@ -153,8 +190,8 @@ void RigidBody::toEulerianAngle(DirectX::XMFLOAT4 *q, DirectX::XMFLOAT3 *euler)
 
 	// pitch (y-axis rotation)
 	float t2 = +2.0 * (q->w * q->y - q->z * q->x);
-	t2 = t2 > 1.0 ? 1.0 : t2;
-	t2 = t2 < -1.0 ? -1.0 : t2;
+	/*t2 = t2 > 1.0 ? 1.0 : t2;
+	t2 = t2 < -1.0 ? -1.0 : t2;*/
 	euler->y = std::asin(t2);
 
 	// yaw (z-axis rotation)
