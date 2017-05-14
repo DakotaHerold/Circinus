@@ -68,7 +68,7 @@ void Scene::Enter()
 	Entity* target = new Entity();
 	Transform* targetT = target->AddComponent<Transform>();
 
-	targetT->SetLocalPosition(-2, 0, 0);
+	targetT->SetLocalPosition(8, 0, 0);
 	Renderable* targetR = target->AddComponent<Renderable>(mesh, mat);
 	RigidBody* targetRb = target->AddComponent <RigidBody>(targetT, &(targetR->BoundingBox()));
 	//target->AddComponent<ScriptComponent>("script2.lua", rb1);
@@ -198,7 +198,11 @@ void Scene::Tick(float deltaTime, float totalTime)
 
 	t1->SetWorldPosition(t1->GetWorldPosition()->x, t1->GetWorldPosition()->y + 0.5f*deltaTime * moveDir, t1->GetWorldPosition()->z + 0.5f*deltaTime * moveDir);
 
-	tR->FaceTo(t1R);
+	//tR->FaceTo(t1R);
+	//tR->ProjectileHomingAt(t1R, 1 * deltaTime);
+	tR->ProjectileShootAt(t1R, 1 * deltaTime);
+	//t->SetWorldPosition(t->GetWorldPosition()->x + tR->velocity.x, t->GetWorldPosition()->y + tR->velocity.y, t->GetWorldPosition()->z + tR->velocity.z);
+	tR->Update();
 	//t1->SetRotationEuler(0, rot, 0);
 
 	auto* r = entities[0]->GetComponent<RigidBody>();

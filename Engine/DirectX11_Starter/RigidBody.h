@@ -24,12 +24,13 @@ public:
 	void Update();
 	void SetWorldVelocity(float x, float y, float z);
 	void FaceTo(RigidBody* otherEntity);
+	void ProjectileHomingAt(RigidBody* target, float speed);
 	void ProjectileShootAt(RigidBody* target, float speed);
 	DirectX::XMFLOAT3 RotateToNewEuler(DirectX::XMFLOAT3X3* m);
+	DirectX::XMFLOAT3 velocity; // This velocity will be a vector3 relate to world space instead of local space.
 
 private:
 	Transform* trans; 
 	DirectX::BoundingOrientedBox* obb;
-	DirectX::XMFLOAT3 velocity; // This velocity will be a vector3 relate to world space instead of local space.
 };
 

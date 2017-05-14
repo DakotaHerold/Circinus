@@ -70,7 +70,7 @@ void RigidBody::FaceTo(RigidBody* otherEntity)
 	trans->SetRotationEuler(dirFloat.x, dirFloat.y, dirFloat.z);
 }
 
-void RigidBody::ProjectileShootAt(RigidBody* target, float speed) //Rotate this rigidbody and shoot it towards the target
+void RigidBody::ProjectileHomingAt(RigidBody* target, float speed) //Rotate this rigidbody and move it constantly towards the target. This has to be called every Tick()
 {
 	this->FaceTo(target);
 	DirectX::XMFLOAT3 forward(0, 0, speed);
@@ -79,8 +79,26 @@ void RigidBody::ProjectileShootAt(RigidBody* target, float speed) //Rotate this 
 	DirectX::XMVECTOR localRotationVec = DirectX::XMLoadFloat3(trans->GetLocalRotation());
 
 	DirectX::XMVECTOR worldVelocityVec = XMVector3Rotate(localForward, DirectX::XMQuaternionRotationRollPitchYawFromVector(localRotationVec));
-	DirectX::XMFLOAT3 worldVelocity;
-	DirectX::XMStoreFloat3(&worldVelocity, worldVelocityVec);
+	DirectX::XMStoreFloat3(&(this->velocity), worldVelocityVec);
+}
+
+void RigidBody::ProjectileShootAt(RigidBody* target, float speed) //Rotate this rigidbody and shoot it towards the target. It won't change direction after shot.
+{
+	static int i = 0;
+
+	if (i == 0)
+	{
+		this->FaceTo(target);
+		i++;
+	}
+
+	DirectX::XMFLOAT3 forward(0, 0, speed);
+	DirectX::XMVECTOR localForward = DirectX::XMLoadFloat3(&forward);
+
+	DirectX::XMVECTOR localRotationVec = DirectX::XMLoadFloat3(trans->GetLocalRotation());
+
+	DirectX::XMVECTOR worldVelocityVec = XMVector3Rotate(localForward, DirectX::XMQuaternionRotationRollPitchYawFromVector(localRotationVec));
+	DirectX::XMStoreFloat3(&(this->velocity), worldVelocityVec);
 }
 
 DirectX::XMFLOAT3 RigidBody::RotateToNewEuler(DirectX::XMFLOAT3X3* m)
