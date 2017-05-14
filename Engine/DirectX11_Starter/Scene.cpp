@@ -31,29 +31,63 @@ void Scene::Enter()
 	DirectX::XMFLOAT4X4 matrix;
 	DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixIdentity());
 
-	// Main entity 
-	Entity* main = new Entity();
-	Transform* mainT = main->AddComponent<Transform>();
-	Renderable* mainR = main->AddComponent<Renderable>(mesh, mat);
-	RigidBody* mainRb = main->AddComponent<RigidBody>(mainT, &(mainR->BoundingBox()));
-	AddEntity(main);
+	//// Main entity 
+	//Entity* main = new Entity();
+	//Transform* mainT = main->AddComponent<Transform>();
+	//Renderable* mainR = main->AddComponent<Renderable>(mesh, mat);
+	//RigidBody* mainRb = main->AddComponent<RigidBody>(mainT, &(mainR->BoundingBox()));
+	//AddEntity(main);
+
+	//mat = renderer.CreateMaterial(shader);
+	//mat->SetTexture("texDiffuse", tex1);
+
+	//// Collision check entity 
+	//Entity* e1 = new Entity();
+	//Transform* t1 = e1->AddComponent<Transform>();
+
+	//t1->SetLocalPosition(2, 0, 0);
+	//Renderable* r1 = e1->AddComponent<Renderable>(mesh, mat);
+	//RigidBody* rb1 = e1->AddComponent <RigidBody>(t1, &(r1->BoundingBox()));
+	//e1->AddComponent<ScriptComponent>("script2.lua", rb1);
+
+	////
+	//t1->SetParent(mainT);
+	////
+	//AddEntity(e1);
+
+	// Test FaceTo entity
+	Entity* facing = new Entity();
+	Transform* facingT = facing->AddComponent<Transform>();
+	Renderable* facingR = facing->AddComponent<Renderable>(mesh, mat);
+	RigidBody* facingRb = facing->AddComponent<RigidBody>(facingT, &(facingR->BoundingBox()));
+	AddEntity(facing);
 
 	mat = renderer.CreateMaterial(shader);
 	mat->SetTexture("texDiffuse", tex1);
 
-	// Collision check entity 
-	Entity* e1 = new Entity();
-	Transform* t1 = e1->AddComponent<Transform>();
+	Entity* target = new Entity();
+	Transform* targetT = target->AddComponent<Transform>();
 
-	t1->SetLocalPosition(2, 0, 0);
-	Renderable* r1 = e1->AddComponent<Renderable>(mesh, mat);
-	RigidBody* rb1 = e1->AddComponent <RigidBody>(t1, &(r1->BoundingBox()));
-	e1->AddComponent<ScriptComponent>("script2.lua", rb1);
+	targetT->SetLocalPosition(2, 0, 0);
+	Renderable* targetR = target->AddComponent<Renderable>(mesh, mat);
+	RigidBody* targetRb = target->AddComponent <RigidBody>(targetT, &(targetR->BoundingBox()));
+	//target->AddComponent<ScriptComponent>("script2.lua", rb1);
 
-	//
-	t1->SetParent(mainT);
-	//
-	AddEntity(e1);
+	AddEntity(target);
+
+	Entity* facingC = new Entity();
+	Transform* facingCT = facingC->AddComponent<Transform>();
+	Renderable* facingCR = facingC->AddComponent<Renderable>(mesh, mat);
+	RigidBody* facingCRb = facingC->AddComponent<RigidBody>(facingCT, &(facingCR->BoundingBox()));
+
+	facingCT->SetParent(facingT);
+	facingCT->SetScale(0.3, 0.3, 0.3);
+	facingCT->SetLocalPosition(0, 0, 1);
+	AddEntity(facingC);
+
+	mat = renderer.CreateMaterial(shader);
+	mat->SetTexture("texDiffuse", tex1);
+
 
 	////Child entity 
 	//Entity* e2 = new Entity();
@@ -146,10 +180,26 @@ void Scene::Tick(float deltaTime, float totalTime)
 	rot += deltaTime * 1.0f;
 
 	auto* t = entities[0]->GetComponent<Transform>();
+	auto* tR = entities[0]->GetComponent<RigidBody>();
 	auto* t1 = entities[1]->GetComponent<Transform>();
+	auto* t1R = entities[1]->GetComponent<RigidBody>();
 
-	t->SetWorldPosition(t->GetWorldPosition()->x + 0.5f*deltaTime, 0, 0);
-	t1->SetRotationEuler(0, rot, 0);
+	static int moveDir = 1;
+
+	if (t1->GetWorldPosition()->y < -2)
+	{
+		moveDir = 1;
+	}
+
+	else if (t1->GetWorldPosition()->y > 2)
+	{
+		moveDir = -1;
+	}
+
+	t1->SetWorldPosition(t1->GetWorldPosition()->x, t1->GetWorldPosition()->y + 0.5f*deltaTime * moveDir, 0);
+
+	tR->FaceTo(t1R);
+	//t1->SetRotationEuler(0, rot, 0);
 
 	auto* r = entities[0]->GetComponent<RigidBody>();
 	auto* r1 = entities[1]->GetComponent<RigidBody>();

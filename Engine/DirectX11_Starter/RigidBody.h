@@ -22,7 +22,12 @@ public:
 	bool BoxCollisionCheck(RigidBody *otherRbody);
 
 	void Update();
-	void SetVelocity(float x, float y, float z);
+	void SetWorldVelocity(float x, float y, float z);
+	void FaceTo(RigidBody* otherEntity);
+	void ProjectileShootAt(RigidBody* target, float speed);
+	void toEulerianAngle(DirectX::XMFLOAT4 *q, DirectX::XMFLOAT3 *euler);
+	void QuatToEuler(DirectX::XMFLOAT4 *quat, DirectX::XMFLOAT3 *euler);
+	DirectX::XMFLOAT4 LookAt(DirectX::XMVECTOR target, DirectX::XMVECTOR current, DirectX::XMVECTOR eye, DirectX::XMVECTOR up);
 
 private:
 	Transform* trans; 
