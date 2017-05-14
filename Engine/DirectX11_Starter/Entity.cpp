@@ -18,6 +18,7 @@ Entity::Entity(string name)
 Entity::Entity(std::string name, Material * mat, Mesh * mesh)
 {
 	this->name = name;
+	AddComponent<Transform>();
 	AddComponent<Renderable>(mesh, mat);
 }
 

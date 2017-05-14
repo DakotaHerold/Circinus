@@ -1,24 +1,62 @@
 #pragma once
-
+#include <rapidjson\prettywriter.h>
+#include <rapidjson\document.h>
 #include <vector>
 #include "SceneGraph.h"
 #include "ComponentManager.h"
 #include "Camera.h"
-#include <rapidjson\prettywriter.h>
+
 
 class Entity;
 class Material;
 
 typedef vector<Entity*> EntityVector;
+//#define GetObject GetObject();
+#undef GetObject;
+struct m_MaterialInfo
+{
+	string name;
+	string shader;
+	string texture;
+	Material* pointer;
+};
 
-typedef vector<std::pair<string, Material*>> MaterialVector;
+struct m_MeshInfo {
+	string name;
+	const char * file;
+	Mesh* pointer;
+};
 
-typedef vector<std::pair<string, Mesh*>> MeshVector;
+struct m_ShaderInfo {
+	string name;
+	const wchar_t * file;
+	Shader* pointer;
+};
+
+struct m_TextureInfo {
+	string name;
+	string type;
+	const wchar_t * file;
+	Texture* pointer;
+
+};
+
+struct m_EntityInfo {
+	string name;
+	bool isRenderable;
+	string mesh;
+	string material;
+	Entity* pointer;
+};
+
 // 
 //		NOTE:
 //		This is just a hardcoded stub class, for debug
 //		Replace this if it's your working area!
 //
+
+using namespace rapidjson;
+
 class Scene
 {
 public:
@@ -41,7 +79,7 @@ public:
 
 	Entity* CreateEntity(string name);
 
-	Entity* CreateEntity(string name, Mesh* mesh, Material* material);
+	Entity* CreateEntity(string name, string mesh, string material);
 
 	bool DeleteEntityByName(string name);
 
@@ -49,93 +87,11 @@ public:
 
 	Entity* GetEntityByID(int id);
 
-	//string GetName();
+	string GetName() { return name; }
 
-	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) {
-		writer.StartObject();
-		writer.String("name");
-		writer.String("Scene");
-
-
-		//mesh
-		writer.String("meshs");
-		writer.StartArray();
-		//for
-		writer.StartObject();
-		writer.String("name");
-		writer.String("cube");
-		writer.String("path");
-		writer.String("Assets/Models/cube.fbx");
-		writer.EndObject();
-		//end for
-
-		writer.EndArray();
-
-		//shader
-		writer.String("shader");
-		writer.StartArray();
-		//for
-		writer.StartObject();
-		writer.String("name");
-		writer.String("Opaque");
-		writer.String("path");
-		writer.String("Assets/ShaderObjs/Opaque.cso");
-		writer.EndObject();
-		//end for
-		writer.EndArray();
-
-		//texture
-		writer.String("texture");
-		writer.StartArray();
-		//for
-		writer.StartObject();
-		writer.String("type");
-		writer.String("texDiffuse");
-		writer.String("name");
-		writer.String("rust");
-		writer.EndObject();
-
-		writer.StartObject();
-		writer.String("type");
-		writer.String("texDiffuse");
-		writer.String("name");
-		writer.String("water");
-		writer.EndObject();
-		//end for
-		writer.EndArray();
-
-		//material
-		writer.String("material");
-		writer.StartArray();
-		//for
-		writer.StartObject();
-		writer.String("name");
-		writer.String("mat1");
-		writer.String("shader");
-		writer.String("Opaque");
-		writer.String("texture");
-		writer.String("rust");
-		writer.EndObject();
-
-		writer.StartObject();
-		writer.String("name");
-		writer.String("mat2");
-		writer.String("shader");
-		writer.String("Opaque");
-		writer.String("texture");
-		writer.String("water");
-		writer.EndObject();
-		//end for
-		writer.EndArray();
-
-
-		//entity/transform
-		writer.String("entities");
-		writer.StartArray();
-		componentManager->root->StartSerialize(writer);
-		writer.EndArray();
-		writer.EndObject();
-	}
+	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
+		
+	void Build(rapidjson::Document &d);
 
 
 
@@ -144,23 +100,47 @@ private:
 
 	SceneGraph		sceneGraph;
 
-	string			name;
+	string			name="Scene1";
 
-	MeshVector		meshes;
 
-	Mesh* AddMesh(string meshName, string file);
+	char* WcharToChar(const wchar_t* wp);
 
-	Mesh* GetMesh(string name);
+	wchar_t* CharToWchar(const char* c);
 
-	MaterialVector	materials;
+	vector<m_MeshInfo> meshes;
 
-	Material* AddMaterial(string materialName, const wchar_t * shaderFile, string textureName, const wchar_t * textureFile);
+	Mesh* AddMesh(string meshName, const char * file);
 
-	Material* GetMaterial(string name);
+	m_MeshInfo GetMesh(string name);
 
-	Material*		mat;
+	vector<m_MaterialInfo> materials;
+
+	Material* AddMaterial(string name,string shader,string texture);
+
+	m_MaterialInfo GetMaterial(string name);
+
+	vector<m_ShaderInfo> shaders;
+
+	Shader* AddShader(string name,const wchar_t * file);
+
+	m_ShaderInfo GetShader(string name);
+
+	vector<m_TextureInfo> textures;
+
+	Texture* AddTexture(string type, string name, const wchar_t * file);
+
+	m_TextureInfo GetTexture(string name);
 
 	vector<Entity*> entities;
 
+	vector<m_EntityInfo> entity;
+
 	Entity*			lights;
+
+	Renderable* skybox;
+
+	string skyboxMesh;
+
+	string skyboxMaterial;
+
 };

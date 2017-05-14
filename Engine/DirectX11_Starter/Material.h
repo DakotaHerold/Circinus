@@ -52,6 +52,8 @@ public:
 	bool SetMatrix4x4(const std::string& name, const DirectX::XMFLOAT4X4& data);
 	bool SetTexture(const std::string& name, Texture* tex);
 
+
+
 private:
 	bool					valid;
 	Shader*					shader;
@@ -74,6 +76,8 @@ private:
 	std::unordered_map<std::string, Variable> varTable;
 
 	std::unordered_map<std::string, uint32_t> texTable;
+
+
 
 };
 

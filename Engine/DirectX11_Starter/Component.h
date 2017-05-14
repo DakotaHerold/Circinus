@@ -2,6 +2,7 @@
 #include "ClassTypeId.h"
 #include "Object.h"
 #include <rapidjson\prettywriter.h>
+#include <rapidjson\document.h>
 #include <utility>
 #include "ObjectPool.h"
 
@@ -22,9 +23,14 @@ public:
 	virtual void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) {
 		//
 		writer.StartObject();
-		writer.String("hasValue");
-		writer.Bool(false);
+		writer.String("name");
+		writer.String("Undecided");
 		writer.EndObject();
+	}
+
+	virtual void Load(rapidjson::Value v) {
+		//
+		
 	}
 
 private:

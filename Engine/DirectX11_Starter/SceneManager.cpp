@@ -16,25 +16,33 @@ Scene * SceneManager::CreateNewScene(string name)
 	return new Scene();
 }
 
-Scene * SceneManager::LoadScene(string path)
+Scene * SceneManager::LoadScene(string name)
 {
-
-	return nullptr;
+	Scene* s = CreateNewScene(name);
+	string file = "Scenes/" + name + ".json";
+	FILE* fp = fopen(file.c_str(), "rb");
+	char readBuffer[65536];
+	FileReadStream is(fp, readBuffer, sizeof(readBuffer));
+	Document d;
+	d.ParseStream(is);	
+	s->Build(d);
+	fclose(fp);
+	return s;
 }
 
 Scene * SceneManager::SaveScene(Scene * scene)
-{/*
-	Document d;
-	string filepath = scene->GetName() + ".json";
-	FILE* fp = fopen(filepath.c_str(), "wb");
-	char writeBuffer[65536];
-	FileWriteStream os(fp, writeBuffer, sizeof(writeBuffer));
-	Writer<FileWriteStream> writer(os);
-	d.Accept(writer);
-	fclose(fp);*/
+{
 	StringBuffer sb;
 	PrettyWriter<StringBuffer> writer(sb);
 	scene->Serialize(writer);
-	cout << sb.GetString() << endl;
+	string str(sb.GetString(), sb.GetLength());
+	ofstream outfile;
+	string file = "Scenes/" + scene->GetName() + ".json";
+	outfile.open(file.c_str());
+	if (outfile.fail()) {
+		return nullptr;
+	}
+	outfile << str;
+	outfile.close();
 	return nullptr;
 }

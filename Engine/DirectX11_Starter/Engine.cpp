@@ -54,9 +54,11 @@ bool Engine::Init()
 	// hardcoded debug code, 
 	// scene loading should be in scripts or config file
 	// and should be done by SceneManager
-	currentScene = SceneManager::CreateNewScene("scene");
-	currentScene->Enter();
-	SceneManager::SaveScene(currentScene);
+	currentScene = SceneManager::LoadScene("Scene1");
+	//currentScene = SceneManager::CreateNewScene("Scene1");
+	//currentScene->Enter();
+	//SceneManager::SaveScene(currentScene);
+	//;
 	return true;
 }
 

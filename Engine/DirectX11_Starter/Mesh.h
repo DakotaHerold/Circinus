@@ -4,6 +4,7 @@
 #include <DirectXCollision.h>
 #include "Vertex.h"
 
+
 struct ID3D11Device;
 struct ID3D11Buffer;
 
@@ -33,11 +34,15 @@ public:
 
 	const DirectX::BoundingBox& GetBounds() const { return bounds; }
 
+
+
 private:
 	bool			valid;
 	ID3D11Buffer*	vertexBuffer;
 	ID3D11Buffer*	indexBuffer;
 	int				indexCount;
 	DirectX::BoundingBox bounds;
+
+
 };
 

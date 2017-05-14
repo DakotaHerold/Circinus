@@ -214,10 +214,15 @@ void Transform::StartSerialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>&
 void Transform::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
 {
 	writer.StartObject();
-	writer.String("hasValue");
-	writer.Bool(true);
 	writer.String("name");
 	writer.String("Transform");
+	writer.String("parent");
+	if (parent->GetEntityID() == -1) {
+		writer.String("root");
+	}
+	else {
+		writer.String(parent->GetEntity()->GetName().c_str());
+	}	
 	writer.String("PositionX");
 	writer.Double(localPosition.x);
 	writer.String("PositionY");
@@ -237,4 +242,11 @@ void Transform::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writ
 	writer.String("ScaleZ");
 	writer.Double(localScale.z);
 	writer.EndObject();
+}
+
+void Transform::Load(rapidjson::Value v)
+{
+	SetLocalPosition(v["PositionX"].GetFloat(), v["PositionY"].GetFloat(), v["PositionZ"].GetFloat());
+	SetScale(v["ScaleX"].GetFloat(), v["ScaleY"].GetFloat(), v["ScaleZ"].GetFloat());
+	SetRotationEuler(v["RotationX"].GetFloat(), v["RotationY"].GetFloat(), v["RotationZ"].GetFloat());	
 }

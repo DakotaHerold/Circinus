@@ -46,9 +46,14 @@ public:
 
 	const TextureInfo* GetInfo() const { return &texInfo; }
 
+
+
 private:
 	bool						valid;
+
 	ID3D11ShaderResourceView*	texSRV;
 
 	TextureInfo					texInfo;
+
+
 };

@@ -47,15 +47,19 @@ public :
 	
 	void ChangeName(std::string name);
 
+	void SetMaterial(std::string material) { this->material = material; }
+
+	void SetMesh(std::string mesh) { this->mesh = mesh; }
+
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) {
 		//name
 		writer.StartObject();
 		writer.String("name");		
 		writer.String(this->name.c_str());
 		writer.String("mesh");
-		writer.String("cube");
+		writer.String(mesh.c_str());
 		writer.String("material");
-		writer.String("mat1");
+		writer.String(material.c_str());
 		writer.String("components");
 		//components
 		writer.StartArray();
@@ -68,6 +72,10 @@ public :
 
 private :
 	std::string name = "No Name Yet";
+
+	std::string mesh ="";
+
+	std::string material = "";
 };
 
 template <typename T, typename... Args>
