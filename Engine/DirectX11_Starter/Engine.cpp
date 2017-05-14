@@ -56,7 +56,7 @@ bool Engine::Init()
 	// and should be done by SceneManager
 	currentScene = SceneManager::CreateNewScene("scene");
 	currentScene->Enter();
-
+	SceneManager::SaveScene(currentScene);
 	return true;
 }
 

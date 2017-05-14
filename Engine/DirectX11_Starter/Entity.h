@@ -49,10 +49,21 @@ public :
 
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) {
 		//name
-		writer.String("name");
+		writer.StartObject();
+		writer.String("name");		
 		writer.String(this->name.c_str());
+		writer.String("mesh");
+		writer.String("cube");
+		writer.String("material");
+		writer.String("mat1");
+		writer.String("components");
 		//components
-		//getallcomponent
+		writer.StartArray();
+		for (auto c : GetAllComponents()) {
+			c->Serialize(writer);
+		}
+		writer.EndArray();
+		writer.EndObject();
 	}
 
 private :

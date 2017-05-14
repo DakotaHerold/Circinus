@@ -205,3 +205,30 @@ void Transform::StartSerialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>&
 		t->StartSerialize(writer);
 	}
 }
+
+void Transform::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
+{
+	writer.StartObject();
+	writer.String("hasValue");
+	writer.Bool(true);
+	writer.String("name");
+	writer.String("Transform");
+	writer.String("PositionX");
+	writer.Double(localPosition.x);
+	writer.String("PositionY");
+	writer.Double(localPosition.y);
+	writer.String("PositionZ");
+	writer.Double(localPosition.z);
+	writer.String("RotationX");
+	writer.Double(localRotation.x);
+	writer.String("RotationY");
+	writer.Double(localRotation.y);
+	writer.String("RotationZ");
+	writer.Double(localRotation.z);
+	writer.String("ScaleX");
+	writer.Double(localScale.x);
+	writer.String("ScaleY");
+	writer.Double(localScale.y);
+	writer.String("ScaleZ");
+	writer.Double(localScale.z);
+}

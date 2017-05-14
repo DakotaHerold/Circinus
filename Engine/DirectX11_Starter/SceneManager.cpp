@@ -23,7 +23,7 @@ Scene * SceneManager::LoadScene(string path)
 }
 
 Scene * SceneManager::SaveScene(Scene * scene)
-{
+{/*
 	Document d;
 	string filepath = scene->GetName() + ".json";
 	FILE* fp = fopen(filepath.c_str(), "wb");
@@ -31,6 +31,10 @@ Scene * SceneManager::SaveScene(Scene * scene)
 	FileWriteStream os(fp, writeBuffer, sizeof(writeBuffer));
 	Writer<FileWriteStream> writer(os);
 	d.Accept(writer);
-	fclose(fp);
+	fclose(fp);*/
+	StringBuffer sb;
+	PrettyWriter<StringBuffer> writer(sb);
+	scene->Serialize(writer);
+	cout << sb.GetString() << endl;
 	return nullptr;
 }

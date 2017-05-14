@@ -33,7 +33,7 @@ public:
 	Camera* GetCamera() { return &cam; }
 	SceneGraph* GetSceneGraph() { return &sceneGraph; }
 	ComponentManager* componentManager;
-	
+
 
 	EntityVector GetAllEntities();
 
@@ -49,16 +49,85 @@ public:
 
 	Entity* GetEntityByID(int id);
 
-	string GetName();
+	//string GetName();
 
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) {
 		writer.StartObject();
+		writer.String("name");
+		writer.String("Scene");
 
-		//mesh list
 
-		//material list 
+		//mesh
+		writer.String("meshs");
+		writer.StartArray();
+		//for
+		writer.StartObject();
+		writer.String("name");
+		writer.String("cube");
+		writer.String("path");
+		writer.String("Assets/Models/cube.fbx");
+		writer.EndObject();
+		//end for
 
-		//skybox
+		writer.EndArray();
+
+		//shader
+		writer.String("shader");
+		writer.StartArray();
+		//for
+		writer.StartObject();
+		writer.String("name");
+		writer.String("Opaque");
+		writer.String("path");
+		writer.String("Assets/ShaderObjs/Opaque.cso");
+		writer.EndObject();
+		//end for
+		writer.EndArray();
+
+		//texture
+		writer.String("texture");
+		writer.StartArray();
+		//for
+		writer.StartObject();
+		writer.String("type");
+		writer.String("texDiffuse");
+		writer.String("name");
+		writer.String("rust");
+		writer.EndObject();
+
+		writer.StartObject();
+		writer.String("type");
+		writer.String("texDiffuse");
+		writer.String("name");
+		writer.String("water");
+		writer.EndObject();
+		//end for
+		writer.EndArray();
+
+		//material
+		writer.String("material");
+		writer.StartArray();
+		//for
+		writer.StartObject();
+		writer.String("name");
+		writer.String("mat1");
+		writer.String("shader");
+		writer.String("Opaque");
+		writer.String("texture");
+		writer.String("rust");
+		writer.EndObject();
+
+		writer.StartObject();
+		writer.String("name");
+		writer.String("mat2");
+		writer.String("shader");
+		writer.String("Opaque");
+		writer.String("texture");
+		writer.String("water");
+		writer.EndObject();
+		//end for
+		writer.EndArray();
+
 
 		//entity/transform
 		componentManager->root->StartSerialize(writer);

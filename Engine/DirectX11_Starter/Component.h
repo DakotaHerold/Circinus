@@ -21,6 +21,10 @@ public:
 
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) {
 		//
+		writer.StartObject();
+		writer.String("hasValue");
+		writer.Bool(false);
+		writer.EndObject();
 	}
 
 private:

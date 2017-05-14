@@ -105,6 +105,8 @@ void Scene::Enter()
 
 	cam.getViewMatrix();
 	cam.setProjectionMatrix(800.0f / 600.0f);
+
+	
 }
 
 void Scene::Tick(float deltaTime, float totalTime)
@@ -129,6 +131,8 @@ void Scene::Tick(float deltaTime, float totalTime)
 
 		cam.moveAlongDirection(input.GetMouseWheelDelta() * 0.01f);
 	}
+
+
 
 	rot += deltaTime * 1.0f;
 
