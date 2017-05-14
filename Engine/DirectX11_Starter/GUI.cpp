@@ -8,6 +8,9 @@
 #include "Entity.h"
 #include <math.h>
 #include "RenderingSystem.h"
+#include "ScriptComponent.h"
+#include "TransformSystem.h"
+#include "Editor.h"
 
 GUI::GUI()
 {
@@ -35,6 +38,10 @@ void GUI::Init(HWND hwnd, ID3D11Device* device, ID3D11DeviceContext* device_cont
 
 	// Component Details Window Flags.
 	_cdwFlag |= ImGuiWindowFlags_NoSavedSettings;
+
+	// Benchmarks Window Flags.
+	_cwFlag |= ImGuiWindowFlags_NoMove;
+	_cwFlag |= ImGuiWindowFlags_NoSavedSettings;
 
 }
 
@@ -87,10 +94,17 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 			vector<Entity *> curSceneEntities = Engine::instance()->GetCurScene()->GetAllEntities();
 			int entCounter = 0;
 
+			if (nullptr != Editor::instance()->GetSelectedEntity()) {
+				selectedEntity = Editor::instance()->GetSelectedEntity();
+				ComponentDisplayFlag = true;
+				_somthingSelected = true;
+			}
+
 			for (std::vector<Entity *>::iterator it = curSceneEntities.begin(); it != curSceneEntities.end(); ++it) {
 				++entCounter;
 				if (ImGui::Selectable(((*it)->GetName() + " (" + std::to_string(entCounter) + ")").c_str())) {
 					selectedEntity = *it;
+					Editor::instance()->SetSelectedEntity(*it);
 					ComponentDisplayFlag = true;
 					_somthingSelected = true;
 				}
@@ -109,7 +123,7 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 		ImGui::SetNextWindowPos(cwPos);
 		ImGui::SetNextWindowSize(cwSize);
 
-		ImGui::Begin("Component", &ComponentDisplayFlag, _cwFlag);
+		ImGui::Begin((selectedEntity->GetName() + "'s Components").c_str(), &ComponentDisplayFlag, _cwFlag);
 		{
 			int compCounter = 0;
 			vector<pair<TypeId, ObjectPoolIndex *>> Components;
@@ -153,10 +167,11 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 		{
 			if ( 0 == std::strcmp(ComponentTypeName(selectedComponentID), "class ScriptComponent") )
 			{
-				//ImGui::Text( GetComponent(selectedEntity, selectedCompIndex))
-				// TODO:: ERROR -- FIX IT
-				// cm->GetComponent((selectedEntity)->GetID(), selectedComponentID, selectedCompIndex);
+				ImGui::Text((cm->GetComponent<ScriptComponent>((selectedEntity)->GetID(), selectedCompIndex)->GetScriptName()).c_str());
 			}
+			/*else if (0 == std::strcmp(ComponentTypeName(selectedComponentID), "class Transform")) {
+				ImGui::Text((cm->GetComponent<>((selectedEntity)->GetID(), selectedCompIndex)->GetScriptName()).c_str());
+			}*/
 			else {
 				std::cout << "?" << ComponentTypeName(selectedComponentID) << "?" << std::endl;
 				std::cout << "#" << std::strcmp(ComponentTypeName(selectedComponentID), "class ScriptComponent") << "#" << std::endl;
@@ -165,58 +180,21 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 		}
 	}
 
-}
-
-void GUI::AddMenuBar(bool * _running) {
-
-	if (ImGui::BeginMainMenuBar())
-	{
-		if (ImGui::BeginMenu("Engine")) {
-			ImGui::MenuItem("Preferences");
+	if (BenchmarkDisplayFlag) {
+		// TODO: Can probably move these to Init Function.
+		ImVec2 hwPos = ImVec2(30 , 50);
+		ImVec2 hwSize = ImVec2(_windowWidth / 3, _windowHeight / 3);
+		ImGui::SetNextWindowPos(hwPos, ImGuiSetCond_FirstUseEver);
+		ImGui::SetNextWindowSize(hwSize, ImGuiSetCond_FirstUseEver);
+		ImGui::Begin("Benchmarks.", &BenchmarkDisplayFlag, _bwFlag);
+		{
+			ImGui::Text("== Benchmarks ==");
 			ImGui::Separator();
-			if (ImGui::MenuItem("Quit", "ALT+F4")) { *(_running) = false; }
-			ImGui::EndMenu();
-		}
-
-		if (ImGui::BeginMenu("Window"))
-		{
-			if (ImGui::MenuItem("Hierarchy")) { HierarchyDisplayFlag = true; }
+			ImGui::Text("Current Number of Entities: %d", Engine::instance()->GetCurScene()->GetAllEntities().size());
 			ImGui::Separator();
-			if (ImGui::MenuItem("Debug")) {
-				DebugDisplayFlag = true;
-			}
-			
-			ImGui::EndMenu();
-		}
-
-		if (ImGui::BeginMenu("Entity"))
-		{
-			if (ImGui::BeginMenu("Add"))
-			{
-				// TODO: Add functionality.
-				// What should I add?
-				ImGui::EndMenu();
-			}
-			ImGui::EndMenu();
-		}
-
-#ifdef HAS_EDITOR
-		if (ImGui::BeginMenu("Run"))
-		{
-			if (ImGui::MenuItem("Run")) {
-				Editor::instance()->Run();
-			}
-
-			if (ImGui::MenuItem("Build")) {
-				Editor::instance()->Build();
-			}
-			ImGui::EndMenu();
-		}
-#endif
-
-		if (ImGui::BeginMenu("Benchmarks")) {
-			if (ImGui::MenuItem("Add 1000 Objects")) {
-				int count = 200;
+			ImGui::InputInt("No. of Entities to Create", &numberOfEntitiesToCreate, 50, 200, 0);
+			if (ImGui::Button("Create Entities")) {
+				int count = numberOfEntitiesToCreate + 1; // + 1 to offset some bug in the code. ( < instead of <= I guess? )
 				float range = 4.0;
 				float start = -range / 2;
 
@@ -245,13 +223,69 @@ void GUI::AddMenuBar(bool * _running) {
 					RigidBody* rb1 = e1->AddComponent <RigidBody>(t1, &(r1->BoundingBox()));*/
 					//e1->AddComponent<ScriptComponent>("script2.lua", rb1);
 				}
-
 			}
-			if (ImGui::MenuItem("Add 2000 Objects")) {
-				
+			ImGui::Separator();
+			ImGui::InputInt("No. of Entities to Destroy", &numberOfEntitiesToCreate, 50, 200, 0);
+			if (ImGui::Button("Destroy Entities")) {
+				int count = numberOfEntitiesToCreate + 1; // + 1 to offset some bug in the code. ( < instead of <= I guess? )
+				// Insert Logic to destroy the Entities here.
+			}
+			ImGui::End();
+		}
+	}
+
+}
+
+void GUI::AddMenuBar(bool * _running) {
+
+	if (ImGui::BeginMainMenuBar())
+	{
+		if (ImGui::BeginMenu("Engine")) {
+			ImGui::MenuItem("Preferences");
+			ImGui::Separator();
+			if (ImGui::MenuItem("Quit", "ALT+F4")) { *(_running) = false; }
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Window"))
+		{
+			if (ImGui::MenuItem("Hierarchy")) { HierarchyDisplayFlag = true; }
+			ImGui::Separator();
+			if (ImGui::MenuItem("Debug")) {
+				DebugDisplayFlag = true;
+			}
+			if (ImGui::MenuItem("Benchmarks")) { BenchmarkDisplayFlag = true; }
+			
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Entity"))
+		{
+			if (ImGui::BeginMenu("Add"))
+			{
+				if (ImGui::MenuItem("Empty")) {
+					Entity * tempEnt = new Entity("Empty");
+					tempEnt->AddComponent<Transform>();
+					Engine::instance()->GetCurScene()->AddEntity(tempEnt);
+				}
+				ImGui::EndMenu();
 			}
 			ImGui::EndMenu();
 		}
+
+#ifdef HAS_EDITOR
+		if (ImGui::BeginMenu("Run"))
+		{
+			if (ImGui::MenuItem("Run")) {
+				Editor::instance()->Run();
+			}
+
+			if (ImGui::MenuItem("Build")) {
+				Editor::instance()->Build();
+			}
+			ImGui::EndMenu();
+		}
+#endif
 		ImGui::EndMainMenuBar();
 	}
 
