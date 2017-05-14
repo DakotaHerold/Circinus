@@ -15,6 +15,9 @@ Transform::Transform()
 		parent = root;
 		root->AddChild(this);
 	}
+	else {
+		SetEntity(-1);
+	}
 }
 
 Transform::~Transform()
@@ -199,8 +202,10 @@ void Transform::UpdateTransform()
 
 void Transform::StartSerialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
 {
-	Entity* entity = GetEntity();
-	entity->Serialize(writer);
+	if (GetEntityID() != -1) {
+		Entity* entity = GetEntity();
+		entity->Serialize(writer);		
+	}	
 	for (Transform* t : children) {
 		t->StartSerialize(writer);
 	}
@@ -231,4 +236,5 @@ void Transform::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writ
 	writer.Double(localScale.y);
 	writer.String("ScaleZ");
 	writer.Double(localScale.z);
+	writer.EndObject();
 }

@@ -19,7 +19,7 @@ public:
 	Entity*						GetEntity();
 	int							GetEntityID();
 
-	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) {
+	virtual void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) {
 		//
 		writer.StartObject();
 		writer.String("hasValue");

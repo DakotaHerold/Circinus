@@ -39,7 +39,7 @@ public:
 
 	void					StartSerialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
 
-	virtual void			Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
+	void					Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
 
 private:
 	void					UpdateMatrix();

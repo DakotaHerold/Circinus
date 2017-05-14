@@ -130,7 +130,10 @@ public:
 
 
 		//entity/transform
+		writer.String("entities");
+		writer.StartArray();
 		componentManager->root->StartSerialize(writer);
+		writer.EndArray();
 		writer.EndObject();
 	}
 
