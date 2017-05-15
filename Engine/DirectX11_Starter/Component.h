@@ -1,12 +1,10 @@
 #pragma once
 #include "ClassTypeId.h"
-#include "Object.h"
 #include <utility>
 #include "ObjectPool.h"
+#include "Entity.h"
 
-class Entity;
-
-class Component : public Object, public Poolable
+class Component : public Poolable
 {
 public:
 	Component();
@@ -14,12 +12,12 @@ public:
 
 	virtual void				Update();
 
-	virtual void				SetEntity(int id);
+	virtual void				SetEntity(EntityID eid);
 	Entity*						GetEntity();
 	int							GetEntityID();
 
 private:
-	int							gameEntityID;
+	EntityID 					gameEntityID;
 };
 
 template <typename T>

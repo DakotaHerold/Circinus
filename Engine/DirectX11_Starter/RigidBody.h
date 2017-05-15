@@ -11,7 +11,7 @@ public:
 	RigidBody(Transform* t, const DirectX::BoundingBox* boxCollider);
 	~RigidBody();
 
-	void SetEntity(int id) override;
+	void SetEntity(EntityID eid) override;
 
 	#pragma region Getters and Setters
 	Transform* GetTransform() { return trans; }

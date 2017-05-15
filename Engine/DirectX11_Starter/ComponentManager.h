@@ -9,8 +9,10 @@
 
 class Scene;
 
+//typedef std::vector<std::vector<std::vector<ObjectPoolIndex *>>> EntityComponentsIndices;
+
 typedef std::map<TypeId, std::vector<ObjectPoolIndex *>> ComponentsMap;
-typedef std::map<eidType, ComponentsMap> EntityComponentsMap;
+typedef std::map<EntityID, ComponentsMap> EntityComponentsMap;
 
 class ComponentManager
 {
@@ -19,11 +21,11 @@ public:
 	~ComponentManager();
 
 	template <typename T, typename... Args>
-	T* AddComponent(int entityID, Args&&... args);
+	T* AddComponent(EntityID entityID, Args&&... args);
 	
 	// TODO: const function
 	template <typename T>
-	T* GetComponent(int entityID, ObjectPoolIndex *index = nullptr);
+	T* GetComponent(EntityID entityID, ObjectPoolIndex *index = nullptr);
 
 	//template <typename T>
 	//bool RemoveComponent(int entityID, ObjectPoolIndex *index = nullptr);
@@ -33,13 +35,13 @@ public:
 	template <typename T>
 	std::vector<T*> GetAllComponents();
 
-	std::vector<Component *> GetAllComponents(int entityID);
+	std::vector<Component *> GetAllComponents(EntityID entityID);
 
-	std::vector<std::pair<TypeId, ObjectPoolIndex *>> GetAllComponentsInfo(int entityID);
+	std::vector<std::pair<TypeId, ObjectPoolIndex *>> GetAllComponentsInfo(EntityID entityID);
 
-	bool RemoveComponent(int entityID, TypeId typeID, ObjectPoolIndex *index = nullptr);
+	bool RemoveComponent(EntityID entityID, TypeId typeID, ObjectPoolIndex *index = nullptr);
 
-	void RemoveAllComponents(int entityID);
+	void RemoveAllComponents(EntityID entityID);
 
 	Transform *root;
 	static ComponentManager *current;	
@@ -55,8 +57,8 @@ private:
 
 	ObjectPoolBase* GetComponentPool(TypeId typeID);
 
-	int GetObjectPoolIndex(eidType entityID, TypeId typeID, bool deleteIndex = false);
-	bool CheckObjectPoolIndex(eidType entityID, TypeId typeID, ObjectPoolIndex * index, bool deleteIndex = false);
+	int GetObjectPoolIndex(EntityID entityID, TypeId typeID, bool deleteIndex = false);
+	bool CheckObjectPoolIndex(EntityID entityID, TypeId typeID, ObjectPoolIndex * index, bool deleteIndex = false);
 };
 
 template<typename T>
@@ -76,7 +78,7 @@ inline ObjectPool<T>* ComponentManager::GetComponentPool()
 }
 
 template <typename T, typename... Args>
-inline T* ComponentManager::AddComponent(int entityID, Args && ...args)
+inline T* ComponentManager::AddComponent(EntityID entityID, Args && ...args)
 {	
 	T *component = GetComponentPool<T>()->Add(std::forward<Args>(args)...);
 
@@ -90,7 +92,7 @@ inline T* ComponentManager::AddComponent(int entityID, Args && ...args)
 }
 
 template<typename T>
-inline T * ComponentManager::GetComponent(int entityID, ObjectPoolIndex* index)
+inline T * ComponentManager::GetComponent(EntityID entityID, ObjectPoolIndex* index)
 {
 	if (index == nullptr) {
 		return reinterpret_cast<T*>(GetComponentPool<T>()->Get(GetObjectPoolIndex(entityID, ComponentTypeId<T>())));

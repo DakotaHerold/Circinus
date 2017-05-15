@@ -2,19 +2,18 @@
 
 #include "Mesh.h"
 #include "Material.h"
-#include "Component.h"
-#include "Object.h"
 #include <utility>
 #include <string>
+#include <list>
+#include "ClassTypeId.h"
 
 using namespace DirectX;
 class ComponentManager;
+class Component;
 
-// FIXME:
-//typedef unsigned int eidType;
-typedef int eidType;
+typedef unsigned int EntityID;
 
-class Entity : public Object
+class Entity
 {
 public:
 	Entity();
@@ -22,31 +21,34 @@ public:
 
 	~Entity();
 
-public :
+	static Entity* GetEntity(EntityID eid);
+	static const std::list<Entity*> GetAllEntities();
+
+	EntityID GetID() const { return id; };
+
+	std::string GetName();
+	void ChangeName(std::string name);
 
 	template <typename T, typename... Args>
-	T*					AddComponent(Args&&... args);
+	T* AddComponent(Args&&... args);
 
 	template <typename T>
-	bool				RemoveComponent();
+	bool RemoveComponent();
 
 	bool RemoveComponent(TypeId typeID);
 
 	// TODO: const
 	template <typename T>
-	T*					GetComponent();
+	T* GetComponent();
 
-	std::vector<Component *>GetAllComponents();
+	std::vector<Component *> GetAllComponents();
 
 	//template <typename T>
 	//bool				HasComponent() const;
 
-	std::string GetName();
-	
-	void ChangeName(std::string name);
-
 private :
 	std::string name = "No Name Yet";
+	EntityID id;
 };
 
 template <typename T, typename... Args>

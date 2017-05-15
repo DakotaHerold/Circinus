@@ -215,7 +215,6 @@
     <ClCompile Include="dxerr.cpp" />
     <ClCompile Include="DirectXGameCore.cpp" />
     <ClCompile Include="NativeWindow.cpp" />
-    <ClCompile Include="Object.cpp" />
     <ClCompile Include="ParticleEmitter.cpp" />
     <ClCompile Include="ParticlePool.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
@@ -276,7 +275,6 @@
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="PrimitiveRenderer.h" />
     <ClInclude Include="Renderable.h" />
-    <ClInclude Include="Object.h" />
     <ClInclude Include="RenderingSystem.h" />
     <ClInclude Include="RigidBody.h" />
     <ClInclude Include="Scene.h" />

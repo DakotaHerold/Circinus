@@ -15,9 +15,9 @@ RigidBody::~RigidBody()
 	delete obb; 
 }
 
-void RigidBody::SetEntity(int id)
+void RigidBody::SetEntity(EntityID eid)
 {
-	this->Component::SetEntity(id);
+	this->Component::SetEntity(eid);
 	// TODO: Update with transform position
 }
 

@@ -1,5 +1,4 @@
 #include "Component.h"
-#include "Entity.h"
 
 Component::Component()
 {
@@ -18,7 +17,7 @@ void Component::Update()
 
 Entity* Component::GetEntity()
 {	
-	return (Object::GetObjectWithID<Entity>(gameEntityID));
+	return (Entity::GetEntity(gameEntityID));
 }
 
 int Component::GetEntityID()
@@ -26,7 +25,7 @@ int Component::GetEntityID()
 	return gameEntityID;
 }
 
-void Component::SetEntity(int id)
+void Component::SetEntity(EntityID eid)
 {
-	gameEntityID = id;
+	gameEntityID = eid;
 }
