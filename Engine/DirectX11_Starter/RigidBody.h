@@ -29,6 +29,14 @@ public:
 	DirectX::XMFLOAT3 RotateToNewEuler(DirectX::XMFLOAT3X3* m);
 	DirectX::XMFLOAT3 velocity; // This velocity will be a vector3 relate to world space instead of local space.
 
+	void	Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) {
+		writer.StartObject();
+		writer.String("name");
+		writer.String("RigidBody");
+		writer.EndObject();
+	}
+	void	Load(rapidjson::Value v) {}
+
 private:
 	Transform* trans; 
 	DirectX::BoundingOrientedBox* obb;

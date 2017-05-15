@@ -8,9 +8,12 @@ ScriptComponent::ScriptComponent(string scriptFile, RigidBody* body)
 
 	// Define a Lua State object
 	L = luaL_newstate();
-
+	x = rigidbody->GetTransform()->GetLocalPosition()->x;
+	y = rigidbody->GetTransform()->GetLocalPosition()->y;
+	z = rigidbody->GetTransform()->GetLocalPosition()->z;
 	// Get script name and convert to C string 
-	fileName = "Scripts/" + scriptFile;
+	fileName = "Scripts/" + scriptFile+".lua";
+	file = scriptFile;
 	luaL_dofile(L, fileName.c_str());
 	luaL_openlibs(L);
 	lua_pcall(L, 0, 0, 0);
@@ -31,7 +34,7 @@ ScriptComponent::ScriptComponent(string scriptFile, RigidBody* body)
 	cout << "Script Initialized" << endl; 
 	
 	 
-	LuaRef initFunc = getGlobal(L, "Initialize");
+	luabridge::LuaRef initFunc = luabridge::getGlobal(L, "Initialize");
 	// Call script init
 	try {
 		initFunc();
@@ -44,7 +47,7 @@ ScriptComponent::ScriptComponent(string scriptFile, RigidBody* body)
 void ScriptComponent::Update()
 {
 	// Call Lua Update if one exists 
-	LuaRef updateFunc = getGlobal(L, "Update");
+	luabridge::LuaRef updateFunc = luabridge::getGlobal(L, "Update");
 	try {
 		updateFunc();
 	}
@@ -57,13 +60,28 @@ void ScriptComponent::Update()
 
 ScriptComponent::~ScriptComponent()
 {
-	LuaRef  releaseFunc = getGlobal(L, "Release");
+	luabridge::LuaRef  releaseFunc = luabridge::getGlobal(L, "Release");
 	try {
 		releaseFunc();
 	}
 	catch (LuaException const& e) {
 		std::cerr && e.what();
 	}
-	releaseFunc = Nil(); 
+	releaseFunc = luabridge::Nil();
 	lua_close(L);
+}
+
+void ScriptComponent::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
+{
+	writer.StartObject();
+	writer.String("name");
+	writer.String("Script");
+	writer.String("file");
+	writer.String(file.c_str());
+	writer.EndObject();
+}
+
+void ScriptComponent::Load(rapidjson::Value v)
+{
+
 }
