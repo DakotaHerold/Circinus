@@ -9,6 +9,7 @@
 
 class Scene;
 
+// EntityID -> TypeID
 //typedef std::vector<std::vector<std::vector<ObjectPoolIndex *>>> EntityComponentsIndices;
 
 typedef std::map<TypeId, std::vector<ObjectPoolIndex *>> ComponentsMap;

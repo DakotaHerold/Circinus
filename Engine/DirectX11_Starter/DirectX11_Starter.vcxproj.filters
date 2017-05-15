@@ -341,9 +341,6 @@
     <ClInclude Include="ImGui\stb_truetype.h">
       <Filter>ImGUI Dependencies</Filter>
     </ClInclude>
-    <ClInclude Include="StackAllocator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Lighting.h">
       <Filter>Header Files\Component</Filter>
     </ClInclude>
@@ -386,11 +383,11 @@
     <ClInclude Include="PrimitiveRenderer.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ObjectPool.h">
       <Filter>Header Files\CoreEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

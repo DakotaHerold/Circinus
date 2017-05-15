@@ -84,27 +84,27 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>$(SolutionDir)..\3rdParty\assimp\lib\x86;$(LibraryPath);$(DXSDK_DIR)Lib\x86;$(ProjectDir)\VisualLeakDetector\lib\Win32</LibraryPath>
-    <IncludePath>$(SolutionDir)..\3rdParty\rapidjson\include;$(SolutionDir)..\3rdParty\assimp\include;$(IncludePath);$(DXSDK_DIR)Include;$(SolutionDir)..\3rdParty\LuaBridge;$(SolutionDir)..\3rdParty\LuaBridge</IncludePath>
+    <IncludePath>C:\Users\Nick\Documents\GitHub\DirectX11_Project\3rdParty\rapidjson\include;$(SolutionDir)..\3rdParty\assimp\include;$(IncludePath);$(DXSDK_DIR)Include;$(SolutionDir)..\3rdParty\LuaBridge;$(SolutionDir)..\3rdParty\LuaBridge</IncludePath>
     <TargetName>$(ProjectName)Editor</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='BenchmarkDebug|Win32'">
     <LibraryPath>$(SolutionDir)..\3rdParty\assimp\lib\x86;$(LibraryPath);$(DXSDK_DIR)Lib\x86;$(ProjectDir)\VisualLeakDetector\lib\Win32</LibraryPath>
-    <IncludePath>$(SolutionDir)..\3rdParty\rapidjson\include;$(SolutionDir)..\3rdParty\assimp\include;$(IncludePath);$(DXSDK_DIR)Include;$(SolutionDir)..\3rdParty\LuaBridge;$(SolutionDir)..\3rdParty\LuaBridge</IncludePath>
+    <IncludePath>C:\Users\Nick\Documents\GitHub\DirectX11_Project\3rdParty\rapidjson\include;$(SolutionDir)..\3rdParty\assimp\include;$(IncludePath);$(DXSDK_DIR)Include;$(SolutionDir)..\3rdParty\LuaBridge;$(SolutionDir)..\3rdParty\LuaBridge</IncludePath>
     <TargetName>$(ProjectName)Editor</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RuntimeDebug|Win32'">
     <LibraryPath>$(SolutionDir)..\3rdParty\assimp\lib\x86;$(LibraryPath);$(DXSDK_DIR)Lib\x86;$(ProjectDir)\VisualLeakDetector\lib\Win32</LibraryPath>
-    <IncludePath>$(SolutionDir)..\3rdParty\rapidjson\include;$(SolutionDir)..\3rdParty\assimp\include;$(IncludePath);$(DXSDK_DIR)Include;$(SolutionDir)..\3rdParty\LuaBridge;$(SolutionDir)..\3rdParty\LuaBridge</IncludePath>
+    <IncludePath>C:\Users\Nick\Documents\GitHub\DirectX11_Project\3rdParty\rapidjson\include;$(SolutionDir)..\3rdParty\assimp\include;$(IncludePath);$(DXSDK_DIR)Include;$(SolutionDir)..\3rdParty\LuaBridge;$(SolutionDir)..\3rdParty\LuaBridge</IncludePath>
     <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LibraryPath>$(SolutionDir)..\3rdParty\assimp\lib\x86;$(LibraryPath);$(DXSDK_DIR)Lib\x86;$(ProjectDir)\VisualLeakDetector\lib\Win32</LibraryPath>
-    <IncludePath>$(SolutionDir)..\3rdParty\rapidjson\include;$(SolutionDir)..\3rdParty\assimp\include;$(IncludePath);$(DXSDK_DIR)Include;;$(SolutionDir)..\3rdParty\LuaBridge</IncludePath>
+    <IncludePath>C:\Users\Nick\Documents\GitHub\DirectX11_Project\3rdParty\rapidjson\include;$(SolutionDir)..\3rdParty\assimp\include;$(IncludePath);$(DXSDK_DIR)Include;;$(SolutionDir)..\3rdParty\LuaBridge</IncludePath>
     <TargetName>$(ProjectName)Editor</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RuntimeRelease|Win32'">
     <LibraryPath>$(SolutionDir)..\3rdParty\assimp\lib\x86;$(LibraryPath);$(DXSDK_DIR)Lib\x86;$(ProjectDir)\VisualLeakDetector\lib\Win32</LibraryPath>
-    <IncludePath>$(SolutionDir)..\3rdParty\rapidjson\include;$(SolutionDir)..\3rdParty\assimp\include;$(IncludePath);$(DXSDK_DIR)Include;;$(SolutionDir)..\3rdParty\LuaBridge</IncludePath>
+    <IncludePath>C:\Users\Nick\Documents\GitHub\DirectX11_Project\3rdParty\rapidjson\include;$(SolutionDir)..\3rdParty\assimp\include;$(IncludePath);$(DXSDK_DIR)Include;;$(SolutionDir)..\3rdParty\LuaBridge</IncludePath>
     <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -284,7 +284,6 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ScriptComponent.h" />
     <ClInclude Include="SimpleShader.h" />
-    <ClInclude Include="StackAllocator.h" />
     <ClInclude Include="TestCom.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Transform.h" />
