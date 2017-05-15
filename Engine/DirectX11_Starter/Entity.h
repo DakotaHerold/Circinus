@@ -3,6 +3,7 @@
 #include "Mesh.h"
 #include "Material.h"
 #include <utility>
+#include <rapidjson\prettywriter.h>
 #include <string>
 #include <list>
 #include "ClassTypeId.h"
@@ -18,6 +19,7 @@ class Entity
 public:
 	Entity();
 	Entity(std::string name);
+	Entity(std::string name, Material* mat, Mesh* mesh);
 
 	~Entity();
 
@@ -25,9 +27,6 @@ public:
 	static const std::list<Entity*> GetAllEntities();
 
 	EntityID GetID() const { return id; };
-
-	std::string GetName();
-	void ChangeName(std::string name);
 
 	template <typename T, typename... Args>
 	T* AddComponent(Args&&... args);
@@ -46,9 +45,21 @@ public:
 	//template <typename T>
 	//bool				HasComponent() const;
 
+	std::string GetName();
+	
+	void ChangeName(std::string name);
+
+	void SetMaterial(std::string material) { this->material = material; }
+
+	void SetMesh(std::string mesh) { this->mesh = mesh; }
+
+	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
+
 private :
-	std::string name = "No Name Yet";
 	EntityID id;
+	std::string name = "No Name Yet";
+	std::string mesh ="";
+	std::string material = "";
 };
 
 template <typename T, typename... Args>

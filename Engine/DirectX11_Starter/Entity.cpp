@@ -1,5 +1,6 @@
 #include "Entity.h"
 #include "ComponentManager.h"
+#include "Renderable.h"
 
 using namespace std;
 
@@ -14,6 +15,7 @@ static list<Entity*> allEntities;
 Entity::Entity() 
 	: name("Entity"), id(nextID++)
 {
+	AddComponent<Transform>();
 	entities.push_back(this);
 	allEntities.push_back(this);
 }
@@ -21,6 +23,16 @@ Entity::Entity()
 Entity::Entity(string name)
 	: name(name), id(nextID++)
 {
+	AddComponent<Transform>();
+	entities.push_back(this);
+	allEntities.push_back(this);
+}
+
+Entity::Entity(std::string name, Material * mat, Mesh * mesh)
+	: name(name), id(nextID++)
+{
+	AddComponent<Transform>();
+	AddComponent<Renderable>(mesh, mat);
 	entities.push_back(this);
 	allEntities.push_back(this);
 }
@@ -62,4 +74,24 @@ std::vector<Component*> Entity::GetAllComponents()
 void Entity::ChangeName(std::string name)
 {
 	this->name = name;
+}
+
+void Entity::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
+{
+	//name
+	writer.StartObject();
+	writer.String("name");
+	writer.String(this->name.c_str());
+	writer.String("mesh");
+	writer.String(mesh.c_str());
+	writer.String("material");
+	writer.String(material.c_str());
+	writer.String("components");
+	//components
+	writer.StartArray();
+	for (auto c : GetAllComponents()) {
+		c->Serialize(writer);
+	}
+	writer.EndArray();
+	writer.EndObject();
 }

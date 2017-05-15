@@ -22,6 +22,7 @@ typedef std::string str_t;
 #include "Transform.h"
 #include "Renderable.h"
 #include "GizmoRenderer.h"
+#include "Engine.h"
 
 namespace
 {
@@ -235,6 +236,7 @@ void Editor::CleanUp()
 
 void Editor::Run()
 {
+	Engine::instance()->SavaScene();
 	do
 	{
 		str_t cwd = GetWorkingDirectory();
@@ -269,6 +271,7 @@ void Editor::Run()
 
 void Editor::Build()
 {
+	Engine::instance()->SavaScene();
 	str_t cwd = GetWorkingDirectory();
 	str_t path = SelectFolder();
 

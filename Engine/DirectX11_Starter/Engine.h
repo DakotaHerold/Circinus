@@ -2,6 +2,7 @@
 
 #include "Config.h"
 
+
 class NativeWindow;
 class RenderingSystem;
 class InputManager;
@@ -9,8 +10,10 @@ class Scene;
 class TransformSystem;
 class PhysicsSystem;
 class Entity;
+class SceneManager;
 
 #include <vector>
+#include <string>
 
 class Engine
 {
@@ -42,6 +45,12 @@ public:
 	bool Init();
 
 	int Run();
+
+	void LoadScene(std::string name);
+
+	void SavaScene();
+
+	void InitScene();
 
 private:
 

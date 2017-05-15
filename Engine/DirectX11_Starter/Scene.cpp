@@ -11,154 +11,96 @@
 #include "ParticleEmitter.h"
 #include "GizmoRenderer.h"
 
+namespace {
+	struct Str
+	{
+		Str(const wchar_t* str) :ws(str),s(ws.begin(),ws.end()){}
+		wstring ws;
+		string s;
+		const char* operator() ()const {
+			return s.c_str();
+		}
+	};
+	struct Wstr
+	{
+		Wstr(const char* str) :s(str), ws(s.begin(), s.end()) {}
+		string s;
+		wstring ws;		
+		const wchar_t* operator() ()const {
+			return ws.c_str();
+		}
+	};
+}
+
 Scene::Scene()
 {
 	componentManager = new ComponentManager();
 	ComponentManager::current = componentManager;
+	root = new Transform();
+	
 }
 
 void Scene::Enter()
 {
-	// Testing hard code 
 
-	RenderingSystem& renderer = *RenderingSystem::instance();
+	//RenderingSystem& renderer = *RenderingSystem::instance();
 
-	Mesh* mesh = renderer.CreateMesh("Assets/Models/cube.fbx");
+	//Shader* s1 = AddShader("Opaque", L"Assets/ShaderObjs/Opaque.cso");
 
-	Shader* shader = renderer.CreateShader(L"Assets/ShaderObjs/Opaque.cso");
-	Texture* tex = renderer.CreateTexture(L"Assets/Textures/rust.jpg");
-	Texture* tex1 = renderer.CreateTexture(L"Assets/Textures/water.jpg");
+	//Shader* skyboxShader = AddShader("skybox", L"Assets/ShaderObjs/Skybox.cso");
 
-	mat = renderer.CreateMaterial(shader);
-	mat->SetTexture("texDiffuse", tex);
+	//Texture* tex = AddTexture("texDiffuse", "rust", L"Assets/Textures/rust.jpg");
 
-	//DirectX::XMFLOAT4X4 matrix;
-	//DirectX::XMStoreFloat4x4(&matrix, DirectX::XMMatrixIdentity());
+	//Texture* tex1 = AddTexture("texDiffuse", "water", L"Assets/Textures/water.gif");
 
-	// Main entity 
-	Entity* main = new Entity();
-	Transform* mainT = main->AddComponent<Transform>();
-	Renderable* mainR = main->AddComponent<Renderable>(mesh, mat);
-	RigidBody* mainRb = main->AddComponent<RigidBody>(mainT, &(mainR->BoundingBox()));
-	AddEntity(main);
+	//Texture* skyboxTex = AddTexture("skyMap", "skybox", L"Assets/Textures/space.dds");
 
-	mat = renderer.CreateMaterial(shader);
-	mat->SetTexture("texDiffuse", tex1);
+	//Mesh* mesh = AddMesh("cube", "Assets/Models/cube.fbx");
 
-	// Collision check entity 
-	Entity* e1 = new Entity();
-	Transform* t1 = e1->AddComponent<Transform>();
+	//Material* skyboxMat = AddMaterial("skybox", "skybox", "skybox");
 
-	t1->SetLocalPosition(2, 0, 0);
-	Renderable* r1 = e1->AddComponent<Renderable>(mesh, mat);
-	RigidBody* rb1 = e1->AddComponent <RigidBody>(t1, &(r1->BoundingBox()));
-	e1->AddComponent<ScriptComponent>("script2.lua", rb1);
+	//Material* rust= AddMaterial("rust", "Opaque", "rust");
 
-	//
-	t1->SetParent(mainT);
-	//
-	AddEntity(e1);
+	//Material* water= AddMaterial("water", "Opaque", "water");
 
-	////Child entity 
-	//Entity* e2 = new Entity();
-	//Transform* t2 = e2->AddComponent<Transform>();
-	//Renderable* r2 = e2->AddComponent<Renderable>(mesh, mat);
-	//RigidBody* rb2 = e2->AddComponent<RigidBody>(t2, &(r2->BoundingBox()));
-	//AddEntity(e2);
+	//Renderable* skybox = sceneGraph.CreateRenderable();
 
-	//t2->SetParent(t1);
-	//t2->SetLocalPosition(1.0f, 0.0f, 0.0f);
+	//skyboxMaterial = "skybox";
 
-	lights = new Entity();
-	Lighting* l = lights->AddComponent<Lighting>(XMFLOAT4(-5, 0, 0, 0), XMFLOAT4(0.7f, 0, 0, 1), LightType::PointLight, 1, 8);
-	Lighting* l2 = lights->AddComponent<Lighting>(XMFLOAT4(0, -1, 0, 0), XMFLOAT4(0, 0.5f, 0.5f, 1), LightType::DirectionalLight, 1);
+	//skyboxMesh = "cube";
 
-	// Particle Emitters;
-	Entity* emitEntity = new Entity();
-	Transform* emitEntityTrans = emitEntity->AddComponent<Transform>();
-	ParticleEmitter* emitter = emitEntity->AddComponent<ParticleEmitter>(L"Assets/Textures/smoke.png");
-	AddEntity(emitEntity);
+	//skybox->SetMaterial(GetMaterial("skybox").pointer);
 
-	emitEntityTrans->SetLocalPosition(2.0f, 0.0f, 0.0f);
+	//skybox->SetMesh(GetMesh("cube").pointer);
 
-	emitter->SetInitialVelocity(0.0f, 0.3f, 0.0f);
-	emitter->SetLifeTime(5.0f);
-	emitter->SetEmitRate(5);
+	//sceneGraph.SetSkyBox(skybox);
 
-	//Script 
-	//RigidBody* r = new enti->AddComponent<RigidBody>(t, r->BoundingBox);
-	//enti->AddComponent<ScriptComponent>("script2.lua", ); 
+	//// Main entity 
+	//Entity* main = CreateEntity("parent","cube", "rust");
 
-	// skybox
+	//Transform* t2 = main->GetComponent<Transform>();
+	////RigidBody* mainRb = main->AddComponent<RigidBody>(main->GetComponent<Transform>(), &(main->GetComponent<Renderable>()->BoundingBox()));
 
-	Shader* skyboxShader = renderer.CreateShader(L"Assets/ShaderObjs/Skybox.cso");
-	Texture* skyboxTex = renderer.CreateTexture(L"Assets/Textures/space.dds");
-	Material* skyboxMaterial = renderer.CreateMaterial(skyboxShader);
+	//// Collision check entity 
+	//Entity* e1 = CreateEntity("child", "cube", "water");
+	//Transform* t = e1->GetComponent<Transform>();
+	//t->SetLocalPosition(2, 0, 0);
+	//t->SetParent(main->GetComponent<Transform>());
+	////
 
-	skyboxMaterial->SetTexture("skyMap", skyboxTex);
+	////light
+	//Entity* lights = CreateEntity("light");
+	//Lighting* l = lights->AddComponent<Lighting>(XMFLOAT4(-5, 0, 0, 0), XMFLOAT4(0.7f, 0, 0, 1), LightType::PointLight, 1, 8);
+	////cam
+	//cam.getViewMatrix();
+	//cam.setProjectionMatrix(800.0f / 600.0f);
 
-	Renderable* skybox = sceneGraph.CreateRenderable();
-	skybox->SetMesh(mesh);
-	skybox->SetMaterial(skyboxMaterial);
-
-	sceneGraph.SetSkyBox(skybox);
-
-	cam.getViewMatrix();
-	cam.setProjectionMatrix(800.0f / 600.0f);
+	
 }
 
 void Scene::Tick(float deltaTime, float totalTime)
 {
-	static float rot = 0.0f;
-
 	cam.update(deltaTime);
-	InputManager& input = InputManager::instance();
-
-	{
-		float x = input.GetMouseMoveX();
-		if (input.GetLeftMouseHeld())	// Left button is down
-		{
-			cam.moveSideways(input.GetMouseMoveX() *0.005f);
-			cam.moveVertical(input.GetMouseMoveY() * 0.005f);
-		}
-		if (input.GetRightMouseHeld())	// Right button is down
-		{
-			cam.setRotationY(input.GetMouseMoveX());
-			cam.setRotationX(input.GetMouseMoveY());
-		}
-
-		cam.moveAlongDirection(input.GetMouseWheelDelta() * 0.01f);
-	}
-
-	rot += deltaTime * 1.0f;
-
-	auto* t = entities[0]->GetComponent<Transform>();
-	auto* t1 = entities[1]->GetComponent<Transform>();
-
-	t->SetWorldPosition(t->GetWorldPosition()->x + 0.5f*deltaTime, 0, 0);
-	t1->SetRotationEuler(0, rot, 0);
-
-	auto* r = entities[0]->GetComponent<RigidBody>();
-	auto* r1 = entities[1]->GetComponent<RigidBody>();
-	//cout << r->CollisionCheck(r1) << endl;
-
-
-	//enti->GetComponent<ScriptComponent>()->Update(); 
-
-	/*{
-		DirectX::BoundingSphere sphere(DirectX::XMFLOAT3(0, 0, 0), 2);
-		GizmoRenderer::instance()->Draw(sphere);
-
-		DirectX::BoundingBox aabb(
-			DirectX::XMFLOAT3(0, 0, 0),
-			DirectX::XMFLOAT3(1, 1, 1));
-		DirectX::BoundingOrientedBox box;
-		DirectX::BoundingOrientedBox::CreateFromBoundingBox(box, aabb);
-		box.Transform(box, 1,
-			DirectX::XMQuaternionRotationRollPitchYaw(0, rot, 0)
-			, DirectX::XMVectorSet(0, 0, 0, 0));
-		GizmoRenderer::instance()->Draw(box, GizmoRenderer::red);
-	}*/
 }
 
 void Scene::Exit()
@@ -168,7 +110,6 @@ void Scene::Exit()
 	}
 	entities.clear();
 
-	delete lights;
 
 	// all entities should be deleted before deleting component manager
 	delete componentManager;
@@ -187,6 +128,25 @@ void Scene::AddEntity(Entity * entity)
 Entity * Scene::CreateEntity(string name)
 {
 	Entity* ent = new Entity(name);
+	m_EntityInfo e;
+	e.name = name;
+	e.pointer = ent;
+	entity.push_back(e);
+	AddEntity(ent);
+	return ent;
+}
+
+Entity * Scene::CreateEntity(string name, string mesh, string material)
+{
+	Entity* ent = new Entity(name, GetMaterial(material).pointer, GetMesh(mesh).pointer);
+	ent->SetMaterial(material);
+	ent->SetMesh(mesh);
+	m_EntityInfo e;
+	e.name = name;
+	e.mesh = mesh;
+	e.material = material;
+	e.pointer = ent;
+	entity.push_back(e);
 	AddEntity(ent);
 	return ent;
 }
@@ -221,3 +181,266 @@ Entity * Scene::GetEntityByID(int id)
 	}
 	return nullptr;
 }
+
+void Scene::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
+{
+	writer.StartObject();
+	writer.String("name");
+	writer.String(name.c_str());
+	writer.String("skybox");
+	writer.StartObject();
+	writer.String("material");
+	writer.String(skyboxMaterial.c_str());
+	writer.String("mesh");
+	writer.String(skyboxMesh.c_str());
+	writer.EndObject();
+
+	//mesh
+	writer.String("meshes");
+	writer.StartArray();
+	//for
+	for (auto i : meshes) {
+		writer.StartObject();
+
+		writer.String("name");
+		writer.String(i.name.c_str());
+		
+		writer.String("file");
+		
+		writer.String(string(i.file.begin(),i.file.end()).c_str());
+
+		writer.EndObject();
+	}
+	//end for
+	writer.EndArray();
+
+	//shader
+	writer.String("shaders");
+	writer.StartArray();
+	//for
+	for (auto i : shaders) {
+		writer.StartObject();
+		writer.String("name");
+		writer.String(i.name.c_str());
+		writer.String("file");	
+		writer.String(string(i.file.begin(), i.file.end()).c_str());
+		writer.EndObject();
+	}	
+	//end for
+	writer.EndArray();
+
+	//texture
+	writer.String("textures");
+	writer.StartArray();
+	//for
+	for (auto i : textures) {
+		writer.StartObject();
+		writer.String("type");
+		writer.String(i.type.c_str());
+		writer.String("name");
+		writer.String(i.name.c_str());
+		writer.String("file");
+		writer.String(string(i.file.begin(), i.file.end()).c_str());
+		writer.EndObject();
+	}
+	//end for
+	writer.EndArray();
+
+
+
+	//material
+	writer.String("materials");
+	writer.StartArray();
+	//for
+	for (auto i : materials) {
+		writer.StartObject();
+		writer.String("name");
+		writer.String(i.name.c_str());
+		writer.String("shader");
+		writer.String(i.shader.c_str());
+		writer.String("texture");
+		writer.String(i.texture.c_str());
+		writer.EndObject();
+	}
+	//end for
+	writer.EndArray();
+
+
+	//entity/transform
+	writer.String("entities");
+	writer.StartArray();
+	componentManager->root->StartSerialize(writer);
+	writer.EndArray();
+	writer.EndObject();
+}
+
+void Scene::Build(rapidjson::Document &d)
+{
+	this->name = d["name"].GetString();	
+
+	//cam
+	cam.getViewMatrix();
+	cam.setProjectionMatrix(800.0f / 600.0f);
+	//mesh
+	Value& b_meshes = d["meshes"];
+	for (size_t i = 0; i < b_meshes.Size(); i++) {
+		auto& b_mesh = b_meshes[i].GetObject();
+		Wstr ws(b_mesh["file"].GetString());
+		AddMesh(b_mesh["name"].GetString(),ws());
+	}
+
+	//shader
+	Value& b_shaders = d["shaders"];
+	for (size_t i = 0; i < b_shaders.Size(); i++) {
+		auto& b_shader = b_shaders[i].GetObject();
+		AddShader(b_shader["name"].GetString(), Wstr(b_shader["file"].GetString())());
+	}
+	//tex
+	Value& b_textures = d["textures"];
+	for (size_t i = 0; i < b_textures.Size(); i++) {
+		auto& b_texture = b_textures[i].GetObject();
+		AddTexture(b_texture["type"].GetString(), b_texture["name"].GetString(), Wstr(b_texture["file"].GetString())());
+	}
+	//mat
+	Value& b_materials = d["materials"];
+	for (size_t i = 0; i < b_materials.Size(); i++) {
+		auto& b_material = b_materials[i].GetObject();
+		AddMaterial(b_material["name"].GetString(), b_material["shader"].GetString(), b_material["texture"].GetString());
+	}
+	//skybox
+	auto& b_skybox = d["skybox"];
+	skybox = sceneGraph.CreateRenderable();
+	skybox->SetMaterial(GetMaterial(b_skybox["material"].GetString()).pointer);
+	skybox->SetMesh(GetMesh(b_skybox["mesh"].GetString()).pointer);
+	skyboxMaterial = b_skybox["material"].GetString();
+	skyboxMesh = b_skybox["mesh"].GetString();
+	sceneGraph.SetSkyBox(skybox);
+	//ent
+	Value& b_entities = d["entities"];
+	for (size_t i = 0; i < b_entities.Size(); i++) {
+		auto& b_entity = b_entities[i].GetObject();
+		Entity* e = CreateEntity(b_entity["name"].GetString());
+		auto& b_components = b_entity["components"];
+		for (size_t i = 0; i < b_components.Size(); i++) {
+			auto& b_component = b_components[i].GetObject();
+			string componentName = b_component["name"].GetString();
+			if (componentName == "Transform") {
+				Transform* t = e->GetComponent<Transform>();
+				string parent = b_component["parent"].GetString();
+				if (parent == "root") {
+					t->SetParent(t);
+				}
+				else {
+					t->SetParent(GetEntityByName(parent)->GetComponent<Transform>());
+				}
+				t->Load(b_component);
+			}
+			else if (componentName == "Renderable") {
+				Renderable* r = e->AddComponent<Renderable>(GetMesh(b_entity["mesh"].GetString()).pointer,GetMaterial(b_entity["material"].GetString()).pointer);
+				e->SetMaterial(b_entity["material"].GetString());
+				e->SetMesh(b_entity["mesh"].GetString());
+				r->Load(b_component);
+			}else if(componentName == "Lighting"){
+				XMFLOAT4 position(b_component["PositionX"].GetFloat(), b_component["PositionY"].GetFloat(), b_component["PositionZ"].GetFloat(), b_component["PositionW"].GetFloat());
+				XMFLOAT4 color(b_component["ColorX"].GetFloat(), b_component["ColorY"].GetFloat(), b_component["ColorZ"].GetFloat(), b_component["ColorW"].GetFloat());
+				Lighting* l = e->AddComponent<Lighting>(position,color,b_component["lightType"].GetInt(), b_component["enabled"].GetInt(),b_component["specularAmount"].GetInt());
+			}
+		}
+	}
+}
+
+
+
+
+Mesh * Scene::AddMesh(string meshName, const wchar_t * file)
+{
+	RenderingSystem& renderer = *RenderingSystem::instance();
+	Mesh* mesh = renderer.CreateMesh(file);
+	m_MeshInfo m;
+	m.name = meshName;
+	m.file = file;
+	m.pointer = mesh;
+	meshes.push_back(m);
+	return mesh;
+}
+
+m_MeshInfo Scene::GetMesh(string name)
+{
+	for (auto i : meshes) {
+		if (i.name == name) {
+			return i;
+		}
+	}
+	return m_MeshInfo();
+}
+
+Material * Scene::AddMaterial(string name, string shader, string texture)
+{
+	RenderingSystem& renderer = *RenderingSystem::instance();
+	Material* material = renderer.CreateMaterial(GetShader(shader).pointer);
+	m_TextureInfo m2 = GetTexture(texture);
+	material->SetTexture(GetTexture(texture).type, GetTexture(texture).pointer);
+	m_MaterialInfo m;
+	m.name = name;
+	m.shader = shader;
+	m.texture = texture;
+	m.pointer = material;
+	materials.push_back(m);
+	return material;
+}
+
+m_MaterialInfo Scene::GetMaterial(string name)
+{
+	for (auto i : materials) {
+		if (i.name == name) {
+			return i;
+		}
+	}
+	return m_MaterialInfo();
+}
+
+Shader * Scene::AddShader(string name, const wchar_t * file)
+{
+	RenderingSystem& renderer = *RenderingSystem::instance();
+	Shader* shader = renderer.CreateShader(file);
+	m_ShaderInfo s;
+	s.name = name;
+	s.file = file;
+	s.pointer = shader;
+	shaders.push_back(s);
+	return shader;
+}
+
+m_ShaderInfo  Scene::GetShader(string name)
+{
+	for (auto i : shaders) {
+		if (i.name == name) {
+			return i;
+		}
+	}
+	return m_ShaderInfo();
+}
+
+Texture * Scene::AddTexture(string type, string name, const wchar_t * file)
+{
+	RenderingSystem& renderer = *RenderingSystem::instance();
+	Texture* texture = renderer.CreateTexture(file);
+	m_TextureInfo t;
+	t.name = name;
+	t.file = file;
+	t.type = type;
+	t.pointer = texture;
+	textures.push_back(t);
+	return texture;
+}
+
+m_TextureInfo  Scene::GetTexture(string name)
+{
+	for (auto i : textures) {
+		if (i.name == name) {
+			return i;
+		}
+	}
+	return m_TextureInfo();
+}
+

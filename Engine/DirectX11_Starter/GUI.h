@@ -24,19 +24,22 @@ private:
 	bool HierarchyDisplayFlag = false;
 	bool ComponentDisplayFlag = false;
 	bool ComponentDisplayDetailsFlag = false;
+	bool BenchmarkDisplayFlag = false;
+
+	int numberOfEntitiesToCreate = 0;
 
 
 	// Window Flag Constants
 	ImGuiWindowFlags _cwFlag = 0;
 	ImGuiWindowFlags _hwFlag = 0;
 	ImGuiWindowFlags _cdwFlag = 0;
+	ImGuiWindowFlags _bwFlag = 0;
 
 	ComponentManager * cm = ComponentManager::current;
 
 	Entity * selectedEntity = nullptr; // This is a dummy variable. I did not want to allocate and deallocate this every frame.
 	TypeId selectedComponentID; // This is just a variable to hold which component is selected.
 	ObjectPoolIndex * selectedCompIndex;
-
 	std::vector<Entity *> benchmarkEntities;
 
 	GUI();

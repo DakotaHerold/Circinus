@@ -24,6 +24,14 @@ public:
 
 	DirectX::BoundingBox& BoundingBox() { return bounds; }
 
+	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) {
+		writer.StartObject();
+		writer.String("name");
+		writer.String("Renderable");
+		writer.EndObject();
+
+	}
+
 private:
 	friend class RenderingSystem;
 	friend class SceneGraph;

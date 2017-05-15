@@ -11,6 +11,8 @@ SamplerState linearSampler
 	MaxAnisotropy = 16;
 };
 
+BlendState defaultBS;
+
 DepthStencilState ds
 {
 	DepthFunc = LESS_EQUAL;
@@ -47,6 +49,7 @@ technique11
 {
 	pass 
 	{
+		SetBlendState(defaultBS, float4(0, 0, 0, 0), 0xffffffff);
 		SetRasterizerState(rs);
 		SetDepthStencilState(ds, 0);
 

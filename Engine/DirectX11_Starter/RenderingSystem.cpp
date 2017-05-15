@@ -511,7 +511,7 @@ void RenderingSystem::DrawScene(Camera* cam, SceneGraph* scene)
 
 #pragma region Resources
 
-Mesh * RenderingSystem::CreateMesh(const char* filename)
+Mesh * RenderingSystem::CreateMesh(const wchar_t* filename)
 {
 	if (meshes.find(filename) != meshes.end())
 	{
@@ -523,7 +523,7 @@ Mesh * RenderingSystem::CreateMesh(const char* filename)
 
 	if (mesh->IsValid())
 	{
-		meshes.insert(std::pair<std::string, Mesh*>(filename, mesh));
+		meshes.insert(std::pair<std::wstring, Mesh*>(filename, mesh));
 		return mesh;
 	}
 

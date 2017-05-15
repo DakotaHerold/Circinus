@@ -4,6 +4,7 @@
 #include <DirectXCollision.h>
 #include "Vertex.h"
 
+
 struct ID3D11Device;
 struct ID3D11Buffer;
 
@@ -20,7 +21,7 @@ private:
 	void CleanUp();
 
 	bool LoadFromMemory(Vertex vertices[], int numVerts, unsigned int indices[], int numIndices, ID3D11Device * device);
-	bool LoadFromFile(const char* filename, ID3D11Device* device);
+	bool LoadFromFile(const wchar_t* filename, ID3D11Device* device);
 
 public:
 
@@ -33,11 +34,15 @@ public:
 
 	const DirectX::BoundingBox& GetBounds() const { return bounds; }
 
+
+
 private:
 	bool			valid;
 	ID3D11Buffer*	vertexBuffer;
 	ID3D11Buffer*	indexBuffer;
 	int				indexCount;
 	DirectX::BoundingBox bounds;
+
+
 };
 

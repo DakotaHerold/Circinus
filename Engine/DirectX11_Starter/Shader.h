@@ -1,5 +1,4 @@
 #pragma once
-
 struct ID3D11Device;
 struct ID3D11InputLayout;
 struct ID3DX11Effect;
@@ -25,9 +24,11 @@ public:
 
 	bool IsValid() const { return valid; }
 
+
 private:
 	bool					valid;
 
 	ID3DX11Effect*			effect;
 	ID3D11InputLayout*		layout;
+
 };

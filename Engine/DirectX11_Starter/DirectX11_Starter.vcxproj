@@ -84,27 +84,27 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>$(SolutionDir)..\3rdParty\assimp\lib\x86;$(LibraryPath);$(DXSDK_DIR)Lib\x86;$(ProjectDir)\VisualLeakDetector\lib\Win32</LibraryPath>
-    <IncludePath>$(SolutionDir)..\3rdParty\assimp\include;$(IncludePath);$(DXSDK_DIR)Include;$(SolutionDir)..\3rdParty\LuaBridge;$(SolutionDir)..\3rdParty\LuaBridge</IncludePath>
+    <IncludePath>$(SolutionDir)..\3rdParty\rapidjson\include;$(SolutionDir)..\3rdParty\assimp\include;$(IncludePath);$(DXSDK_DIR)Include;$(SolutionDir)..\3rdParty\LuaBridge;$(SolutionDir)..\3rdParty\LuaBridge</IncludePath>
     <TargetName>$(ProjectName)Editor</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='BenchmarkDebug|Win32'">
     <LibraryPath>$(SolutionDir)..\3rdParty\assimp\lib\x86;$(LibraryPath);$(DXSDK_DIR)Lib\x86;$(ProjectDir)\VisualLeakDetector\lib\Win32</LibraryPath>
-    <IncludePath>$(SolutionDir)..\3rdParty\assimp\include;$(IncludePath);$(DXSDK_DIR)Include;$(SolutionDir)..\3rdParty\LuaBridge;$(SolutionDir)..\3rdParty\LuaBridge</IncludePath>
+    <IncludePath>$(SolutionDir)..\3rdParty\rapidjson\include;$(SolutionDir)..\3rdParty\assimp\include;$(IncludePath);$(DXSDK_DIR)Include;$(SolutionDir)..\3rdParty\LuaBridge;$(SolutionDir)..\3rdParty\LuaBridge</IncludePath>
     <TargetName>$(ProjectName)Editor</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RuntimeDebug|Win32'">
     <LibraryPath>$(SolutionDir)..\3rdParty\assimp\lib\x86;$(LibraryPath);$(DXSDK_DIR)Lib\x86;$(ProjectDir)\VisualLeakDetector\lib\Win32</LibraryPath>
-    <IncludePath>$(SolutionDir)..\3rdParty\assimp\include;$(IncludePath);$(DXSDK_DIR)Include;$(SolutionDir)..\3rdParty\LuaBridge;$(SolutionDir)..\3rdParty\LuaBridge</IncludePath>
+    <IncludePath>$(SolutionDir)..\3rdParty\rapidjson\include;$(SolutionDir)..\3rdParty\assimp\include;$(IncludePath);$(DXSDK_DIR)Include;$(SolutionDir)..\3rdParty\LuaBridge;$(SolutionDir)..\3rdParty\LuaBridge</IncludePath>
     <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LibraryPath>$(SolutionDir)..\3rdParty\assimp\lib\x86;$(LibraryPath);$(DXSDK_DIR)Lib\x86;$(ProjectDir)\VisualLeakDetector\lib\Win32</LibraryPath>
-    <IncludePath>$(SolutionDir)..\3rdParty\assimp\include;$(IncludePath);$(DXSDK_DIR)Include;;$(SolutionDir)..\3rdParty\LuaBridge</IncludePath>
+    <IncludePath>$(SolutionDir)..\3rdParty\rapidjson\include;$(SolutionDir)..\3rdParty\assimp\include;$(IncludePath);$(DXSDK_DIR)Include;;$(SolutionDir)..\3rdParty\LuaBridge</IncludePath>
     <TargetName>$(ProjectName)Editor</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RuntimeRelease|Win32'">
     <LibraryPath>$(SolutionDir)..\3rdParty\assimp\lib\x86;$(LibraryPath);$(DXSDK_DIR)Lib\x86;$(ProjectDir)\VisualLeakDetector\lib\Win32</LibraryPath>
-    <IncludePath>$(SolutionDir)..\3rdParty\assimp\include;$(IncludePath);$(DXSDK_DIR)Include;;$(SolutionDir)..\3rdParty\LuaBridge</IncludePath>
+    <IncludePath>$(SolutionDir)..\3rdParty\rapidjson\include;$(SolutionDir)..\3rdParty\assimp\include;$(IncludePath);$(DXSDK_DIR)Include;;$(SolutionDir)..\3rdParty\LuaBridge</IncludePath>
     <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -223,6 +223,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="RigidBody.cpp" />
     <ClCompile Include="SceneGraph.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ScriptComponent.cpp" />
     <ClCompile Include="SimpleShader.cpp" />
@@ -279,6 +280,7 @@
     <ClInclude Include="RigidBody.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneGraph.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ScriptComponent.h" />
     <ClInclude Include="SimpleShader.h" />

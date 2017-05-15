@@ -11,6 +11,7 @@ SamplerState	sampBasic
 	AddressW = WRAP;
 };
 
+BlendState defaultBS;
 DepthStencilState defaultDS;
 RasterizerState defaultRS;
 
@@ -62,6 +63,7 @@ technique11
 {
 	pass
 	{
+		SetBlendState(defaultBS, float4(0, 0, 0, 0), 0xffffffff);
 		SetRasterizerState(defaultRS);
 		SetDepthStencilState(defaultDS, 0);
 		SetVertexShader(CompileShader(vs_5_0, vs_main()));

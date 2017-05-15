@@ -10,10 +10,13 @@ Transform::Transform()
 	localRotation(0, 0, 0),
 	localScale(1.0f, 1.0f, 1.0f)
 {
-	if (ComponentManager::current != nullptr) {
-		root = ComponentManager::current->root;
+	root = ComponentManager::current->GetRoot();
+	if (root!=nullptr) {		
 		parent = root;
 		root->AddChild(this);
+	}
+	else {
+		ComponentManager::current->SetRoot(this);
 	}
 }
 
@@ -195,4 +198,56 @@ void Transform::UpdateTransform()
 		}
 		children[i]->UpdateTransform();
 	}
+}
+
+void Transform::StartSerialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
+{
+	int id = GetEntityID();
+	if (GetEntityID() != -1) {
+		Entity* entity = GetEntity();
+		entity->Serialize(writer);		
+	}	
+	for (Transform* t : children) {
+		t->StartSerialize(writer);
+	}
+}
+
+void Transform::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
+{
+	writer.StartObject();
+	writer.String("name");
+	writer.String("Transform");
+	writer.String("parent");
+	if (parent->GetEntityID() == -1) {
+		writer.String("root");
+	}
+	else {
+		writer.String(parent->GetEntity()->GetName().c_str());
+	}	
+	writer.String("PositionX");
+	writer.Double(localPosition.x);
+	writer.String("PositionY");
+	writer.Double(localPosition.y);
+	writer.String("PositionZ");
+	writer.Double(localPosition.z);
+	writer.String("RotationX");
+	writer.Double(localRotation.x);
+	writer.String("RotationY");
+	writer.Double(localRotation.y);
+	writer.String("RotationZ");
+	writer.Double(localRotation.z);
+	writer.String("ScaleX");
+	writer.Double(localScale.x);
+	writer.String("ScaleY");
+	writer.Double(localScale.y);
+	writer.String("ScaleZ");
+	writer.Double(localScale.z);
+	writer.EndObject();
+}
+
+void Transform::Load(rapidjson::Value v)
+{
+	SetLocalPosition(v["PositionX"].GetFloat(), v["PositionY"].GetFloat(), v["PositionZ"].GetFloat());
+	SetScale(v["ScaleX"].GetFloat(), v["ScaleY"].GetFloat(), v["ScaleZ"].GetFloat());
+	SetRotationEuler(v["RotationX"].GetFloat(), v["RotationY"].GetFloat(), v["RotationZ"].GetFloat());	
 }
