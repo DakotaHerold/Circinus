@@ -101,6 +101,9 @@ void Scene::Enter()
 void Scene::Tick(float deltaTime, float totalTime)
 {
 	cam.update(deltaTime);
+	for (auto* i : componentManager->GetAllComponents<ScriptComponent>()) {
+		i->Update();
+	}
 }
 
 void Scene::Exit()

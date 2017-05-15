@@ -30,7 +30,6 @@ Scene * SceneManager::LoadScene(string name)
 	Document d;
 	d.ParseStream(is);	
 	s->Build(d);
-	cout << readBuffer << endl;
 	fclose(fp);
 	return s;
 }

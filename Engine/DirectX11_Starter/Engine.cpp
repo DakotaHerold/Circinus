@@ -5,6 +5,7 @@
 #include "TransformSystem.h"
 #include "Scene.h"
 #include "Entity.h"
+#include "ScriptComponent.h"
 #include "SceneManager.h"
 
 #ifdef HAS_EDITOR
@@ -97,6 +98,7 @@ int Engine::Run()
 		// TODO
 		//Transform System
 		transformSystem->update(deltaTime, currentScene->componentManager->GetAllComponents<Transform>());
+
 
 		// scripting system
 		// TODO
