@@ -90,7 +90,7 @@ public:
 	int GetWindowHeight() const { return windowHeight; }
 
 public:
-	Mesh* CreateMesh(const char* filename);
+	Mesh* CreateMesh(const wchar_t* filename);
 
 	Shader* CreateShader(const wchar_t* filename);
 
@@ -99,7 +99,7 @@ public:
 	Material* CreateMaterial(Shader* shader);
 
 private:
-	std::unordered_map<std::string, Mesh*>		meshes;
+	std::unordered_map<std::wstring, Mesh*>		meshes;
 	std::unordered_map<std::wstring, Shader*>	shaders;
 	std::unordered_map<std::wstring, Texture*>	textures;
 	std::vector<Material*>						materials;

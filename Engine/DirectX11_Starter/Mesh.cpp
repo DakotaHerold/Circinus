@@ -2,6 +2,7 @@
 #include "AssimpLoader.h"
 
 #include <d3d11.h>
+#include <string>
 
 #define HR(x) if ((x) != S_OK) return false;
 
@@ -84,11 +85,13 @@ bool Mesh::LoadFromMemory(Vertex vertices[], int numVerts, unsigned int indices[
 	return true;
 }
 
-bool Mesh::LoadFromFile(const char * filename, ID3D11Device * device)
+bool Mesh::LoadFromFile(const wchar_t * filename, ID3D11Device * device)
 {
+	std::wstring ws(filename);
+	std::string s(ws.begin(), ws.end());
 	CleanUp();
 	AssimpLoader loader;
-	loader.LoadFromFile(filename);
+	loader.LoadFromFile(s.c_str());
 
 	unsigned long dataSize = loader.GetVerticesCount() * sizeof(Vertex);
 	void* pData = malloc(dataSize);

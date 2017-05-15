@@ -23,27 +23,26 @@ struct m_MaterialInfo
 
 struct m_MeshInfo {
 	string name;
-	const char * file;
+	wstring file;
 	Mesh* pointer;
 };
 
 struct m_ShaderInfo {
 	string name;
-	const wchar_t * file;
+	wstring file;
 	Shader* pointer;
 };
 
 struct m_TextureInfo {
 	string name;
 	string type;
-	const wchar_t * file;
+	wstring file;
 	Texture* pointer;
 
 };
 
 struct m_EntityInfo {
 	string name;
-	bool isRenderable;
 	string mesh;
 	string material;
 	Entity* pointer;
@@ -93,7 +92,7 @@ public:
 		
 	void Build(rapidjson::Document &d);
 
-
+	Transform* root;
 
 private:
 	Camera			cam;
@@ -102,40 +101,17 @@ private:
 
 	string			name="Scene1";
 
-
-	char* WcharToChar(const wchar_t* wp);
-
-	wchar_t* CharToWchar(const char* c);
-
 	vector<m_MeshInfo> meshes;
-
-	Mesh* AddMesh(string meshName, const char * file);
-
-	m_MeshInfo GetMesh(string name);
 
 	vector<m_MaterialInfo> materials;
 
-	Material* AddMaterial(string name,string shader,string texture);
-
-	m_MaterialInfo GetMaterial(string name);
-
 	vector<m_ShaderInfo> shaders;
 
-	Shader* AddShader(string name,const wchar_t * file);
-
-	m_ShaderInfo GetShader(string name);
-
 	vector<m_TextureInfo> textures;
-
-	Texture* AddTexture(string type, string name, const wchar_t * file);
-
-	m_TextureInfo GetTexture(string name);
 
 	vector<Entity*> entities;
 
 	vector<m_EntityInfo> entity;
-
-	Entity*			lights;
 
 	Renderable* skybox;
 
@@ -143,4 +119,23 @@ private:
 
 	string skyboxMaterial;
 
+
+private:
+
+
+	Mesh* AddMesh(string meshName, const wchar_t * file);
+
+	m_MeshInfo GetMesh(string name);
+
+	Material* AddMaterial(string name, string shader, string texture);
+
+	m_MaterialInfo GetMaterial(string name);
+
+	Shader* AddShader(string name, const wchar_t * file);
+
+	m_ShaderInfo GetShader(string name);
+
+	Texture* AddTexture(string type, string name, const wchar_t * file);
+
+	m_TextureInfo GetTexture(string name);
 };

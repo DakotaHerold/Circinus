@@ -34,7 +34,7 @@ public:
 	}
 
 private:
-	int							gameEntityID;
+	int							gameEntityID = -1;
 };
 
 template <typename T>

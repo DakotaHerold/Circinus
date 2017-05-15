@@ -63,8 +63,8 @@
                 {
                     "name": "Transform",
                     "parent": "root",
-                    "PositionX": 0.0,
-                    "PositionY": 0.0,
+                    "PositionX": -0.04549315571784973,
+                    "PositionY": 0.17286226153373719,
                     "PositionZ": 0.0,
                     "RotationX": 0.0,
                     "RotationY": 0.0,
@@ -86,8 +86,8 @@
                 {
                     "name": "Transform",
                     "parent": "parent",
-                    "PositionX": 2.0,
-                    "PositionY": 0.0,
+                    "PositionX": 0.09183525294065476,
+                    "PositionY": -1.0505167245864869,
                     "PositionZ": 0.0,
                     "RotationX": 0.0,
                     "RotationY": 0.0,

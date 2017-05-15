@@ -42,7 +42,12 @@ public:
 	void RemoveAllComponents(int entityID);
 
 	Transform *root;
+
 	static ComponentManager *current;	
+
+	void SetRoot(Transform *r) { root = r; }
+
+	Transform* GetRoot() { return root; }
 
 private:
 	Scene* curScene;

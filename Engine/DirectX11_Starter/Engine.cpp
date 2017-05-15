@@ -54,10 +54,11 @@ bool Engine::Init()
 	// hardcoded debug code, 
 	// scene loading should be in scripts or config file
 	// and should be done by SceneManager
-	currentScene = SceneManager::LoadScene("Scene1");
-	//currentScene = SceneManager::CreateNewScene("Scene1");
-	//currentScene->Enter();
-	//SceneManager::SaveScene(currentScene);
+	//currentScene = SceneManager::LoadScene("Scene1");
+	/*currentScene = SceneManager::CreateNewScene("Scene1");
+	currentScene->Enter();
+	SceneManager::SaveScene(currentScene);*/
+	InitScene();
 	//;
 	return true;
 }
@@ -132,6 +133,31 @@ int Engine::Run()
 	CleanUp();
 
 	return 0;
+}
+
+void Engine::LoadScene(std::string name)
+{
+	currentScene->Exit();
+	delete currentScene;
+	currentScene = nullptr;
+	currentScene = SceneManager::LoadScene(name);
+}
+
+void Engine::SavaScene()
+{
+	SceneManager::SaveScene(currentScene);
+}
+
+void Engine::InitScene()
+{
+#ifdef HAS_EDITOR
+	currentScene = nullptr;
+	currentScene = SceneManager::CreateNewScene("NewScene");
+#else
+	LoadScene("Scene1");
+#endif // HAS_EDITOR
+
+	
 }
 
 void Engine::Quit(int exitCode)

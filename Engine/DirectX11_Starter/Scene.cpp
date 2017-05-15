@@ -11,102 +11,96 @@
 #include "ParticleEmitter.h"
 #include "GizmoRenderer.h"
 
+namespace {
+	struct Str
+	{
+		Str(const wchar_t* str) :ws(str),s(ws.begin(),ws.end()){}
+		wstring ws;
+		string s;
+		const char* operator() ()const {
+			return s.c_str();
+		}
+	};
+	struct Wstr
+	{
+		Wstr(const char* str) :s(str), ws(s.begin(), s.end()) {}
+		string s;
+		wstring ws;		
+		const wchar_t* operator() ()const {
+			return ws.c_str();
+		}
+	};
+}
 
 Scene::Scene()
 {
 	componentManager = new ComponentManager();
 	ComponentManager::current = componentManager;
+	root = new Transform();
+	
 }
 
 void Scene::Enter()
 {
 
-	RenderingSystem& renderer = *RenderingSystem::instance();
+	//RenderingSystem& renderer = *RenderingSystem::instance();
 
-	Shader* s1 = AddShader("Opaque", L"Assets/ShaderObjs/Opaque.cso");
+	//Shader* s1 = AddShader("Opaque", L"Assets/ShaderObjs/Opaque.cso");
 
-	Shader* skyboxShader = AddShader("skybox", L"Assets/ShaderObjs/Skybox.cso");
+	//Shader* skyboxShader = AddShader("skybox", L"Assets/ShaderObjs/Skybox.cso");
 
-	Texture* tex = AddTexture("texDiffuse", "rust", L"Assets/Textures/rust.jpg");
+	//Texture* tex = AddTexture("texDiffuse", "rust", L"Assets/Textures/rust.jpg");
 
-	Texture* tex1 = AddTexture("texDiffuse", "water", L"Assets/Textures/water.gif");
+	//Texture* tex1 = AddTexture("texDiffuse", "water", L"Assets/Textures/water.gif");
 
-	Texture* skyboxTex = AddTexture("skyMap", "skybox", L"Assets/Textures/space.dds");
+	//Texture* skyboxTex = AddTexture("skyMap", "skybox", L"Assets/Textures/space.dds");
 
-	Mesh* mesh = AddMesh("cube", "Assets/Models/cube.fbx");
+	//Mesh* mesh = AddMesh("cube", "Assets/Models/cube.fbx");
 
-	Material* skyboxMat = AddMaterial("skybox", "skybox", "skybox");
+	//Material* skyboxMat = AddMaterial("skybox", "skybox", "skybox");
 
-	Material* rust= AddMaterial("rust", "Opaque", "rust");
+	//Material* rust= AddMaterial("rust", "Opaque", "rust");
 
-	Material* water= AddMaterial("water", "Opaque", "water");
+	//Material* water= AddMaterial("water", "Opaque", "water");
 
-	Renderable* skybox = sceneGraph.CreateRenderable();
+	//Renderable* skybox = sceneGraph.CreateRenderable();
 
-	skyboxMaterial = "skybox";
+	//skyboxMaterial = "skybox";
 
-	skyboxMesh = "cube";
+	//skyboxMesh = "cube";
 
-	skybox->SetMaterial(GetMaterial("skybox").pointer);
+	//skybox->SetMaterial(GetMaterial("skybox").pointer);
 
-	skybox->SetMesh(GetMesh("cube").pointer);
+	//skybox->SetMesh(GetMesh("cube").pointer);
 
-	sceneGraph.SetSkyBox(skybox);
+	//sceneGraph.SetSkyBox(skybox);
 
+	//// Main entity 
+	//Entity* main = CreateEntity("parent","cube", "rust");
 
+	//Transform* t2 = main->GetComponent<Transform>();
+	////RigidBody* mainRb = main->AddComponent<RigidBody>(main->GetComponent<Transform>(), &(main->GetComponent<Renderable>()->BoundingBox()));
 
+	//// Collision check entity 
+	//Entity* e1 = CreateEntity("child", "cube", "water");
+	//Transform* t = e1->GetComponent<Transform>();
+	//t->SetLocalPosition(2, 0, 0);
+	//t->SetParent(main->GetComponent<Transform>());
+	////
 
-
-
-
-
-
-	// Main entity 
-	Entity* main = CreateEntity("parent","cube", "rust");
-
-	Transform* t2 = main->GetComponent<Transform>();
-	//RigidBody* mainRb = main->AddComponent<RigidBody>(main->GetComponent<Transform>(), &(main->GetComponent<Renderable>()->BoundingBox()));
-
-
-
-
-	// Collision check entity 
-	Entity* e1 = CreateEntity("child", "cube", "water");
-	Transform* t = e1->GetComponent<Transform>();
-
-	t->SetLocalPosition(2, 0, 0);
-	//RigidBody* rb1 = e1->AddComponent <RigidBody>(e1->GetComponent<Transform>(), &(e1->GetComponent<Renderable>()->BoundingBox()));
-
-
-	//
-	t->SetParent(main->GetComponent<Transform>());
-	//
-
-
-
-
-
-
-
-
-
-	//light
-	lights = CreateEntity("light");
-	Lighting* l = lights->AddComponent<Lighting>(XMFLOAT4(-5, 0, 0, 0), XMFLOAT4(0.7f, 0, 0, 1), LightType::PointLight, 1, 8);
-
-
-
-
-	//cam
-	cam.getViewMatrix();
-	cam.setProjectionMatrix(800.0f / 600.0f);
+	////light
+	//Entity* lights = CreateEntity("light");
+	//Lighting* l = lights->AddComponent<Lighting>(XMFLOAT4(-5, 0, 0, 0), XMFLOAT4(0.7f, 0, 0, 1), LightType::PointLight, 1, 8);
+	////cam
+	//cam.getViewMatrix();
+	//cam.setProjectionMatrix(800.0f / 600.0f);
 
 	
 }
 
 void Scene::Tick(float deltaTime, float totalTime)
 {
-	
+	cam.update(deltaTime);
 }
 
 void Scene::Exit()
@@ -116,7 +110,6 @@ void Scene::Exit()
 	}
 	entities.clear();
 
-	delete lights;
 
 	// all entities should be deleted before deleting component manager
 	delete componentManager;
@@ -137,7 +130,6 @@ Entity * Scene::CreateEntity(string name)
 	Entity* ent = new Entity(name);
 	m_EntityInfo e;
 	e.name = name;
-	e.isRenderable = false;
 	e.pointer = ent;
 	entity.push_back(e);
 	AddEntity(ent);
@@ -151,7 +143,6 @@ Entity * Scene::CreateEntity(string name, string mesh, string material)
 	ent->SetMesh(mesh);
 	m_EntityInfo e;
 	e.name = name;
-	e.isRenderable = true;
 	e.mesh = mesh;
 	e.material = material;
 	e.pointer = ent;
@@ -215,7 +206,8 @@ void Scene::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
 		writer.String(i.name.c_str());
 		
 		writer.String("file");
-		writer.String(i.file);
+		
+		writer.String(string(i.file.begin(),i.file.end()).c_str());
 
 		writer.EndObject();
 	}
@@ -231,7 +223,7 @@ void Scene::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
 		writer.String("name");
 		writer.String(i.name.c_str());
 		writer.String("file");	
-		writer.String(WcharToChar(i.file));
+		writer.String(string(i.file.begin(), i.file.end()).c_str());
 		writer.EndObject();
 	}	
 	//end for
@@ -248,7 +240,7 @@ void Scene::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
 		writer.String("name");
 		writer.String(i.name.c_str());
 		writer.String("file");
-		writer.String(WcharToChar(i.file));
+		writer.String(string(i.file.begin(), i.file.end()).c_str());
 		writer.EndObject();
 	}
 	//end for
@@ -293,19 +285,21 @@ void Scene::Build(rapidjson::Document &d)
 	Value& b_meshes = d["meshes"];
 	for (size_t i = 0; i < b_meshes.Size(); i++) {
 		auto& b_mesh = b_meshes[i].GetObject();
-		AddMesh(b_mesh["name"].GetString(), b_mesh["file"].GetString());		
+		Wstr ws(b_mesh["file"].GetString());
+		AddMesh(b_mesh["name"].GetString(),ws());
 	}
+
 	//shader
 	Value& b_shaders = d["shaders"];
 	for (size_t i = 0; i < b_shaders.Size(); i++) {
 		auto& b_shader = b_shaders[i].GetObject();
-		AddShader(b_shader["name"].GetString(), CharToWchar(b_shader["file"].GetString()));
+		AddShader(b_shader["name"].GetString(), Wstr(b_shader["file"].GetString())());
 	}
 	//tex
 	Value& b_textures = d["textures"];
 	for (size_t i = 0; i < b_textures.Size(); i++) {
 		auto& b_texture = b_textures[i].GetObject();
-		AddTexture(b_texture["type"].GetString(), b_texture["name"].GetString(), CharToWchar(b_texture["file"].GetString()));
+		AddTexture(b_texture["type"].GetString(), b_texture["name"].GetString(), Wstr(b_texture["file"].GetString())());
 	}
 	//mat
 	Value& b_materials = d["materials"];
@@ -318,6 +312,8 @@ void Scene::Build(rapidjson::Document &d)
 	skybox = sceneGraph.CreateRenderable();
 	skybox->SetMaterial(GetMaterial(b_skybox["material"].GetString()).pointer);
 	skybox->SetMesh(GetMesh(b_skybox["mesh"].GetString()).pointer);
+	skyboxMaterial = b_skybox["material"].GetString();
+	skyboxMesh = b_skybox["mesh"].GetString();
 	sceneGraph.SetSkyBox(skybox);
 	//ent
 	Value& b_entities = d["entities"];
@@ -341,6 +337,8 @@ void Scene::Build(rapidjson::Document &d)
 			}
 			else if (componentName == "Renderable") {
 				Renderable* r = e->AddComponent<Renderable>(GetMesh(b_entity["mesh"].GetString()).pointer,GetMaterial(b_entity["material"].GetString()).pointer);
+				e->SetMaterial(b_entity["material"].GetString());
+				e->SetMesh(b_entity["mesh"].GetString());
 				r->Load(b_component);
 			}else if(componentName == "Lighting"){
 				XMFLOAT4 position(b_component["PositionX"].GetFloat(), b_component["PositionY"].GetFloat(), b_component["PositionZ"].GetFloat(), b_component["PositionW"].GetFloat());
@@ -352,17 +350,9 @@ void Scene::Build(rapidjson::Document &d)
 }
 
 
-char* Scene::WcharToChar(const wchar_t* wp)
-{
-	char *m_char;
-	int len = WideCharToMultiByte(CP_ACP, 0, wp, wcslen(wp), NULL, 0, NULL, NULL);
-	m_char = new char[len + 1];
-	WideCharToMultiByte(CP_ACP, 0, wp, wcslen(wp), m_char, len, NULL, NULL);
-	m_char[len] = '\0';
-	return m_char;
-}
 
-Mesh * Scene::AddMesh(string meshName, const char * file)
+
+Mesh * Scene::AddMesh(string meshName, const wchar_t * file)
 {
 	RenderingSystem& renderer = *RenderingSystem::instance();
 	Mesh* mesh = renderer.CreateMesh(file);
@@ -454,13 +444,3 @@ m_TextureInfo  Scene::GetTexture(string name)
 	return m_TextureInfo();
 }
 
-
-wchar_t* Scene::CharToWchar(const char* c)
-{
-	wchar_t *m_wchar;
-	int len = MultiByteToWideChar(CP_ACP, 0, c, strlen(c), NULL, 0);
-	m_wchar = new wchar_t[len + 1];
-	MultiByteToWideChar(CP_ACP, 0, c, strlen(c), m_wchar, len);
-	m_wchar[len] = '\0';
-	return m_wchar;
-}

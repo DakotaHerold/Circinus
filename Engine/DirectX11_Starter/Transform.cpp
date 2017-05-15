@@ -10,13 +10,13 @@ Transform::Transform()
 	localRotation(0, 0, 0),
 	localScale(1.0f, 1.0f, 1.0f)
 {
-	if (ComponentManager::current != nullptr) {
-		root = ComponentManager::current->root;
+	root = ComponentManager::current->GetRoot();
+	if (root!=nullptr) {		
 		parent = root;
 		root->AddChild(this);
 	}
 	else {
-		SetEntity(-1);
+		ComponentManager::current->SetRoot(this);
 	}
 }
 
@@ -202,6 +202,7 @@ void Transform::UpdateTransform()
 
 void Transform::StartSerialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
 {
+	int id = GetEntityID();
 	if (GetEntityID() != -1) {
 		Entity* entity = GetEntity();
 		entity->Serialize(writer);		

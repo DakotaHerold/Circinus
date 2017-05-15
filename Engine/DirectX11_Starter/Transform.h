@@ -42,6 +42,7 @@ public:
 	void					Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
 	void					Load(rapidjson::Value v);
 
+
 private:
 	void					UpdateMatrix();
 

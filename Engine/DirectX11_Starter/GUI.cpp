@@ -11,6 +11,7 @@
 #include "ScriptComponent.h"
 #include "TransformSystem.h"
 #include "Editor.h"
+#include "SceneManager.h"
 
 GUI::GUI()
 {
@@ -203,7 +204,7 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 
 				RenderingSystem& renderer = *RenderingSystem::instance();
 
-				Mesh* mesh = renderer.CreateMesh("Assets/Models/cube.fbx");
+				Mesh* mesh = renderer.CreateMesh(L"Assets/Models/cube.fbx");
 				Shader* shader = renderer.CreateShader(L"Assets/ShaderObjs/Opaque.cso");
 				Texture* tex = renderer.CreateTexture(L"Assets/Textures/rust.jpg");
 				Material *mat = renderer.CreateMaterial(shader);
@@ -241,6 +242,12 @@ void GUI::AddMenuBar(bool * _running) {
 	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("Engine")) {
+			if (ImGui::MenuItem("Load")) {
+				Engine::instance()->LoadScene("Scene1");					
+			}
+			if (ImGui::MenuItem("Save")) {
+				Engine::instance()->SavaScene();
+			}
 			ImGui::MenuItem("Preferences");
 			ImGui::Separator();
 			if (ImGui::MenuItem("Quit", "ALT+F4")) { *(_running) = false; }

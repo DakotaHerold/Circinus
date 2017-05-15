@@ -9,14 +9,12 @@ ComponentManager* ComponentManager::current;
 
 ComponentManager::ComponentManager()
 {
-	root = new Transform();
-	root->UpdateTransform();
+	
 }
 
 ComponentManager::~ComponentManager()
 {
 	delete root;
-
 	for (auto i : ComponentPoolsMap) {
 		delete i.second;
 	}

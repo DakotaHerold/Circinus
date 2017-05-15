@@ -21,7 +21,7 @@ private:
 	void CleanUp();
 
 	bool LoadFromMemory(Vertex vertices[], int numVerts, unsigned int indices[], int numIndices, ID3D11Device * device);
-	bool LoadFromFile(const char* filename, ID3D11Device* device);
+	bool LoadFromFile(const wchar_t* filename, ID3D11Device* device);
 
 public:
 
