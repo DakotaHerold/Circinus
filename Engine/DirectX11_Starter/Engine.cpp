@@ -137,7 +137,8 @@ int Engine::Run()
 
 void Engine::LoadScene(std::string name)
 {
-	currentScene->Exit();
+	if (nullptr != currentScene)
+		currentScene->Exit();
 	delete currentScene;
 	currentScene = nullptr;
 	currentScene = SceneManager::LoadScene(name);
