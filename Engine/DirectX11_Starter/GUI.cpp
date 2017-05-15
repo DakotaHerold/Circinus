@@ -299,6 +299,24 @@ void GUI::AddMenuBar(bool * _running) {
 			ImGui::EndMenu();
 		}
 
+		if (ImGui::BeginMenu("Component")) {
+			if (ImGui::BeginMenu("Add")) {
+				if (ImGui::MenuItem("Renderer")) {
+					// TODO: Add a renderer component?
+				}
+
+				if (ImGui::MenuItem("RigidBody")) {
+					// TODO: Add a rigidbody component
+				}
+
+				if (ImGui::MenuItem("ScriptComponent")) {
+					// TODO: Add a script copmonent
+				}
+				ImGui::EndMenu();
+			}
+			ImGui::EndMenu();
+		}
+
 #ifdef HAS_EDITOR
 		if (ImGui::BeginMenu("Run"))
 		{
