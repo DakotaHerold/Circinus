@@ -13,6 +13,7 @@ typedef unsigned int ObjectPoolIndex;
 static const ObjectPoolIndex ObjectPoolInitialLength = 100;
 static const ObjectPoolIndex ObjectPoolResizeAmount = 50;
 
+
 class Poolable {
 
 	template <typename U>
@@ -35,7 +36,7 @@ public:
 	virtual ~ObjectPoolBase() {};
 
 	virtual void* Get(ObjectPoolIndex index) = 0;
-	virtual void Return(ObjectPoolIndex index) = 0;
+	virtual bool Return(ObjectPoolIndex index) = 0;
 };
 
 template <typename T>
@@ -51,7 +52,7 @@ public:
 	template <class... Args>
 	T* Add(Args&& ...args);
 	void* Get(ObjectPoolIndex index) override;
-	void Return(ObjectPoolIndex index) override;
+	bool Return(ObjectPoolIndex index) override;
 
 	std::vector<T*> GetAllComponents();
 
@@ -151,7 +152,8 @@ template<typename T>
 inline void* ObjectPool<T>::Get(ObjectPoolIndex index)
 {
 	if (index >= m_count) {
-		throw "index out of count!";
+		//throw "index out of count!";
+		return nullptr;
 	}
 	//return GetAddress(index);
 
@@ -159,10 +161,11 @@ inline void* ObjectPool<T>::Get(ObjectPoolIndex index)
 }
 
 template<typename T>
-inline void ObjectPool<T>::Return(ObjectPoolIndex index)
+inline bool ObjectPool<T>::Return(ObjectPoolIndex index)
 {
 	if (index >= m_count) {
 		throw "index out of count!";
+		//return false;
 	}
 
 	// FIXME: Does not move memory to prevent possible pointer issue
@@ -186,6 +189,8 @@ inline void ObjectPool<T>::Return(ObjectPoolIndex index)
 
 	//assert(m_allObjects.back() == GetAddress(m_count));
 	//m_allObjects.pop_back();
+
+	return true;
 }
 
 template<typename T>

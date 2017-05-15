@@ -56,9 +56,6 @@ private:
 	ObjectPool<T>* GetComponentPool();
 
 	ObjectPoolBase* GetComponentPool(TypeId typeID);
-
-	int GetObjectPoolIndex(EntityID entityID, TypeId typeID, bool deleteIndex = false);
-	bool CheckObjectPoolIndex(EntityID entityID, TypeId typeID, ObjectPoolIndex * index, bool deleteIndex = false);
 };
 
 template<typename T>
@@ -94,16 +91,30 @@ inline T* ComponentManager::AddComponent(EntityID entityID, Args && ...args)
 template<typename T>
 inline T * ComponentManager::GetComponent(EntityID entityID, ObjectPoolIndex* index)
 {
+	std::vector<ObjectPoolIndex *> &indices = entityComponentsMap[entityID][ComponentTypeId<T>()];
+
+	if (indices.size() == 0) {
+		//#if defined(DEBUG) || defined(_DEBUG)
+		//		throw "Entity did not have the component!";
+		//#endif
+		return nullptr;
+	}
+
 	if (index == nullptr) {
-		return reinterpret_cast<T*>(GetComponentPool<T>()->Get(GetObjectPoolIndex(entityID, ComponentTypeId<T>())));
+		index = indices.back();
 	}
 	else {
-		if (!CheckObjectPoolIndex(entityID, ComponentTypeId<T>(), index)) {
+		auto it = std::remove_if(indices.begin(), indices.end(),
+			[index](const ObjectPoolIndex *i) {
+			return *i == *index;
+		});
+
+		if (it == indices.end()) {
 			return nullptr;
 		}
-
-		return reinterpret_cast<T*>(GetComponentPool<T>()->Get(*index));
 	}
+
+	return reinterpret_cast<T*>(GetComponentPool<T>()->Get(*index));
 }
 
 //template<typename T>
