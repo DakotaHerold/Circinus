@@ -340,7 +340,14 @@ void Scene::Build(rapidjson::Document &d)
 				e->SetMaterial(b_entity["material"].GetString());
 				e->SetMesh(b_entity["mesh"].GetString());
 				r->Load(b_component);
-			}else if(componentName == "Lighting"){
+			}
+			else if (componentName == "RigidBody") {
+				RigidBody* r = e->AddComponent<RigidBody>(e->GetComponent<Transform>(), &(e->GetComponent<Renderable>()->BoundingBox()));
+			}
+			else if (componentName == "Script") {
+				ScriptComponent* s = e->AddComponent<ScriptComponent>(b_component["file"].GetString(),e->GetComponent<RigidBody>());
+			}						
+			else if(componentName == "Lighting"){
 				XMFLOAT4 position(b_component["PositionX"].GetFloat(), b_component["PositionY"].GetFloat(), b_component["PositionZ"].GetFloat(), b_component["PositionW"].GetFloat());
 				XMFLOAT4 color(b_component["ColorX"].GetFloat(), b_component["ColorY"].GetFloat(), b_component["ColorZ"].GetFloat(), b_component["ColorW"].GetFloat());
 				Lighting* l = e->AddComponent<Lighting>(position,color,b_component["lightType"].GetInt(), b_component["enabled"].GetInt(),b_component["specularAmount"].GetInt());

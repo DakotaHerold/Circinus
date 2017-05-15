@@ -24,6 +24,9 @@ public:
 	ScriptComponent(std::string scriptFile, RigidBody* body);
 	~ScriptComponent();
 
+	void	Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
+	void	Load(rapidjson::Value v);
+
 private: 
 	// LuaBridge Attributes
 	lua_State* L; 
@@ -38,6 +41,8 @@ private:
 	static float staticVar;
 
 	std::string fileName;
+
+	std::string file;
 
 	std::string stringProperty;
 	std::string getString() { return stringProperty; }

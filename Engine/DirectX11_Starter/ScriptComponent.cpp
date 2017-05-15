@@ -11,6 +11,7 @@ ScriptComponent::ScriptComponent(string scriptFile, RigidBody* body)
 
 	// Get script name and convert to C string 
 	fileName = "Scripts/" + scriptFile;
+	file = scriptFile;
 	luaL_dofile(L, fileName.c_str());
 	luaL_openlibs(L);
 	lua_pcall(L, 0, 0, 0);
@@ -66,4 +67,19 @@ ScriptComponent::~ScriptComponent()
 	}
 	releaseFunc = Nil(); 
 	lua_close(L);
+}
+
+void ScriptComponent::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
+{
+	writer.StartObject();
+	writer.String("name");
+	writer.String("Script");
+	writer.String("file");
+	writer.String(file.c_str());
+	writer.EndObject();
+}
+
+void ScriptComponent::Load(rapidjson::Value v)
+{
+
 }
