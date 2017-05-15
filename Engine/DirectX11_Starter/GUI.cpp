@@ -283,8 +283,22 @@ void GUI::AddMenuBar(bool * _running) {
 #ifdef HAS_EDITOR
 		if (ImGui::BeginMenu("Run"))
 		{
-			if (ImGui::MenuItem("Run")) {
-				Editor::instance()->Run();
+			Editor* editor = Editor::instance();
+
+			if (ImGui::MenuItem(editor->IsPlaying() ? "[Play]" : "Play")) {
+				editor->Play();
+			}
+
+			if (ImGui::MenuItem(editor->IsPaused() ? "[Pause]" : "Pause")) {
+				editor->Pause();
+			}
+
+			if (ImGui::MenuItem("Stop")) {
+				editor->Stop();
+			}
+
+			if (ImGui::MenuItem("Run Standalone")) {
+				Editor::instance()->RunStandalone();
 			}
 
 			if (ImGui::MenuItem("Build")) {

@@ -23,6 +23,7 @@ typedef std::string str_t;
 #include "Renderable.h"
 #include "GizmoRenderer.h"
 #include "Engine.h"
+#include "Scene.h"
 
 namespace
 {
@@ -91,6 +92,8 @@ void Editor::Init()
 
 	cam.getViewMatrix();
 	cam.setProjectionMatrix(800.0f / 600.0f);
+
+	isPlaying = false;
 }
 
 void Editor::Update(float deltaTime, float totalTime)
@@ -127,6 +130,9 @@ void Editor::Update(float deltaTime, float totalTime)
 		);
 		GizmoRenderer::opaque()->DrawCoordinate(cam.getViewMatrix(), cam.getProjectionMatrix(), XMFLOAT3{ -0.8f, -0.8f, 0.5f }, 0.01f);
 	}
+
+	if (nullptr == Engine::instance()->GetCurScene())
+		return;
 
 	XMVECTOR mouseRayStart, mouseRayDirection, mouseWorldDelta;
 	XMMATRIX matVP, matVP_Inv;
@@ -225,6 +231,13 @@ void Editor::Update(float deltaTime, float totalTime)
 		}
 	}
 
+	if (isPlaying && !isPaused)
+	{
+		Scene* s = Engine::instance()->GetCurScene();
+		s->Tick(deltaTime, inGameTotalTime);
+
+		inGameTotalTime += deltaTime;
+	}
 }
 
 void Editor::CleanUp()
@@ -234,7 +247,52 @@ void Editor::CleanUp()
 	_instance = nullptr;
 }
 
-void Editor::Run()
+void Editor::OnSceneLoad()
+{
+	inGameTotalTime = 0.0f;
+	isPlaying = false;
+	isPaused = false;
+	selectedEntity = nullptr;
+}
+
+void Editor::Play()
+{
+	Scene* scene = Engine::instance()->GetCurScene();
+	if (nullptr == scene) return;
+
+	if (!isPlaying)
+	{
+		Engine::instance()->SavaScene();
+		isPlaying = true;
+		inGameTotalTime = 0.0f;
+	}
+	isPaused = false;
+}
+
+void Editor::Pause()
+{
+	Scene* scene = Engine::instance()->GetCurScene();
+	if (nullptr == scene) return;
+
+	if (!isPlaying) return;
+
+	isPaused = true;
+}
+
+void Editor::Stop()
+{
+	Scene* scene = Engine::instance()->GetCurScene();
+	if (nullptr == scene) return;
+
+	if (isPlaying)
+	{
+		isPlaying = false;
+		inGameTotalTime = 0.0f;
+		Engine::instance()->LoadScene(scene->GetName());
+	}
+}
+
+void Editor::RunStandalone()
 {
 	Engine::instance()->SavaScene();
 	do

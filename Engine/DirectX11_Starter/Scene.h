@@ -2,17 +2,16 @@
 #include <rapidjson\prettywriter.h>
 #include <rapidjson\document.h>
 #include <vector>
-#include "SceneGraph.h"
 #include "ComponentManager.h"
 #include "Camera.h"
-
+#include "Renderable.h"
 
 class Entity;
 class Material;
 
 typedef vector<Entity*> EntityVector;
 //#define GetObject GetObject();
-#undef GetObject;
+#undef GetObject
 struct m_MaterialInfo
 {
 	string name;
@@ -68,7 +67,7 @@ public:
 	void Exit();
 
 	Camera* GetCamera() { return &cam; }
-	SceneGraph* GetSceneGraph() { return &sceneGraph; }
+
 	ComponentManager* componentManager;
 
 
@@ -88,6 +87,8 @@ public:
 
 	string GetName() { return name; }
 
+	Renderable* GetSkyBox() { return skybox; }
+
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
 		
 	void Build(rapidjson::Document &d);
@@ -97,9 +98,7 @@ public:
 private:
 	Camera			cam;
 
-	SceneGraph		sceneGraph;
-
-	string			name="Scene1";
+	string			name;
 
 	vector<m_MeshInfo> meshes;
 

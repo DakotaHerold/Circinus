@@ -35,7 +35,7 @@ bool Engine::Init()
 
 	//Entity *entity = new Entity();
 	//entities->push_back(entity);
-	
+
 	renderingSystem = new RenderingSystem();
 	transformSystem = new TransformSystem();
 	//physicsSystem = new PhysicsSystem();
@@ -74,7 +74,7 @@ int Engine::Run()
 	{
 		// deltaTime and totalTime
 		UpdateTimer();
-		
+
 		// native window event processiing
 		nativeWindow->ProcessEvent();
 
@@ -87,7 +87,7 @@ int Engine::Run()
 		{
 			running = false;
 		}
-		
+
 		// process input events
 		inputManager->UpdateInput(deltaTime);
 		if (inputManager->GetQuit())
@@ -95,22 +95,27 @@ int Engine::Run()
 			Quit(0);
 		}
 
-		// TODO
-		//Transform System
-		transformSystem->update(deltaTime, currentScene->componentManager->GetAllComponents<Transform>());
-
+		if (nullptr != currentScene)
+		{
+			// TODO
+			//Transform System
+			transformSystem->update(deltaTime, currentScene->componentManager->GetAllComponents<Transform>());
+		}
 
 		// scripting system
 		// TODO
 
-		
+
 #ifdef HAS_EDITOR
 		Editor::instance()->Update(deltaTime, totalTime);
 #else
 		// TODO !
 		// hardcoded debug code, 
 		// this should be done by SceneManager
-		currentScene->Tick(deltaTime, totalTime);
+		if (nullptr != currentScene)
+		{
+			currentScene->Tick(deltaTime, totalTime);
+		}
 #endif
 
 		// particle system update
@@ -118,9 +123,9 @@ int Engine::Run()
 
 		// rendering System
 #ifdef HAS_EDITOR
-		renderingSystem->DrawScene(Editor::instance()->GetEditorCamera(), currentScene->GetSceneGraph());
+		renderingSystem->DrawScene(Editor::instance()->GetEditorCamera(), currentScene);
 #else
-		renderingSystem->DrawScene(currentScene->GetCamera(), currentScene->GetSceneGraph());
+		renderingSystem->DrawScene(currentScene->GetCamera(), currentScene);
 #endif
 
 		// TODO
@@ -139,15 +144,24 @@ int Engine::Run()
 
 void Engine::LoadScene(std::string name)
 {
+	if (name.empty())
+		return;
+
+	Scene* newScene = SceneManager::LoadScene(name);
+	if (nullptr == newScene)
+		return;
+
 	if (nullptr != currentScene)
 		currentScene->Exit();
 	delete currentScene;
 	currentScene = nullptr;
-	currentScene = SceneManager::LoadScene(name);
+	currentScene = newScene;
 }
 
 void Engine::SavaScene()
 {
+	if (currentScene->GetName().empty())
+		return;
 	SceneManager::SaveScene(currentScene);
 }
 
@@ -160,7 +174,7 @@ void Engine::InitScene()
 	LoadScene("Scene1");
 #endif // HAS_EDITOR
 
-	
+
 }
 
 void Engine::Quit(int exitCode)
@@ -173,7 +187,10 @@ void Engine::CleanUp()
 	// TODO !
 	// hardcoded debug code, 
 	// this should be done by SceneManager
-	currentScene->Exit();
+	if (nullptr != currentScene)
+	{
+		currentScene->Exit();
+	}
 	delete currentScene;
 
 #ifdef HAS_EDITOR

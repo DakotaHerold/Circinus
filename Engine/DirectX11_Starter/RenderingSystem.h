@@ -59,9 +59,9 @@
 #endif
 
 class NativeWindow;
-class SceneGraph;
 class ParticleSystem;
 class GizmoRenderer;
+class Scene;
 class Camera;
 
 class RenderingSystem
@@ -82,7 +82,7 @@ public:
 
 	void Update(float deltaTime, float totalTime);
 
-	void DrawScene(Camera* cam, SceneGraph* scene);
+	void DrawScene(Camera* cam, Scene* scene);
 
 public:
 
