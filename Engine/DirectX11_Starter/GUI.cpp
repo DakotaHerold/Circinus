@@ -196,13 +196,13 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 			ImGui::Text("Current Number of Entities: %d", Engine::instance()->GetCurScene()->GetAllEntities().size());
 			ImGui::Separator();
 			ImGui::InputInt("No. of Entities to Create", &numberOfEntitiesToCreate, 50, 200, 0);
-			if (ImGui::Button("Create Entities")) {
-				int count = numberOfEntitiesToCreate + 1; // + 1 to offset some bug in the code. ( < instead of <= I guess? )
+			if (ImGui::Button("Create Entities") && numberOfEntitiesToCreate > 0) {
+				int count = numberOfEntitiesToCreate;
 				float range = 4.0;
 				float start = -range / 2;
 
 				int row_column = sqrt(count);
-				float offset = range / (row_column - 1);
+				float offset = row_column == 1 ? 0 : range / (row_column - 1);
 
 				RenderingSystem& renderer = *RenderingSystem::instance();
 
