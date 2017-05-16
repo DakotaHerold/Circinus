@@ -172,15 +172,18 @@ void Editor::Update(float deltaTime, float totalTime)
 		auto r = selectedEntity->GetComponent<Renderable>();
 		auto t = selectedEntity->GetComponent<Transform>();
 
-		XMMATRIX worldMat = XMMatrixTranspose(
-			XMLoadFloat4x4(t->GetWorldMatrix())
-		);
+		if (nullptr != r && nullptr != t)
+		{
+			XMMATRIX worldMat = XMMatrixTranspose(
+				XMLoadFloat4x4(t->GetWorldMatrix())
+			);
 
-		BoundingOrientedBox box;
-		BoundingOrientedBox::CreateFromBoundingBox(box, r->GetMesh()->GetBounds());
-		box.Transform(box, worldMat);
+			BoundingOrientedBox box;
+			BoundingOrientedBox::CreateFromBoundingBox(box, r->GetMesh()->GetBounds());
+			box.Transform(box, worldMat);
 
-		GizmoRenderer::opaque()->Draw(box, PrimitiveRenderer::green);	
+			GizmoRenderer::opaque()->Draw(box, PrimitiveRenderer::green);
+		}
 	}
 
 	handle.Update(selectedEntity, deltaTime, totalTime, mouseRayStart, mouseRayDirection, mouseWorldDelta, matVP);

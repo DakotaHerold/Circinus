@@ -28,9 +28,17 @@ void _vectorcall HandleGizmo::Update(
 		return;
 	}
 
-	InputManager& input = InputManager::instance();
-
 	auto t = entity->GetComponent<Transform>();
+
+	if (nullptr == t)
+	{
+		selX = false;
+		selY = false;
+		selZ = false;
+		return;
+	}
+
+	InputManager& input = InputManager::instance();
 
 	XMMATRIX worldMat = XMMatrixTranspose(XMLoadFloat4x4(t->GetWorldMatrix()));
 	XMVECTOR worldRot = XMQuaternionRotationMatrix(worldMat);
