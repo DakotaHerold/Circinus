@@ -7,10 +7,12 @@
 #include <string>
 #include <list>
 #include "ClassTypeId.h"
+#include <type_traits>
 
 using namespace DirectX;
 class ComponentManager;
 class Component;
+class Transform;
 
 typedef unsigned int EntityID;
 
@@ -55,6 +57,8 @@ public:
 
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
 
+	Transform * const transform;
+
 private :
 	EntityID id;
 	std::string name = "No Name Yet";
@@ -80,7 +84,13 @@ template <typename T>
 T* Entity::GetComponent()
 {
 	static_assert(std::is_base_of<Component, T>(), "T is not a component, cannot retrieve T from entity");
-	return ComponentManager::current->GetComponent<T>(GetID());
+
+	if (std::is_same<T, Transform>::value) {
+		return reinterpret_cast<T*>(transform);
+	}
+	else {
+		return ComponentManager::current->GetComponent<T>(GetID());
+	}
 }
 
 //template <typename T>

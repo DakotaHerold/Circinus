@@ -1,6 +1,7 @@
 #include "Entity.h"
 #include "ComponentManager.h"
 #include "Renderable.h"
+#include "Transform.h"
 
 using namespace std;
 
@@ -13,25 +14,25 @@ static vector<Entity*> entities;
 static list<Entity*> allEntities;
 
 Entity::Entity() 
-	: name("Entity"), id(nextID++)
+	: name("Entity"), id(nextID), transform(ComponentManager::current->AddComponent<Transform>(nextID))
 {
-	AddComponent<Transform>();
+	nextID++;
 	entities.push_back(this);
 	allEntities.push_back(this);
 }
 
 Entity::Entity(string name)
-	: name(name), id(nextID++)
+	: name(name), id(nextID), transform(ComponentManager::current->AddComponent<Transform>(nextID))
 {
-	AddComponent<Transform>();
+	nextID++;
 	entities.push_back(this);
 	allEntities.push_back(this);
 }
 
 Entity::Entity(std::string name, Material * mat, Mesh * mesh)
-	: name(name), id(nextID++)
+	: name(name), id(nextID), transform(ComponentManager::current->AddComponent<Transform>(nextID))
 {
-	AddComponent<Transform>();
+	nextID++;
 	AddComponent<Renderable>(mesh, mat);
 	entities.push_back(this);
 	allEntities.push_back(this);

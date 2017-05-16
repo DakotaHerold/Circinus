@@ -215,7 +215,7 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 				for (int i = 0; i < row_column; i++) {
 					for (int j = 0; j < row_column; j++) {
 						Entity* e = new Entity();
-						Transform* t = e->AddComponent<Transform>();
+						Transform* t = e->GetComponent<Transform>();
 						t->SetLocalPosition(start + offset * j, start + offset * i, 0);
 
 						Renderable* r = e->AddComponent<Renderable>(mesh, mat);
@@ -274,7 +274,6 @@ void GUI::AddMenuBar(bool * _running) {
 			{
 				if (ImGui::MenuItem("Empty")) {
 					Entity * tempEnt = new Entity("Empty");
-					tempEnt->AddComponent<Transform>();
 					Engine::instance()->GetCurScene()->AddEntity(tempEnt);
 				}
 				ImGui::EndMenu();
