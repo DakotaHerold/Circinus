@@ -63,8 +63,8 @@
                 {
                     "name": "Transform",
                     "parent": "root",
-                    "PositionX": -0.18201285600662232,
-                    "PositionY": 0.17286226153373719,
+                    "PositionX": -1.4312779903411866,
+                    "PositionY": 0.0,
                     "PositionZ": 0.0,
                     "RotationX": 0.0,
                     "RotationY": 0.0,
@@ -93,8 +93,8 @@
                 {
                     "name": "Transform",
                     "parent": "parent",
-                    "PositionX": 1.3181716203689576,
-                    "PositionY": -0.06941526383161545,
+                    "PositionX": 2.0,
+                    "PositionY": 0.0,
                     "PositionZ": 0.0,
                     "RotationX": 0.0,
                     "RotationY": 0.0,
@@ -118,7 +118,7 @@
             "components": [
                 {
                     "name": "Transform",
-                    "parent": "root",
+                    "parent": "parent",
                     "PositionX": 0.0,
                     "PositionY": 0.0,
                     "PositionZ": 0.0,

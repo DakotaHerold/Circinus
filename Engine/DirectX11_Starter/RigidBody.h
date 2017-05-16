@@ -9,6 +9,13 @@ class RigidBody :
 {
 public:
 	RigidBody(Transform* t, const DirectX::BoundingBox* boxCollider);
+	RigidBody() :
+		velocity(0, 0, 0) {};
+	void Init(Transform* t, const DirectX::BoundingBox* boxCollider) {
+		trans = t;
+		obb = new BoundingOrientedBox();
+		DirectX::BoundingOrientedBox::CreateFromBoundingBox(*obb, *boxCollider);
+	}
 	~RigidBody();
 
 	void SetEntity(EntityID eid) override;

@@ -14,6 +14,16 @@ class Renderable : public Component
 {
 public:
 	Renderable(Mesh* mesh, Material* mat) { this->mesh = mesh; this->material = mat; }
+
+	Renderable()
+		:
+		mesh(nullptr),
+		material(nullptr),
+		bounds(),
+		flagDestroy(false)
+	{}
+
+	void Init(Mesh* mesh, Material* mat) { this->mesh = mesh; this->material = mat; }
 	void Destroy() { flagDestroy = true; }
 
 	void SetMesh(Mesh* m) { mesh = m; }
@@ -36,13 +46,7 @@ private:
 	friend class RenderingSystem;
 	friend class SceneGraph;
 
-	Renderable()
-		:
-		mesh(nullptr),
-		material(nullptr),
-		bounds(),
-		flagDestroy(false)
-	{}
+
 
 
 	Mesh*					mesh;

@@ -33,6 +33,7 @@ public:
 
 private:
 	EntityID 					gameEntityID;
+	bool						hasEntity = false;
 };
 
 template <typename T>
