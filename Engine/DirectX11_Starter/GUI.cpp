@@ -152,6 +152,7 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 						ImGui::Separator();
 						if (ImGui::Button("Delete")) {
 							// Popup yes/no?
+							_cwFlag = false;
 							cm->RemoveComponent((selectedEntity)->GetID(), that->first);
 						}
 						ImGui::EndPopup();
