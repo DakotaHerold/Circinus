@@ -157,6 +157,16 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 					}
 				}
 			}
+
+			ImGui::Separator();
+			XMFLOAT3 position = *(cm->GetComponent<Transform>((selectedEntity)->GetID(), selectedCompIndex)->GetLocalPosition());
+			ImGui::Text("Position: ");
+			ImGui::InputFloat("x: ", &position.x, 0.1f, 1.0f);
+			ImGui::InputFloat("y: ", &position.y, 0.1f, 1.0f);
+			ImGui::InputFloat("z: ", &position.z, 0.1f, 1.0f);
+
+			cm->GetComponent<Transform>((selectedEntity)->GetID())->SetWorldPosition(position.x, position.y, position.z);
+
 			ImGui::End();
 		}
 	}
@@ -174,9 +184,14 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 			{
 				ImGui::Text((cm->GetComponent<ScriptComponent>((selectedEntity)->GetID(), selectedCompIndex)->GetScriptName()).c_str());
 			}
-			/*else if (0 == std::strcmp(ComponentTypeName(selectedComponentID), "class Transform")) {
-				ImGui::Text((cm->GetComponent<>((selectedEntity)->GetID(), selectedCompIndex)->GetScriptName()).c_str());
-			}*/
+			else if (0 == std::strcmp(ComponentTypeName(selectedComponentID), "class Transform")) {
+
+				std::cout << "Here" << std::endl;
+				XMFLOAT3 position = *(cm->GetComponent<Transform>((selectedEntity)->GetID(), selectedCompIndex)->GetLocalPosition());
+				ImGui::Text("Position: ");
+				ImGui::InputFloat("x: ", &position.x, 0.1f, 1.0f);
+
+			}
 			else {
 				std::cout << "?" << ComponentTypeName(selectedComponentID) << "?" << std::endl;
 				std::cout << "#" << std::strcmp(ComponentTypeName(selectedComponentID), "class ScriptComponent") << "#" << std::endl;
