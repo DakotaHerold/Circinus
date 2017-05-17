@@ -43,37 +43,37 @@ Scene::Scene()
 void Scene::Enter()
 {
 
-	//RenderingSystem& renderer = *RenderingSystem::instance();
+	RenderingSystem& renderer = *RenderingSystem::instance();
 
-	//Shader* s1 = AddShader("Opaque", L"Assets/ShaderObjs/Opaque.cso");
+	Shader* s1 = AddShader("Opaque", L"Assets/ShaderObjs/Opaque.cso");
 
-	//Shader* skyboxShader = AddShader("skybox", L"Assets/ShaderObjs/Skybox.cso");
+	Shader* skyboxShader = AddShader("skybox", L"Assets/ShaderObjs/Skybox.cso");
 
-	//Texture* tex = AddTexture("texDiffuse", "rust", L"Assets/Textures/rust.jpg");
+	Texture* tex = AddTexture("texDiffuse", "rust", L"Assets/Textures/rust.jpg");
 
-	//Texture* tex1 = AddTexture("texDiffuse", "water", L"Assets/Textures/water.gif");
+	Texture* tex1 = AddTexture("texDiffuse", "water", L"Assets/Textures/water.gif");
 
-	//Texture* skyboxTex = AddTexture("skyMap", "skybox", L"Assets/Textures/space.dds");
+	Texture* skyboxTex = AddTexture("skyMap", "skybox", L"Assets/Textures/space.dds");
 
-	//Mesh* mesh = AddMesh("cube", "Assets/Models/cube.fbx");
+	Mesh* mesh = AddMesh("cube", L"Assets/Models/cube.fbx");
 
-	//Material* skyboxMat = AddMaterial("skybox", "skybox", "skybox");
+	Material* skyboxMat = AddMaterial("skybox", "skybox", "skybox");
 
-	//Material* rust= AddMaterial("rust", "Opaque", "rust");
+	Material* rust= AddMaterial("rust", "Opaque", "rust");
 
-	//Material* water= AddMaterial("water", "Opaque", "water");
+	Material* water= AddMaterial("water", "Opaque", "water");
 
-	//Renderable* skybox = sceneGraph.CreateRenderable();
+	Renderable* skybox = sceneGraph.CreateRenderable();
 
-	//skyboxMaterial = "skybox";
+	skyboxMaterial = "skybox";
 
-	//skyboxMesh = "cube";
+	skyboxMesh = "cube";
 
-	//skybox->SetMaterial(GetMaterial("skybox").pointer);
+	skybox->SetMaterial(GetMaterial("skybox").pointer);
 
-	//skybox->SetMesh(GetMesh("cube").pointer);
+	skybox->SetMesh(GetMesh("cube").pointer);
 
-	//sceneGraph.SetSkyBox(skybox);
+	sceneGraph.SetSkyBox(skybox);
 
 	//// Main entity 
 	//Entity* main = CreateEntity("parent","cube", "rust");
@@ -86,14 +86,99 @@ void Scene::Enter()
 	//Transform* t = e1->GetComponent<Transform>();
 	//t->SetLocalPosition(2, 0, 0);
 	//t->SetParent(main->GetComponent<Transform>());
-	////
 
-	////light
-	//Entity* lights = CreateEntity("light");
-	//Lighting* l = lights->AddComponent<Lighting>(XMFLOAT4(-5, 0, 0, 0), XMFLOAT4(0.7f, 0, 0, 1), LightType::PointLight, 1, 8);
-	////cam
-	//cam.getViewMatrix();
-	//cam.setProjectionMatrix(800.0f / 600.0f);
+	// Test FaceTo entity
+	Entity* facing1 = CreateEntity("facing1", "cube", "rust");
+	Transform* facing1T = facing1->GetComponent<Transform>();
+	facing1T->SetLocalPosition(-8, 0, 0);
+	Renderable* facing1R = facing1->GetComponent<Renderable>();
+	RigidBody* facing1Rb = facing1->AddComponent<RigidBody>(facing1T, &(facing1R->BoundingBox()));
+	facing1T->SetScale(0.4, 0.4, 0.4); 
+	
+	Entity* facing1C = CreateEntity("facing1C", "cube", "rust");
+	Transform* facing1CT = facing1C->GetComponent<Transform>();
+	Renderable* facing1CR = facing1C->GetComponent<Renderable>();
+	RigidBody* facing1CRb = facing1C->AddComponent<RigidBody>(facing1CT, &(facing1CR->BoundingBox()));
+	facing1CT->SetParent(facing1T);
+	facing1CT->SetScale(0.8, 0.8, 0.8);
+	facing1CT->SetLocalPosition(0, 0, 0.6);
+
+	Entity* facing2 = CreateEntity("facing2", "cube", "rust");
+	Transform* facing2T = facing2->GetComponent<Transform>();
+	facing2T->SetLocalPosition(-8, 1, 0);
+	Renderable* facing2R = facing2->GetComponent<Renderable>();
+	RigidBody* facing2Rb = facing2->AddComponent<RigidBody>(facing2T, &(facing2R->BoundingBox()));
+	facing2T->SetScale(0.4, 0.4, 0.4);
+
+	Entity* facing2C = CreateEntity("facing2C", "cube", "rust");
+	Transform* facing2CT = facing2C->GetComponent<Transform>();
+	Renderable* facing2CR = facing2C->GetComponent<Renderable>();
+	RigidBody* facing2CRb = facing2C->AddComponent<RigidBody>(facing2CT, &(facing2CR->BoundingBox()));
+	facing2CT->SetParent(facing2T);
+	facing2CT->SetScale(0.8, 0.8, 0.8);
+	facing2CT->SetLocalPosition(0, 0, 0.6);
+
+	Entity* facing3 = CreateEntity("facing3", "cube", "rust");
+	Transform* facing3T = facing3->GetComponent<Transform>();
+	facing3T->SetLocalPosition(-8, -1, 0);
+	Renderable* facing3R = facing3->GetComponent<Renderable>();
+	RigidBody* facing3Rb = facing3->AddComponent<RigidBody>(facing3T, &(facing3R->BoundingBox()));
+	facing3T->SetScale(0.4, 0.4, 0.4);
+
+	Entity* facing3C = CreateEntity("facing3C", "cube", "rust");
+	Transform* facing3CT = facing3C->GetComponent<Transform>();
+	Renderable* facing3CR = facing3C->GetComponent<Renderable>();
+	RigidBody* facing3CRb = facing3C->AddComponent<RigidBody>(facing3CT, &(facing3CR->BoundingBox()));
+	facing3CT->SetParent(facing3T);
+	facing3CT->SetScale(0.8, 0.8, 0.8);
+	facing3CT->SetLocalPosition(0, 0, 0.6);
+
+	Entity* facing4 = CreateEntity("facing4", "cube", "rust");
+	Transform* facing4T = facing4->GetComponent<Transform>();
+	facing4T->SetLocalPosition(-8, 0, 1);
+	Renderable* facing4R = facing4->GetComponent<Renderable>();
+	RigidBody* facing4Rb = facing4->AddComponent<RigidBody>(facing4T, &(facing4R->BoundingBox()));
+	facing4T->SetScale(0.4, 0.4, 0.4);
+
+	Entity* facing4C = CreateEntity("facing4C", "cube", "rust");
+	Transform* facing4CT = facing4C->GetComponent<Transform>();
+	Renderable* facing4CR = facing4C->GetComponent<Renderable>();
+	RigidBody* facing4CRb = facing4C->AddComponent<RigidBody>(facing4CT, &(facing4CR->BoundingBox()));
+	facing4CT->SetParent(facing4T);
+	facing4CT->SetScale(0.8, 0.8, 0.8);
+	facing4CT->SetLocalPosition(0, 0, 0.6);
+
+	Entity* facing5 = CreateEntity("facing5", "cube", "rust");
+	Transform* facing5T = facing5->GetComponent<Transform>();
+	facing5T->SetLocalPosition(-8, 0, -1);
+	Renderable* facing5R = facing5->GetComponent<Renderable>();
+	RigidBody* facing5Rb = facing5->AddComponent<RigidBody>(facing5T, &(facing5R->BoundingBox()));
+	facing5T->SetScale(0.4, 0.4, 0.4);
+
+	Entity* facing5C = CreateEntity("facing5C", "cube", "rust");
+	Transform* facing5CT = facing5C->GetComponent<Transform>();
+	Renderable* facing5CR = facing5C->GetComponent<Renderable>();
+	RigidBody* facing5CRb = facing5C->AddComponent<RigidBody>(facing5CT, &(facing5CR->BoundingBox()));
+	facing5CT->SetParent(facing5T);
+	facing5CT->SetScale(0.8, 0.8, 0.8);
+	facing5CT->SetLocalPosition(0, 0, 0.6);
+
+	//Target to be swarmed at
+	Entity* target = CreateEntity("target", "cube", "water");
+	Transform* targetT = target->GetComponent<Transform>();
+	targetT->SetLocalPosition(-5, 0, 0);
+	Renderable* targetR = target->GetComponent<Renderable>();
+	RigidBody* targetRb = target->AddComponent <RigidBody>(targetT, &(targetR->BoundingBox()));
+	//
+
+	//light
+	Entity* lights = CreateEntity("light");
+	Lighting* l = lights->AddComponent<Lighting>(XMFLOAT4(-5, 0, 0, 0), XMFLOAT4(0.7f, 0, 0, 1), LightType::PointLight, 1, 8);
+	Entity* lights2 = CreateEntity("light");
+	Lighting* l2 = lights2->AddComponent<Lighting>(XMFLOAT4(0, 0, -10, 0), XMFLOAT4(0.7f, 0, 0, 1), LightType::PointLight, 1, 8);
+	//cam
+	cam.getViewMatrix();
+	cam.setProjectionMatrix(800.0f / 600.0f);
 
 	
 }
@@ -101,6 +186,51 @@ void Scene::Enter()
 void Scene::Tick(float deltaTime, float totalTime)
 {
 	cam.update(deltaTime);
+	//auto* cam = GetEntityByName("facing");
+
+	auto* tT = GetEntityByName("target")->GetComponent<Transform>();
+	auto* tTR = GetEntityByName("target")->GetComponent<RigidBody>();
+
+	static int moveDir = 1;
+
+	if (tT->GetWorldPosition()->y < -3)
+	{
+		moveDir = 1;
+	}
+
+	else if (tT->GetWorldPosition()->y > 3)
+	{
+		moveDir = -1;
+	}
+
+	tT->SetWorldPosition(tT->GetWorldPosition()->x + 1.0f*deltaTime, tT->GetWorldPosition()->y + 1.0f*deltaTime * moveDir, tT->GetWorldPosition()->z + 1.0f*deltaTime * moveDir);
+
+
+	auto* t1 = GetEntityByName("facing1")->GetComponent<Transform>();
+	auto* tR1 = GetEntityByName("facing1")->GetComponent<RigidBody>();
+	tR1->ProjectileSwarmingAt(tTR, 2.0f, 500, 1500, 45);
+	tR1->Update(deltaTime);
+
+	auto* t2 = GetEntityByName("facing2")->GetComponent<Transform>();
+	auto* tR2 = GetEntityByName("facing2")->GetComponent<RigidBody>();
+	tR2->ProjectileSwarmingAt(tTR, 2.0f, 500, 1500, 45);
+	tR2->Update(deltaTime);
+
+	auto* t3 = GetEntityByName("facing3")->GetComponent<Transform>();
+	auto* tR3 = GetEntityByName("facing3")->GetComponent<RigidBody>();
+	tR3->ProjectileSwarmingAt(tTR, 2.0f, 500, 1500, 45);
+	tR3->Update(deltaTime);
+
+	auto* t4 = GetEntityByName("facing4")->GetComponent<Transform>();
+	auto* tR4 = GetEntityByName("facing4")->GetComponent<RigidBody>();
+	tR4->ProjectileSwarmingAt(tTR, 2.0f, 500, 1500, 45);
+	tR4->Update(deltaTime);
+
+	auto* t5 = GetEntityByName("facing5")->GetComponent<Transform>();
+	auto* tR5 = GetEntityByName("facing5")->GetComponent<RigidBody>();
+	tR5->ProjectileSwarmingAt(tTR, 2.0f, 500, 1500, 45);
+	tR5->Update(deltaTime);
+
 }
 
 void Scene::Exit()

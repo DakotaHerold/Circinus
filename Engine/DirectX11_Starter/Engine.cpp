@@ -154,8 +154,10 @@ void Engine::InitScene()
 #ifdef HAS_EDITOR
 	currentScene = nullptr;
 	currentScene = SceneManager::CreateNewScene("NewScene");
+	currentScene->Enter();
 #else
-	LoadScene("Scene1");
+	currentScene = SceneManager::CreateNewScene("NewScene");
+	currentScene->Enter();
 #endif // HAS_EDITOR
 
 	

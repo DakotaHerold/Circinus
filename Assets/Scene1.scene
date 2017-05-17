@@ -63,8 +63,8 @@
                 {
                     "name": "Transform",
                     "parent": "root",
-                    "PositionX": -0.3829088807106018,
-                    "PositionY": 0.17286226153373719,
+                    "PositionX": -0.0955381914973259,
+                    "PositionY": 0.0,
                     "PositionZ": 0.0,
                     "RotationX": 0.0,
                     "RotationY": 0.0,
@@ -75,19 +75,48 @@
                 },
                 {
                     "name": "Renderable"
+                },
+                {
+                    "name": "Undecided"
                 }
             ]
         },
         {
-            "name": "child",
+            "name": "parent",
+            "mesh": "cube",
+            "material": "rust",
+            "components": [
+                {
+                    "name": "Transform",
+                    "parent": "parent",
+                    "PositionX": 0.0,
+                    "PositionY": 0.0,
+                    "PositionZ": 1.0,
+                    "RotationX": 0.0,
+                    "RotationY": 0.0,
+                    "RotationZ": 0.0,
+                    "ScaleX": 0.30000001192092898,
+                    "ScaleY": 0.30000001192092898,
+                    "ScaleZ": 0.30000001192092898
+                },
+                {
+                    "name": "Renderable"
+                },
+                {
+                    "name": "Undecided"
+                }
+            ]
+        },
+        {
+            "name": "parent",
             "mesh": "cube",
             "material": "water",
             "components": [
                 {
                     "name": "Transform",
-                    "parent": "parent",
-                    "PositionX": 0.09183525294065476,
-                    "PositionY": -1.0505167245864869,
+                    "parent": "root",
+                    "PositionX": 8.0,
+                    "PositionY": 0.0,
                     "PositionZ": 0.0,
                     "RotationX": 0.0,
                     "RotationY": 0.0,
@@ -98,6 +127,9 @@
                 },
                 {
                     "name": "Renderable"
+                },
+                {
+                    "name": "Undecided"
                 }
             ]
         },

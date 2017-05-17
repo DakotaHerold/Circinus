@@ -4,9 +4,14 @@ using namespace DirectX;
 
 RigidBody::RigidBody(Transform* t, const DirectX::BoundingBox* boxCollider)
 	:
-	velocity(0, 0, 0)
+	velocity(0, 0, 0) 
 {
 	trans = t;
+	IsSlerping = false;
+	RigidDeltaTime = 0;
+	slerpT = 0;
+	timeSinceLastLoop = 0;
+	slerpTime = 0;
 	obb = new BoundingOrientedBox();
 	DirectX::BoundingOrientedBox::CreateFromBoundingBox(*obb, *boxCollider);
 }
@@ -17,9 +22,10 @@ RigidBody::~RigidBody()
 	delete obb;
 }
 
-void RigidBody::Update()
+void RigidBody::Update(float deltatime)
 {
-	trans->SetWorldPosition(trans->GetWorldPosition()->x + velocity.x, trans->GetWorldPosition()->y + velocity.y, trans->GetWorldPosition()->z + velocity.z);
+	RigidDeltaTime = deltatime;
+	trans->SetWorldPosition(trans->GetWorldPosition()->x + velocity.x * deltatime, trans->GetWorldPosition()->y + velocity.y * deltatime, trans->GetWorldPosition()->z + velocity.z * deltatime);
 }
 
 void RigidBody::SetWorldVelocity(float x, float y, float z)
@@ -73,6 +79,109 @@ void RigidBody::FaceTo(RigidBody* otherEntity)
 void RigidBody::ProjectileHomingAt(RigidBody* target, float speed) //Rotate this rigidbody and move it constantly towards the target. This has to be called every Tick()
 {
 	this->FaceTo(target);
+	DirectX::XMFLOAT3 forward(0, 0, speed);
+	DirectX::XMVECTOR localForward = DirectX::XMLoadFloat3(&forward);
+
+	DirectX::XMVECTOR localRotationVec = DirectX::XMLoadFloat3(trans->GetLocalRotation());
+
+	DirectX::XMVECTOR worldVelocityVec = XMVector3Rotate(localForward, DirectX::XMQuaternionRotationRollPitchYawFromVector(localRotationVec));
+	DirectX::XMStoreFloat3(&(this->velocity), worldVelocityVec);
+}
+
+void RigidBody::ProjectileSlerpAngle(DirectX::XMVECTOR* angle, DirectX::XMVECTOR* targetAngle, float t)
+{
+	/*for (float i = 0; i < 1; i += RigidDeltaTime / time)
+	{
+		DirectX::XMMATRIX newRotationMatrix = DirectX::XMMatrixRotationQuaternion(DirectX::XMQuaternionSlerp(*angle, *targetAngle, i));
+
+		DirectX::XMFLOAT3 dirFloat(0, 0, 0);
+		DirectX::XMFLOAT3X3 newRotation3X3(0, 0, 0, 0, 0, 0, 0, 0, 0);
+		DirectX::XMStoreFloat3x3(&newRotation3X3, newRotationMatrix);
+		dirFloat = RotateToNewEuler(&newRotation3X3);
+
+		trans->SetRotationEuler(dirFloat.x, dirFloat.y, dirFloat.z);
+	}*/
+
+
+	DirectX::XMMATRIX newRotationMatrix = DirectX::XMMatrixRotationQuaternion(DirectX::XMQuaternionSlerp(*angle, *targetAngle, t));
+
+	DirectX::XMFLOAT3 dirFloat(0, 0, 0);
+	DirectX::XMFLOAT3X3 newRotation3X3(0, 0, 0, 0, 0, 0, 0, 0, 0);
+	DirectX::XMStoreFloat3x3(&newRotation3X3, newRotationMatrix); 
+
+	//DirectX::XMFLOAT3X3 newRotationMatrixF3X3(0, 0, 0, 0, 0, 0, 0, 0, 0);
+	//newRotationMatrixF3X3._11 = newRotation3X3._12;
+	//newRotationMatrixF3X3._12 = newRotation3X3._32;
+	//newRotationMatrixF3X3._13 = newRotation3X3._22;
+	//newRotationMatrixF3X3._31 = newRotation3X3._21;
+	//newRotationMatrixF3X3._32 = newRotation3X3._11;
+	//newRotationMatrixF3X3._33 = newRotation3X3._31;
+	//newRotationMatrixF3X3._21 = newRotation3X3._33;
+	//newRotationMatrixF3X3._22 = newRotation3X3._23;
+	//newRotationMatrixF3X3._23 = newRotation3X3._13;
+	//newRotationMatrix = DirectX::XMMatrixTranspose(DirectX::XMLoadFloat3x3(&newRotationMatrixF3X3));
+	//DirectX::XMStoreFloat3x3(&newRotationMatrixF3X3, newRotationMatrix);
+	//dirFloat = RotateToNewEuler(&newRotationMatrixF3X3);
+
+	newRotationMatrix = DirectX::XMMatrixTranspose(DirectX::XMLoadFloat3x3(&newRotation3X3));
+	DirectX::XMStoreFloat3x3(&newRotation3X3, newRotationMatrix);
+	dirFloat = RotateToNewEuler(&newRotation3X3);
+
+	trans->SetRotationEuler(dirFloat.x, dirFloat.y, dirFloat.z);
+}
+
+void RigidBody::ProjectileSwarmingAt(RigidBody* target, float speed, int minTurnTime, int maxTurnTime, int maxOffAngle)
+{
+	if (!IsSlerping)
+	{
+		slerpT = 0;
+		timeSinceLastLoop = 0;
+		srand((time(0) * this->GetEntityID()));
+		slerpTime = minTurnTime + (rand() % (maxTurnTime - minTurnTime));
+
+		//currentQuat = DirectX::XMQuaternionRotationRollPitchYawFromVector(DirectX::XMLoadFloat3(trans->GetLocalRotation()));
+		DirectX::XMFLOAT3 oldRot = *trans->GetLocalRotation();
+		FaceTo(target);
+		newQuat = DirectX::XMQuaternionRotationRollPitchYaw(
+			trans->GetLocalRotation()->x + ((rand() % (2 * maxOffAngle) - maxOffAngle) / 360.0f), 
+			trans->GetLocalRotation()->y + ((rand() % (2 * maxOffAngle) - maxOffAngle) / 360.0f), 
+			trans->GetLocalRotation()->z + ((rand() % (2 * maxOffAngle) - maxOffAngle) / 360.0f));
+		//newQuat = DirectX::XMQuaternionRotationRollPitchYawFromVector(DirectX::XMLoadFloat3(trans->GetLocalRotation()));
+		/*newQuat = DirectX::XMQuaternionRotationRollPitchYaw(
+			trans->GetLocalRotation()->x + (maxOffAngle / 360.0f),
+			trans->GetLocalRotation()->y + (maxOffAngle / 360.0f),
+			trans->GetLocalRotation()->z + (maxOffAngle / 360.0f));*/
+		trans->SetRotationEuler(oldRot.x, oldRot.y, oldRot.z);
+
+		IsSlerping = true;
+	}
+
+	else if (IsSlerping)
+	{
+		if (slerpT > 1)
+		{
+			currentQuat = newQuat;
+			IsSlerping = false;
+		}
+
+		slerpT += RigidDeltaTime / (slerpTime / 1000.0f);
+		//slerpT += RigidDeltaTime / slerpTime;
+		ProjectileSlerpAngle(&currentQuat, &newQuat, slerpT);
+
+		DirectX::XMVECTOR wrongQuat = DirectX::XMQuaternionRotationRollPitchYawFromVector(DirectX::XMLoadFloat3(trans->GetLocalRotation()));
+		DirectX::XMMATRIX newRotationMatrix = DirectX::XMMatrixRotationQuaternion(wrongQuat);
+		DirectX::XMFLOAT3 dirFloat(0, 0, 0);
+		DirectX::XMFLOAT3X3 newRotation3X3(0, 0, 0, 0, 0, 0, 0, 0, 0);
+		DirectX::XMStoreFloat3x3(&newRotation3X3, newRotationMatrix);
+		newRotationMatrix = DirectX::XMMatrixTranspose(DirectX::XMLoadFloat3x3(&newRotation3X3));
+		DirectX::XMStoreFloat3x3(&newRotation3X3, newRotationMatrix);
+		dirFloat = RotateToNewEuler(&newRotation3X3);
+		trans->SetRotationEuler(dirFloat.x, dirFloat.y, dirFloat.z);
+
+		timeSinceLastLoop += RigidDeltaTime;
+	}
+
+	//FaceTo(target);
 	DirectX::XMFLOAT3 forward(0, 0, speed);
 	DirectX::XMVECTOR localForward = DirectX::XMLoadFloat3(&forward);
 

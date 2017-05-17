@@ -138,7 +138,7 @@ Camera::Camera()
 
 	rotationX = 0.0f;
 	rotationY = 0.0f;
-	position = { 0.0f, 0.0f, -5.0f };
+	position = { 0.0f, 0.0f, -20.0f };
 	direction = { 0.0f, 0.0f, -1.0f };
 	up = { 0.0f, 1.0f, 0.0f };
 

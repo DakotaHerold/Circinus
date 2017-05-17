@@ -146,7 +146,7 @@
       <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /Y $(OutDir)$(TargetFileName) $(SolutionDir)..\$(TargetFileName)</Command>
+      <Command>copy /Y "$(OutDir)$(TargetFileName)" "$(SolutionDir)..\$(TargetFileName)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -183,7 +183,7 @@
       <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /Y $(OutDir)$(TargetFileName) $(SolutionDir)..\$(TargetFileName)</Command>
+      <Command>copy /Y "$(OutDir)$(TargetFileName)" "$(SolutionDir)..\$(TargetFileName)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
