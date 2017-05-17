@@ -103,6 +103,7 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 				_somthingSelected = true;
 			}
 
+			// TODO: Make sure to parent and child the objects accordingly.
 			for (std::vector<Entity *>::iterator it = curSceneEntities.begin(); it != curSceneEntities.end(); ++it) {
 				++entCounter;
 				if (ImGui::Selectable(((*it)->GetName() + " (" + std::to_string(entCounter) + ")").c_str())) {
@@ -246,6 +247,7 @@ void GUI::AddMenuBar(bool * _running) {
 	{
 		if (ImGui::BeginMenu("Engine")) {
 			if (ImGui::MenuItem("Load")) {
+				// TODO: Check if we can load a scene file, by taking in the Input.
 				Engine::instance()->LoadScene("Scene1");					
 			}
 			if (ImGui::MenuItem("Save")) {
@@ -322,6 +324,7 @@ void GUI::AddMenuBar(bool * _running) {
 #ifdef HAS_EDITOR
 		if (ImGui::BeginMenu("Run"))
 		{
+			// TODO:: If you do not load a scene and Run, it crashes.
 			if (ImGui::MenuItem("Run")) {
 				Editor::instance()->Run();
 			}
