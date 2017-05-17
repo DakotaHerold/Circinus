@@ -1,6 +1,8 @@
 #pragma once
 #include "Component.h"
 #include "Transform.h"
+#include "Scene.h"
+#include "Engine.h"
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
 #include "time.h"
@@ -29,7 +31,10 @@ public:
 	void ProjectileShootAt(RigidBody* target, float speed);
 	DirectX::XMFLOAT3 RotateToNewEuler(DirectX::XMFLOAT3X3* m);
 	DirectX::XMFLOAT3 velocity; // This velocity will be a vector3 relate to world space instead of local space.
-	void ProjectileSwarmingAt(RigidBody* target, float speed, int minTurnTime, int maxTurnTime, int maxOffAngle); //minTurnTime and maxTurnTime should be represented as ms (1000ms = 1s)
+	void ProjectileSwarmingAt(string name, float speed, int minTurnTime, int maxTurnTime, int maxOffAngle); //minTurnTime and maxTurnTime should be represented as ms (1000ms = 1s)
+	void ShootLaser(string parentName, float speed);
+
+	Scene* curScene;
 
 private:
 	Transform* trans; 

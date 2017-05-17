@@ -7,6 +7,7 @@ RigidBody::RigidBody(Transform* t, const DirectX::BoundingBox* boxCollider)
 	velocity(0, 0, 0) 
 {
 	trans = t;
+	curScene = Engine::instance()->GetCurScene();
 	IsSlerping = false;
 	RigidDeltaTime = 0;
 	slerpT = 0;
@@ -103,8 +104,10 @@ void RigidBody::ProjectileSlerpAngle(DirectX::XMVECTOR* angle, DirectX::XMVECTOR
 	trans->SetRotationEuler(dirFloat.x, dirFloat.y, dirFloat.z);
 }
 
-void RigidBody::ProjectileSwarmingAt(RigidBody* target, float speed, int minTurnTime, int maxTurnTime, int maxOffAngle)
+void RigidBody::ProjectileSwarmingAt(string name, float speed, int minTurnTime, int maxTurnTime, int maxOffAngle)
 {
+	RigidBody* target = curScene->GetEntityByName("target")->GetComponent<RigidBody>();
+
 	if (!IsSlerping)
 	{
 		slerpT = 0;
@@ -115,9 +118,9 @@ void RigidBody::ProjectileSwarmingAt(RigidBody* target, float speed, int minTurn
 		DirectX::XMFLOAT3 oldRot = *trans->GetLocalRotation();
 		FaceTo(target);
 		newQuat = DirectX::XMQuaternionRotationRollPitchYaw(
-			trans->GetLocalRotation()->x + ((rand() % (2 * maxOffAngle) - maxOffAngle) / 360.0f), 
-			trans->GetLocalRotation()->y + ((rand() % (2 * maxOffAngle) - maxOffAngle) / 360.0f), 
-			trans->GetLocalRotation()->z + ((rand() % (2 * maxOffAngle) - maxOffAngle) / 360.0f));
+			trans->GetLocalRotation()->x + (((rand() % (2 * maxOffAngle) - maxOffAngle) / 360.0f) * 2 * DirectX::XM_PI), 
+			trans->GetLocalRotation()->y + (((rand() % (2 * maxOffAngle) - maxOffAngle) / 360.0f) * 2 * DirectX::XM_PI), 
+			trans->GetLocalRotation()->z + (((rand() % (2 * maxOffAngle) - maxOffAngle) / 360.0f) * 2 * DirectX::XM_PI));
 		trans->SetRotationEuler(oldRot.x, oldRot.y, oldRot.z);
 
 		IsSlerping = true;
@@ -164,6 +167,26 @@ void RigidBody::ProjectileShootAt(RigidBody* target, float speed) //Rotate this 
 	{
 		this->FaceTo(target);
 		i++;
+	}
+
+	DirectX::XMFLOAT3 forward(0, 0, speed);
+	DirectX::XMVECTOR localForward = DirectX::XMLoadFloat3(&forward);
+
+	DirectX::XMVECTOR localRotationVec = DirectX::XMLoadFloat3(trans->GetLocalRotation());
+
+	DirectX::XMVECTOR worldVelocityVec = XMVector3Rotate(localForward, DirectX::XMQuaternionRotationRollPitchYawFromVector(localRotationVec));
+	DirectX::XMStoreFloat3(&(this->velocity), worldVelocityVec);
+}
+
+void RigidBody::ShootLaser(string parentName, float speed)
+{
+	RigidBody* parent = curScene->GetEntityByName(parentName)->GetComponent<RigidBody>();
+	static int j = 0;
+	
+	if (j == 0)
+	{
+		trans->SetRotationEuler(parent->trans->GetWorldRotation()->x, parent->trans->GetWorldRotation()->y, parent->trans->GetWorldRotation()->z);
+		j++;
 	}
 
 	DirectX::XMFLOAT3 forward(0, 0, speed);

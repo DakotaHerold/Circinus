@@ -193,42 +193,42 @@ void Scene::Tick(float deltaTime, float totalTime)
 
 	static int moveDir = 1;
 
-	if (tT->GetWorldPosition()->y < -3)
+	if (tT->GetWorldPosition()->y < -6)
 	{
 		moveDir = 1;
 	}
 
-	else if (tT->GetWorldPosition()->y > 3)
+	else if (tT->GetWorldPosition()->y > 6)
 	{
 		moveDir = -1;
 	}
 
-	tT->SetWorldPosition(tT->GetWorldPosition()->x + 1.0f*deltaTime, tT->GetWorldPosition()->y + 1.0f*deltaTime * moveDir, tT->GetWorldPosition()->z + 1.0f*deltaTime * moveDir);
+	tT->SetWorldPosition(tT->GetWorldPosition()->x + 0.5f*deltaTime, tT->GetWorldPosition()->y + 2.0f*deltaTime * moveDir, tT->GetWorldPosition()->z + 2.0f*deltaTime * moveDir);
 
 
 	auto* t1 = GetEntityByName("facing1")->GetComponent<Transform>();
 	auto* tR1 = GetEntityByName("facing1")->GetComponent<RigidBody>();
-	tR1->ProjectileSwarmingAt(tTR, 2.0f, 500, 1500, 45);
+	tR1->ProjectileSwarmingAt("target", 3.0f, 500, 1000, 20);
 	tR1->Update(deltaTime);
 
 	auto* t2 = GetEntityByName("facing2")->GetComponent<Transform>();
 	auto* tR2 = GetEntityByName("facing2")->GetComponent<RigidBody>();
-	tR2->ProjectileSwarmingAt(tTR, 2.0f, 500, 1500, 45);
+	tR2->ProjectileSwarmingAt("target", 3.0f, 500, 1000, 20);
 	tR2->Update(deltaTime);
 
 	auto* t3 = GetEntityByName("facing3")->GetComponent<Transform>();
 	auto* tR3 = GetEntityByName("facing3")->GetComponent<RigidBody>();
-	tR3->ProjectileSwarmingAt(tTR, 2.0f, 500, 1500, 45);
+	tR3->ProjectileSwarmingAt("target", 3.0f, 500, 1000, 20);
 	tR3->Update(deltaTime);
 
 	auto* t4 = GetEntityByName("facing4")->GetComponent<Transform>();
 	auto* tR4 = GetEntityByName("facing4")->GetComponent<RigidBody>();
-	tR4->ProjectileSwarmingAt(tTR, 2.0f, 500, 1500, 45);
+	tR4->ProjectileSwarmingAt("target", 3.0f, 500, 1000, 20);
 	tR4->Update(deltaTime);
 
 	auto* t5 = GetEntityByName("facing5")->GetComponent<Transform>();
 	auto* tR5 = GetEntityByName("facing5")->GetComponent<RigidBody>();
-	tR5->ProjectileSwarmingAt(tTR, 2.0f, 500, 1500, 45);
+	tR5->ProjectileSwarmingAt("target", 3.0f, 500, 1000, 20);
 	tR5->Update(deltaTime);
 
 }
