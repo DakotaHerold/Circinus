@@ -12,6 +12,7 @@
 #include "TransformSystem.h"
 #include "Editor.h"
 #include "SceneManager.h"
+#include "RigidBody.h"
 
 GUI::GUI()
 {
@@ -285,6 +286,7 @@ void GUI::AddMenuBar(bool * _running) {
 			if (ImGui::BeginMenu("Add")) {
 				if (ImGui::MenuItem("Renderer")) {
 					// TODO: Add a renderer component?
+					// Selected Entity ID is selectedEntity
 				}
 
 				if (ImGui::MenuItem("RigidBody")) {
