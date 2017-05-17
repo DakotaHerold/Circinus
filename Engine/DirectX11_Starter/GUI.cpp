@@ -12,6 +12,7 @@
 #include "TransformSystem.h"
 #include "Editor.h"
 #include "SceneManager.h"
+#include "RigidBody.h"
 
 GUI::GUI()
 {
@@ -102,6 +103,7 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 				_somthingSelected = true;
 			}
 
+			// TODO: Make sure to parent and child the objects accordingly.
 			for (std::vector<Entity *>::iterator it = curSceneEntities.begin(); it != curSceneEntities.end(); ++it) {
 				++entCounter;
 				if (ImGui::Selectable(((*it)->GetName() + " (" + std::to_string(entCounter) + ")").c_str())) {
@@ -245,6 +247,7 @@ void GUI::AddMenuBar(bool * _running) {
 	{
 		if (ImGui::BeginMenu("Engine")) {
 			if (ImGui::MenuItem("Load")) {
+				// TODO: Check if we can load a scene file, by taking in the Input.
 				Engine::instance()->LoadScene("Scene1");					
 			}
 			if (ImGui::MenuItem("Save")) {
@@ -281,9 +284,39 @@ void GUI::AddMenuBar(bool * _running) {
 			ImGui::EndMenu();
 		}
 
+		if (ImGui::BeginMenu("Component")) {
+			if (ImGui::BeginMenu("Add")) {
+				if (ImGui::BeginMenu("Renderer")) {
+					// TODO: Add a renderer component?
+					ImGui::EndMenu();
+				}
+
+				if (ImGui::BeginMenu("RigidBody")) {
+					// TODO: Add a rigidbody component
+					if (ImGui::MenuItem("BoxCollider")) {
+						XMFLOAT3 scale = *(selectedEntity->GetComponent<Transform>()->GetWorldScale());
+						scale.x = (scale.x > 0) ? scale.x : 1;
+						scale.y = (scale.y > 0) ? scale.y : 1;
+						scale.z = (scale.z > 0) ? scale.z : 1;
+						BoundingBox tempBound = BoundingBox(*(selectedEntity->GetComponent<Transform>()->GetWorldPosition()), scale );
+						selectedEntity->AddComponent<RigidBody>(selectedEntity->GetComponent<Transform>(), &tempBound);
+					}
+
+					ImGui::EndMenu();
+				}
+
+				if (ImGui::MenuItem("ScriptComponent")) {
+					// TODO: Add a script copmonent
+				}
+				ImGui::EndMenu();
+			}
+			ImGui::EndMenu();
+		}
+
 #ifdef HAS_EDITOR
 		if (ImGui::BeginMenu("Run"))
 		{
+			// TODO:: If you do not load a scene and Run, it crashes.
 			if (ImGui::MenuItem("Run")) {
 				Editor::instance()->Run();
 			}
