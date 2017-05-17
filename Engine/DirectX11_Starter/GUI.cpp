@@ -34,9 +34,9 @@ void GUI::Init(HWND hwnd, ID3D11Device* device, ID3D11DeviceContext* device_cont
 	_hwFlag |= ImGuiWindowFlags_NoResize;
 
 	// Component Window Flags.
-	_cwFlag |= ImGuiWindowFlags_NoMove;
+	// _cwFlag |= ImGuiWindowFlags_NoMove;
 	_cwFlag |= ImGuiWindowFlags_NoSavedSettings;
-	_cwFlag |= ImGuiWindowFlags_NoResize;
+	// _cwFlag |= ImGuiWindowFlags_NoResize;
 
 	// Component Details Window Flags.
 	_cdwFlag |= ImGuiWindowFlags_NoSavedSettings;
@@ -44,6 +44,7 @@ void GUI::Init(HWND hwnd, ID3D11Device* device, ID3D11DeviceContext* device_cont
 	// Benchmarks Window Flags.
 	_bwFlag |= ImGuiWindowFlags_NoMove;
 	_bwFlag |= ImGuiWindowFlags_NoSavedSettings;
+
 
 }
 
@@ -125,8 +126,8 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 		// TODO: Can probably move these to Init Function.
 		ImVec2 cwPos = ImVec2(2 * _windowWidth / 3,  _windowHeight/2 + 20);
 		ImVec2 cwSize = ImVec2(_windowWidth / 3, _windowHeight / 2 - 20);
-		ImGui::SetNextWindowPos(cwPos);
-		ImGui::SetNextWindowSize(cwSize);
+		ImGui::SetNextWindowPos(cwPos, ImGuiSetCond_FirstUseEver);
+		ImGui::SetNextWindowSize(cwSize, ImGuiSetCond_FirstUseEver);
 
 		ImGui::Begin((selectedEntity->GetName() + "'s Components").c_str(), &ComponentDisplayFlag, _cwFlag);
 		{
@@ -159,13 +160,20 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 			}
 
 			ImGui::Separator();
-			XMFLOAT3 position = *(cm->GetComponent<Transform>((selectedEntity)->GetID(), selectedCompIndex)->GetLocalPosition());
-			ImGui::Text("Position: ");
-			ImGui::InputFloat("x: ", &position.x, 0.1f, 1.0f);
-			ImGui::InputFloat("y: ", &position.y, 0.1f, 1.0f);
-			ImGui::InputFloat("z: ", &position.z, 0.1f, 1.0f);
 
-			cm->GetComponent<Transform>((selectedEntity)->GetID())->SetWorldPosition(position.x, position.y, position.z);
+			guiPos = *(cm->GetComponent<Transform>((selectedEntity)->GetID(), selectedCompIndex)->GetWorldPosition());
+			ImGui::Text("Position: ");
+			guiUpPos = guiPos;
+
+			ImGui::InputFloat("x", &(guiUpPos.x), 0.1f, 1.0f);
+			ImGui::InputFloat("y", &(guiUpPos.y), 0.1f, 1.0f);
+			ImGui::InputFloat("z", &(guiUpPos.z), 0.1f, 1.0f);
+
+			if (guiPos.x != guiUpPos.x || guiPos.y != guiUpPos.y || guiPos.z != guiUpPos.z) {
+				cm->GetComponent<Transform>((selectedEntity)->GetID())->SetWorldPosition((guiUpPos).x, (guiUpPos).y, (guiUpPos).z);
+			}
+
+			
 
 			ImGui::End();
 		}
@@ -177,7 +185,7 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 		// ImVec2 cwPos = ImVec2(30, _windowHeight / 2 + 20);
 		ImVec2 cwSize = ImVec2(_windowWidth / 3, _windowHeight / 2 - 20);
 		// ImGui::SetNextWindowPos(cwPos);
-		ImGui::SetNextWindowSize(cwSize);
+		ImGui::SetNextWindowSize(cwSize, ImGuiSetCond_FirstUseEver);
 		ImGui::Begin("Component Details", &ComponentDisplayDetailsFlag, _cdwFlag);
 		{
 			if ( 0 == std::strcmp(ComponentTypeName(selectedComponentID), "class ScriptComponent") )
@@ -186,10 +194,10 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 			}
 			else if (0 == std::strcmp(ComponentTypeName(selectedComponentID), "class Transform")) {
 
-				std::cout << "Here" << std::endl;
-				XMFLOAT3 position = *(cm->GetComponent<Transform>((selectedEntity)->GetID(), selectedCompIndex)->GetLocalPosition());
-				ImGui::Text("Position: ");
-				ImGui::InputFloat("x: ", &position.x, 0.1f, 1.0f);
+				//std::cout << "Here" << std::endl;
+				//XMFLOAT3 position = *(cm->GetComponent<Transform>((selectedEntity)->GetID(), selectedCompIndex)->GetLocalPosition());
+				//ImGui::Text("Position: ");
+				//ImGui::InputFloat("x: ", &position.x, 0.1f, 1.0f);
 
 			}
 			else {
@@ -301,27 +309,20 @@ void GUI::AddMenuBar(bool * _running) {
 
 		if (ImGui::BeginMenu("Component")) {
 			if (ImGui::BeginMenu("Add")) {
-				if (ImGui::MenuItem("Renderer")) {
-					// TODO: Add a renderer component?
-					// Selected Entity ID is selectedEntity
-				}
-
-				if (ImGui::MenuItem("RigidBody")) {
-					// TODO: Add a rigidbody component
-				}
-
-				if (ImGui::MenuItem("ScriptComponent")) {
-					// TODO: Add a script copmonent
-				}
-				ImGui::EndMenu();
-			}
-			ImGui::EndMenu();
-		}
-
-		if (ImGui::BeginMenu("Component")) {
-			if (ImGui::BeginMenu("Add")) {
 				if (ImGui::BeginMenu("Renderer")) {
 					// TODO: Add a renderer component?
+					if (ImGui::MenuItem("Cube")) {
+						RenderingSystem& renderer = *RenderingSystem::instance();
+
+						Mesh* mesh = renderer.CreateMesh(L"Assets/Models/cube.fbx");
+						Shader* shader = renderer.CreateShader(L"Assets/ShaderObjs/Opaque.cso");
+						Texture* tex = renderer.CreateTexture(L"Assets/Textures/rust.jpg");
+						Material *mat = renderer.CreateMaterial(shader);
+						mat->SetTexture("texDiffuse", tex);
+
+						selectedEntity->AddComponent<Renderable>(mesh, mat);
+
+					}
 					ImGui::EndMenu();
 				}
 
@@ -341,6 +342,7 @@ void GUI::AddMenuBar(bool * _running) {
 
 				if (ImGui::MenuItem("ScriptComponent")) {
 					// TODO: Add a script copmonent
+
 				}
 				ImGui::EndMenu();
 			}

@@ -42,6 +42,9 @@ private:
 	ObjectPoolIndex * selectedCompIndex;
 	std::vector<Entity *> benchmarkEntities;
 
+	XMFLOAT3 guiPos;
+	XMFLOAT3 guiUpPos;
+
 	GUI();
 
 public:
