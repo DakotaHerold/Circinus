@@ -286,12 +286,23 @@ void GUI::AddMenuBar(bool * _running) {
 
 		if (ImGui::BeginMenu("Component")) {
 			if (ImGui::BeginMenu("Add")) {
-				if (ImGui::MenuItem("Renderer")) {
+				if (ImGui::BeginMenu("Renderer")) {
 					// TODO: Add a renderer component?
+					ImGui::EndMenu();
 				}
 
-				if (ImGui::MenuItem("RigidBody")) {
+				if (ImGui::BeginMenu("RigidBody")) {
 					// TODO: Add a rigidbody component
+					if (ImGui::MenuItem("BoxCollider")) {
+						XMFLOAT3 scale = *(selectedEntity->GetComponent<Transform>()->GetWorldScale());
+						scale.x = (scale.x > 0) ? scale.x : 1;
+						scale.y = (scale.y > 0) ? scale.y : 1;
+						scale.z = (scale.z > 0) ? scale.z : 1;
+						BoundingBox tempBound = BoundingBox(*(selectedEntity->GetComponent<Transform>()->GetWorldPosition()), scale );
+						selectedEntity->AddComponent<RigidBody>(selectedEntity->GetComponent<Transform>(), &tempBound);
+					}
+
+					ImGui::EndMenu();
 				}
 
 				if (ImGui::MenuItem("ScriptComponent")) {
