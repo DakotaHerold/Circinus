@@ -14,6 +14,9 @@
 #include "SceneManager.h"
 #include "RigidBody.h"
 #include "Renderable.h"
+#include "CameraComponent.h"
+#include "Lighting.h"
+#include "ParticleEmitter.h"
 #include <string>
 #include <sys/stat.h>
 #include <unordered_map>
@@ -309,7 +312,7 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 						break;
 
 					ImGui::Text("Mesh: ");// comp->mesh->filename.c_str());
-					char buf[1024];
+					char buf[512];
 					strcpy(buf, comp->mesh->filename.c_str());
 					
 					if (ImGui::InputText("Mesh", buf, 1024, ImGuiInputTextFlags_EnterReturnsTrue))
@@ -325,6 +328,45 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 						{
 							comp->mesh = m;
 						}
+					}
+
+					//comp->material->texTable
+				}
+				else if (0 == std::strcmp(typeName, "class Lighting"))
+				{
+					auto comp = cm->GetComponent<Lighting>((selectedEntity)->GetID(), selectedCompIndex);
+					if (nullptr == comp)
+						break;
+
+					auto& l = comp->GetLight();
+					{
+						if (ImGui::InputFloat4("Color", reinterpret_cast<float*>(&l.Color), -1, ImGuiInputTextFlags_EnterReturnsTrue))
+						{
+							comp->SetModified();
+						}
+					}
+				}
+				else if (0 == std::strcmp(typeName, "class ParticleEmitter"))
+				{
+					auto comp = cm->GetComponent<ParticleEmitter>((selectedEntity)->GetID(), selectedCompIndex);
+					if (nullptr == comp)
+						break;
+
+					auto v = comp->velocity;
+					float rate = comp->emitRate;
+					float life = comp->lifeTime;
+
+					if (ImGui::InputFloat3("Initial Velocity", reinterpret_cast<float*>(&v), -1, ImGuiInputTextFlags_EnterReturnsTrue))
+					{
+						comp->velocity = v;
+					}
+					if (ImGui::InputFloat("Emit Rate", &rate, 0.0F, 0.0F, -1, ImGuiInputTextFlags_EnterReturnsTrue))
+					{
+						comp->emitRate = rate;
+					}
+					if (ImGui::InputFloat("Emit Rate", &life, 0.0F, 0.0F, -1, ImGuiInputTextFlags_EnterReturnsTrue))
+					{
+						comp->lifeTime = life;
 					}
 				}
 				else 
@@ -447,36 +489,74 @@ void GUI::AddMenuBar(bool * _running) {
 				if (ImGui::BeginMenu("Renderer")) {
 					// TODO: Add a renderer component?
 					if (ImGui::MenuItem("Cube")) {
-						RenderingSystem& renderer = *RenderingSystem::instance();
+						if (nullptr != selectedEntity)
+						{
 
-						Mesh* mesh = renderer.CreateMesh(L"Assets/Models/cube.fbx");
-						Shader* shader = renderer.CreateShader(L"Assets/ShaderObjs/Opaque.cso");
-						Texture* tex = renderer.CreateTexture(L"Assets/Textures/rust.jpg");
-						Material *mat = renderer.CreateMaterial(shader);
-						mat->SetTexture("texDiffuse", tex);
+							RenderingSystem& renderer = *RenderingSystem::instance();
 
-						selectedEntity->AddComponent<Renderable>(mesh, mat);
+							Mesh* mesh = renderer.CreateMesh(L"Assets/Models/cube.fbx");
+							Shader* shader = renderer.CreateShader(L"Assets/ShaderObjs/Opaque.cso");
+							Texture* tex = renderer.CreateTexture(L"Assets/Textures/rust.jpg");
+							Material *mat = renderer.CreateMaterial(shader);
+							mat->SetTexture("texDiffuse", tex);
+
+							selectedEntity->AddComponent<Renderable>(mesh, mat);
+						}
 
 					}
 					ImGui::EndMenu();
 				}
 
 				if (ImGui::BeginMenu("RigidBody")) {
-					// TODO: Add a rigidbody component
 					if (ImGui::MenuItem("BoxCollider")) {
-						XMFLOAT3 scale = *(selectedEntity->GetComponent<Transform>()->GetWorldScale());
-						scale.x = (scale.x > 0) ? scale.x : 1;
-						scale.y = (scale.y > 0) ? scale.y : 1;
-						scale.z = (scale.z > 0) ? scale.z : 1;
-						BoundingBox tempBound = BoundingBox(*(selectedEntity->GetComponent<Transform>()->GetWorldPosition()), scale);
-						selectedEntity->AddComponent<RigidBody>(selectedEntity->GetComponent<Transform>(), &tempBound);
+						if (nullptr != selectedEntity)
+						{
+							XMFLOAT3 scale = *(selectedEntity->GetComponent<Transform>()->GetWorldScale());
+							scale.x = (scale.x > 0) ? scale.x : 1;
+							scale.y = (scale.y > 0) ? scale.y : 1;
+							scale.z = (scale.z > 0) ? scale.z : 1;
+							BoundingBox tempBound = BoundingBox(*(selectedEntity->GetComponent<Transform>()->GetWorldPosition()), scale);
+							selectedEntity->AddComponent<RigidBody>(selectedEntity->GetComponent<Transform>(), &tempBound);
+						}
 					}
 
 					ImGui::EndMenu();
 				}
 
 				if (ImGui::MenuItem("ScriptComponent")) {
-					// TODO: Add a script copmonent
+
+					if (nullptr != selectedEntity)
+					{
+						selectedEntity->AddComponent<ScriptComponent>();
+					}
+				}
+
+				if (ImGui::MenuItem("CameraComponent"))
+				{
+					if (nullptr != selectedEntity)
+					{
+						selectedEntity->AddComponent<CameraComponent>();
+					}
+				}
+
+				if (ImGui::MenuItem("LightComponent"))
+				{
+					if (nullptr != selectedEntity)
+					{
+						selectedEntity->AddComponent<Lighting>();
+					}
+				}
+
+				if (ImGui::MenuItem("ParticleEmitter"))
+				{
+					if (nullptr != selectedEntity)
+					{
+						auto* emitter = selectedEntity->AddComponent<ParticleEmitter>(L"Assets/Textures/smoke.png");
+
+						emitter->SetInitialVelocity(0.0f, 1.0f, 0.0f);
+						emitter->SetLifeTime(2.0f);
+						emitter->SetEmitRate(20);
+					}
 				}
 				ImGui::EndMenu();
 			}

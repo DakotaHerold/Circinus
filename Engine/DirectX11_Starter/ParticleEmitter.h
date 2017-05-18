@@ -5,6 +5,10 @@
 
 class ParticleSystem;
 
+#ifdef HAS_GUI
+class GUI;
+#endif
+
 class ParticleEmitter : public Component
 {
 private:
@@ -31,6 +35,9 @@ public:
 	float GetEmitRate() const { return emitRate; }
 
 private:
+#ifdef HAS_GUI
+	friend class GUI;
+#endif
 	DirectX::XMFLOAT3		velocity;
 	float					lifeTime;
 	float					emitRate;

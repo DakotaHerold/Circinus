@@ -23,6 +23,7 @@ public:
 
 	Light& GetLight();
 	bool WasModified();			// Returns true if the light was modified this frame
+	void SetModified() { isDirty = true; }
 	void Cleanse();
 	void SetPosition(XMFLOAT3& pos);
 	void SetRotationEuler(XMFLOAT3& rot);
