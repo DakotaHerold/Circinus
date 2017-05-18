@@ -45,6 +45,13 @@ void Camera::setRotationY(float rotVal)
 	isDirty = true;
 }
 
+void Camera::setViewMatrix(XMFLOAT3 & dir)
+{
+	XMMATRIX vMat = XMMatrixLookToLH(XMLoadFloat3(&position), XMLoadFloat3(&dir), XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f));
+
+	XMStoreFloat4x4(&viewMatrix, XMMatrixTranspose(vMat));
+}
+
 void Camera::setProjectionMatrix(float aspectRatio)
 {
 	// Create the Projection matrix
@@ -56,6 +63,11 @@ void Camera::setProjectionMatrix(float aspectRatio)
 		0.1f,						// Near clip plane distance
 		100.0f);					// Far clip plane distance
 	XMStoreFloat4x4(&projectionMatrix, XMMatrixTranspose(P)); // Transpose for HLSL!
+}
+
+void Camera::setPosition(XMFLOAT3 & pos)
+{
+	position = pos;
 }
 
 void Camera::moveAlongDirection(float val)

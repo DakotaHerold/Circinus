@@ -63,7 +63,7 @@
                 {
                     "name": "Transform",
                     "parent": "root",
-                    "PositionX": -0.18201285600662232,
+                    "PositionX": -1.6606552600860596,
                     "PositionY": 0.17286226153373719,
                     "PositionZ": 0.0,
                     "RotationX": 0.0,
@@ -77,11 +77,11 @@
                     "name": "Renderable"
                 },
                 {
-                    "name": "RigidBody"
-                },
-                {
                     "name": "Script",
                     "file": "script2"
+                },
+                {
+                    "name": "RigidBody"
                 }
             ]
         },
