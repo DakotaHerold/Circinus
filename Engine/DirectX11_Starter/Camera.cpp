@@ -87,6 +87,22 @@ void Camera::setDirection(XMFLOAT3 & dir)
 	isDirty = true;
 }
 
+void Camera::setRotationEuler(float X, float Y, float Z)
+{
+	rotationX = X;
+	rotationY = Y;
+
+	XMVECTOR rotationQuat = XMQuaternionRotationRollPitchYaw(X, Y, Z);
+	XMVECTOR rotatedVector = XMVector3Rotate(XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), rotationQuat);
+	rotatedVector = XMQuaternionNormalize(rotatedVector);
+
+	XMStoreFloat3(&direction, rotatedVector);
+
+	XMStoreFloat3(&up, XMQuaternionNormalize(XMVector3Rotate(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), rotationQuat)));
+
+	isDirty = true;
+}
+
 void Camera::moveAlongDirection(float val)
 {
 	position.x += val * direction.x;

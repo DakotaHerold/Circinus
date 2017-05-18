@@ -38,6 +38,7 @@ public:
 	void setProjectionMatrix(float aspectRatio);
 	void setPosition(XMFLOAT3& pos);
 	void setDirection(XMFLOAT3& dir);
+	void setRotationEuler(float X, float Y, float Z);
 	XMFLOAT3& getDirection() { return direction; }
 	void moveAlongDirection(float val);
 	void moveSideways(float val);

@@ -58,7 +58,7 @@ bool Engine::Init()
 	//currentScene = SceneManager::LoadScene("Scene1");
 	currentScene = SceneManager::CreateNewScene("Scene1");
 	currentScene->Enter();
-	SceneManager::SaveScene(currentScene);
+	//SceneManager::SaveScene(currentScene);
 	//InitScene();
 	//;
 	return true;
@@ -173,8 +173,6 @@ void Engine::InitScene()
 #else
 	LoadScene("Scene1");
 #endif // HAS_EDITOR
-
-	currentScene->Enter();
 
 }
 
