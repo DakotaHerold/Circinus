@@ -24,6 +24,8 @@ public:
 	Light& GetLight();
 	bool WasModified();			// Returns true if the light was modified this frame
 	void Cleanse();
+	void SetPosition(XMFLOAT3& pos);
+	void SetRotationEuler(XMFLOAT3& rot);
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) {
 		writer.StartObject();
 		writer.String("name");

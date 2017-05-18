@@ -402,7 +402,7 @@ void RenderingSystem::DrawScene(Camera* cam, Scene* scene)
 		XMFLOAT3 playerRot = *playerT->GetLocalRotation();
 		XMVECTOR rotationQuat = XMQuaternionRotationRollPitchYaw(playerRot.x, playerRot.y, 0.0f);
 		XMVECTOR rotatedVector = XMVector3Rotate(XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), rotationQuat);
-		rotatedVector = XMQuaternionNormalize(rotatedVector);
+		rotatedVector = XMVector3Normalize(rotatedVector);
 		XMFLOAT3 lookDir;
 		XMStoreFloat3(&lookDir, rotatedVector);
 
@@ -411,10 +411,8 @@ void RenderingSystem::DrawScene(Camera* cam, Scene* scene)
 		
 		cam->setPosition(pos);
 		cam->setRotationEuler(playerRot.x, playerRot.y, 0);
-		//cam->setViewMatrix(lookDir);
 		cam->update(NULL);
 
-		//cc->UpdateCameraValues(*playerT->GetWorldPosition(), *playerT->GetWorldRotation());
 		//cam = cc->GetCamera();
 	}
 	
@@ -448,6 +446,11 @@ void RenderingSystem::DrawScene(Camera* cam, Scene* scene)
 		for (size_t j = 0; j < l.size(); j++) {
 			Lighting* i = l[j];
 			lights[j] = i->GetLight();
+
+			Transform* ent = i->GetEntity()->GetComponent<Transform>();
+			i->SetPosition(*ent->GetLocalPosition());
+			i->SetRotationEuler(*ent->GetLocalRotation());
+
 
 			if (i->WasModified())
 			{
