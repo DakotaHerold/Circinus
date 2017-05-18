@@ -453,8 +453,11 @@ void RenderingSystem::DrawScene(Camera* cam, Scene* scene)
 					)
 				);
 
-				i->GetMaterial()->SetMatrix4x4("matWorld", *m);
-				i->GetMaterial()->SetMatrix4x4("matWorld_IT", world_it);
+			static std::string matWorld = "matWorld";
+			static std::string matWorld_IT = "matWorld_IT";
+
+			i->GetMaterial()->SetMatrix4x4(matWorld, *m);
+			i->GetMaterial()->SetMatrix4x4(matWorld_IT, world_it);
 			}
 
 			UploadPreBoundConstantBuffers();

@@ -1,11 +1,9 @@
 #include "SceneManager.h"
 #include "Editor.h"
 
-
 SceneManager::SceneManager()
 {
 }
-
 
 SceneManager::~SceneManager()
 {

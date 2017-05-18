@@ -133,7 +133,7 @@ void Transform::AddChild(Transform * t)
 void Transform::RemoveChild(Transform * t)
 {
 	for (size_t i = 0; i < children.size(); i++) {
-		if (children[i]->GetID() == t->GetID()) {
+		if (children[i]->getPoolIndex() == t->getPoolIndex()) {
 			children.erase(children.begin() + i);
 			return;
 		}

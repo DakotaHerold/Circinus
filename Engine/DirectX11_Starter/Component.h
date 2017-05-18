@@ -1,14 +1,12 @@
 #pragma once
 #include "ClassTypeId.h"
-#include "Object.h"
 #include <rapidjson\prettywriter.h>
 #include <rapidjson\document.h>
 #include <utility>
 #include "ObjectPool.h"
+#include "Entity.h"
 
-class Entity;
-
-class Component : public Object, public Poolable
+class Component : public Poolable
 {
 public:
 	Component();
@@ -16,7 +14,7 @@ public:
 
 	virtual void				Update();
 
-	virtual void				SetEntity(int id);
+	virtual void				SetEntity(EntityID eid);
 	Entity*						GetEntity();
 	int							GetEntityID();
 
@@ -34,7 +32,8 @@ public:
 	}
 
 private:
-	int							gameEntityID = -1;
+	EntityID 					gameEntityID;
+	bool						hasEntity = false;
 };
 
 template <typename T>

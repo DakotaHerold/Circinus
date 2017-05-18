@@ -22,6 +22,8 @@ public:
 	inline std::string GetScriptName() { return fileName; }
 
 	ScriptComponent(std::string scriptFile, RigidBody* body);
+	ScriptComponent();
+	void Init(std::string scriptFile, RigidBody* body);
 	~ScriptComponent();
 
 	void	Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);

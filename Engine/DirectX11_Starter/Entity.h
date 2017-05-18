@@ -2,20 +2,21 @@
 
 #include "Mesh.h"
 #include "Material.h"
-#include "Component.h"
-#include "Object.h"
 #include <utility>
 #include <rapidjson\prettywriter.h>
 #include <string>
+#include <list>
+#include "ClassTypeId.h"
+#include <type_traits>
 
 using namespace DirectX;
 class ComponentManager;
+class Component;
+class Transform;
 
-// FIXME:
-//typedef unsigned int eidType;
-typedef int eidType;
+typedef unsigned int EntityID;
 
-class Entity : public Object
+class Entity
 {
 public:
 	Entity();
@@ -24,21 +25,24 @@ public:
 
 	~Entity();
 
-public :
+	static Entity* GetEntity(EntityID eid);
+	static const std::list<Entity*> GetAllEntities();
+
+	EntityID GetID() const { return id; };
 
 	template <typename T, typename... Args>
-	T*					AddComponent(Args&&... args);
+	T* AddComponent(Args&&... args);
 
 	template <typename T>
-	bool				RemoveComponent();
+	bool RemoveComponent();
 
 	bool RemoveComponent(TypeId typeID);
 
 	// TODO: const
 	template <typename T>
-	T*					GetComponent();
+	T* GetComponent();
 
-	std::vector<Component *>GetAllComponents();
+	std::vector<Component *> GetAllComponents();
 
 	//template <typename T>
 	//bool				HasComponent() const;
@@ -51,30 +55,14 @@ public :
 
 	void SetMesh(std::string mesh) { this->mesh = mesh; }
 
-	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) {
-		//name
-		writer.StartObject();
-		writer.String("name");		
-		writer.String(this->name.c_str());
-		writer.String("mesh");
-		writer.String(mesh.c_str());
-		writer.String("material");
-		writer.String(material.c_str());
-		writer.String("components");
-		//components
-		writer.StartArray();
-		for (auto c : GetAllComponents()) {
-			c->Serialize(writer);
-		}
-		writer.EndArray();
-		writer.EndObject();
-	}
+	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
+
+	Transform * const transform;
 
 private :
+	EntityID id;
 	std::string name = "No Name Yet";
-
 	std::string mesh ="";
-
 	std::string material = "";
 };
 
@@ -96,7 +84,13 @@ template <typename T>
 T* Entity::GetComponent()
 {
 	static_assert(std::is_base_of<Component, T>(), "T is not a component, cannot retrieve T from entity");
-	return ComponentManager::current->GetComponent<T>(GetID());
+
+	if (std::is_same<T, Transform>::value) {
+		return reinterpret_cast<T*>(transform);
+	}
+	else {
+		return ComponentManager::current->GetComponent<T>(GetID());
+	}
 }
 
 //template <typename T>
