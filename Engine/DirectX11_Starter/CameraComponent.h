@@ -16,7 +16,7 @@ public:
 	~CameraComponent();
 
 	void Update();
-	void UpdateCameraValues(XMFLOAT3& pos, XMFLOAT3& rot);
+	void UpdateCameraValues(XMFLOAT3& pos, XMFLOAT3& dir);
 	Camera* GetCamera() { return &cam; }
 
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override;

@@ -14,17 +14,21 @@ void CameraComponent::Update()
 {
 	Transform* playerT = GetEntity()->GetComponent<Transform>();
 
-	UpdateCameraValues(*playerT->GetWorldPosition(), *playerT->GetWorldRotation());
+	DirectX::XMMATRIX worldMat = DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4(playerT->GetWorldMatrix()));
+	DirectX::XMVECTOR rotQuat = DirectX::XMQuaternionRotationMatrix(worldMat);
+	DirectX::XMFLOAT3 dir;
+	DirectX::XMStoreFloat3(&dir, DirectX::XMVector3Rotate(DirectX::XMVectorSet(0, 0, 1, 0), rotQuat));
+
+	UpdateCameraValues(*playerT->GetWorldPosition(), dir);
 }
 
-void CameraComponent::UpdateCameraValues(XMFLOAT3 & pos, XMFLOAT3 & rot)
+void CameraComponent::UpdateCameraValues(XMFLOAT3& pos, XMFLOAT3 & dir)
 {
-	//Update rotation first because it updates the direction of the camera
-	cam.setRotationEuler(rot.x, rot.y, 0);
+	cam.setDirection(dir);
 
 	XMFLOAT3 position;
 	XMStoreFloat3(&position, XMLoadFloat3(&pos) - XMLoadFloat3(&(cam.getDirection())) * 10);
-	cam.setPosition(pos);
+	cam.setPosition(position);
 
 	cam.update(NULL);
 }
