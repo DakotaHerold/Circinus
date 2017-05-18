@@ -390,9 +390,7 @@ void RenderingSystem::Update(float deltaTime, float totalTime)
 
 void RenderingSystem::DrawScene(Camera* cam, Scene* scene)
 {
-
-#ifndef HAS_EDITOR
-
+	
 	auto c = ComponentManager::current->GetAllComponents<CameraComponent>();
 	if (c.size() > 0)
 	{
@@ -407,7 +405,7 @@ void RenderingSystem::DrawScene(Camera* cam, Scene* scene)
 		XMStoreFloat3(&lookDir, rotatedVector);
 
 		XMFLOAT3 pos;
-		XMStoreFloat3(&pos, XMLoadFloat3(playerT->GetLocalPosition()) - rotatedVector);
+		XMStoreFloat3(&pos, XMLoadFloat3(playerT->GetLocalPosition()) - rotatedVector * 10);
 		
 		cam->setPosition(pos);
 		cam->setRotationEuler(playerRot.x, playerRot.y, 0);
@@ -416,8 +414,6 @@ void RenderingSystem::DrawScene(Camera* cam, Scene* scene)
 		//cam = cc->GetCamera();
 	}
 	
-#endif // !HAS_EDITOR
-
 	if (aspectRatioChanged)
 	{
 		cam->setProjectionMatrix(aspectRatio);

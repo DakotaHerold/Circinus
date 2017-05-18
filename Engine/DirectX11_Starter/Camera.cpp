@@ -177,6 +177,21 @@ void Camera::handleKeyboardInput(float moveSpeed)
 	{
 		moveVertical(-moveSpeed);
 	}
+
+	InputManager& input = InputManager::instance();
+	float x = input.GetMouseMoveX();
+	if (input.GetMiddleMouseHeld())	// Left button is down
+	{
+		moveSideways(input.GetMouseMoveX() *0.005f);
+		moveVertical(input.GetMouseMoveY() * 0.005f);
+	}
+	if (input.GetLeftMouseHeld())	// Right button is down
+	{
+		setRotationY(input.GetMouseMoveX());
+		setRotationX(input.GetMouseMoveY());
+	}
+	
+	moveAlongDirection(input.GetMouseWheelDelta() * 0.01f);
 }
 
 Camera::Camera()
@@ -185,7 +200,7 @@ Camera::Camera()
 
 	rotationX = 0.0f;
 	rotationY = 0.0f;
-	position = { 0.0f, 0.0f, 0.0f };
+	position = { 0.0f, 0.0f, -10.0f };
 	direction = { 0.0f, 0.0f, 1.0f };
 	up = { 0.0f, 1.0f, 0.0f };
 

@@ -102,14 +102,11 @@ void Scene::Enter()
 
 void Scene::Tick(float deltaTime, float totalTime)
 {
-#ifndef HAS_EDITOR
 	for (CameraComponent* i : ComponentManager::current->GetAllComponents<CameraComponent>()) {
 		// update all cameras
 		i->Update();
 	}
-#else
 	cam.update(deltaTime);
-#endif // !HAS_EDITOR
 
 	for (auto* i : componentManager->GetAllComponents<ScriptComponent>()) {
 		i->Update();
