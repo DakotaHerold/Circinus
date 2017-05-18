@@ -448,8 +448,13 @@ void RenderingSystem::DrawScene(Camera* cam, Scene* scene)
 			lights[j] = i->GetLight();
 
 			Transform* ent = i->GetEntity()->GetComponent<Transform>();
-			i->SetPosition(*ent->GetLocalPosition());
-			i->SetRotationEuler(*ent->GetLocalRotation());
+			auto worldPos = *ent->GetWorldPosition();
+			if (worldPos.x != lights[j].Position.x || worldPos.y != lights[j].Position.y || worldPos.z != lights[j].Position.z)
+			{
+				i->SetPosition(*ent->GetWorldPosition());
+				i->SetModified();
+			}
+			//i->SetRotationEuler(*ent->GetLocalRotation());
 
 
 			if (i->WasModified())
