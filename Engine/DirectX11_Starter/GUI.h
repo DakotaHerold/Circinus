@@ -65,6 +65,8 @@ public:
 	void AddMenuBar(bool * _running);
 	void ShowExampleMenuFile();
 
+	void HierarchyTree(Transform* t);
+
 	~GUI(); // Fix the Destructor. Search for Singletons in C++
 
 

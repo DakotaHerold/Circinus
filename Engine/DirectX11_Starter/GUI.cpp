@@ -99,8 +99,8 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 			ImGui::Text("Hierarchy");
 			ImGui::Separator();
 
-			vector<Entity *> curSceneEntities = Engine::instance()->GetCurScene()->GetAllEntities();
-			int entCounter = 0;
+			//vector<Entity *> curSceneEntities = Engine::instance()->GetCurScene()->GetAllEntities();
+			//int entCounter = 0;
 
 			if (nullptr != Editor::instance()->GetSelectedEntity()) {
 				selectedEntity = Editor::instance()->GetSelectedEntity();
@@ -108,15 +108,21 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 				_somthingSelected = true;
 			}
 
-			// TODO: Make sure to parent and child the objects accordingly.
-			for (std::vector<Entity *>::iterator it = curSceneEntities.begin(); it != curSceneEntities.end(); ++it) {
-				++entCounter;
-				if (ImGui::Selectable(((*it)->GetName() + " (" + std::to_string(entCounter) + ")").c_str())) {
-					selectedEntity = *it;
-					Editor::instance()->SetSelectedEntity(*it);
-					ComponentDisplayFlag = true;
-					_somthingSelected = true;
-				}
+			//// TODO: Make sure to parent and child the objects accordingly.
+			//for (std::vector<Entity *>::iterator it = curSceneEntities.begin(); it != curSceneEntities.end(); ++it) {
+			//	++entCounter;
+			//	if (ImGui::Selectable(((*it)->GetName() + " (" + std::to_string(entCounter) + ")").c_str())) {
+			//		selectedEntity = *it;
+			//		Editor::instance()->SetSelectedEntity(*it);
+			//		ComponentDisplayFlag = true;
+			//		_somthingSelected = true;
+			//	}
+			//}
+
+			Transform* root = Engine::instance()->GetCurScene()->root;
+			for (auto i = root->children.begin(); i != root->children.end(); ++i)
+			{
+				HierarchyTree(*i);
 			}
 
 			ImGui::End();
@@ -133,8 +139,15 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 		ImGui::SetNextWindowPos(cwPos, ImGuiSetCond_FirstUseEver);
 		ImGui::SetNextWindowSize(cwSize, ImGuiSetCond_FirstUseEver);
 
-		ImGui::Begin((selectedEntity->GetName() + "'s Components").c_str(), &ComponentDisplayFlag, _cwFlag);
+		ImGui::Begin(("Entity: " + selectedEntity->GetName()).c_str(), &ComponentDisplayFlag, _cwFlag);
 		{
+			char bufEntityName[512] = {};
+			strcpy(bufEntityName, selectedEntity->GetName().c_str());
+			if (ImGui::InputText("Name", bufEntityName, 512, ImGuiInputTextFlags_EnterReturnsTrue))
+			{
+				selectedEntity->ChangeName(bufEntityName);
+			}
+
 			int compCounter = 0;
 			vector<pair<TypeId, ObjectPoolIndex *>> Components;
 			Components = cm->GetAllComponentsInfo((selectedEntity)->GetID());
@@ -414,8 +427,7 @@ void GUI::AddMenuBar(bool * _running) {
 			if (ImGui::BeginMenu("Add"))
 			{
 				if (ImGui::MenuItem("Empty")) {
-					Entity * tempEnt = new Entity("Empty");
-					Engine::instance()->GetCurScene()->AddEntity(tempEnt);
+					Engine::instance()->GetCurScene()->CreateEntity("Empty");
 				}
 				ImGui::EndMenu();
 			}
@@ -548,6 +560,45 @@ void GUI::ShowExampleMenuFile()
 	}
 	if (ImGui::MenuItem("Checked", NULL, true)) {}
 	if (ImGui::MenuItem("Quit", "Alt+F4")) {}
+}
+
+void GUI::HierarchyTree(Transform * t)
+{
+	static ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
+	Entity* e = t->GetEntity();
+	string nodeName = (e->GetName() + " (" + std::to_string(t->GetEntityID()) + ")");
+	bool isOpen = ImGui::TreeNodeEx(nodeName.c_str(), node_flags);
+	if (ImGui::IsItemClicked())
+	{
+		selectedEntity = e;
+		Editor::instance()->SetSelectedEntity(e);
+		ComponentDisplayFlag = true;
+	}
+	
+	{
+		if (ImGui::BeginPopupContextItem((nodeName + " Popup").c_str())) {
+			if (ImGui::Button("Add Child")) {
+				Entity * tempEnt = Engine::instance()->GetCurScene()->CreateEntity("Empty");
+				tempEnt->transform->SetParent(t);
+				ImGui::CloseCurrentPopup();
+			}
+			if (ImGui::Button("Delete")) {
+				// TODO !!
+
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::EndPopup();
+		}
+	}
+
+	if (isOpen)
+	{
+		for (auto i = t->children.begin(); i != t->children.end(); ++i)
+		{
+			HierarchyTree(*i);
+		}
+		ImGui::TreePop();
+	}
 }
 
 void GUI::End()
