@@ -95,6 +95,8 @@ public:
 
 	Transform* root;
 
+	void removeEntityWithNumber(unsigned int count);
+
 private:
 	Camera			cam;
 

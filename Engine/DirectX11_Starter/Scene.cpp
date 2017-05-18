@@ -386,6 +386,15 @@ void Scene::Build(rapidjson::Document &d)
 	}
 }
 
+void Scene::removeEntityWithNumber(unsigned int count)
+{
+	for (auto it = entities.rbegin(); it != entities.rend() && count > 0;) {
+		delete *std::next(it).base();
+		it = decltype(it){entities.erase(std::next(it).base())};
+		count--;
+	}
+}
+
 
 
 
