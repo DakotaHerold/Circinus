@@ -29,17 +29,33 @@ public:
 
 public:
 
+	void OnSceneLoad();
+
 	void SetSelectedEntity(Entity* entity) { selectedEntity = entity; }
 	Entity* GetSelectedEntity() { return selectedEntity; }
 
-	void Run();
+	void Play();
+
+	void Pause();
+
+	void Stop();
+
+	void RunStandalone();
 
 	void Build();
+
+	bool IsPlaying() const { return isPlaying; }
+
+	bool IsPaused() const { return isPaused; }
 
 private:
 	Camera		cam;
 	HandleGizmo	handle;
 	Entity*		selectedEntity;
+
+	bool		isPlaying;
+	bool		isPaused;
+	bool		inGameTotalTime;
 };
 
 #endif

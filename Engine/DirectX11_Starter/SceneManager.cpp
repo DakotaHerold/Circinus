@@ -16,8 +16,11 @@ Scene * SceneManager::CreateNewScene(string name)
 
 Scene * SceneManager::LoadScene(string name)
 {
+	if (name.empty())
+		return nullptr;
+
 #ifdef HAS_EDITOR
-	Editor::instance()->SetSelectedEntity(nullptr);
+	Editor::instance()->OnSceneLoad();
 #endif // HAS_EDITOR
 
 	Scene* s = CreateNewScene(name);
@@ -34,6 +37,10 @@ Scene * SceneManager::LoadScene(string name)
 
 Scene * SceneManager::SaveScene(Scene * scene)
 {
+#ifdef HAS_EDITOR
+	if (Editor::instance()->IsPlaying())
+		return nullptr;
+#endif
 	StringBuffer sb;
 	PrettyWriter<StringBuffer> writer(sb);
 	scene->Serialize(writer);

@@ -312,12 +312,12 @@ void Scene::Build(rapidjson::Document &d)
 	}
 	//skybox
 	auto& b_skybox = d["skybox"];
-	skybox = sceneGraph.CreateRenderable();
+	skybox = new Renderable();
 	skybox->SetMaterial(GetMaterial(b_skybox["material"].GetString()).pointer);
 	skybox->SetMesh(GetMesh(b_skybox["mesh"].GetString()).pointer);
 	skyboxMaterial = b_skybox["material"].GetString();
 	skyboxMesh = b_skybox["mesh"].GetString();
-	sceneGraph.SetSkyBox(skybox);
+
 	//ent
 	Value& b_entities = d["entities"];
 

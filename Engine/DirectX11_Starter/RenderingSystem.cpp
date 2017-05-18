@@ -16,11 +16,13 @@
 #include "RenderingSystem.h"
 #include "ParticleSystem.h"
 #include "NativeWindow.h"
-#include "SceneGraph.h"
 #include "Camera.h"
 #include "ComponentManager.h"
 #include "Transform.h"
+#include "Renderable.h"
 #include "Lighting.h"
+#include "Scene.h"
+#include "Engine.h"
 
 #ifdef HAS_EDITOR
 #include "GizmoRenderer.h"
@@ -351,28 +353,31 @@ void RenderingSystem::Update(float deltaTime, float totalTime)
 	// TODO gathering particle emitters to update
 	// and update the position and velocity by transform of that entity
 #if !defined(DISABLE_PARTICLE_SYSTEM)
-	auto emitters = ComponentManager::current->GetAllComponents<ParticleEmitter>();
-
-	for (auto e : emitters)
+	if (nullptr != Engine::instance()->GetCurScene())
 	{
-		Transform* t = e->GetEntity()->GetComponent<Transform>();
+		auto emitters = ComponentManager::current->GetAllComponents<ParticleEmitter>();
 
-		DirectX::XMMATRIX worldMat = DirectX::XMMatrixTranspose(
-			DirectX::XMLoadFloat4x4(t->GetWorldMatrix()));
+		for (auto e : emitters)
+		{
+			Transform* t = e->GetEntity()->GetComponent<Transform>();
 
-		DirectX::XMMATRIX worldMat_it = DirectX::XMMatrixTranspose(
-			DirectX::XMMatrixInverse(nullptr, worldMat));
+			DirectX::XMMATRIX worldMat = DirectX::XMMatrixTranspose(
+				DirectX::XMLoadFloat4x4(t->GetWorldMatrix()));
 
-		DirectX::XMFLOAT3 worldVel;
-		DirectX::XMStoreFloat3(&worldVel,
-			DirectX::XMVector3Transform(
-				DirectX::XMLoadFloat3(&(e->velocity)),
-				worldMat_it
-			)
-		);
+			DirectX::XMMATRIX worldMat_it = DirectX::XMMatrixTranspose(
+				DirectX::XMMatrixInverse(nullptr, worldMat));
 
-		//DirectX::XMFLOAT3 pos = { 2.0f, 0.0f, 0.0f };
-		e->SetCBParameters(*(t->GetWorldPosition()), worldVel, e->lifeTime, e->emitRate);
+			DirectX::XMFLOAT3 worldVel;
+			DirectX::XMStoreFloat3(&worldVel,
+				DirectX::XMVector3Transform(
+					DirectX::XMLoadFloat3(&(e->velocity)),
+					worldMat_it
+				)
+			);
+
+			//DirectX::XMFLOAT3 pos = { 2.0f, 0.0f, 0.0f };
+			e->SetCBParameters(*(t->GetWorldPosition()), worldVel, e->lifeTime, e->emitRate);
+		}
 	}
 
 	particleSystem->Update(deltaTime, totalTime);
@@ -382,7 +387,7 @@ void RenderingSystem::Update(float deltaTime, float totalTime)
 
 #pragma region Draw
 
-void RenderingSystem::DrawScene(Camera* cam, SceneGraph* scene)
+void RenderingSystem::DrawScene(Camera* cam, Scene* scene)
 {
 	if (aspectRatioChanged)
 	{
@@ -397,88 +402,75 @@ void RenderingSystem::DrawScene(Camera* cam, SceneGraph* scene)
 	deviceContext->ClearRenderTargetView(renderTargetView, clearColor);
 	deviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 
-	/*std::list<Renderable>& list = scene->renderables;
-	for (auto i = list.begin(); i != list.end(); ++i)
-	{
-		UploadPreBoundConstantBuffers();
-		i->material->Apply(deviceContext);
-		UINT strides[] = { sizeof(Vertex) };
-		UINT offsets[] = { 0 };
-		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		deviceContext->IASetInputLayout(i->material->shader->layout);
-		deviceContext->IASetVertexBuffers(0, 1, &(i->mesh->vertexBuffer), strides, offsets);
-		deviceContext->IASetIndexBuffer(i->mesh->indexBuffer, DXGI_FORMAT_R32_UINT, 0);
-		deviceContext->DrawIndexed(i->mesh->indexCount, 0, 0);
-	}*/
 
 	auto& frustum = cam->getFrustum();
 
-	//std::vector<Renderable*>& renderables = ComponentManager::current->renderables;
+	if (nullptr != scene)
+	{
 
-	// Update lights for scene here
-	Light lights[MAX_LIGHTS];	// Maybe not initializing all to zero???? Check later
-	auto l = ComponentManager::current->GetAllComponents<Lighting>();
-	bool hasAnyLightChanged = false;
-	for (size_t j = 0; j < l.size(); j++) {
-		Lighting* i = l[j];
-		lights[j] = i->GetLight();
+		// Update lights for scene here
+		Light lights[MAX_LIGHTS];	// Maybe not initializing all to zero???? Check later
+		auto l = ComponentManager::current->GetAllComponents<Lighting>();
+		bool hasAnyLightChanged = false;
+		for (size_t j = 0; j < l.size(); j++) {
+			Lighting* i = l[j];
+			lights[j] = i->GetLight();
 
-		if (i->WasModified())
-		{
-			hasAnyLightChanged = true;
-			i->Cleanse();
+			if (i->WasModified())
+			{
+				hasAnyLightChanged = true;
+				i->Cleanse();
+			}
 		}
-	}
 
-	XMFLOAT4 globalAmbient = XMFLOAT4(0.2f, 0.2f, 0.2f, 0.2f);
-	XMFLOAT4 eyePos = XMFLOAT4(cam->getPosition().x, cam->getPosition().y, cam->getPosition().z, 1);
+		XMFLOAT4 globalAmbient = XMFLOAT4(0.2f, 0.2f, 0.2f, 0.2f);
+		XMFLOAT4 eyePos = XMFLOAT4(cam->getPosition().x, cam->getPosition().y, cam->getPosition().z, 1);
 
-	if (hasAnyLightChanged)
-		UpdateLightProperties(eyePos, globalAmbient, lights, l.size(), MAX_LIGHTS);
+		if (hasAnyLightChanged)
+			UpdateLightProperties(eyePos, globalAmbient, lights, l.size(), MAX_LIGHTS);
 
-	for (Renderable* i : ComponentManager::current->GetAllComponents<Renderable>()) {
-		Transform* t = i->GetEntity()->GetComponent<Transform>();
-		auto* m = t->GetWorldMatrix();
+		for (Renderable* i : ComponentManager::current->GetAllComponents<Renderable>()) {
+			Transform* t = i->GetEntity()->GetComponent<Transform>();
+			auto* m = t->GetWorldMatrix();
 
-		DirectX::XMMATRIX worldMat = DirectX::XMMatrixTranspose(
-			DirectX::XMLoadFloat4x4(m)
-		);
-
-		DirectX::BoundingBox bounds;
-		i->GetMesh()->GetBounds().Transform(bounds, worldMat);
-
-		if (!frustum.Intersects(bounds))
-			continue;
-
-		{
-			DirectX::XMFLOAT4X4 world_it;
-
-			DirectX::XMStoreFloat4x4(
-				&world_it,
-				DirectX::XMMatrixInverse(nullptr,
-					worldMat
-				)
+			DirectX::XMMATRIX worldMat = DirectX::XMMatrixTranspose(
+				DirectX::XMLoadFloat4x4(m)
 			);
 
-			static std::string matWorld = "matWorld";
-			static std::string matWorld_IT = "matWorld_IT";
+			DirectX::BoundingBox bounds;
+			i->GetMesh()->GetBounds().Transform(bounds, worldMat);
 
-			i->GetMaterial()->SetMatrix4x4(matWorld, *m);
-			i->GetMaterial()->SetMatrix4x4(matWorld_IT, world_it);
+			if (!frustum.Intersects(bounds))
+				continue;
+
+			{
+				DirectX::XMFLOAT4X4 world_it;
+
+				DirectX::XMStoreFloat4x4(
+					&world_it,
+					DirectX::XMMatrixInverse(nullptr,
+						worldMat
+					)
+				);
+
+				static std::string matWorld = "matWorld";
+				static std::string matWorld_IT = "matWorld_IT";
+
+				i->GetMaterial()->SetMatrix4x4(matWorld, *m);
+				i->GetMaterial()->SetMatrix4x4(matWorld_IT, world_it);
+			}
+
+			UploadPreBoundConstantBuffers();
+			i->material->Apply(deviceContext);
+			UINT strides[] = { sizeof(Vertex) };
+			UINT offsets[] = { 0 };
+			deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			deviceContext->IASetInputLayout(i->material->shader->layout);
+			deviceContext->IASetVertexBuffers(0, 1, &(i->mesh->vertexBuffer), strides, offsets);
+			deviceContext->IASetIndexBuffer(i->mesh->indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+			deviceContext->DrawIndexed(i->mesh->indexCount, 0, 0);
 		}
 
-		UploadPreBoundConstantBuffers();
-		i->material->Apply(deviceContext);
-		UINT strides[] = { sizeof(Vertex) };
-		UINT offsets[] = { 0 };
-		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		deviceContext->IASetInputLayout(i->material->shader->layout);
-		deviceContext->IASetVertexBuffers(0, 1, &(i->mesh->vertexBuffer), strides, offsets);
-		deviceContext->IASetIndexBuffer(i->mesh->indexBuffer, DXGI_FORMAT_R32_UINT, 0);
-		deviceContext->DrawIndexed(i->mesh->indexCount, 0, 0);
-	}
-
-	{
 		Renderable* skybox = scene->GetSkyBox();
 		if (nullptr != skybox)
 		{

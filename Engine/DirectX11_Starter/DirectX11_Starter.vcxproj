@@ -258,7 +258,6 @@
     <ClCompile Include="RenderingSystem.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="RigidBody.cpp" />
-    <ClCompile Include="SceneGraph.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ScriptComponent.cpp" />
@@ -315,7 +314,6 @@
     <ClInclude Include="RenderingSystem.h" />
     <ClInclude Include="RigidBody.h" />
     <ClInclude Include="Scene.h" />
-    <ClInclude Include="SceneGraph.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ScriptComponent.h" />
