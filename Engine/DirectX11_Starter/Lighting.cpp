@@ -53,3 +53,17 @@ void Lighting::Cleanse()
 {
 	isDirty = false;
 }
+
+void Lighting::SetPosition(XMFLOAT3 & pos)
+{
+	light->Position = XMFLOAT4(pos.x, pos.y, pos.z, 1);
+}
+
+void Lighting::SetRotationEuler(XMFLOAT3 & rot)
+{
+	XMVECTOR rotationQuat = XMQuaternionRotationRollPitchYaw(rot.x, rot.y, rot.z);
+	XMVECTOR rotatedVector = XMVector3Rotate(XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), rotationQuat);
+	rotatedVector = XMQuaternionNormalize(rotatedVector);
+
+	XMStoreFloat4(&(light->Direction), rotatedVector);
+}

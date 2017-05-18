@@ -1,0 +1,142 @@
+{
+    "name": "",
+    "skybox": {
+        "material": "",
+        "mesh": ""
+    },
+    "meshes": [
+        {
+            "name": "cube",
+            "file": "Assets/Models/cube.fbx"
+        }
+    ],
+    "shaders": [
+        {
+            "name": "Opaque",
+            "file": "Assets/ShaderObjs/Opaque.cso"
+        },
+        {
+            "name": "skybox",
+            "file": "Assets/ShaderObjs/Skybox.cso"
+        }
+    ],
+    "textures": [
+        {
+            "type": "texDiffuse",
+            "name": "rust",
+            "file": "Assets/Textures/rust.jpg"
+        },
+        {
+            "type": "texDiffuse",
+            "name": "water",
+            "file": "Assets/Textures/water.gif"
+        },
+        {
+            "type": "skyMap",
+            "name": "skybox",
+            "file": "Assets/Textures/space.dds"
+        }
+    ],
+    "materials": [
+        {
+            "name": "skybox",
+            "shader": "skybox",
+            "texture": "skybox"
+        },
+        {
+            "name": "rust",
+            "shader": "Opaque",
+            "texture": "rust"
+        },
+        {
+            "name": "water",
+            "shader": "Opaque",
+            "texture": "water"
+        }
+    ],
+    "entities": [
+        {
+            "name": "parent",
+            "mesh": "cube",
+            "material": "rust",
+            "components": [
+                {
+                    "name": "Transform",
+                    "parent": "root",
+                    "PositionX": 0.0,
+                    "PositionY": 0.0,
+                    "PositionZ": 0.0,
+                    "RotationX": 0.0,
+                    "RotationY": 0.0,
+                    "RotationZ": 0.0,
+                    "ScaleX": 1.0,
+                    "ScaleY": 1.0,
+                    "ScaleZ": 1.0
+                },
+                {
+                    "name": "Renderable"
+                },
+                {
+                    "name": "Undecided"
+                }
+            ]
+        },
+        {
+            "name": "child",
+            "mesh": "cube",
+            "material": "water",
+            "components": [
+                {
+                    "name": "Transform",
+                    "parent": "parent",
+                    "PositionX": 2.0,
+                    "PositionY": 0.0,
+                    "PositionZ": 0.0,
+                    "RotationX": 0.0,
+                    "RotationY": 0.0,
+                    "RotationZ": 0.0,
+                    "ScaleX": 1.0,
+                    "ScaleY": 1.0,
+                    "ScaleZ": 1.0
+                },
+                {
+                    "name": "Renderable"
+                }
+            ]
+        },
+        {
+            "name": "light",
+            "mesh": "",
+            "material": "",
+            "components": [
+                {
+                    "name": "Transform",
+                    "parent": "root",
+                    "PositionX": 0.0,
+                    "PositionY": 0.0,
+                    "PositionZ": 0.0,
+                    "RotationX": 0.0,
+                    "RotationY": 0.0,
+                    "RotationZ": 0.0,
+                    "ScaleX": 1.0,
+                    "ScaleY": 1.0,
+                    "ScaleZ": 1.0
+                },
+                {
+                    "name": "Lighting",
+                    "PositionX": -5.0,
+                    "PositionY": 0.0,
+                    "PositionZ": 0.0,
+                    "PositionW": 0.0,
+                    "ColorX": 0.699999988079071,
+                    "ColorY": 0.0,
+                    "ColorZ": 0.0,
+                    "ColorW": 1.0,
+                    "lightType": 1,
+                    "enabled": 1,
+                    "specularAmount": 8
+                }
+            ]
+        }
+    ]
+}

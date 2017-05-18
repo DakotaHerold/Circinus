@@ -17,6 +17,7 @@
 #include <string>
 #include <sys/stat.h>
 #include <unordered_map>
+#include <chrono>
 
 GUI::GUI()
 {
@@ -361,9 +362,11 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 
 				Mesh* mesh = renderer.CreateMesh(L"Assets/Models/cube.fbx");
 				Shader* shader = renderer.CreateShader(L"Assets/ShaderObjs/Opaque.cso");
-				Texture* tex = renderer.CreateTexture(L"Assets/Textures/rust.jpg");
+				Texture* tex = renderer.CreateTexture(L"Assets/Textures/water.gif");
 				Material *mat = renderer.CreateMaterial(shader);
 				mat->SetTexture("texDiffuse", tex);
+
+				auto started = std::chrono::high_resolution_clock::now();
 
 				for (int i = 0; i < row_column; i++) {
 					for (int j = 0; j < row_column; j++) {
@@ -379,12 +382,17 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 								RigidBody* rb1 = e1->AddComponent <RigidBody>(t1, &(r1->BoundingBox()));*/
 								//e1->AddComponent<ScriptComponent>("script2.lua", rb1);
 				}
+
+				auto done = std::chrono::high_resolution_clock::now();
+				std::cout << "Time : " << std::chrono::duration_cast<std::chrono::milliseconds>(done - started).count() << endl;;
 			}
 			ImGui::Separator();
 			ImGui::InputInt("No. of Entities to Destroy", &numberOfEntitiesToCreate, 50, 200, 0);
-			if (ImGui::Button("Destroy Entities")) {
-				int count = numberOfEntitiesToCreate + 1; // + 1 to offset some bug in the code. ( < instead of <= I guess? )
-				// Insert Logic to destroy the Entities here.
+			if (ImGui::Button("Destroy Entities") && numberOfEntitiesToCreate > 0) {
+				auto started = std::chrono::high_resolution_clock::now();
+				Engine::instance()->GetCurScene()->removeEntityWithNumber(numberOfEntitiesToCreate);
+				auto done = std::chrono::high_resolution_clock::now();
+				std::cout << "Time : " << std::chrono::duration_cast<std::chrono::milliseconds>(done - started).count() << endl;;
 			}
 			ImGui::End();
 		}

@@ -489,11 +489,19 @@ void RenderingSystem::DrawScene(Camera* cam, Scene* scene)
 					)
 				);
 
+<<<<<<< HEAD
+			static std::string matWorld = "matWorld";
+			static std::string matWorld_IT = "matWorld_IT";
+
+			i->GetMaterial()->SetMatrix4x4(matWorld, *m);
+			i->GetMaterial()->SetMatrix4x4(matWorld_IT, world_it);
+=======
 				static std::string matWorld = "matWorld";
 				static std::string matWorld_IT = "matWorld_IT";
 
 				i->GetMaterial()->SetMatrix4x4(matWorld, *m);
 				i->GetMaterial()->SetMatrix4x4(matWorld_IT, world_it);
+>>>>>>> Development
 			}
 
 			UploadPreBoundConstantBuffers();
@@ -550,11 +558,7 @@ Mesh * RenderingSystem::CreateMesh(const wchar_t* filename)
 	}
 
 	Mesh* mesh = new Mesh();
-	if (!mesh->LoadFromFile(filename, device))
-	{
-		delete mesh;
-		return nullptr;
-	}
+	mesh->LoadFromFile(filename, device);
 
 	if (mesh->IsValid())
 	{
@@ -563,7 +567,7 @@ Mesh * RenderingSystem::CreateMesh(const wchar_t* filename)
 	}
 
 	delete mesh;
-	return nullptr;
+	return mesh;
 }
 
 Shader * RenderingSystem::CreateShader(const wchar_t * filename)
