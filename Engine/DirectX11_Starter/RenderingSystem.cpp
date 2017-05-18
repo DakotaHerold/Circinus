@@ -397,26 +397,25 @@ void RenderingSystem::DrawScene(Camera* cam, Scene* scene)
 	if (c.size() > 0)
 	{
 		CameraComponent* cc = c[0];
-		//Transform* playerT = cc->GetEntity()->GetComponent<Transform>();
+		Transform* playerT = cc->GetEntity()->GetComponent<Transform>();
 
-		//XMFLOAT3 playerRot = *playerT->GetWorldRotation();
-		//XMVECTOR rotationQuat = XMQuaternionRotationRollPitchYaw(playerRot.x, playerRot.y, 0.0f);
-		//XMVECTOR rotatedVector = XMVector3Rotate(XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), rotationQuat);
-		//rotatedVector = XMQuaternionNormalize(rotatedVector);
-		//XMFLOAT3 lookDir;
-		//XMStoreFloat3(&lookDir, rotatedVector);
+		XMFLOAT3 playerRot = *playerT->GetLocalRotation();
+		XMVECTOR rotationQuat = XMQuaternionRotationRollPitchYaw(playerRot.x, playerRot.y, 0.0f);
+		XMVECTOR rotatedVector = XMVector3Rotate(XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), rotationQuat);
+		rotatedVector = XMQuaternionNormalize(rotatedVector);
+		XMFLOAT3 lookDir;
+		XMStoreFloat3(&lookDir, rotatedVector);
 
-		//XMFLOAT3 pos;
-		//XMStoreFloat3(&pos, XMLoadFloat3(playerT->GetWorldPosition()) - rotatedVector);
-		//
-		//cam->setPosition(pos);
-		//cam->setRotationX(playerRot.x);
-		//cam->setRotationY(playerRot.y);
-		////cam->setViewMatrix(lookDir);
-		//cam->update(NULL);
+		XMFLOAT3 pos;
+		XMStoreFloat3(&pos, XMLoadFloat3(playerT->GetLocalPosition()) - rotatedVector);
+		
+		cam->setPosition(pos);
+		cam->setRotationEuler(playerRot.x, playerRot.y, 0);
+		//cam->setViewMatrix(lookDir);
+		cam->update(NULL);
 
 		//cc->UpdateCameraValues(*playerT->GetWorldPosition(), *playerT->GetWorldRotation());
-		cam = cc->GetCamera();
+		//cam = cc->GetCamera();
 	}
 	
 #endif // !HAS_EDITOR
