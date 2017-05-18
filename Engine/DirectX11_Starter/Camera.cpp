@@ -5,6 +5,8 @@
 
 void Camera::update(float deltaTime)
 {
+	handleKeyboardInput(deltaTime);
+
 	if (isDirty)
 	{
 		XMVECTOR rotatedVector = XMLoadFloat3(&direction);
