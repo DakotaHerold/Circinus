@@ -90,6 +90,11 @@ void ScriptComponent::Init(std::string scriptFile, RigidBody * body)
 	}
 }
 
+void ScriptComponent::ResetScript(std::string scriptFile)
+{
+	Init(scriptFile, rigidbody);
+}
+
 void ScriptComponent::Update()
 {
 	// Call Lua Update if one exists 

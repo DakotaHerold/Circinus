@@ -23,8 +23,10 @@ private:
 	bool DebugDisplayFlag = false;
 	bool HierarchyDisplayFlag = false;
 	bool ComponentDisplayFlag = false;
-	bool ComponentDisplayDetailsFlag = false;
+	//bool ComponentDisplayDetailsFlag = false;
 	bool BenchmarkDisplayFlag = false;
+	
+	std::string selectedKeyInParameterTable;
 
 	int numberOfEntitiesToCreate = 0;
 

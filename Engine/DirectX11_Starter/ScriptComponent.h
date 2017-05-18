@@ -11,6 +11,7 @@ extern "C" {
 #include "RigidBody.h"
 #include <LuaBridge.h>
 #include <iostream>
+#include <unordered_map>
 
 class ScriptComponent :
 	public Component
@@ -19,15 +20,18 @@ public:
 	void Update() override; 
 	//void Release() override; 
 
-	inline std::string GetScriptName() { return fileName; }
+	inline const std::string& GetScriptName() const { return file; }
 
 	ScriptComponent(std::string scriptFile, RigidBody* body);
 	ScriptComponent();
 	void Init(std::string scriptFile, RigidBody* body);
+	void ResetScript(std::string scriptFile);
 	~ScriptComponent();
 
 	void	Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
 	void	Load(rapidjson::Value v);
+
+	std::unordered_map<std::string, std::string>& GetParameterTable() { return parameterTable; }
 
 private: 
 	// LuaBridge Attributes
@@ -56,5 +60,7 @@ private:
 
 	//std::string luaString; 
 	//int answer;
+
+	std::unordered_map<std::string, std::string> parameterTable;
 };
 

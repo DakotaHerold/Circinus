@@ -13,10 +13,14 @@
 #include "Editor.h"
 #include "SceneManager.h"
 #include "RigidBody.h"
+#include "Renderable.h"
+#include <string>
+#include <sys/stat.h>
+#include <unordered_map>
 
 GUI::GUI()
 {
-	
+
 }
 
 void GUI::Init(HWND hwnd, ID3D11Device* device, ID3D11DeviceContext* device_context)
@@ -124,7 +128,7 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 	if (nullptr != selectedEntity && ComponentDisplayFlag) {
 
 		// TODO: Can probably move these to Init Function.
-		ImVec2 cwPos = ImVec2(2 * _windowWidth / 3,  _windowHeight/2 + 20);
+		ImVec2 cwPos = ImVec2(2 * _windowWidth / 3, _windowHeight / 2 + 20);
 		ImVec2 cwSize = ImVec2(_windowWidth / 3, _windowHeight / 2 - 20);
 		ImGui::SetNextWindowPos(cwPos, ImGuiSetCond_FirstUseEver);
 		ImGui::SetNextWindowSize(cwSize, ImGuiSetCond_FirstUseEver);
@@ -141,7 +145,6 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 					// We need to select the Component here.
 					selectedComponentID = that->first;
 					selectedCompIndex = that->second;
-					ComponentDisplayDetailsFlag = true;
 				}
 				{
 					if (ImGui::BeginPopupContextItem(((ComponentTypeName(that->first)) + std::string(" (") /* + std::to_string(entCounter) */ + "-" + std::to_string(compCounter) + std::string(") Popup")).c_str())) {
@@ -162,53 +165,167 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 
 			ImGui::Separator();
 
-			guiPos = *(cm->GetComponent<Transform>((selectedEntity)->GetID(), selectedCompIndex)->GetWorldPosition());
-			ImGui::Text("Position: ");
-			guiUpPos = guiPos;
-
-			ImGui::InputFloat("x", &(guiUpPos.x), 0.1f, 1.0f);
-			ImGui::InputFloat("y", &(guiUpPos.y), 0.1f, 1.0f);
-			ImGui::InputFloat("z", &(guiUpPos.z), 0.1f, 1.0f);
-
-			if (guiPos.x != guiUpPos.x || guiPos.y != guiUpPos.y || guiPos.z != guiUpPos.z) {
-				cm->GetComponent<Transform>((selectedEntity)->GetID())->SetWorldPosition((guiUpPos).x, (guiUpPos).y, (guiUpPos).z);
-			}
-
-			ImGui::End();
-		}
-	}
-
-	// Component Details Window
-	if (NULL != selectedComponentID && ComponentDisplayDetailsFlag) {
-		// TODO: Can probably move these to Init Function.
-		// ImVec2 cwPos = ImVec2(30, _windowHeight / 2 + 20);
-		ImVec2 cwSize = ImVec2(_windowWidth / 3, _windowHeight / 2 - 20);
-		// ImGui::SetNextWindowPos(cwPos);
-		ImGui::SetNextWindowSize(cwSize, ImGuiSetCond_FirstUseEver);
-		ImGui::Begin("Component Details", &ComponentDisplayDetailsFlag, _cdwFlag);
-		{
-			if ( 0 == std::strcmp(ComponentTypeName(selectedComponentID), "class ScriptComponent") )
+			do // using a do-while(0), just so we can use break to jump to the end of the block
 			{
-				ImGui::Text((cm->GetComponent<ScriptComponent>((selectedEntity)->GetID(), selectedCompIndex)->GetScriptName()).c_str());
-			}
-			else if (0 == std::strcmp(ComponentTypeName(selectedComponentID), "class Transform")) {
-				//std::cout << "Here" << std::endl;
-				//XMFLOAT3 position = *(cm->GetComponent<Transform>((selectedEntity)->GetID(), selectedCompIndex)->GetLocalPosition());
-				//ImGui::Text("Position: ");
-				//ImGui::InputFloat("x: ", &position.x, 0.1f, 1.0f);
+				char* typeName = ComponentTypeName(selectedComponentID);
 
-			}
-			else {
-				std::cout << "?" << ComponentTypeName(selectedComponentID) << "?" << std::endl;
-				std::cout << "#" << std::strcmp(ComponentTypeName(selectedComponentID), "class ScriptComponent") << "#" << std::endl;
-			}
+				// Component Details Window
+				if (0 == std::strcmp(typeName, "class ScriptComponent"))
+				{
+					auto comp = cm->GetComponent<ScriptComponent>((selectedEntity)->GetID(), selectedCompIndex);
+					if (nullptr == comp)
+						break;
+
+					char buf[1024] = {};
+					strcpy(buf, comp->GetScriptName().c_str());
+
+					if (ImGui::InputText(".lua", buf, 1024, ImGuiInputTextFlags_EnterReturnsTrue))
+					{
+						std::string newFileName(buf);
+						if (newFileName != comp->GetScriptName())
+						{
+							newFileName = "Scripts/" + newFileName + ".lua";
+
+							// test if file exists
+							struct stat buffer;
+							if (stat(newFileName.c_str(), &buffer) != 0)
+								break;
+
+							comp->ResetScript(buf);
+						}
+					}
+
+					auto& table = comp->GetParameterTable();
+					ImGui::Text("Parameters");
+					if (ImGui::Button("Add"))
+					{
+						char bufk[512] = {};
+						size_t i = table.size();
+						do
+						{
+							sprintf(bufk, "NewKey%lu", i++);
+						} while (table.find(bufk) != table.end());
+						
+						table.insert(std::pair<std::string, std::string>(bufk, ""));
+					}
+
+					static std::string keyToDel;
+					static std::string keyToAdd;
+					static std::string valToAdd;
+
+					keyToDel.clear();
+					keyToAdd.clear();
+					valToAdd.clear();
+
+					{
+						char buf[1024];
+						char bufK[512], bufV[512];
+
+						for (auto i = table.begin(); i != table.end(); ++i)
+						{
+							sprintf(buf, "%s: %s", i->first.c_str(), i->second.c_str());
+							ImGui::Text(buf);
+							if (ImGui::Button(("Modify " + i->first).c_str()))
+							{
+								selectedKeyInParameterTable = i->first;
+							}
+
+							if (selectedKeyInParameterTable == i->first)
+							{
+								strcpy(bufK, i->first.c_str());
+								strcpy(bufV, i->second.c_str());
+								bool k = ImGui::InputText("Key", bufK, 512, ImGuiInputTextFlags_EnterReturnsTrue);
+								bool v = ImGui::InputText("Value", bufV, 512, ImGuiInputTextFlags_EnterReturnsTrue);
+								if (k || v)
+								{
+									selectedKeyInParameterTable.clear();
+									std::string newKey(bufK);
+									std::string newValue(bufV);
+									if (newKey == i->first)
+									{
+										table[newKey] = newValue;
+									}
+									else
+									{
+										keyToDel = i->first;
+										keyToAdd = newKey;
+										valToAdd = newValue;
+									}
+								}
+							}
+
+							if (ImGui::Button(("Delete " + i->first).c_str()))
+							{
+								keyToDel = i->first;
+							}
+						}
+					}
+
+					if (!keyToDel.empty())
+					{
+						table.erase(keyToDel);
+					}
+					if (!keyToAdd.empty())
+					{
+						table.insert(std::pair<std::string, std::string>(keyToAdd, valToAdd));
+					}
+				}
+				else if (0 == std::strcmp(typeName, "class Transform")) 
+				{
+					auto comp = cm->GetComponent<Transform>((selectedEntity)->GetID(), selectedCompIndex);
+					if (nullptr == comp)
+						break;
+
+					guiPos = *(comp->GetWorldPosition());
+					ImGui::Text("Position: ");
+					guiUpPos = guiPos;
+
+					ImGui::InputFloat("x", &(guiUpPos.x), 0.1f, 1.0f);
+					ImGui::InputFloat("y", &(guiUpPos.y), 0.1f, 1.0f);
+					ImGui::InputFloat("z", &(guiUpPos.z), 0.1f, 1.0f);
+
+					if (guiPos.x != guiUpPos.x || guiPos.y != guiUpPos.y || guiPos.z != guiUpPos.z) {
+						comp->SetWorldPosition((guiUpPos).x, (guiUpPos).y, (guiUpPos).z);
+					}
+				}
+				else if (0 == std::strcmp(typeName, "class Renderable"))
+				{
+					auto comp = cm->GetComponent<Renderable>((selectedEntity)->GetID(), selectedCompIndex);
+					if (nullptr == comp)
+						break;
+
+					ImGui::Text("Mesh: ");// comp->mesh->filename.c_str());
+					char buf[1024];
+					strcpy(buf, comp->mesh->filename.c_str());
+					
+					if (ImGui::InputText("Mesh", buf, 1024, ImGuiInputTextFlags_EnterReturnsTrue))
+					{
+						std::string newFileName(buf);
+
+						if (newFileName == comp->mesh->filename)
+							break;
+
+						std::wstring newFileName_w(newFileName.begin(), newFileName.end());
+						Mesh* m = RenderingSystem::instance()->CreateMesh(newFileName_w.c_str());
+						if (nullptr != m)
+						{
+							comp->mesh = m;
+						}
+					}
+				}
+				else 
+				{
+					ImGui::Text(typeName);
+				}
+			} while (0);
+
 			ImGui::End();
 		}
 	}
 
 	if (BenchmarkDisplayFlag) {
 		// TODO: Can probably move these to Init Function.
-		ImVec2 hwPos = ImVec2(30 , 50);
+		ImVec2 hwPos = ImVec2(30, 50);
 		ImVec2 hwSize = ImVec2(_windowWidth / 3, _windowHeight / 3);
 		ImGui::SetNextWindowPos(hwPos, ImGuiSetCond_FirstUseEver);
 		ImGui::SetNextWindowSize(hwSize, ImGuiSetCond_FirstUseEver);
@@ -244,10 +361,10 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 						Renderable* r = e->AddComponent<Renderable>(mesh, mat);
 
 						Engine::instance()->GetCurScene()->AddEntity(e);
-					}	
-		/*			
-					RigidBody* rb1 = e1->AddComponent <RigidBody>(t1, &(r1->BoundingBox()));*/
-					//e1->AddComponent<ScriptComponent>("script2.lua", rb1);
+					}
+					/*
+								RigidBody* rb1 = e1->AddComponent <RigidBody>(t1, &(r1->BoundingBox()));*/
+								//e1->AddComponent<ScriptComponent>("script2.lua", rb1);
 				}
 			}
 			ImGui::Separator();
@@ -269,7 +386,7 @@ void GUI::AddMenuBar(bool * _running) {
 		if (ImGui::BeginMenu("Engine")) {
 			if (ImGui::MenuItem("Load")) {
 				// TODO: Check if we can load a scene file, by taking in the Input.
-				Engine::instance()->LoadScene("Scene1");					
+				Engine::instance()->LoadScene("Scene1");
 			}
 			if (ImGui::MenuItem("Save")) {
 				Engine::instance()->SavaScene();
@@ -288,7 +405,7 @@ void GUI::AddMenuBar(bool * _running) {
 				DebugDisplayFlag = true;
 			}
 			if (ImGui::MenuItem("Benchmarks")) { BenchmarkDisplayFlag = true; }
-			
+
 			ImGui::EndMenu();
 		}
 
@@ -331,7 +448,7 @@ void GUI::AddMenuBar(bool * _running) {
 						scale.x = (scale.x > 0) ? scale.x : 1;
 						scale.y = (scale.y > 0) ? scale.y : 1;
 						scale.z = (scale.z > 0) ? scale.z : 1;
-						BoundingBox tempBound = BoundingBox(*(selectedEntity->GetComponent<Transform>()->GetWorldPosition()), scale );
+						BoundingBox tempBound = BoundingBox(*(selectedEntity->GetComponent<Transform>()->GetWorldPosition()), scale);
 						selectedEntity->AddComponent<RigidBody>(selectedEntity->GetComponent<Transform>(), &tempBound);
 					}
 

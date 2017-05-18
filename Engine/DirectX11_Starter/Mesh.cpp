@@ -93,6 +93,9 @@ bool Mesh::LoadFromFile(const wchar_t * filename, ID3D11Device * device)
 	AssimpLoader loader;
 	loader.LoadFromFile(s.c_str());
 
+	if (0 == loader.GetVerticesCount())
+		return false;
+
 	unsigned long dataSize = loader.GetVerticesCount() * sizeof(Vertex);
 	void* pData = malloc(dataSize);
 
@@ -105,5 +108,8 @@ bool Mesh::LoadFromFile(const wchar_t * filename, ID3D11Device * device)
 	}
 
 	free(pData);
+
+	this->filename = s;
+	this->filename_w = ws;
 	return true;
 }

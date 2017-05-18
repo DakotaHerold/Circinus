@@ -45,7 +45,9 @@ public:
 private:
 	friend class RenderingSystem;
 	friend class Scene;
-
+#ifdef HAS_GUI
+	friend class GUI;
+#endif
 
 
 

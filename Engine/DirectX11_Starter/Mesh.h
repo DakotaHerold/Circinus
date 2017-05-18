@@ -3,17 +3,24 @@
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
 #include "Vertex.h"
-
+#include <string>
 
 struct ID3D11Device;
 struct ID3D11Buffer;
 
 class RenderingSystem;
+#ifdef HAS_GUI
+class GUI;
+#endif
+
 
 class Mesh
 {
 private:
 	friend class RenderingSystem;
+#ifdef HAS_GUI
+	friend class GUI;
+#endif
 
 	Mesh() : valid(false), vertexBuffer(nullptr), indexBuffer(nullptr), indexCount(0), bounds() {}
 	~Mesh();
@@ -43,6 +50,7 @@ private:
 	int				indexCount;
 	DirectX::BoundingBox bounds;
 
-
+	std::string		filename;
+	std::wstring	filename_w;
 };
 

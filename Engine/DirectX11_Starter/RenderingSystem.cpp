@@ -514,7 +514,11 @@ Mesh * RenderingSystem::CreateMesh(const wchar_t* filename)
 	}
 
 	Mesh* mesh = new Mesh();
-	mesh->LoadFromFile(filename, device);
+	if (!mesh->LoadFromFile(filename, device))
+	{
+		delete mesh;
+		return nullptr;
+	}
 
 	if (mesh->IsValid())
 	{
@@ -523,7 +527,7 @@ Mesh * RenderingSystem::CreateMesh(const wchar_t* filename)
 	}
 
 	delete mesh;
-	return mesh;
+	return nullptr;
 }
 
 Shader * RenderingSystem::CreateShader(const wchar_t * filename)
