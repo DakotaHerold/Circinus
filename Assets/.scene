@@ -1,8 +1,8 @@
 {
-    "name": "Scene1",
+    "name": "",
     "skybox": {
-        "material": "skybox",
-        "mesh": "cube"
+        "material": "",
+        "mesh": ""
     },
     "meshes": [
         {
@@ -63,7 +63,7 @@
                 {
                     "name": "Transform",
                     "parent": "root",
-                    "PositionX": -1.4312779903411866,
+                    "PositionX": 0.0,
                     "PositionY": 0.0,
                     "PositionZ": 0.0,
                     "RotationX": 0.0,
@@ -77,11 +77,7 @@
                     "name": "Renderable"
                 },
                 {
-                    "name": "RigidBody"
-                },
-                {
-                    "name": "Script",
-                    "file": "script2"
+                    "name": "Undecided"
                 }
             ]
         },
@@ -105,9 +101,6 @@
                 },
                 {
                     "name": "Renderable"
-                },
-                {
-                    "name": "RigidBody"
                 }
             ]
         },
@@ -118,7 +111,7 @@
             "components": [
                 {
                     "name": "Transform",
-                    "parent": "parent",
+                    "parent": "root",
                     "PositionX": 0.0,
                     "PositionY": 0.0,
                     "PositionZ": 0.0,

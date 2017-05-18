@@ -37,6 +37,8 @@ public:
 	void setViewMatrix(XMFLOAT3& dir);
 	void setProjectionMatrix(float aspectRatio);
 	void setPosition(XMFLOAT3& pos);
+	void setDirection(XMFLOAT3& dir);
+	XMFLOAT3& getDirection() { return direction; }
 	void moveAlongDirection(float val);
 	void moveSideways(float val);
 	void moveVertical(float val);

@@ -94,15 +94,23 @@ void Scene::Enter()
 	Entity* lights = CreateEntity("light");
 	Lighting* l = lights->AddComponent<Lighting>(XMFLOAT4(-5, 0, 0, 0), XMFLOAT4(0.7f, 0, 0, 1), LightType::PointLight, 1, 8);
 	//cam
-	cam.getViewMatrix();
-	cam.setProjectionMatrix(800.0f / 600.0f);
+	//cam.getViewMatrix();
+	//cam.setProjectionMatrix(800.0f / 600.0f);
 
 	
 }
 
 void Scene::Tick(float deltaTime, float totalTime)
 {
+#ifndef HAS_EDITOR
+	for (CameraComponent* i : ComponentManager::current->GetAllComponents<CameraComponent>()) {
+		// update all cameras
+		i->Update();
+	}
+#else
 	cam.update(deltaTime);
+#endif // !HAS_EDITOR
+
 	for (auto* i : componentManager->GetAllComponents<ScriptComponent>()) {
 		i->Update();
 	}
@@ -322,9 +330,32 @@ void Scene::Build(rapidjson::Document &d)
 
 	//ent
 	Value& b_entities = d["entities"];
+
 	for (size_t i = 0; i < b_entities.Size(); i++) {
 		auto& b_entity = b_entities[i].GetObject();
 		Entity* e = CreateEntity(b_entity["name"].GetString());
+		auto& b_components = b_entity["components"];
+		for (size_t i = 0; i < b_components.Size(); i++) {
+			auto& b_component = b_components[i].GetObject();
+			string componentName = b_component["name"].GetString();
+			if (componentName == "Renderable") {
+				Renderable* r = e->AddComponent<Renderable>();
+			}
+			else if (componentName == "RigidBody") {
+				RigidBody* r = e->AddComponent<RigidBody>();
+			}
+			else if (componentName == "Script") {
+				ScriptComponent* s = e->AddComponent<ScriptComponent>();
+			}
+			else if (componentName == "Lighting") {
+				Lighting* l = e->AddComponent<Lighting>();
+			}
+		}
+	}
+
+	for (size_t i = 0; i < entities.size(); i++) {
+		auto& b_entity = b_entities[i].GetObject();
+		Entity* e = entities[i];
 		auto& b_components = b_entity["components"];
 		for (size_t i = 0; i < b_components.Size(); i++) {
 			auto& b_component = b_components[i].GetObject();
@@ -341,21 +372,25 @@ void Scene::Build(rapidjson::Document &d)
 				t->Load(b_component);
 			}
 			else if (componentName == "Renderable") {
-				Renderable* r = e->AddComponent<Renderable>(GetMesh(b_entity["mesh"].GetString()).pointer,GetMaterial(b_entity["material"].GetString()).pointer);
+				Renderable* r = e->GetComponent<Renderable>();
 				e->SetMaterial(b_entity["material"].GetString());
 				e->SetMesh(b_entity["mesh"].GetString());
+				r->Init(GetMesh(b_entity["mesh"].GetString()).pointer, GetMaterial(b_entity["material"].GetString()).pointer);
 				r->Load(b_component);
 			}
 			else if (componentName == "RigidBody") {
-				RigidBody* r = e->AddComponent<RigidBody>(e->GetComponent<Transform>(), &(e->GetComponent<Renderable>()->BoundingBox()));
+				RigidBody* r = e->GetComponent<RigidBody>();
+				r->Init(e->GetComponent<Transform>(), &(e->GetComponent<Renderable>()->BoundingBox()));
 			}
 			else if (componentName == "Script") {
-				ScriptComponent* s = e->AddComponent<ScriptComponent>(b_component["file"].GetString(),e->GetComponent<RigidBody>());
+				ScriptComponent* s = e->GetComponent<ScriptComponent>();
+				s->Init(b_component["file"].GetString(), e->GetComponent<RigidBody>());
 			}						
 			else if(componentName == "Lighting"){
 				XMFLOAT4 position(b_component["PositionX"].GetFloat(), b_component["PositionY"].GetFloat(), b_component["PositionZ"].GetFloat(), b_component["PositionW"].GetFloat());
 				XMFLOAT4 color(b_component["ColorX"].GetFloat(), b_component["ColorY"].GetFloat(), b_component["ColorZ"].GetFloat(), b_component["ColorW"].GetFloat());
-				Lighting* l = e->AddComponent<Lighting>(position,color,b_component["lightType"].GetInt(), b_component["enabled"].GetInt(),b_component["specularAmount"].GetInt());
+				Lighting* l = e->GetComponent<Lighting>();
+				l->Init(position, color, b_component["lightType"].GetInt(), b_component["enabled"].GetInt(), b_component["specularAmount"].GetInt());
 			}
 		}
 	}

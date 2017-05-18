@@ -2,10 +2,10 @@
 #include "Scene.h"
 #include <algorithm>
 
-using namespace std;
-
 ComponentManager* ComponentManager::current;
 //ComponentManager* ComponentManager::current = new ComponentManager();
+
+static ObjectPoolIndex nullObjectIndex = UINT_MAX;
 
 ComponentManager::ComponentManager()
 {
@@ -20,7 +20,7 @@ ComponentManager::~ComponentManager()
 	}
 }
 
-vector<Component*> ComponentManager::GetAllComponents(int entityID)
+vector<Component*> ComponentManager::GetAllComponents(EntityID entityID)
 {
 	vector<Component*> ret;
 
@@ -35,7 +35,7 @@ vector<Component*> ComponentManager::GetAllComponents(int entityID)
 	return ret;
 }
 
-vector<pair<TypeId, ObjectPoolIndex *>> ComponentManager::GetAllComponentsInfo(int entityID)
+vector<pair<TypeId, ObjectPoolIndex *>> ComponentManager::GetAllComponentsInfo(EntityID entityID)
 {
 	vector<pair<TypeId, ObjectPoolIndex*>> result;
 
@@ -48,22 +48,38 @@ vector<pair<TypeId, ObjectPoolIndex *>> ComponentManager::GetAllComponentsInfo(i
 	return result;
 }
 
-bool ComponentManager::RemoveComponent(int entityID, TypeId typeID, ObjectPoolIndex *index)
+bool ComponentManager::RemoveComponent(EntityID entityID, TypeId typeID, ObjectPoolIndex *index)
 {
+	std::vector<ObjectPoolIndex *> &indices = entityComponentsMap[entityID][typeID];
+
+	if (indices.size() == 0) {
+		//#if defined(DEBUG) || defined(_DEBUG)
+		//		throw "Entity did not have the component!";
+		//#endif
+		return false;
+	}
+
 	if (index == nullptr) {
-		GetComponentPool(typeID)->Return(GetObjectPoolIndex(entityID, typeID, true));
+		index = indices.back();
+		indices.pop_back();
 	}
 	else {
-		if (!CheckObjectPoolIndex(entityID, typeID, index, true)) {
+		auto it = std::remove_if(indices.begin(), indices.end(),
+			[index](const ObjectPoolIndex *i) {
+			return *i == *index;
+		});
+
+		if (it == indices.end()) {
 			return false;
 		}
-		GetComponentPool(typeID)->Return(*index);
+
+		indices.erase(it, indices.end());
 	}
 
-	return true;
+	return GetComponentPool(typeID)->Return(*index);
 }
 
-void ComponentManager::RemoveAllComponents(int entityID)
+void ComponentManager::RemoveAllComponents(EntityID entityID)
 {
 	for (auto &p : entityComponentsMap[entityID]) {
 		for (ObjectPoolIndex *i : p.second) {
@@ -85,48 +101,5 @@ ObjectPoolBase * ComponentManager::GetComponentPool(TypeId typeID)
 	}
 	else {
 		return it->second;
-	}
-}
-
-int ComponentManager::GetObjectPoolIndex(eidType entityID, TypeId typeID, bool deleteIndex)
-{
-	std::vector<ObjectPoolIndex *> &indices = entityComponentsMap[entityID][typeID];
-
-	if (indices.size() == 0) {
-#if defined(DEBUG) || defined(_DEBUG)
-		throw "Entity did not have the component!";
-#endif
-		return -1;
-	}
-
-	int result = *indices.back();
-
-	if (deleteIndex)
-		indices.pop_back();
-
-	return result;
-}
-
-bool ComponentManager::CheckObjectPoolIndex(eidType entityID, TypeId typeID, ObjectPoolIndex *index, bool deleteIndex) {
-	int result = -1;
-
-	std::vector<ObjectPoolIndex *> &indices = entityComponentsMap[entityID][typeID];
-	
-	auto it = std::remove_if(indices.begin(), indices.end(),
-		[index](const ObjectPoolIndex *i) {
-		return *i == *index;
-	});
-
-	if (it == indices.end()) {
-#if defined(DEBUG) || defined(_DEBUG)
-		throw "Entity did not have the component!";
-#endif
-		return false;
-	}
-	else {
-		if (deleteIndex)
-			indices.erase(it, indices.end());
-
-		return true;
 	}
 }

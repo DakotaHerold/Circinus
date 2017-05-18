@@ -5,17 +5,9 @@
 
 void Camera::update(float deltaTime)
 {
-	handleKeyboardInput(deltaTime);
-
 	if (isDirty)
 	{
-		XMVECTOR rotationQuat = XMQuaternionRotationRollPitchYaw(rotationX, rotationY, 0.0f);
-		XMVECTOR rotatedVector = XMVector3Rotate(XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), rotationQuat);
-		rotatedVector = XMQuaternionNormalize(rotatedVector);
-
-		XMStoreFloat3(&direction, rotatedVector);
-
-		XMStoreFloat3(&up, XMQuaternionNormalize(XMVector3Rotate(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), rotationQuat)));
+		XMVECTOR rotatedVector = XMLoadFloat3(&direction);
 
 		XMMATRIX vMat = XMMatrixLookToLH(XMLoadFloat3(&position), rotatedVector, XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f));
 
@@ -35,12 +27,28 @@ void Camera::setRotationX(float rotVal)
 {
 	rotationX += rotVal / 1024;
 
+	XMVECTOR rotationQuat = XMQuaternionRotationRollPitchYaw(rotationX, rotationY, 0.0f);
+	XMVECTOR rotatedVector = XMVector3Rotate(XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), rotationQuat);
+	rotatedVector = XMQuaternionNormalize(rotatedVector);
+
+	XMStoreFloat3(&direction, rotatedVector);
+
+	XMStoreFloat3(&up, XMQuaternionNormalize(XMVector3Rotate(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), rotationQuat)));
+
 	isDirty = true;
 }
 
 void Camera::setRotationY(float rotVal)
 {
 	rotationY += rotVal / 1024;
+
+	XMVECTOR rotationQuat = XMQuaternionRotationRollPitchYaw(rotationX, rotationY, 0.0f);
+	XMVECTOR rotatedVector = XMVector3Rotate(XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), rotationQuat);
+	rotatedVector = XMQuaternionNormalize(rotatedVector);
+
+	XMStoreFloat3(&direction, rotatedVector);
+
+	XMStoreFloat3(&up, XMQuaternionNormalize(XMVector3Rotate(XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), rotationQuat)));
 
 	isDirty = true;
 }
@@ -68,6 +76,15 @@ void Camera::setProjectionMatrix(float aspectRatio)
 void Camera::setPosition(XMFLOAT3 & pos)
 {
 	position = pos;
+
+	isDirty = true;
+}
+
+void Camera::setDirection(XMFLOAT3 & dir)
+{
+	direction = dir;
+
+	isDirty = true;
 }
 
 void Camera::moveAlongDirection(float val)
@@ -150,10 +167,11 @@ Camera::Camera()
 
 	rotationX = 0.0f;
 	rotationY = 0.0f;
-	position = { 0.0f, 0.0f, -5.0f };
-	direction = { 0.0f, 0.0f, -1.0f };
+	position = { 0.0f, 0.0f, 0.0f };
+	direction = { 0.0f, 0.0f, 1.0f };
 	up = { 0.0f, 1.0f, 0.0f };
 
+	setProjectionMatrix(800.0f / 600.0f);
 }
 
 

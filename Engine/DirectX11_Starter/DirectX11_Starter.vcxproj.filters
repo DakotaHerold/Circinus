@@ -165,9 +165,6 @@
     <ClCompile Include="EntityManager.cpp">
       <Filter>Source Files\CoreEngine</Filter>
     </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>Source Files\CoreEngine</Filter>
-    </ClCompile>
     <ClCompile Include="GUI.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
@@ -185,9 +182,6 @@
     </ClCompile>
     <ClCompile Include="Lighting.cpp">
       <Filter>Source Files\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="CollisionDetection.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ParticleEmitter.cpp">
       <Filter>Source Files\Rendering\ParticleSystem</Filter>
@@ -218,6 +212,9 @@
     </ClCompile>
     <ClCompile Include="CameraComponent.cpp">
       <Filter>Source Files\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionDetection.cpp">
+      <Filter>Source Files\System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -317,9 +314,6 @@
     <ClInclude Include="EntityManager.h">
       <Filter>Header Files\CoreEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>Header Files\CoreEngine</Filter>
-    </ClInclude>
     <ClInclude Include="GUI.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
@@ -344,16 +338,10 @@
     <ClInclude Include="ImGui\stb_truetype.h">
       <Filter>ImGUI Dependencies</Filter>
     </ClInclude>
-    <ClInclude Include="StackAllocator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Lighting.h">
       <Filter>Header Files\Component</Filter>
     </ClInclude>
     <ClInclude Include="CollisionDetection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectPool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Emitter.h">
@@ -391,6 +379,9 @@
     </ClInclude>
     <ClInclude Include="PrimitiveRenderer.h">
       <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectPool.h">
+      <Filter>Header Files\CoreEngine</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>Header Files</Filter>

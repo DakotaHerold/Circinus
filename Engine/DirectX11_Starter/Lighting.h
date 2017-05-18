@@ -11,6 +11,14 @@ public:
 	Lighting(XMFLOAT4 position, XMFLOAT4 color, int lightType, int enabled, int specularAmount);
 	Lighting(XMFLOAT4 direction, XMFLOAT4 color, int lightType, int enabled);
 	Lighting(XMFLOAT4 position, XMFLOAT4 direction, XMFLOAT4 color, float spotAngle, float constantAttenuation, float linearAttenuation, float quadraticAttenuation, int lightType, int enabled, int specularAmount);
+	Lighting();
+	void Init(XMFLOAT4 position, XMFLOAT4 color, int lightType, int enabled, int specularAmount) {
+		light->Position = position;
+		light->Color = color;
+		light->LightType = lightType;
+		light->Enabled = enabled;
+		light->SpecularAmount = specularAmount;
+	}
 	~Lighting();
 
 	Light& GetLight();

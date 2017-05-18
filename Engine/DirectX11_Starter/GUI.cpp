@@ -12,6 +12,7 @@
 #include "TransformSystem.h"
 #include "Editor.h"
 #include "SceneManager.h"
+#include "RigidBody.h"
 
 GUI::GUI()
 {
@@ -41,8 +42,8 @@ void GUI::Init(HWND hwnd, ID3D11Device* device, ID3D11DeviceContext* device_cont
 	_cdwFlag |= ImGuiWindowFlags_NoSavedSettings;
 
 	// Benchmarks Window Flags.
-	_cwFlag |= ImGuiWindowFlags_NoMove;
-	_cwFlag |= ImGuiWindowFlags_NoSavedSettings;
+	_bwFlag |= ImGuiWindowFlags_NoMove;
+	_bwFlag |= ImGuiWindowFlags_NoSavedSettings;
 
 }
 
@@ -79,6 +80,7 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 	bool _somthingSelected = false;
 	bool _someComponentSelected = false;
 
+#ifdef HAS_EDITOR
 	// Hierarchy Window
 	if (HierarchyDisplayFlag) {
 
@@ -101,6 +103,7 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 				_somthingSelected = true;
 			}
 
+			// TODO: Make sure to parent and child the objects accordingly.
 			for (std::vector<Entity *>::iterator it = curSceneEntities.begin(); it != curSceneEntities.end(); ++it) {
 				++entCounter;
 				if (ImGui::Selectable(((*it)->GetName() + " (" + std::to_string(entCounter) + ")").c_str())) {
@@ -114,6 +117,7 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 			ImGui::End();
 		}
 	}
+#endif
 
 	// Component Window
 	if (nullptr != selectedEntity && ComponentDisplayFlag) {
@@ -153,6 +157,16 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 					}
 				}
 			}
+
+			ImGui::Separator();
+			XMFLOAT3 position = *(cm->GetComponent<Transform>((selectedEntity)->GetID(), selectedCompIndex)->GetLocalPosition());
+			ImGui::Text("Position: ");
+			ImGui::InputFloat("x: ", &position.x, 0.1f, 1.0f);
+			ImGui::InputFloat("y: ", &position.y, 0.1f, 1.0f);
+			ImGui::InputFloat("z: ", &position.z, 0.1f, 1.0f);
+
+			cm->GetComponent<Transform>((selectedEntity)->GetID())->SetWorldPosition(position.x, position.y, position.z);
+
 			ImGui::End();
 		}
 	}
@@ -170,9 +184,14 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 			{
 				ImGui::Text((cm->GetComponent<ScriptComponent>((selectedEntity)->GetID(), selectedCompIndex)->GetScriptName()).c_str());
 			}
-			/*else if (0 == std::strcmp(ComponentTypeName(selectedComponentID), "class Transform")) {
-				ImGui::Text((cm->GetComponent<>((selectedEntity)->GetID(), selectedCompIndex)->GetScriptName()).c_str());
-			}*/
+			else if (0 == std::strcmp(ComponentTypeName(selectedComponentID), "class Transform")) {
+
+				std::cout << "Here" << std::endl;
+				XMFLOAT3 position = *(cm->GetComponent<Transform>((selectedEntity)->GetID(), selectedCompIndex)->GetLocalPosition());
+				ImGui::Text("Position: ");
+				ImGui::InputFloat("x: ", &position.x, 0.1f, 1.0f);
+
+			}
 			else {
 				std::cout << "?" << ComponentTypeName(selectedComponentID) << "?" << std::endl;
 				std::cout << "#" << std::strcmp(ComponentTypeName(selectedComponentID), "class ScriptComponent") << "#" << std::endl;
@@ -194,13 +213,13 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 			ImGui::Text("Current Number of Entities: %d", Engine::instance()->GetCurScene()->GetAllEntities().size());
 			ImGui::Separator();
 			ImGui::InputInt("No. of Entities to Create", &numberOfEntitiesToCreate, 50, 200, 0);
-			if (ImGui::Button("Create Entities")) {
-				int count = numberOfEntitiesToCreate + 1; // + 1 to offset some bug in the code. ( < instead of <= I guess? )
+			if (ImGui::Button("Create Entities") && numberOfEntitiesToCreate > 0) {
+				int count = numberOfEntitiesToCreate;
 				float range = 4.0;
 				float start = -range / 2;
 
 				int row_column = sqrt(count);
-				float offset = range / (row_column - 1);
+				float offset = row_column == 1 ? 0 : range / (row_column - 1);
 
 				RenderingSystem& renderer = *RenderingSystem::instance();
 
@@ -213,7 +232,7 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 				for (int i = 0; i < row_column; i++) {
 					for (int j = 0; j < row_column; j++) {
 						Entity* e = new Entity();
-						Transform* t = e->AddComponent<Transform>();
+						Transform* t = e->GetComponent<Transform>();
 						t->SetLocalPosition(start + offset * j, start + offset * i, 0);
 
 						Renderable* r = e->AddComponent<Renderable>(mesh, mat);
@@ -243,6 +262,7 @@ void GUI::AddMenuBar(bool * _running) {
 	{
 		if (ImGui::BeginMenu("Engine")) {
 			if (ImGui::MenuItem("Load")) {
+				// TODO: Check if we can load a scene file, by taking in the Input.
 				Engine::instance()->LoadScene("Scene1");					
 			}
 			if (ImGui::MenuItem("Save")) {
@@ -272,8 +292,36 @@ void GUI::AddMenuBar(bool * _running) {
 			{
 				if (ImGui::MenuItem("Empty")) {
 					Entity * tempEnt = new Entity("Empty");
-					tempEnt->AddComponent<Transform>();
 					Engine::instance()->GetCurScene()->AddEntity(tempEnt);
+				}
+				ImGui::EndMenu();
+			}
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Component")) {
+			if (ImGui::BeginMenu("Add")) {
+				if (ImGui::BeginMenu("Renderer")) {
+					// TODO: Add a renderer component?
+					ImGui::EndMenu();
+				}
+
+				if (ImGui::BeginMenu("RigidBody")) {
+					// TODO: Add a rigidbody component
+					if (ImGui::MenuItem("BoxCollider")) {
+						XMFLOAT3 scale = *(selectedEntity->GetComponent<Transform>()->GetWorldScale());
+						scale.x = (scale.x > 0) ? scale.x : 1;
+						scale.y = (scale.y > 0) ? scale.y : 1;
+						scale.z = (scale.z > 0) ? scale.z : 1;
+						BoundingBox tempBound = BoundingBox(*(selectedEntity->GetComponent<Transform>()->GetWorldPosition()), scale );
+						selectedEntity->AddComponent<RigidBody>(selectedEntity->GetComponent<Transform>(), &tempBound);
+					}
+
+					ImGui::EndMenu();
+				}
+
+				if (ImGui::MenuItem("ScriptComponent")) {
+					// TODO: Add a script copmonent
 				}
 				ImGui::EndMenu();
 			}
@@ -283,22 +331,9 @@ void GUI::AddMenuBar(bool * _running) {
 #ifdef HAS_EDITOR
 		if (ImGui::BeginMenu("Run"))
 		{
-			Editor* editor = Editor::instance();
-
-			if (ImGui::MenuItem(editor->IsPlaying() ? "[Play]" : "Play")) {
-				editor->Play();
-			}
-
-			if (ImGui::MenuItem(editor->IsPaused() ? "[Pause]" : "Pause")) {
-				editor->Pause();
-			}
-
-			if (ImGui::MenuItem("Stop")) {
-				editor->Stop();
-			}
-
-			if (ImGui::MenuItem("Run Standalone")) {
-				Editor::instance()->RunStandalone();
+			// TODO:: If you do not load a scene and Run, it crashes.
+			if (ImGui::MenuItem("Run")) {
+				Editor::instance()->Run();
 			}
 
 			if (ImGui::MenuItem("Build")) {

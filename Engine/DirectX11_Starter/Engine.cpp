@@ -125,7 +125,7 @@ int Engine::Run()
 #ifdef HAS_EDITOR
 		renderingSystem->DrawScene(Editor::instance()->GetEditorCamera(), currentScene);
 #else
-		renderingSystem->DrawScene(currentScene->GetCamera(), currentScene);
+		renderingSystem->DrawScene(nullptr, currentScene);
 #endif
 
 		// TODO
