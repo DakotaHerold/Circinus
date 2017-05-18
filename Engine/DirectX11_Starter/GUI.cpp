@@ -659,7 +659,9 @@ void GUI::HierarchyTree(Transform * t)
 	if (ImGui::IsItemClicked())
 	{
 		selectedEntity = e;
+#ifdef HAS_EDITOR
 		Editor::instance()->SetSelectedEntity(e);
+#endif
 		ComponentDisplayFlag = true;
 	}
 	
