@@ -31,6 +31,7 @@ namespace
 	const char_t engineExeName[] = STR("\\Engine.exe");
 	const char_t dllsName[] = STR("\\*.dll");
 	const char_t assetFolderName[] = STR("\\Assets");
+	const char_t scriptFolderName[] = STR("\\Scripts");
 
 	str_t SelectFolder()
 	{
@@ -338,10 +339,16 @@ void Editor::Build()
 
 	if (path.length() <= 0)
 		return;
-
+	
 	{
 		str_t from = cwd + assetFolderName + STR("\\*");
 		str_t to = path + assetFolderName;
+		CopyFile(from, to);
+	}
+
+	{
+		str_t from = cwd + scriptFolderName + STR("\\*");
+		str_t to = path + scriptFolderName;
 		CopyFile(from, to);
 	}
 
