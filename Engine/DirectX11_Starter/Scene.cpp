@@ -44,58 +44,58 @@ Scene::Scene()
 void Scene::Enter()
 {
 
-	RenderingSystem& renderer = *RenderingSystem::instance();
+	//RenderingSystem& renderer = *RenderingSystem::instance();
 
-	Shader* s1 = AddShader("Opaque", L"Assets/ShaderObjs/Opaque.cso");
+	//Shader* s1 = AddShader("Opaque", L"Assets/ShaderObjs/Opaque.cso");
 
-	Shader* skyboxShader = AddShader("skybox", L"Assets/ShaderObjs/Skybox.cso");
+	//Shader* skyboxShader = AddShader("skybox", L"Assets/ShaderObjs/Skybox.cso");
 
-	Texture* tex = AddTexture("texDiffuse", "rust", L"Assets/Textures/rust.jpg");
+	//Texture* tex = AddTexture("texDiffuse", "rust", L"Assets/Textures/rust.jpg");
 
-	Texture* tex1 = AddTexture("texDiffuse", "water", L"Assets/Textures/water.gif");
+	//Texture* tex1 = AddTexture("texDiffuse", "water", L"Assets/Textures/water.gif");
 
-	Texture* skyboxTex = AddTexture("skyMap", "skybox", L"Assets/Textures/space.dds");
+	//Texture* skyboxTex = AddTexture("skyMap", "skybox", L"Assets/Textures/space.dds");
 
-	Mesh* mesh = AddMesh("cube", L"Assets/Models/cube.fbx");
+	//Mesh* mesh = AddMesh("cube", L"Assets/Models/cube.fbx");
 
-	Material* skyboxMat = AddMaterial("skybox", "skybox", "skybox");
+	//Material* skyboxMat = AddMaterial("skybox", "skybox", "skybox");
 
-	Material* rust= AddMaterial("rust", "Opaque", "rust");
+	//Material* rust= AddMaterial("rust", "Opaque", "rust");
 
-	Material* water= AddMaterial("water", "Opaque", "water");
+	//Material* water= AddMaterial("water", "Opaque", "water");
 
-	//Renderable* skybox = sceneGraph.CreateRenderable();
+	////Renderable* skybox = sceneGraph.CreateRenderable();
 
-	//skyboxMaterial = "skybox";
+	////skyboxMaterial = "skybox";
 
-	//skyboxMesh = "cube";
+	////skyboxMesh = "cube";
 
-	//skybox->SetMaterial(GetMaterial("skybox").pointer);
+	////skybox->SetMaterial(GetMaterial("skybox").pointer);
 
-	//skybox->SetMesh(GetMesh("cube").pointer);
+	////skybox->SetMesh(GetMesh("cube").pointer);
 
-	//sceneGraph.SetSkyBox(skybox);
+	////sceneGraph.SetSkyBox(skybox);
 
-	// Main entity 
-	Entity* main = CreateEntity("parent","cube", "rust");
+	//// Main entity 
+	//Entity* main = CreateEntity("parent","cube", "rust");
 
-	Transform* t2 = main->GetComponent<Transform>();
-	//RigidBody* mainRb = main->AddComponent<RigidBody>(main->GetComponent<Transform>(), &(main->GetComponent<Renderable>()->BoundingBox()));
+	//Transform* t2 = main->GetComponent<Transform>();
+	////RigidBody* mainRb = main->AddComponent<RigidBody>(main->GetComponent<Transform>(), &(main->GetComponent<Renderable>()->BoundingBox()));
 
-	// Collision check entity 
-	Entity* e1 = CreateEntity("child", "cube", "water");
-	Transform* t = e1->GetComponent<Transform>();
-	t->SetLocalPosition(2, 0, 0);
-	t->SetParent(main->GetComponent<Transform>());
-	//
-	main->AddComponent<CameraComponent>();
+	//// Collision check entity 
+	//Entity* e1 = CreateEntity("child", "cube", "water");
+	//Transform* t = e1->GetComponent<Transform>();
+	//t->SetLocalPosition(2, 0, 0);
+	//t->SetParent(main->GetComponent<Transform>());
+	////
+	//main->AddComponent<CameraComponent>();
 
-	//light
-	Entity* lights = CreateEntity("light");
-	Lighting* l = lights->AddComponent<Lighting>(XMFLOAT4(-5, 0, 0, 0), XMFLOAT4(0.7f, 0, 0, 1), LightType::PointLight, 1, 8);
-	//cam
-	//cam.getViewMatrix();
-	//cam.setProjectionMatrix(800.0f / 600.0f);
+	////light
+	//Entity* lights = CreateEntity("light");
+	//Lighting* l = lights->AddComponent<Lighting>(XMFLOAT4(-5, 0, 0, 0), XMFLOAT4(0.7f, 0, 0, 1), LightType::PointLight, 1, 8);
+	////cam
+	////cam.getViewMatrix();
+	////cam.setProjectionMatrix(800.0f / 600.0f);
 
 	
 }

@@ -9,6 +9,8 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		BenchmarkDebug|Win32 = BenchmarkDebug|Win32
 		BenchmarkDebug|x64 = BenchmarkDebug|x64
+		BenchmarkRelease|Win32 = BenchmarkRelease|Win32
+		BenchmarkRelease|x64 = BenchmarkRelease|x64
 		Debug|Win32 = Debug|Win32
 		Debug|x64 = Debug|x64
 		Release|Win32 = Release|Win32
@@ -22,6 +24,9 @@ Global
 		{FEB50FC0-912F-45AC-B79A-03B08704F107}.BenchmarkDebug|Win32.ActiveCfg = BenchmarkDebug|Win32
 		{FEB50FC0-912F-45AC-B79A-03B08704F107}.BenchmarkDebug|Win32.Build.0 = BenchmarkDebug|Win32
 		{FEB50FC0-912F-45AC-B79A-03B08704F107}.BenchmarkDebug|x64.ActiveCfg = BenchmarkDebug|Win32
+		{FEB50FC0-912F-45AC-B79A-03B08704F107}.BenchmarkRelease|Win32.ActiveCfg = BenchmarkRelease|Win32
+		{FEB50FC0-912F-45AC-B79A-03B08704F107}.BenchmarkRelease|Win32.Build.0 = BenchmarkRelease|Win32
+		{FEB50FC0-912F-45AC-B79A-03B08704F107}.BenchmarkRelease|x64.ActiveCfg = BenchmarkRelease|Win32
 		{FEB50FC0-912F-45AC-B79A-03B08704F107}.Debug|Win32.ActiveCfg = Debug|Win32
 		{FEB50FC0-912F-45AC-B79A-03B08704F107}.Debug|Win32.Build.0 = Debug|Win32
 		{FEB50FC0-912F-45AC-B79A-03B08704F107}.Debug|x64.ActiveCfg = Debug|Win32

@@ -390,11 +390,6 @@ void RenderingSystem::Update(float deltaTime, float totalTime)
 
 void RenderingSystem::DrawScene(Camera* cam, Scene* scene)
 {
-	if (aspectRatioChanged)
-	{
-		cam->setProjectionMatrix(aspectRatio);
-		aspectRatioChanged = false;
-	}
 
 #ifndef HAS_EDITOR
 
@@ -404,21 +399,30 @@ void RenderingSystem::DrawScene(Camera* cam, Scene* scene)
 		CameraComponent* cc = c[0];
 		Transform* playerT = cc->GetEntity()->GetComponent<Transform>();
 
-		XMFLOAT3 playerRot = *playerT->GetWorldRotation();
+		XMFLOAT3 playerRot = *playerT->GetLocalRotation();
 		XMVECTOR rotationQuat = XMQuaternionRotationRollPitchYaw(playerRot.x, playerRot.y, 0.0f);
 		XMVECTOR rotatedVector = XMVector3Rotate(XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), rotationQuat);
-		rotatedVector = XMQuaternionNormalize(rotatedVector);
+		rotatedVector = XMVector3Normalize(rotatedVector);
 		XMFLOAT3 lookDir;
 		XMStoreFloat3(&lookDir, rotatedVector);
 
 		XMFLOAT3 pos;
-		XMStoreFloat3(&pos, XMLoadFloat3(playerT->GetWorldPosition()) - rotatedVector);
+		XMStoreFloat3(&pos, XMLoadFloat3(playerT->GetLocalPosition()) - rotatedVector);
 		
 		cam->setPosition(pos);
-		cam->setViewMatrix(lookDir);
+		cam->setRotationEuler(playerRot.x, playerRot.y, 0);
+		cam->update(NULL);
+
+		//cam = cc->GetCamera();
 	}
 	
 #endif // !HAS_EDITOR
+
+	if (aspectRatioChanged)
+	{
+		cam->setProjectionMatrix(aspectRatio);
+		aspectRatioChanged = false;
+	}
 
 
 	UpdateViewMatrix(cam->getViewMatrix());
@@ -442,6 +446,11 @@ void RenderingSystem::DrawScene(Camera* cam, Scene* scene)
 		for (size_t j = 0; j < l.size(); j++) {
 			Lighting* i = l[j];
 			lights[j] = i->GetLight();
+
+			Transform* ent = i->GetEntity()->GetComponent<Transform>();
+			i->SetPosition(*ent->GetLocalPosition());
+			i->SetRotationEuler(*ent->GetLocalRotation());
+
 
 			if (i->WasModified())
 			{
@@ -481,17 +490,19 @@ void RenderingSystem::DrawScene(Camera* cam, Scene* scene)
 				);
 
 <<<<<<< HEAD
-				i->GetMaterial()->SetMatrix4x4("matWorld", *m);
-				i->GetMaterial()->SetMatrix4x4("matWorld_IT", world_it);
-			}
-=======
 			static std::string matWorld = "matWorld";
 			static std::string matWorld_IT = "matWorld_IT";
 
 			i->GetMaterial()->SetMatrix4x4(matWorld, *m);
 			i->GetMaterial()->SetMatrix4x4(matWorld_IT, world_it);
-		}
+=======
+				static std::string matWorld = "matWorld";
+				static std::string matWorld_IT = "matWorld_IT";
+
+				i->GetMaterial()->SetMatrix4x4(matWorld, *m);
+				i->GetMaterial()->SetMatrix4x4(matWorld_IT, world_it);
 >>>>>>> Development
+			}
 
 			UploadPreBoundConstantBuffers();
 			i->material->Apply(deviceContext);
