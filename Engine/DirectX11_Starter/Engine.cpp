@@ -56,9 +56,9 @@ bool Engine::Init()
 	// scene loading should be in scripts or config file
 	// and should be done by SceneManager
 	//currentScene = SceneManager::LoadScene("Scene1");
-	/*currentScene = SceneManager::CreateNewScene("Scene1");
-	currentScene->Enter();
-	SceneManager::SaveScene(currentScene);*/
+	//currentScene = SceneManager::CreateNewScene("Scene1");
+	//currentScene->Enter();
+	//SceneManager::SaveScene(currentScene);
 	InitScene();
 	//;
 	return true;
@@ -173,7 +173,6 @@ void Engine::InitScene()
 #else
 	LoadScene("Scene1");
 #endif // HAS_EDITOR
-
 
 }
 

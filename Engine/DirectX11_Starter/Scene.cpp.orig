@@ -56,7 +56,13 @@ void Scene::Enter()
 
 	//Texture* skyboxTex = AddTexture("skyMap", "skybox", L"Assets/Textures/space.dds");
 
-	//Mesh* mesh = AddMesh("cube", L"Assets/Models/cube.fbx");
+<<<<<<< Updated upstream
+	//Mesh* mesh = AddMesh("cube", "Assets/Models/cube.fbx");
+=======
+	Transform* t2 = main->GetComponent<Transform>();
+	//RigidBody* mainRb = main->AddComponent<RigidBody>(main->GetComponent<Transform>(), &(main->GetComponent<Renderable>()->BoundingBox()));
+	main->AddComponent<CameraComponent>();
+>>>>>>> Stashed changes
 
 	//Material* skyboxMat = AddMaterial("skybox", "skybox", "skybox");
 
@@ -64,17 +70,17 @@ void Scene::Enter()
 
 	//Material* water= AddMaterial("water", "Opaque", "water");
 
-	////Renderable* skybox = sceneGraph.CreateRenderable();
+	//Renderable* skybox = sceneGraph.CreateRenderable();
 
-	////skyboxMaterial = "skybox";
+	//skyboxMaterial = "skybox";
 
-	////skyboxMesh = "cube";
+	//skyboxMesh = "cube";
 
-	////skybox->SetMaterial(GetMaterial("skybox").pointer);
+	//skybox->SetMaterial(GetMaterial("skybox").pointer);
 
-	////skybox->SetMesh(GetMesh("cube").pointer);
+	//skybox->SetMesh(GetMesh("cube").pointer);
 
-	////sceneGraph.SetSkyBox(skybox);
+	//sceneGraph.SetSkyBox(skybox);
 
 	//// Main entity 
 	//Entity* main = CreateEntity("parent","cube", "rust");
@@ -88,29 +94,20 @@ void Scene::Enter()
 	//t->SetLocalPosition(2, 0, 0);
 	//t->SetParent(main->GetComponent<Transform>());
 	////
-	//main->AddComponent<CameraComponent>();
 
 	////light
 	//Entity* lights = CreateEntity("light");
 	//Lighting* l = lights->AddComponent<Lighting>(XMFLOAT4(-5, 0, 0, 0), XMFLOAT4(0.7f, 0, 0, 1), LightType::PointLight, 1, 8);
 	////cam
-	////cam.getViewMatrix();
-	////cam.setProjectionMatrix(800.0f / 600.0f);
+	//cam.getViewMatrix();
+	//cam.setProjectionMatrix(800.0f / 600.0f);
 
 	
 }
 
 void Scene::Tick(float deltaTime, float totalTime)
 {
-#ifndef HAS_EDITOR
-	for (CameraComponent* i : ComponentManager::current->GetAllComponents<CameraComponent>()) {
-		// update all cameras
-		i->Update();
-	}
-#else
 	cam.update(deltaTime);
-#endif // !HAS_EDITOR
-
 	for (auto* i : componentManager->GetAllComponents<ScriptComponent>()) {
 		i->Update();
 	}
@@ -330,32 +327,9 @@ void Scene::Build(rapidjson::Document &d)
 
 	//ent
 	Value& b_entities = d["entities"];
-
 	for (size_t i = 0; i < b_entities.Size(); i++) {
 		auto& b_entity = b_entities[i].GetObject();
 		Entity* e = CreateEntity(b_entity["name"].GetString());
-		auto& b_components = b_entity["components"];
-		for (size_t i = 0; i < b_components.Size(); i++) {
-			auto& b_component = b_components[i].GetObject();
-			string componentName = b_component["name"].GetString();
-			if (componentName == "Renderable") {
-				Renderable* r = e->AddComponent<Renderable>();
-			}
-			else if (componentName == "RigidBody") {
-				RigidBody* r = e->AddComponent<RigidBody>();
-			}
-			else if (componentName == "Script") {
-				ScriptComponent* s = e->AddComponent<ScriptComponent>();
-			}
-			else if (componentName == "Lighting") {
-				Lighting* l = e->AddComponent<Lighting>();
-			}
-		}
-	}
-
-	for (size_t i = 0; i < entities.size(); i++) {
-		auto& b_entity = b_entities[i].GetObject();
-		Entity* e = entities[i];
 		auto& b_components = b_entity["components"];
 		for (size_t i = 0; i < b_components.Size(); i++) {
 			auto& b_component = b_components[i].GetObject();
@@ -372,36 +346,23 @@ void Scene::Build(rapidjson::Document &d)
 				t->Load(b_component);
 			}
 			else if (componentName == "Renderable") {
-				Renderable* r = e->GetComponent<Renderable>();
+				Renderable* r = e->AddComponent<Renderable>(GetMesh(b_entity["mesh"].GetString()).pointer,GetMaterial(b_entity["material"].GetString()).pointer);
 				e->SetMaterial(b_entity["material"].GetString());
 				e->SetMesh(b_entity["mesh"].GetString());
-				r->Init(GetMesh(b_entity["mesh"].GetString()).pointer, GetMaterial(b_entity["material"].GetString()).pointer);
 				r->Load(b_component);
 			}
 			else if (componentName == "RigidBody") {
-				RigidBody* r = e->GetComponent<RigidBody>();
-				r->Init(e->GetComponent<Transform>(), &(e->GetComponent<Renderable>()->BoundingBox()));
+				RigidBody* r = e->AddComponent<RigidBody>(e->GetComponent<Transform>(), &(e->GetComponent<Renderable>()->BoundingBox()));
 			}
 			else if (componentName == "Script") {
-				ScriptComponent* s = e->GetComponent<ScriptComponent>();
-				s->Init(b_component["file"].GetString(), e->GetComponent<RigidBody>());
+				ScriptComponent* s = e->AddComponent<ScriptComponent>(b_component["file"].GetString(),e->GetComponent<RigidBody>());
 			}						
 			else if(componentName == "Lighting"){
 				XMFLOAT4 position(b_component["PositionX"].GetFloat(), b_component["PositionY"].GetFloat(), b_component["PositionZ"].GetFloat(), b_component["PositionW"].GetFloat());
 				XMFLOAT4 color(b_component["ColorX"].GetFloat(), b_component["ColorY"].GetFloat(), b_component["ColorZ"].GetFloat(), b_component["ColorW"].GetFloat());
-				Lighting* l = e->GetComponent<Lighting>();
-				l->Init(position, color, b_component["lightType"].GetInt(), b_component["enabled"].GetInt(), b_component["specularAmount"].GetInt());
+				Lighting* l = e->AddComponent<Lighting>(position,color,b_component["lightType"].GetInt(), b_component["enabled"].GetInt(),b_component["specularAmount"].GetInt());
 			}
 		}
-	}
-}
-
-void Scene::removeEntityWithNumber(unsigned int count)
-{
-	for (auto it = entities.rbegin(); it != entities.rend() && count > 0;) {
-		delete *std::next(it).base();
-		it = decltype(it){entities.erase(std::next(it).base())};
-		count--;
 	}
 }
 
