@@ -6,6 +6,7 @@
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
 #include "time.h"
+#include "ParticleEmitter.h"
 
 class RigidBody :
 	public Component
@@ -50,5 +51,9 @@ private:
 	DirectX::XMVECTOR currentQuat;
 	DirectX::XMVECTOR newQuat;
 	//Better swarm homing
+
+	bool laser;
+	bool shoot;
+	bool swarm;
 };
 

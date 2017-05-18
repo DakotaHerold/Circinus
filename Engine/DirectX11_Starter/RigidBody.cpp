@@ -13,6 +13,9 @@ RigidBody::RigidBody(Transform* t, const DirectX::BoundingBox* boxCollider)
 	slerpT = 0;
 	timeSinceLastLoop = 0;
 	slerpTime = 0;
+	laser = false;
+	shoot = false;
+	swarm = false;
 	obb = new BoundingOrientedBox();
 	DirectX::BoundingOrientedBox::CreateFromBoundingBox(*obb, *boxCollider);
 }
@@ -106,6 +109,16 @@ void RigidBody::ProjectileSlerpAngle(DirectX::XMVECTOR* angle, DirectX::XMVECTOR
 
 void RigidBody::ProjectileSwarmingAt(string name, float speed, int minTurnTime, int maxTurnTime, int maxOffAngle)
 {
+	if (!swarm)
+	{
+		RigidBody* target = curScene->GetEntityByName("target")->GetComponent<RigidBody>();
+		ParticleEmitter* particle =  curScene->GetEntityByID(this->GetEntityID())->AddComponent<ParticleEmitter>(L"Assets/Textures/smoke.png");
+		particle->SetInitialVelocity(0.0f, 0.0f, 0.0f);
+		particle->SetLifeTime(2.0f);
+		particle->SetEmitRate(20);
+		swarm = true;
+	}
+
 	RigidBody* target = curScene->GetEntityByName("target")->GetComponent<RigidBody>();
 
 	if (!IsSlerping)
@@ -136,6 +149,11 @@ void RigidBody::ProjectileSwarmingAt(string name, float speed, int minTurnTime, 
 
 		slerpT += RigidDeltaTime / (slerpTime / 1000.0f);
 		ProjectileSlerpAngle(&currentQuat, &newQuat, slerpT);
+		ParticleEmitter* thisPar = curScene->GetEntityByID(this->GetEntityID())->GetComponent<ParticleEmitter>();
+		thisPar->SetLifeTime((500.0f + rand() % 1500) / 1000.0f);
+		thisPar->SetEmitRate(15 + rand() % 10);
+		thisPar->SetInitialVelocity(
+			(-velocity.x + ((rand() % 1000) / 1000.0f)) / 5.0f, (-velocity.y + ((rand() % 1000) / 1000.0f)) / 5.0f, (-velocity.z + ((rand() % 1000) / 1000.0f)) / 5.0f);
 
 		DirectX::XMVECTOR wrongQuat = DirectX::XMQuaternionRotationRollPitchYawFromVector(DirectX::XMLoadFloat3(trans->GetLocalRotation()));
 		DirectX::XMMATRIX newRotationMatrix = DirectX::XMMatrixRotationQuaternion(wrongQuat);
@@ -161,12 +179,10 @@ void RigidBody::ProjectileSwarmingAt(string name, float speed, int minTurnTime, 
 
 void RigidBody::ProjectileShootAt(RigidBody* target, float speed) //Rotate this rigidbody and shoot it towards the target. It won't change direction after shot.
 {
-	static int i = 0;
-
-	if (i == 0)
+	if (!shoot)
 	{
 		this->FaceTo(target);
-		i++;
+		shoot = true;
 	}
 
 	DirectX::XMFLOAT3 forward(0, 0, speed);
@@ -181,12 +197,11 @@ void RigidBody::ProjectileShootAt(RigidBody* target, float speed) //Rotate this 
 void RigidBody::ShootLaser(string parentName, float speed)
 {
 	RigidBody* parent = curScene->GetEntityByName(parentName)->GetComponent<RigidBody>();
-	static int j = 0;
-	
-	if (j == 0)
+
+	if (!laser)
 	{
 		trans->SetRotationEuler(parent->trans->GetWorldRotation()->x, parent->trans->GetWorldRotation()->y, parent->trans->GetWorldRotation()->z);
-		j++;
+		laser = true;
 	}
 
 	DirectX::XMFLOAT3 forward(0, 0, speed);
