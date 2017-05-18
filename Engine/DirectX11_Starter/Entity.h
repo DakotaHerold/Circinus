@@ -20,6 +20,7 @@ class Entity
 {
 public:
 	Entity();
+	Entity(std::string name, bool test);
 	Entity(std::string name);
 	Entity(std::string name, Material* mat, Mesh* mesh);
 
@@ -58,6 +59,8 @@ public:
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
 
 	Transform * const transform;
+
+	bool test = false;
 
 private :
 	EntityID id;

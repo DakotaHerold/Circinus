@@ -187,7 +187,7 @@ inline bool ObjectPool<T>::Return(ObjectPoolIndex index)
 	--m_count;
 
 	T* del = GetAddress(index);
-	m_availableObjects.push_back(make_pair(del, *(del->poolIndex)));
+	//m_availableObjects.push_back(make_pair(del, *(del->poolIndex)));
 
 	delete del->poolIndex;
 	del->~T();

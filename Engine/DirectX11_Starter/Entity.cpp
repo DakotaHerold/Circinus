@@ -21,6 +21,14 @@ Entity::Entity()
 	allEntities.push_back(this);
 }
 
+Entity::Entity(string name, bool test)
+	:name(name), id(nextID), transform(ComponentManager::current->AddComponentWithoutPool<Transform>(nextID)), test(test)
+{
+	nextID++;
+	entities.push_back(this);
+	allEntities.push_back(this);
+}
+
 Entity::Entity(string name)
 	: name(name), id(nextID), transform(ComponentManager::current->AddComponent<Transform>(nextID))
 {
@@ -40,8 +48,14 @@ Entity::Entity(std::string name, Material * mat, Mesh * mesh)
 
 Entity::~Entity()
 {
-	ComponentManager::current->RemoveAllComponents(GetID());
-	allEntities.remove(this);
+	if (test) {
+		delete transform;
+		allEntities.remove(this);
+	}
+	else {
+		ComponentManager::current->RemoveAllComponents(GetID());
+		allEntities.remove(this);
+	}
 }
 
 Entity * Entity::GetEntity(EntityID eid)

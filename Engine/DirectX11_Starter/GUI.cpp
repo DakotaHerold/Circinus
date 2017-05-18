@@ -213,7 +213,7 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 			ImGui::Separator();
 			ImGui::Text("Current Number of Entities: %d", Engine::instance()->GetCurScene()->GetAllEntities().size());
 			ImGui::Separator();
-			ImGui::InputInt("No. of Entities to Create", &numberOfEntitiesToCreate, 50, 200, 0);
+			ImGui::InputInt("No. of Entities to test", &numberOfEntitiesToCreate, 50, 200, 0);
 			if (ImGui::Button("Create Entities") && numberOfEntitiesToCreate > 0) {
 				int count = numberOfEntitiesToCreate;
 				float range = 4.0;
@@ -238,7 +238,7 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 						Transform* t = e->GetComponent<Transform>();
 						t->SetLocalPosition(start + offset * j, start + offset * i, 0);
 
-						Renderable* r = e->AddComponent<Renderable>(mesh, mat);
+						//Renderable* r = e->AddComponent<Renderable>(mesh, mat);
 
 						Engine::instance()->GetCurScene()->AddEntity(e);
 					}	
@@ -251,12 +251,65 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 				std::cout << "Time : " << std::chrono::duration_cast<std::chrono::milliseconds>(done - started).count() << endl;;
 			}
 			ImGui::Separator();
-			ImGui::InputInt("No. of Entities to Destroy", &numberOfEntitiesToCreate, 50, 200, 0);
+			//ImGui::InputInt("No. of Entities to Destroy", &numberOfEntitiesToCreate, 50, 200, 0);
 			if (ImGui::Button("Destroy Entities") && numberOfEntitiesToCreate > 0) {
 				auto started = std::chrono::high_resolution_clock::now();
 				Engine::instance()->GetCurScene()->removeEntityWithNumber(numberOfEntitiesToCreate);
 				auto done = std::chrono::high_resolution_clock::now();
 				std::cout << "Time : " << std::chrono::duration_cast<std::chrono::milliseconds>(done - started).count() << endl;;
+			}
+
+			ImGui::Separator();
+			if (ImGui::Button("Create Entities Without Pool") && numberOfEntitiesToCreate > 0) {	
+				int count = numberOfEntitiesToCreate;
+				float range = 4.0;
+				float start = -range / 2;
+
+				int row_column = sqrt(count);
+				float offset = row_column == 1 ? 0 : range / (row_column - 1);
+
+				RenderingSystem& renderer = *RenderingSystem::instance();
+
+				Mesh* mesh = renderer.CreateMesh(L"Assets/Models/cube.fbx");
+				Shader* shader = renderer.CreateShader(L"Assets/ShaderObjs/Opaque.cso");
+				Texture* tex = renderer.CreateTexture(L"Assets/Textures/water.gif");
+				Material *mat = renderer.CreateMaterial(shader);
+				mat->SetTexture("texDiffuse", tex);
+
+				auto started = std::chrono::high_resolution_clock::now();
+
+				vector<Entity *>temp;
+
+				for (int i = 0; i < row_column; i++) {
+					for (int j = 0; j < row_column; j++) {
+						Entity *e = new Entity("test", true);
+
+						cm = ComponentManager::current;
+
+						//Transform* t = cm->AddComponentWithoutPool<Transform>(e->GetID());
+						e->transform->SetLocalPosition(start + offset * j, start + offset * i, 0);
+
+						//Renderable* r = cm->AddComponentWithoutPool<Renderable>(e->GetID(), mesh, mat);
+						temp.push_back(e);
+					}
+					/*
+					RigidBody* rb1 = e1->AddComponent <RigidBody>(t1, &(r1->BoundingBox()));*/
+					//e1->AddComponent<ScriptComponent>("script2.lua", rb1);
+				}
+
+				auto done = std::chrono::high_resolution_clock::now();
+				std::cout << "Create Time : " << std::chrono::duration_cast<std::chrono::milliseconds>(done - started).count() << endl;
+
+				started = std::chrono::high_resolution_clock::now();
+
+				for (auto i : temp) {
+					delete i;
+				}
+
+				temp.clear();
+
+				done = std::chrono::high_resolution_clock::now();
+				std::cout << "Delete Time : " << std::chrono::duration_cast<std::chrono::milliseconds>(done - started).count() << endl;
 			}
 			ImGui::End();
 		}

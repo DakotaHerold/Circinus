@@ -23,6 +23,9 @@ public:
 
 	template <typename T, typename... Args>
 	T* AddComponent(EntityID entityID, Args&&... args);
+
+	template <typename T, typename... Args>
+	T* AddComponentWithoutPool(EntityID entityID, Args&&... args);
 	
 	// TODO: const function
 	template <typename T>
@@ -90,6 +93,20 @@ inline T* ComponentManager::AddComponent(EntityID entityID, Args && ...args)
 
 	// http://www.cplusplus.com/reference/map/map/operator[]/
 	entityComponentsMap[entityID][ComponentTypeId<T>()].push_back(component->getPoolIndex());
+
+	return component;
+}
+
+template<typename T, typename ...Args>
+inline T * ComponentManager::AddComponentWithoutPool(EntityID entityID, Args && ...args)
+{
+	T *component = new T(std::forward<Args>(args)...);
+
+	// FIXME: what to do?
+	component->SetEntity(entityID);
+
+	entityComponentsMap[entityID][ComponentTypeId<T>()].push_back(0);
+	entityComponentsMap[entityID][ComponentTypeId<T>()].pop_back();
 
 	return component;
 }
