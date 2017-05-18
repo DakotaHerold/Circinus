@@ -101,24 +101,23 @@ void Editor::Update(float deltaTime, float totalTime)
 {
 	InputManager& input = InputManager::instance();
 
-	// camera movement
-	cam.update(deltaTime);
-
 	if (!handle.IsMoving())
 	{
-		float x = input.GetMouseMoveX();
-		if (input.GetMiddleMouseHeld())	// Left button is down
-		{
-			cam.moveSideways(input.GetMouseMoveX() *0.005f);
-			cam.moveVertical(input.GetMouseMoveY() * 0.005f);
-		}
-		if (input.GetLeftMouseHeld())	// Right button is down
-		{
-			cam.setRotationY(input.GetMouseMoveX());
-			cam.setRotationX(input.GetMouseMoveY());
-		}
+		//float x = input.GetMouseMoveX();
+		//if (input.GetMiddleMouseHeld())	// Left button is down
+		//{
+		//	cam.moveSideways(input.GetMouseMoveX() *0.005f);
+		//	cam.moveVertical(input.GetMouseMoveY() * 0.005f);
+		//}
+		//if (input.GetLeftMouseHeld())	// Right button is down
+		//{
+		//	cam.setRotationY(input.GetMouseMoveX());
+		//	cam.setRotationX(input.GetMouseMoveY());
+		//}
 
-		cam.moveAlongDirection(input.GetMouseWheelDelta() * 0.01f);
+		//cam.moveAlongDirection(input.GetMouseWheelDelta() * 0.01f);
+
+		cam.update(deltaTime);
 	}
 
 	{

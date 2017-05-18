@@ -66,6 +66,7 @@ void GUI::Draw()
 void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 {
 	cm = ComponentManager::current;
+	selectedEntity = Editor::instance()->GetSelectedEntity();
 
 	// Use this to Update the frames. I.e, create new stuff I guess.
 	ImGui_ImplDX11_NewFrame();
@@ -106,11 +107,11 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 			//vector<Entity *> curSceneEntities = Engine::instance()->GetCurScene()->GetAllEntities();
 			//int entCounter = 0;
 
-			if (nullptr != Editor::instance()->GetSelectedEntity()) {
-				selectedEntity = Editor::instance()->GetSelectedEntity();
+			/*if (nullptr != Editor::instance()->GetSelectedEntity()) {
+				
 				ComponentDisplayFlag = true;
 				_somthingSelected = true;
-			}
+			}*/
 
 			//// TODO: Make sure to parent and child the objects accordingly.
 			//for (std::vector<Entity *>::iterator it = curSceneEntities.begin(); it != curSceneEntities.end(); ++it) {

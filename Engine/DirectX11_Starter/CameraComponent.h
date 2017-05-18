@@ -18,5 +18,7 @@ public:
 	void Update();
 	void UpdateCameraValues(XMFLOAT3& pos, XMFLOAT3& rot);
 	Camera* GetCamera() { return &cam; }
+
+	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override;
 };
 

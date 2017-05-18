@@ -347,6 +347,10 @@ void Scene::Build(rapidjson::Document &d)
 			else if (componentName == "Lighting") {
 				Lighting* l = e->AddComponent<Lighting>();
 			}
+			else if (componentName == "Camera")
+			{
+				e->AddComponent<CameraComponent>();
+			}
 		}
 	}
 

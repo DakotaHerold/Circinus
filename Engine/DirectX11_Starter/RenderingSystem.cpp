@@ -390,12 +390,12 @@ void RenderingSystem::Update(float deltaTime, float totalTime)
 
 void RenderingSystem::DrawScene(Camera* cam, Scene* scene)
 {
-	
+#ifndef HAS_EDITOR
 	auto c = ComponentManager::current->GetAllComponents<CameraComponent>();
 	if (c.size() > 0)
 	{
 		CameraComponent* cc = c[0];
-		Transform* playerT = cc->GetEntity()->GetComponent<Transform>();
+		/*Transform* playerT = cc->GetEntity()->GetComponent<Transform>();
 
 		XMFLOAT3 playerRot = *playerT->GetLocalRotation();
 		XMVECTOR rotationQuat = XMQuaternionRotationRollPitchYaw(playerRot.x, playerRot.y, 0.0f);
@@ -409,10 +409,11 @@ void RenderingSystem::DrawScene(Camera* cam, Scene* scene)
 		
 		cam->setPosition(pos);
 		cam->setRotationEuler(playerRot.x, playerRot.y, 0);
-		cam->update(NULL);
+		cam->update(NULL);*/
 
-		//cam = cc->GetCamera();
+		cam = cc->GetCamera();
 	}
+#endif
 	
 	if (aspectRatioChanged)
 	{

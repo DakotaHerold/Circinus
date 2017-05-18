@@ -131,10 +131,10 @@
                 },
                 {
                     "name": "Lighting",
-                    "PositionX": -5.0,
-                    "PositionY": 0.0,
+                    "PositionX": -1.4312779903411866,
+                    "PositionY": 1.0,
                     "PositionZ": 0.0,
-                    "PositionW": 0.0,
+                    "PositionW": 1.0,
                     "ColorX": 0.699999988079071,
                     "ColorY": 0.0,
                     "ColorZ": 0.0,
@@ -142,6 +142,29 @@
                     "lightType": 1,
                     "enabled": 1,
                     "specularAmount": 8
+                }
+            ]
+        },
+        {
+            "name": "camera",
+            "mesh": "",
+            "material": "",
+            "components": [
+                {
+                    "name": "Transform",
+                    "parent": "parent",
+                    "PositionX": 0.0,
+                    "PositionY": 0.0,
+                    "PositionZ": -3.342851400375366,
+                    "RotationX": 0.0,
+                    "RotationY": 0.0,
+                    "RotationZ": 0.0,
+                    "ScaleX": 1.0,
+                    "ScaleY": 1.0,
+                    "ScaleZ": 1.0
+                },
+                {
+                    "name": "Camera"
                 }
             ]
         }

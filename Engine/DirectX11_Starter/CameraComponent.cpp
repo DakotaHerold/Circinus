@@ -28,3 +28,11 @@ void CameraComponent::UpdateCameraValues(XMFLOAT3 & pos, XMFLOAT3 & rot)
 
 	cam.update(NULL);
 }
+
+void CameraComponent::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
+{
+	writer.StartObject();
+	writer.String("name");
+	writer.String("Camera");
+	writer.EndObject();
+}
