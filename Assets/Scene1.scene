@@ -176,7 +176,7 @@
                 {
                     "name": "Transform",
                     "parent": "root",
-                    "PositionX": 0.0,
+                    "PositionX": -0.5143294930458069,
                     "PositionY": 0.0,
                     "PositionZ": 0.0,
                     "RotationX": 0.0,
@@ -190,10 +190,10 @@
                     "name": "Emitter",
                     "Texture": "Assets/Textures/smoke.png",
                     "VelocityX": 0.0,
-                    "VelocityY": 1.0,
+                    "VelocityY": 2.0,
                     "VelocityZ": 0.0,
                     "EmitRate": 20.0,
-                    "LifeTime": 2.0
+                    "LifeTime": 1.0
                 }
             ]
         }

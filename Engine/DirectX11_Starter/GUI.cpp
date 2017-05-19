@@ -365,7 +365,7 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 					{
 						comp->emitRate = rate;
 					}
-					if (ImGui::InputFloat("Emit Rate", &life, 0.0F, 0.0F, -1, ImGuiInputTextFlags_EnterReturnsTrue))
+					if (ImGui::InputFloat("Life Time", &life, 0.0F, 0.0F, -1, ImGuiInputTextFlags_EnterReturnsTrue))
 					{
 						comp->lifeTime = life;
 					}
