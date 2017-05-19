@@ -235,20 +235,17 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 				for (int i = 0; i < row_column; i++) {
 					for (int j = 0; j < row_column; j++) {
 						Entity* e = new Entity();
-						Transform* t = e->GetComponent<Transform>();
-						t->SetLocalPosition(start + offset * j, start + offset * i, 0);
+						e->transform->SetLocalPosition(start + offset * j, start + offset * i, 0);
 
-						//Renderable* r = e->AddComponent<Renderable>(mesh, mat);
+						Renderable* r = e->AddComponent<Renderable>(mesh, mat);
 
 						Engine::instance()->GetCurScene()->AddEntity(e);
 					}	
-		/*			
-					RigidBody* rb1 = e1->AddComponent <RigidBody>(t1, &(r1->BoundingBox()));*/
-					//e1->AddComponent<ScriptComponent>("script2.lua", rb1);
 				}
 
 				auto done = std::chrono::high_resolution_clock::now();
 				std::cout << "Time : " << std::chrono::duration_cast<std::chrono::milliseconds>(done - started).count() << endl;;
+				cTime = std::chrono::duration_cast<std::chrono::milliseconds>(done - started).count();
 			}
 			ImGui::Separator();
 			//ImGui::InputInt("No. of Entities to Destroy", &numberOfEntitiesToCreate, 50, 200, 0);
@@ -256,10 +253,12 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 				auto started = std::chrono::high_resolution_clock::now();
 				Engine::instance()->GetCurScene()->removeEntityWithNumber(numberOfEntitiesToCreate);
 				auto done = std::chrono::high_resolution_clock::now();
-				std::cout << "Time : " << std::chrono::duration_cast<std::chrono::milliseconds>(done - started).count() << endl;;
+				
+				dTime = std::chrono::duration_cast<std::chrono::milliseconds>(done - started).count();
 			}
 
 			ImGui::Separator();
+
 			if (ImGui::Button("Create Entities Without Pool") && numberOfEntitiesToCreate > 0) {	
 				int count = numberOfEntitiesToCreate;
 				float range = 4.0;
@@ -286,35 +285,31 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 
 						cm = ComponentManager::current;
 
-						//Transform* t = cm->AddComponentWithoutPool<Transform>(e->GetID());
 						e->transform->SetLocalPosition(start + offset * j, start + offset * i, 0);
 
-						//Renderable* r = cm->AddComponentWithoutPool<Renderable>(e->GetID(), mesh, mat);
+						Renderable* r = cm->AddComponentWithoutPool<Renderable>(e->GetID(), mesh, mat);
 						temp.push_back(e);
 					}
-					/*
-					RigidBody* rb1 = e1->AddComponent <RigidBody>(t1, &(r1->BoundingBox()));*/
-					//e1->AddComponent<ScriptComponent>("script2.lua", rb1);
 				}
 
 				auto done = std::chrono::high_resolution_clock::now();
-				std::cout << "Create Time : " << std::chrono::duration_cast<std::chrono::milliseconds>(done - started).count() << endl;
+				cTime = std::chrono::duration_cast<std::chrono::milliseconds>(done - started).count();
 
 				started = std::chrono::high_resolution_clock::now();
-
 				for (auto i : temp) {
 					delete i;
 				}
-
 				temp.clear();
 
 				done = std::chrono::high_resolution_clock::now();
-				std::cout << "Delete Time : " << std::chrono::duration_cast<std::chrono::milliseconds>(done - started).count() << endl;
+				dTime = std::chrono::duration_cast<std::chrono::milliseconds>(done - started).count();
 			}
+
+			ImGui::Text("Creation Time: %i milliseconds", cTime);
+			ImGui::Text("Deletion TIme: %i milliseconds", dTime);
 			ImGui::End();
 		}
 	}
-
 }
 
 void GUI::AddMenuBar(bool * _running) {

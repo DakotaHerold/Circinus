@@ -8,6 +8,7 @@
 #include <list>
 #include "ClassTypeId.h"
 #include <type_traits>
+#include <set>
 
 using namespace DirectX;
 class ComponentManager;
@@ -27,7 +28,7 @@ public:
 	~Entity();
 
 	static Entity* GetEntity(EntityID eid);
-	static const std::list<Entity*> GetAllEntities();
+	static const std::set<Entity*> GetAllEntities();
 
 	EntityID GetID() const { return id; };
 
