@@ -130,17 +130,12 @@ void Transform::SetParent(Transform * t)
 
 void Transform::AddChild(Transform * t)
 {
-	children.push_back(t);
+	children.insert(t);
 }
 
 void Transform::RemoveChild(Transform * t)
 {
-	for (size_t i = 0; i < children.size(); i++) {
-		if (children[i]->getPoolIndex() == t->getPoolIndex()) {
-			children.erase(children.begin() + i);
-			return;
-		}
-	}
+	children.erase(t);
 }
 
 Transform * Transform::GetParent()
@@ -195,11 +190,12 @@ void Transform::UpdateTransform()
 	if (dirty) {
 		UpdateMatrix();
 	}
-	for (size_t i = 0; i < children.size(); i++) {
+
+	for (auto child : children) {
 		if (wasDirty) {
-			children[i]->dirty = true;
+			child->dirty = true;
 		}
-		children[i]->UpdateTransform();
+		child->UpdateTransform();
 	}
 }
 

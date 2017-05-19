@@ -34,7 +34,7 @@ public:
 
 	bool					IsDirty();
 	void					MarkDirty() { dirty = true; }
-	std::vector<Transform*> children;
+	std::set<Transform*> children;
 	void					UpdateTransform();
 
 	void					StartSerialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
