@@ -265,7 +265,7 @@ void Editor::Play()
 
 	if (!isPlaying)
 	{
-		//Engine::instance()->SavaScene();
+		Engine::instance()->SaveScene();
 		isPlaying = true;
 		inGameTotalTime = 0.0f;
 	}
@@ -297,7 +297,7 @@ void Editor::Stop()
 
 void Editor::RunStandalone()
 {
-	//Engine::instance()->SavaScene();
+	Engine::instance()->SaveScene();
 	do
 	{
 		str_t cwd = GetWorkingDirectory();
@@ -332,7 +332,7 @@ void Editor::RunStandalone()
 
 void Editor::Build()
 {
-	//Engine::instance()->SavaScene();
+	Engine::instance()->SaveScene();
 	str_t cwd = GetWorkingDirectory();
 	str_t path = SelectFolder();
 

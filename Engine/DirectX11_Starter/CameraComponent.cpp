@@ -26,8 +26,8 @@ void CameraComponent::UpdateCameraValues(XMFLOAT3& pos, XMFLOAT3 & dir)
 {
 	cam.setDirection(dir);
 
-	XMFLOAT3 position;
-	XMStoreFloat3(&position, XMLoadFloat3(&pos) - XMLoadFloat3(&(cam.getDirection())) * 10);
+	XMFLOAT3 position = pos;
+	//XMStoreFloat3(&position, XMLoadFloat3(&pos) - XMLoadFloat3(&(cam.getDirection())) * 10);
 	cam.setPosition(position);
 
 	cam.update(NULL);

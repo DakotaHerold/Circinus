@@ -31,6 +31,7 @@ Lighting::Lighting(XMFLOAT4 position, XMFLOAT4 direction, XMFLOAT4 color, float 
 Lighting::Lighting()
 {
 	light = new Light();
+	isDirty = true;
 }
 
 

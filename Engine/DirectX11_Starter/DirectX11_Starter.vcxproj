@@ -231,7 +231,6 @@
     <ClCompile Include="CollisionDetection.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentManager.cpp" />
-    <ClCompile Include="DebugCam.cpp" />
     <ClCompile Include="ConstantBuffer.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -278,7 +277,6 @@
     <ClInclude Include="FrameCapture.h" />
     <ClInclude Include="HandleGizmo.h" />
     <ClInclude Include="ObjectPool.h" />
-    <ClInclude Include="DebugCam.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="ClassTypeId.h" />

@@ -160,7 +160,7 @@ void Engine::LoadScene(std::string name)
 	currentScene->Enter();
 }
 
-void Engine::SavaScene()
+void Engine::SaveScene()
 {
 	if (currentScene->GetName().empty())
 		return;

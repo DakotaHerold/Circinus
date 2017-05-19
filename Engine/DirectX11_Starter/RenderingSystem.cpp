@@ -30,6 +30,8 @@
 #include "Editor.h"
 #endif
 
+// graphics debugger not working well with compute shader... 
+// so disable particle system to capture frame
 //#define DISABLE_PARTICLE_SYSTEM
 
 namespace

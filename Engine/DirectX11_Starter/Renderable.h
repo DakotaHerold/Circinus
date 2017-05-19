@@ -13,7 +13,7 @@ class RenderingSystem;
 class Renderable : public Component
 {
 public:
-	Renderable(Mesh* mesh, Material* mat) { this->mesh = mesh; this->material = mat; }
+	Renderable(Mesh* mesh, Material* mat) : Renderable() { this->mesh = mesh; this->material = mat; }
 
 	Renderable()
 		:

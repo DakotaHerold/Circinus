@@ -190,7 +190,7 @@ void ParticleSystem::Update(float deltaTime, float totalTime)
 		}
 
 		ID3D11UnorderedAccessView* nulls[] = { nullptr, nullptr, nullptr };
-		uint32_t initVals[] = { -1, -1, -1 };
+		uint32_t initVals[] = { 0xffffffffu, 0xffffffffu, 0xffffffffu };
 		context->CSSetUnorderedAccessViews(0, 3, nulls, initVals);
 	}
 }

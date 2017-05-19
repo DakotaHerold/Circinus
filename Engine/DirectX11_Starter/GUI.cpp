@@ -82,6 +82,12 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 			ImGui::Text("Mouse %s Down", ImGui::IsMouseDown(0) ? "" : "not");
 			ImGui::Text("Mouse %s Clicked", ImGui::IsMouseClicked ? "" : "not");
 
+			ImGui::Text("InputManager: ");
+			auto& input = InputManager::instance();
+			ImGui::Text("Mouse Left Down: %s", input.GetLeftMouseDown() ? "true" : "false");
+			ImGui::Text("Mouse Left Held: %s", input.GetLeftMouseHeld() ? "true" : "false");
+			ImGui::Text("Mouse Left Up: %s", input.GetLeftMouseUp() ? "true" : "false");
+
 			ImGui::End();
 		}
 	}
@@ -453,7 +459,7 @@ void GUI::AddMenuBar(bool * _running) {
 				Engine::instance()->LoadScene("Scene1");
 			}
 			if (ImGui::MenuItem("Save")) {
-				Engine::instance()->SavaScene();
+				Engine::instance()->SaveScene();
 			}
 			ImGui::MenuItem("Preferences");
 			ImGui::Separator();

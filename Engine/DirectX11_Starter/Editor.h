@@ -55,7 +55,7 @@ private:
 
 	bool		isPlaying;
 	bool		isPaused;
-	bool		inGameTotalTime;
+	float		inGameTotalTime;
 };
 
 #endif

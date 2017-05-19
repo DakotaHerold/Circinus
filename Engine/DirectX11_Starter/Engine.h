@@ -48,7 +48,7 @@ public:
 
 	void LoadScene(std::string name);
 
-	void SavaScene();
+	void SaveScene();
 
 	void InitScene();
 
