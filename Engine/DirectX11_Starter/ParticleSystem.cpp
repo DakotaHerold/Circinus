@@ -247,7 +247,7 @@ bool ParticleSystem::Draw(const DirectX::XMFLOAT4X4& matView, const DirectX::XMF
 	return true;
 }
 
-void ParticleSystem::CleanUp()
+void ParticleSystem::ClearAllEmitters()
 {
 	for (auto i = pools.begin(); i != pools.end(); ++i)
 	{
@@ -256,6 +256,11 @@ void ParticleSystem::CleanUp()
 
 	pools.clear();
 	poolMap.clear();
+}
+
+void ParticleSystem::CleanUp()
+{
+	
 
 	delete particleVS;
 	delete particlePS;

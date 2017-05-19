@@ -84,6 +84,8 @@ public:
 
 	void DrawScene(Camera* cam, Scene* scene);
 
+	void OnSceneLoad();
+
 public:
 
 	int GetWindowWidth() const { return windowWidth; }

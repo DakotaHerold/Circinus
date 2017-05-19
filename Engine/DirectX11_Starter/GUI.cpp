@@ -688,7 +688,7 @@ void GUI::HierarchyTree(Transform * t)
 				ImGui::CloseCurrentPopup();
 			}
 			if (ImGui::Button("Delete")) {
-				// TODO !!
+				// TODO !! dont have a api for this yet
 
 				ImGui::CloseCurrentPopup();
 			}

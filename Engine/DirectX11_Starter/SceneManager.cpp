@@ -1,4 +1,5 @@
 #include "SceneManager.h"
+#include "RenderingSystem.h"
 #include "Editor.h"
 #include "GUI.h"
 
@@ -20,6 +21,7 @@ Scene * SceneManager::LoadScene(string name)
 	if (name.empty())
 		return nullptr;
 
+	RenderingSystem::instance()->OnSceneLoad();
 #ifdef HAS_EDITOR
 	Editor::instance()->OnSceneLoad();
 #endif // HAS_EDITOR

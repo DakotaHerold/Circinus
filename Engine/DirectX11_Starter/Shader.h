@@ -7,6 +7,7 @@ struct ID3DX11Effect;
 class RenderingSystem;
 class Material;
 
+// shader wrap that use d3dx 11 effect
 class Shader
 {
 private:

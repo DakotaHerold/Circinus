@@ -21,14 +21,17 @@ public:
 
 	~ConstantBuffer();
 
+	// if you want to use your own memory as cache, pass the pointer to cacheBuf
 	bool Init(ID3D11Device* device, uint32_t size, void* cacheBuf = nullptr);
 
 	void CleanUp();
 
 	void MarkDirty() { dirty = true; }
 
+	// update in-memory cache
 	bool UpdateData(const void* data, uint32_t offset, uint32_t size);
 
+	// upload it to GPU
 	void UploadBuffer(ID3D11DeviceContext* context);
 
 	ID3D11Buffer* GetBuffer() const { return buffer; }

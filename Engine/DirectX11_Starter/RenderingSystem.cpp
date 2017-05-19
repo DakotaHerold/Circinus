@@ -542,6 +542,11 @@ void RenderingSystem::DrawScene(Camera* cam, Scene* scene)
 	swapChain->Present(0, 0);
 }
 
+void RenderingSystem::OnSceneLoad()
+{
+	particleSystem->ClearAllEmitters();
+}
+
 #pragma endregion
 
 #pragma region Resources

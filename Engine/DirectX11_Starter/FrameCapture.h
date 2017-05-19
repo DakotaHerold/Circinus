@@ -9,15 +9,19 @@ public:
 
 	static void CleanUp();
 
+public:
+
+	// framesToCapture == 0, nothing happen
 	void BeginCapture();
 
 	void EndCapture();
 
-	void Release();
-
 	void SetFramesToCapture(unsigned int framesToCapture) { this->framesToCapture = framesToCapture; }
 
 private:
+
+	void Release();
+
 	FrameCapture();
 
 	IDXGraphicsAnalysis* ptr;

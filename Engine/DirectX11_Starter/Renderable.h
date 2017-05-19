@@ -13,7 +13,7 @@ class RenderingSystem;
 class Renderable : public Component
 {
 public:
-	Renderable(Mesh* mesh, Material* mat) : Renderable() { this->mesh = mesh; this->material = mat; }
+	Renderable(Mesh* mesh, Material* mat) : Renderable() { this->mesh = mesh; this->material = mat; bounds = mesh->GetBounds(); }
 
 	Renderable()
 		:
@@ -23,15 +23,16 @@ public:
 		flagDestroy(false)
 	{}
 
-	void Init(Mesh* mesh, Material* mat) { this->mesh = mesh; this->material = mat; }
+	void Init(Mesh* mesh, Material* mat) { this->mesh = mesh; this->material = mat; bounds = mesh->GetBounds(); }
 	void Destroy() { flagDestroy = true; }
 
-	void SetMesh(Mesh* m) { mesh = m; }
+	void SetMesh(Mesh* m) { mesh = m; bounds = mesh->GetBounds(); }
 	Mesh* GetMesh() { return mesh; }
 
 	void SetMaterial(Material* mat) { material = mat; }
 	Material* GetMaterial() { return material; }
 
+	// local space AABB boundingbox
 	DirectX::BoundingBox& BoundingBox() { return bounds; }
 
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) {
@@ -53,6 +54,8 @@ private:
 
 	Mesh*					mesh;
 	Material*				material;
+
+	// local space AABB boundingbox
 	DirectX::BoundingBox	bounds;
 
 	bool					flagDestroy;

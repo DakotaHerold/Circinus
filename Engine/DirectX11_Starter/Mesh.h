@@ -34,7 +34,6 @@ public:
 
 	bool IsValid() const { return valid; }
 
-	// TODO delete them
 	ID3D11Buffer* GetVertexBuffer() { return vertexBuffer; }
 	ID3D11Buffer* GetIndexBuffer() { return indexBuffer; }
 	int GetIndexCount() { return indexCount; }

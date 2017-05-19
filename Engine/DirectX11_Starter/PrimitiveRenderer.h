@@ -17,8 +17,10 @@ public:
 	static const DirectX::XMFLOAT3 blue;
 	static const DirectX::XMFLOAT3 yellow;
 
-public:
+private:
 	void Reset();
+
+public:
 	void Render(const DirectX::XMFLOAT4X4& matView, const DirectX::XMFLOAT4X4& matProj, bool useDepth = true);
 
 	void Draw(const DirectX::BoundingBox& bound, const DirectX::XMFLOAT3& color = white);

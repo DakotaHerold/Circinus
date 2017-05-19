@@ -24,6 +24,8 @@ public:
 
 	bool Draw(const DirectX::XMFLOAT4X4& matView, const DirectX::XMFLOAT4X4& matProj);
 
+	void ClearAllEmitters();
+
 	void CleanUp();
 
 	bool CreateParticleEmitter(const std::wstring& particleTexture, ParticleEmitter* emitterComponent);
