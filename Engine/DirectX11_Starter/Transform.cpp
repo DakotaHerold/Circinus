@@ -1,5 +1,6 @@
 #include "Transform.h"
 #include "ComponentManager.h"
+
 using namespace DirectX;
 
 Transform::Transform()
@@ -22,7 +23,9 @@ Transform::Transform()
 
 Transform::~Transform()
 {
-
+	if (parent) {
+		parent->RemoveChild(this);
+	}
 }
 
 void Transform::SetWorldPosition(float x, float y, float z)

@@ -11,14 +11,23 @@ static EntityID nextID = 0;
 static vector<Entity*> entities;
 
 // alive entity list
-static list<Entity*> allEntities;
+static set<Entity*> allEntities;
 
 Entity::Entity() 
 	: name("Entity"), id(nextID), transform(ComponentManager::current->AddComponent<Transform>(nextID))
 {
 	nextID++;
 	entities.push_back(this);
-	allEntities.push_back(this);
+	allEntities.insert(this);
+}
+
+Entity::Entity(string name, bool test)
+	:name(name), id(nextID), transform(ComponentManager::current->AddComponentWithoutPool<Transform>(nextID)), test(test)
+{
+	nextID++;
+	entities.push_back(this);
+	allEntities.insert(this);
+	//allEntities.push_back(this);
 }
 
 Entity::Entity(string name)
@@ -26,7 +35,8 @@ Entity::Entity(string name)
 {
 	nextID++;
 	entities.push_back(this);
-	allEntities.push_back(this);
+	allEntities.insert(this);
+	//allEntities.push_back(this);
 }
 
 Entity::Entity(std::string name, Material * mat, Mesh * mesh)
@@ -35,13 +45,21 @@ Entity::Entity(std::string name, Material * mat, Mesh * mesh)
 	nextID++;
 	AddComponent<Renderable>(mesh, mat);
 	entities.push_back(this);
-	allEntities.push_back(this);
+	allEntities.insert(this);
+	//allEntities.push_back(this);
 }
 
 Entity::~Entity()
 {
-	ComponentManager::current->RemoveAllComponents(GetID());
-	allEntities.remove(this);
+	if (test) {
+		delete transform;
+		allEntities.erase(this);
+		//allEntities.remove(this);
+	}
+	else {
+		ComponentManager::current->RemoveAllComponents(GetID());
+		//allEntities.remove(this);
+	}
 }
 
 Entity * Entity::GetEntity(EntityID eid)
@@ -52,7 +70,7 @@ Entity * Entity::GetEntity(EntityID eid)
 	return entities[eid];
 }
 
-const list<Entity*> Entity::GetAllEntities()
+const set<Entity*> Entity::GetAllEntities()
 {
 	return allEntities;
 }

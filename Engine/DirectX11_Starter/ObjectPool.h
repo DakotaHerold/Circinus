@@ -7,12 +7,12 @@
 #include <map>
 #include <vector>
 #include <algorithm>
+#include <list>
 
 typedef unsigned int ObjectPoolIndex;
 
 static const ObjectPoolIndex ObjectPoolInitialLength = 100;
 static const ObjectPoolIndex ObjectPoolResizeAmount = 50;
-
 
 class Poolable {
 
@@ -69,7 +69,8 @@ private:
 	std::map<ObjectPoolIndex, T*>	m_objectsMap;
 	std::vector<T*> m_allObjects;
 
-	std::vector<T*> m_availableObjects;
+	std::vector<T*> m_inUseObjects;
+	std::list<std::pair<T*, ObjectPoolIndex>> m_availableObjects;
 
 	ObjectPoolIndex		m_count;
 };
@@ -138,12 +139,25 @@ inline T* ObjectPool<T>::Add(Args && ...args)
 		AllocMemory(m_resizeAmount);
 	}
 
-	T* result = new (GetAddress(m_count)) T(std::forward<Args>(args)...);
-	// TODO: Get from global allocator
-	result->poolIndex = new ObjectPoolIndex(m_count++);
+	T* result;
+
+	if (m_availableObjects.size() > 0) {
+		result = new (m_availableObjects.front().first) T(std::forward<Args>(args)...);
+		result->poolIndex = new ObjectPoolIndex(m_availableObjects.front().second);
+		m_count++;
+
+		m_availableObjects.pop_front();
+	}
+	else {
+		result = new (GetAddress(m_count)) T(std::forward<Args>(args)...);
+
+		// TODO: Get from global allocator
+		result->poolIndex = new ObjectPoolIndex(m_count++);
+	}
+
 
 	m_allObjects.push_back(result);
-	m_availableObjects.push_back(result);
+	m_inUseObjects.push_back(result);
 
 	return result;
 }
@@ -151,10 +165,10 @@ inline T* ObjectPool<T>::Add(Args && ...args)
 template<typename T>
 inline void* ObjectPool<T>::Get(ObjectPoolIndex index)
 {
-	if (index >= m_count) {
-		//throw "index out of count!";
-		return nullptr;
-	}
+	//if (index >= m_count) {
+	//	//throw "index out of count!";
+	//	return nullptr;
+	//}
 	//return GetAddress(index);
 
 	return reinterpret_cast<void*>(m_allObjects[index]);
@@ -163,21 +177,23 @@ inline void* ObjectPool<T>::Get(ObjectPoolIndex index)
 template<typename T>
 inline bool ObjectPool<T>::Return(ObjectPoolIndex index)
 {
-	if (index >= m_count) {
-		throw "index out of count!";
-		//return false;
-	}
+	//if (index >= m_count) {
+	//	throw "index out of count!";
+	//	//return false;
+	//}
 
 	// FIXME: Does not move memory to prevent possible pointer issue
 
-	//--m_count;
+	--m_count;
 
 	T* del = GetAddress(index);
+	//m_availableObjects.push_back(make_pair(del, *(del->poolIndex)));
 
 	delete del->poolIndex;
 	del->~T();
 
-	m_availableObjects.erase(std::remove(m_availableObjects.begin(), m_availableObjects.end(), del), m_availableObjects.end());
+	m_inUseObjects.erase(std::remove(m_inUseObjects.begin(), m_inUseObjects.end(), del), m_inUseObjects.end());
+
 
 	//if (index != m_count) {
 	//	memcpy(del, GetAddress(m_count), m_size);
@@ -198,7 +214,7 @@ inline std::vector<T*> ObjectPool<T>::GetAllComponents()
 {
 	//return {m_objects, m_count};
 	//return m_allObjects;
-	return m_availableObjects;
+	return m_inUseObjects;
 }
 
 template<typename T>

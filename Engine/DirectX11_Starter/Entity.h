@@ -8,6 +8,7 @@
 #include <list>
 #include "ClassTypeId.h"
 #include <type_traits>
+#include <set>
 
 using namespace DirectX;
 class ComponentManager;
@@ -20,13 +21,14 @@ class Entity
 {
 public:
 	Entity();
+	Entity(std::string name, bool test);
 	Entity(std::string name);
 	Entity(std::string name, Material* mat, Mesh* mesh);
 
 	~Entity();
 
 	static Entity* GetEntity(EntityID eid);
-	static const std::list<Entity*> GetAllEntities();
+	static const std::set<Entity*> GetAllEntities();
 
 	EntityID GetID() const { return id; };
 
@@ -58,6 +60,8 @@ public:
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer);
 
 	Transform * const transform;
+
+	bool test = false;
 
 private :
 	EntityID id;
