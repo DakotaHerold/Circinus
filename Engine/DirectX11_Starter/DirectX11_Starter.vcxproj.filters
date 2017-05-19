@@ -90,9 +90,6 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\Rendering\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGameCore.cpp">
-      <Filter>Source Files\Rendering</Filter>
-    </ClCompile>
     <ClCompile Include="dxerr.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
@@ -128,9 +125,6 @@
     </ClCompile>
     <ClCompile Include="Component.cpp">
       <Filter>Source Files\CoreEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="TestCom.cpp">
-      <Filter>Source Files\Component</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
       <Filter>Source Files\Component</Filter>
@@ -224,9 +218,6 @@
     <ClInclude Include="Camera.h">
       <Filter>Header Files\Rendering\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGameCore.h">
-      <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="dxerr.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
@@ -248,9 +239,6 @@
     <ClInclude Include="InputManager.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Main.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="AssimpLoader.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
@@ -261,9 +249,6 @@
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="NativeWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Renderable.h">
@@ -289,9 +274,6 @@
     </ClInclude>
     <ClInclude Include="Component.h">
       <Filter>Header Files\CoreEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="TestCom.h">
-      <Filter>Header Files\Component</Filter>
     </ClInclude>
     <ClInclude Include="ClassTypeId.h">
       <Filter>Header Files\CoreEngine</Filter>
@@ -389,26 +371,11 @@
     <ClInclude Include="CameraComponent.h">
       <Filter>Header Files\Component</Filter>
     </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Header Files\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shaders\PixelShader.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\VertexShader.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\PixelShaderSky.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\VertexShaderSky.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Opaque_PS.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Opaque_VS.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
     <FxCompile Include="Shaders\Opaque.fx">
       <Filter>Shaders</Filter>
     </FxCompile>

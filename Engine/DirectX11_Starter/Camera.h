@@ -2,7 +2,6 @@
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
 #include <math.h>
-#include "DirectXGameCore.h"
 #include "Vertex.h"
 #include "InputManager.h"
 
