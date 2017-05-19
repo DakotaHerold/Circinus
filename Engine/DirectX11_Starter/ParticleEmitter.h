@@ -34,10 +34,13 @@ public:
 	float GetLifeTime() const { return lifeTime; }
 	float GetEmitRate() const { return emitRate; }
 
+	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) override;
+
 private:
 #ifdef HAS_GUI
 	friend class GUI;
 #endif
+	std::wstring			texFileName;
 	DirectX::XMFLOAT3		velocity;
 	float					lifeTime;
 	float					emitRate;

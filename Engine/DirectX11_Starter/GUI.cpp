@@ -651,6 +651,14 @@ void GUI::ShowExampleMenuFile()
 	if (ImGui::MenuItem("Quit", "Alt+F4")) {}
 }
 
+void GUI::OnSceneLoad()
+{
+	HierarchyDisplayFlag = false;
+	ComponentDisplayFlag = false;
+	//ComponentDisplayDetailsFlag = false;
+	BenchmarkDisplayFlag = false;
+}
+
 void GUI::HierarchyTree(Transform * t)
 {
 	static ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;

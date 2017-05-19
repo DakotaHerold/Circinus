@@ -167,6 +167,35 @@
                     "name": "Camera"
                 }
             ]
+        },
+        {
+            "name": "particle",
+            "mesh": "",
+            "material": "",
+            "components": [
+                {
+                    "name": "Transform",
+                    "parent": "root",
+                    "PositionX": 0.0,
+                    "PositionY": 0.0,
+                    "PositionZ": 0.0,
+                    "RotationX": 0.0,
+                    "RotationY": 0.0,
+                    "RotationZ": 0.0,
+                    "ScaleX": 1.0,
+                    "ScaleY": 1.0,
+                    "ScaleZ": 1.0
+                },
+                {
+                    "name": "Emitter",
+                    "Texture": "Assets/Textures/smoke.png",
+                    "VelocityX": 0.0,
+                    "VelocityY": 1.0,
+                    "VelocityZ": 0.0,
+                    "EmitRate": 20.0,
+                    "LifeTime": 2.0
+                }
+            ]
         }
     ]
 }

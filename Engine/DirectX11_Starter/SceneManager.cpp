@@ -1,5 +1,6 @@
 #include "SceneManager.h"
 #include "Editor.h"
+#include "GUI.h"
 
 SceneManager::SceneManager()
 {
@@ -22,6 +23,9 @@ Scene * SceneManager::LoadScene(string name)
 #ifdef HAS_EDITOR
 	Editor::instance()->OnSceneLoad();
 #endif // HAS_EDITOR
+#ifdef HAS_GUI
+	GUI::instance().OnSceneLoad();
+#endif
 
 	Scene* s = CreateNewScene(name);
 	string file = "Assets/" + name + ".scene";

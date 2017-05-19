@@ -7,7 +7,8 @@ ParticleEmitter::ParticleEmitter(const std::wstring & particleTexture)
 	:
 	ps(nullptr),
 	poolIdx(0),
-	emitterIdx(0)
+	emitterIdx(0),
+	texFileName(particleTexture)
 {
 	ps = ParticleSystem::instance();
 	if (nullptr == ps)
@@ -25,6 +26,27 @@ ParticleEmitter::ParticleEmitter(const std::wstring & particleTexture)
 	emitter.position = DirectX::XMFLOAT4();
 	emitter.velocity = DirectX::XMFLOAT4();
 	emitter.totalTime = 0.0f;
+}
+
+void ParticleEmitter::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
+{
+	writer.StartObject();
+	writer.String("name");
+	writer.String("Emitter");
+	writer.String("Texture");
+	std::string filename(texFileName.begin(), texFileName.end());
+	writer.String(filename.c_str());
+	writer.String("VelocityX");
+	writer.Double(velocity.x);
+	writer.String("VelocityY");
+	writer.Double(velocity.y);
+	writer.String("VelocityZ");
+	writer.Double(velocity.z);
+	writer.String("EmitRate");
+	writer.Double(emitRate);
+	writer.String("LifeTime");
+	writer.Double(lifeTime);
+	writer.EndObject();
 }
 
 void ParticleEmitter::SetCBParameters(DirectX::XMFLOAT3 & position, DirectX::XMFLOAT3 & velocity, float lifeTime, float emitRate)

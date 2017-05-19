@@ -57,9 +57,10 @@ bool Engine::Init()
 	// and should be done by SceneManager
 	//currentScene = SceneManager::LoadScene("Scene1");
 	//currentScene = SceneManager::CreateNewScene("Scene1");
-	//currentScene->Enter();
+
 	//SceneManager::SaveScene(currentScene);
 	InitScene();
+	currentScene->Enter();  // should be called anyway
 	//;
 	return true;
 }
@@ -156,6 +157,7 @@ void Engine::LoadScene(std::string name)
 	delete currentScene;
 	currentScene = nullptr;
 	currentScene = newScene;
+	currentScene->Enter();
 }
 
 void Engine::SavaScene()

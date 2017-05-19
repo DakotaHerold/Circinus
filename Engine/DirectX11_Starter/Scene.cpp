@@ -115,6 +115,9 @@ void Scene::Tick(float deltaTime, float totalTime)
 
 void Scene::Exit()
 {
+	delete skybox;
+	skybox = nullptr;
+
 	for (Entity* e : entities) {
 		delete e;
 	}
@@ -351,6 +354,12 @@ void Scene::Build(rapidjson::Document &d)
 			{
 				e->AddComponent<CameraComponent>();
 			}
+			else if (componentName == "Emitter")
+			{
+				string tex = b_component["Texture"].GetString();
+				wstring texW(tex.begin(), tex.end());
+				e->AddComponent<ParticleEmitter>(texW.c_str());
+			}
 		}
 	}
 
@@ -387,11 +396,18 @@ void Scene::Build(rapidjson::Document &d)
 				ScriptComponent* s = e->GetComponent<ScriptComponent>();
 				s->Init(b_component["file"].GetString(), e->GetComponent<RigidBody>());
 			}						
-			else if(componentName == "Lighting"){
+			else if(componentName == "Lighting") {
 				XMFLOAT4 position(b_component["PositionX"].GetFloat(), b_component["PositionY"].GetFloat(), b_component["PositionZ"].GetFloat(), b_component["PositionW"].GetFloat());
 				XMFLOAT4 color(b_component["ColorX"].GetFloat(), b_component["ColorY"].GetFloat(), b_component["ColorZ"].GetFloat(), b_component["ColorW"].GetFloat());
 				Lighting* l = e->GetComponent<Lighting>();
 				l->Init(position, color, b_component["lightType"].GetInt(), b_component["enabled"].GetInt(), b_component["specularAmount"].GetInt());
+			}
+			else if (componentName == "Emitter")
+			{
+				ParticleEmitter* emitter = e->GetComponent<ParticleEmitter>();
+				emitter->SetInitialVelocity(b_component["VelocityX"].GetFloat(), b_component["VelocityY"].GetFloat(), b_component["VelocityZ"].GetFloat());
+				emitter->SetEmitRate(b_component["EmitRate"].GetFloat());
+				emitter->SetLifeTime(b_component["LifeTime"].GetFloat());
 			}
 		}
 	}
