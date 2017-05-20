@@ -260,7 +260,7 @@ void ParticleSystem::ClearAllEmitters()
 
 void ParticleSystem::CleanUp()
 {
-	
+	ClearAllEmitters();
 
 	delete particleVS;
 	delete particlePS;
