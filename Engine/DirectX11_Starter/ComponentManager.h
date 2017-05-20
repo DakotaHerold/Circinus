@@ -47,16 +47,14 @@ public:
 
 	void RemoveAllComponents(EntityID entityID);
 
-	Transform *root;
-
-	static ComponentManager *current;	
+	static ComponentManager *current;
 
 	void SetRoot(Transform *r) { root = r; }
-
 	Transform* GetRoot() { return root; }
 
 private:
 	Scene* curScene;
+	Transform *root = nullptr;
 
 	EntityComponentsMap entityComponentsMap;
 	std::map<TypeId, ObjectPoolBase *> ComponentPoolsMap;

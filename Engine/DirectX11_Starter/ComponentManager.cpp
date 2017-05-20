@@ -9,12 +9,14 @@ static ObjectPoolIndex nullObjectIndex = UINT_MAX;
 
 ComponentManager::ComponentManager()
 {
-	
+	//root = new Transform();
 }
 
 ComponentManager::~ComponentManager()
 {
-	delete root;
+	if(root)
+		delete root;
+	
 	for (auto i : ComponentPoolsMap) {
 		delete i.second;
 	}

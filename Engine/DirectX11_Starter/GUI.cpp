@@ -402,7 +402,7 @@ void GUI::Update(int _windowWidth, int _windowHeight, bool * _running)
 			ImGui::InputInt("No. of Entities to test", &numberOfEntitiesToCreate, 50, 200, 0);
 			if (ImGui::Button("Create Entities") && numberOfEntitiesToCreate > 0) {
 				int count = numberOfEntitiesToCreate;
-				float range = 1.0;
+				float range = 3.0;
 				float start = -range / 2;
 
 				int row_column = sqrt(count);

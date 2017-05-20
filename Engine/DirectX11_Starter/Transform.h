@@ -47,8 +47,7 @@ private:
 	void					UpdateMatrix();
 
 private:
-	Transform*				parent;
-	Transform*				root;
+	Transform*				parent = nullptr;
 	bool					dirty;
 
 	DirectX::XMFLOAT3		localPosition;//local

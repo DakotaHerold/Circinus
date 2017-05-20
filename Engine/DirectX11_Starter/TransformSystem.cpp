@@ -14,5 +14,5 @@ TransformSystem::~TransformSystem()
 
 void TransformSystem::update(float delta, std::vector<Transform *> transforms)
 {
-	ComponentManager::current->root->UpdateTransform();
+	ComponentManager::current->GetRoot()->UpdateTransform();
 }

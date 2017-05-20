@@ -22,14 +22,10 @@ Entity* Component::GetEntity()
 
 int Component::GetEntityID()
 {
-	if (!hasEntity) {
-		return -1;
-	}
 	return gameEntityID;
 }
 
 void Component::SetEntity(EntityID eid)
 {
 	gameEntityID = eid;
-	hasEntity = true;
 }

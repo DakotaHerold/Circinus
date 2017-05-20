@@ -40,7 +40,6 @@ public:
 		writer.String("name");
 		writer.String("Renderable");
 		writer.EndObject();
-
 	}
 
 private:

@@ -38,7 +38,7 @@ Scene::Scene()
 	componentManager = new ComponentManager();
 	ComponentManager::current = componentManager;
 	root = new Transform();
-	
+	componentManager->SetRoot(root);
 }
 
 void Scene::Enter()
@@ -200,6 +200,8 @@ void Scene::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
 	writer.StartObject();
 	writer.String("name");
 	writer.String(name.c_str());
+	writer.String("root");
+	root->Serialize(writer);
 	writer.String("skybox");
 	writer.StartObject();
 	writer.String("material");
@@ -259,8 +261,6 @@ void Scene::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
 	//end for
 	writer.EndArray();
 
-
-
 	//material
 	writer.String("materials");
 	writer.StartArray();
@@ -282,7 +282,11 @@ void Scene::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
 	//entity/transform
 	writer.String("entities");
 	writer.StartArray();
-	componentManager->root->StartSerialize(writer);
+
+	for (Transform* t : componentManager->GetRoot()->children) {
+		t->StartSerialize(writer);
+	}
+
 	writer.EndArray();
 	writer.EndObject();
 }
@@ -290,6 +294,14 @@ void Scene::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
 void Scene::Build(rapidjson::Document &d)
 {
 	this->name = d["name"].GetString();	
+
+	//root
+	componentManager->SetRoot(nullptr);
+	delete root;
+	auto& b_root = d["root"].GetObject();
+	root = new Transform();
+	root->Load(b_root);
+	componentManager->SetRoot(root);
 
 	//cam
 	cam.getViewMatrix();
@@ -373,8 +385,14 @@ void Scene::Build(rapidjson::Document &d)
 			if (componentName == "Transform") {
 				Transform* t = e->GetComponent<Transform>();
 				string parent = b_component["parent"].GetString();
-				if (parent == "root") {
-					t->SetParent(t);
+	/*			if (parent == "root") {
+					t->SetParent(root);
+				}
+				else if (parent == "") {
+
+				}*/
+				if (parent == "") {
+					t->SetParent(root);
 				}
 				else {
 					t->SetParent(GetEntityByName(parent)->GetComponent<Transform>());

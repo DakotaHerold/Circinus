@@ -11,20 +11,26 @@ Transform::Transform()
 	localRotation(0, 0, 0),
 	localScale(1.0f, 1.0f, 1.0f)
 {
-	root = ComponentManager::current->GetRoot();
-	if (root!=nullptr) {		
+	Transform *root = ComponentManager::current->GetRoot();
+	
+	if (root) {		
 		parent = root;
 		root->AddChild(this);
 	}
-	else {
+	/*else {
 		ComponentManager::current->SetRoot(this);
-	}
+	}*/
 }
 
 Transform::~Transform()
 {
 	if (parent) {
 		parent->RemoveChild(this);
+	}
+
+	for (auto c : children) {
+		c->parent = nullptr;
+		//c->SetParent(nullptr);
 	}
 }
 
@@ -104,27 +110,18 @@ DirectX::XMFLOAT4X4 * Transform::GetWorldMatrix()
 
 void Transform::SetParent(Transform * t)
 {
-	if (parent == t)
-	{
+	if (t == parent) {
 		return;
 	}
 
-	if (t == this || t == nullptr) {
-		if (parent == root) {
-			return;
-		}
-		else {
-			parent->RemoveChild(this);
-			parent = root;
-			parent->AddChild(this);
-		}
-	}
-	else {
+	if(parent)
 		parent->RemoveChild(this);
-		parent = t;
-		parent->AddChild(this);
-	}
+		
+	parent = t;
 
+	if(parent)
+		parent->AddChild(this);
+	
 	dirty = true;
 }
 
@@ -201,11 +198,9 @@ void Transform::UpdateTransform()
 
 void Transform::StartSerialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer)
 {
-	int id = GetEntityID();
-	if (GetEntityID() != -1) {
-		Entity* entity = GetEntity();
-		entity->Serialize(writer);		
-	}	
+	Entity* entity = GetEntity();
+	entity->Serialize(writer);
+
 	for (Transform* t : children) {
 		t->StartSerialize(writer);
 	}
@@ -217,12 +212,17 @@ void Transform::Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writ
 	writer.String("name");
 	writer.String("Transform");
 	writer.String("parent");
-	if (parent->GetEntityID() == -1) {
-		writer.String("root");
+	if (parent) {
+		if (parent == ComponentManager::current->GetRoot()) {
+			writer.String("");
+		}
+		else {
+			writer.String(parent->GetEntity()->GetName().c_str());
+		}
 	}
 	else {
-		writer.String(parent->GetEntity()->GetName().c_str());
-	}	
+		writer.String("");
+	}
 	writer.String("PositionX");
 	writer.Double(localPosition.x);
 	writer.String("PositionY");
