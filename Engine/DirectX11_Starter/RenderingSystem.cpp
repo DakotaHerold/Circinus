@@ -466,7 +466,7 @@ void RenderingSystem::DrawScene(Camera* cam, Scene* scene)
 		XMFLOAT4 globalAmbient = XMFLOAT4(0.2f, 0.2f, 0.2f, 0.2f);
 		XMFLOAT4 eyePos = XMFLOAT4(cam->getPosition().x, cam->getPosition().y, cam->getPosition().z, 1);
 
-		if (hasAnyLightChanged)
+		if (hasAnyLightChanged)			// Only update the light buffer if any light value has changed
 			UpdateLightProperties(eyePos, globalAmbient, lights, l.size(), MAX_LIGHTS);
 
 		for (Renderable* i : ComponentManager::current->GetAllComponents<Renderable>()) {
@@ -511,6 +511,7 @@ void RenderingSystem::DrawScene(Camera* cam, Scene* scene)
 			deviceContext->DrawIndexed(i->mesh->indexCount, 0, 0);
 		}
 
+		// Draw SkyBox
 		Renderable* skybox = scene->GetSkyBox();
 		if (nullptr != skybox)
 		{
