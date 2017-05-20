@@ -6,11 +6,19 @@ class Lighting :
 {
 private:
 	Light *light;
-	bool isDirty;
+	bool isDirty;		// boolean value denoting if object Lighting object was modified after the previous update and before the next update
 public:
+
+	// Constructor for point light
 	Lighting(XMFLOAT4 position, XMFLOAT4 color, int lightType, int enabled, int specularAmount);
+
+	// Constructor for Directional light
 	Lighting(XMFLOAT4 direction, XMFLOAT4 color, int lightType, int enabled);
+
+	// Common constructor
 	Lighting(XMFLOAT4 position, XMFLOAT4 direction, XMFLOAT4 color, float spotAngle, float constantAttenuation, float linearAttenuation, float quadraticAttenuation, int lightType, int enabled, int specularAmount);
+
+	//Empty constructor
 	Lighting();
 	void Init(XMFLOAT4 position, XMFLOAT4 color, int lightType, int enabled, int specularAmount) {
 		light->Position = position;
@@ -24,9 +32,11 @@ public:
 	Light& GetLight();
 	bool WasModified();			// Returns true if the light was modified this frame
 	void SetModified() { isDirty = true; }
-	void Cleanse();
-	void SetPosition(XMFLOAT3& pos);
+	void Cleanse();				// Sets isDirty to false
+	void SetPosition(XMFLOAT3& pos);	
 	void SetRotationEuler(XMFLOAT3& rot);
+
+	// Serialization code for light component (Serialization done only for point light at the moment)
 	void Serialize(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer) {
 		writer.StartObject();
 		writer.String("name");
