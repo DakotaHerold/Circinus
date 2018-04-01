@@ -28,11 +28,13 @@ public:
 		z = zParam;
 		n = nParam; 
 		dirty = false; 
+		enabled = true; 
 	}
 	float          x, y, z;        // Position
 	unsigned int      n;              // User's unique identifier
 	unsigned int    code;           // Used during octree generation
-	bool dirty; 
+	bool dirty; // Flag for updates
+	bool enabled; // Whether 
 
 	// Insert typical operators, such as *, +, -, etc.
 	Point operator*(const DirectX::XMFLOAT3 vec) 
@@ -45,8 +47,20 @@ public:
 		return p; 
 	}
 
+	bool operator==(Point p)
+	{
+		return p.code == code && p.x == x && p.y == y && p.z == z; 
+	}
+
+	bool operator!=(Point p)
+	{
+		return p.code != code && p.x != x && p.y != y && p.z != z;
+	}
+
 	void Move(float xParam, float yParam, float zParam)
 	{
+		if (this == NULL)
+			return; 
 		x += xParam; 
 		y += yParam; 
 		z += zParam;

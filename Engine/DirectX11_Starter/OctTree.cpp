@@ -320,6 +320,10 @@ bool Octree::checkRebuild()
 	Octree* targetParent = nullptr; 
 	bool rebuildTree = false; 
 	bool outsideBounds = false; 
+	Point* targetPoint = nullptr; 
+
+	int newPointCount = 0;
+
 	// First check that there are points 
 	if (pointCount() > 0)
 	{
@@ -341,7 +345,6 @@ bool Octree::checkRebuild()
 					continue;
 				}
 
-
 				if (_parent->_box.Contains(pos))
 				{
 					// Rebuild the parent's tree down 
@@ -351,7 +354,7 @@ bool Octree::checkRebuild()
 				}
 				else
 				{
-					// Iterate until we find a parent that contains the point and rebuild down 
+					// Iterate up until we find a parent that contains the point and rebuild down 
 					Octree* par = _parent;
 					while (par->_box.Contains(pos))
 					{
@@ -366,11 +369,9 @@ bool Octree::checkRebuild()
 					if (!(targetParent->_box.Contains(pos)) && targetParent->_parent == nullptr)
 					{
 						// point is outside of game area.
-						//outsideBounds = true; 
-						rebuildTree = true; 
-						//_pointCount -= 1; 
-
-						//return true; 
+						targetPoint = points()[i]; 
+						outsideBounds = true; 
+						break; 
 					}
 					if (targetParent != nullptr && targetParent->_parent != nullptr)
 					{		
@@ -382,10 +383,56 @@ bool Octree::checkRebuild()
 		}
 	}
 	
-	if (rebuildTree)
+	if (outsideBounds)
 	{
 		// Get number of points going through each child 
-		int newPointCount = 0;
+		for (Octree* child : targetParent->_child)
+		{
+			if (child != nullptr)
+			{
+				for (int j = 0; j < child->pointCount(); j++)
+				{
+					if(*child->points()[j] != *targetPoint)
+						newPointCount++;
+				}
+			}
+		}
+
+		// Make array list of newPoint Size 
+		Point   **newList = new Point *[newPointCount + 1];
+		Point **ptr = newList;
+		// Go through each child and add each point to new list of points 
+		for (Octree* child : targetParent->_child)
+		{
+			if (child != nullptr)
+			{
+				for (int j = 0; j < child->pointCount(); j++)
+				{
+					if (*child->points()[j] != *targetPoint)
+					{
+						*ptr = child->points()[j];
+						ptr++;
+					}
+				}
+			}
+		}
+
+		targetPoint->enabled = false; 
+		targetPoint = nullptr; 
+		delete targetPoint;
+		/*targetPoint = nullptr; 
+		delete targetPoint; */
+
+		Octree* par = targetParent;
+		par->_parent = nullptr;
+		par->build(newList, newPointCount, par->treeThreshold, par->treeMaxDepth, par->_box, par->_parent, par->currDepth);
+		delete[] newList;
+		return false;
+	}
+	else if (rebuildTree)
+	{
+
+		// Get number of points going through each child 
 		for (Octree* child : targetParent->_child)
 		{
 			if (child != nullptr)
@@ -413,15 +460,8 @@ bool Octree::checkRebuild()
 		}
 
 		Octree* par = targetParent;
-		for (int i = 0; i < 8; i++)
-		{
-			//par->_child[i] = nullptr;
-			//delete par->_child[i];
-		}
-		if (!outsideBounds)
-		{
-			par->build(newList, newPointCount, par->treeThreshold, par->treeMaxDepth, par->_box, par->_parent, par->currDepth);
-		}
+		par->build(newList, newPointCount, par->treeThreshold, par->treeMaxDepth, par->_box, par->_parent, par->currDepth);
+		
 		delete[] newList;
 		//delete this;
 	}
