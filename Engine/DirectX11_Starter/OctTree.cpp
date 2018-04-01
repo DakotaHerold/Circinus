@@ -58,6 +58,10 @@ const   bool    Octree::build(
 	{
 		// Just store the points in the node, making it a leaf
 		_pointCount = count;
+		if (_points != nullptr)
+		{
+			delete[] _points;
+		}
 		_points = new Point *[count];
 		memcpy(_points, points, sizeof(Point *) * count);
 		isLeaf = true; 
@@ -374,9 +378,11 @@ bool Octree::checkRebuild()
 						break; 
 					}
 					if (targetParent != nullptr && targetParent->_parent != nullptr)
-					{		
+					{
 						rebuildTree = true;
 					}
+					
+					
 					break; 
 				}
 			}
@@ -429,7 +435,8 @@ bool Octree::checkRebuild()
 		delete[] newList;
 		return false;
 	}
-	else if (rebuildTree)
+	else 
+	if (rebuildTree)
 	{
 
 		// Get number of points going through each child 
