@@ -206,15 +206,8 @@ void Scene::Tick(float deltaTime, float totalTime)
 
 	if (points[0] != nullptr)
 	{
-		if (points[0]->enabled == false)
-		{
-			points[0] = nullptr;
-		}
-		else
-		{
-			points[0]->Move(0, 0, -0.001f);
-		}
-		
+		/*if(points[0]->enabled)
+			points[0]->Move(0, 0, -0.001f);*/
 	}
 	
 	//oct->build(points, pointCount, 1, 10, box, 0);

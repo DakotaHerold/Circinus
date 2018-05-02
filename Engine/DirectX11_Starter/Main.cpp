@@ -47,11 +47,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPSTR cmdLine, i
 #if defined(DEBUG) | defined(_DEBUG)
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-	long lBreakAlloc = 7732;
-	if (lBreakAlloc > 0)
+	/*long lbreakalloc = 7732;
+	if (lbreakalloc > 0)
 	{
-		_CrtSetBreakAlloc(lBreakAlloc);
-	}
+		_CrtSetBreakAlloc(lbreakalloc);
+	}*/
 
 	// Allocate console in debug mode
 	AllocConsole();
